@@ -30,7 +30,7 @@ namespace Fragsurf.Shared
             }
             else
             {
-                RuntimeManager.PlayOneShotAttached(fixedPath, Camera.main.gameObject);
+                RuntimeManager.PlayOneShotAttached(fixedPath, GameCamera.Camera.gameObject);
             }
         }
 

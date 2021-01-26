@@ -189,9 +189,9 @@ namespace Fragsurf.Client
         private void SetFov(float value)
         {
             _fov = Mathf.Clamp(value, 60f, 90f);
-            if(Camera.main != null)
+            if(GameCamera.Camera != null)
             {
-                Camera.main.fieldOfView = _fov;
+                GameCamera.Camera.fieldOfView = _fov;
             }
         }
 

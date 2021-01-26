@@ -43,7 +43,7 @@ namespace Fragsurf.Shared.Entity
             MovementController = new DefaultMovementController(this);
             if (!Game.IsHost)
             {
-                CameraController = new FirstPersonCameraController(this, Camera.main);
+                CameraController = new FirstPersonCameraController(this, GameCamera.Camera);
             }
         }
 

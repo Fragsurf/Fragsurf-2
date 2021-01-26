@@ -14,7 +14,7 @@ namespace Fragsurf.Client
             path = SoundEmitter.FixPath(path);
             _ambientInstance = RuntimeManager.CreateInstance(path);
             _ambientInstance.setVolume(volume);
-            RuntimeManager.AttachInstanceToGameObject(_ambientInstance, Camera.main.transform, rigidBody: null);
+            RuntimeManager.AttachInstanceToGameObject(_ambientInstance, GameCamera.Camera.transform, rigidBody: null);
             _ambientInstance.start();
             _ambientInstance.release();
         }
@@ -26,7 +26,7 @@ namespace Fragsurf.Client
 
         public static void PlaySound2D(string path, float volume)
         {
-            PlaySoundAttached(path, volume, Camera.main.transform);
+            PlaySoundAttached(path, volume, GameCamera.Camera.transform);
         }
 
         public static void PlaySoundAttached(string path, float volume, Transform transform, string parameterName = null, float parameterValue = 0f)

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e429bab2ce88e246933412df7b27838, type: 3}
+  m_Name: GameData
+  m_EditorClassIdentifier: 
+  MainMenu:
+    sceneAsset: {fileID: 0}
+    scenePath: 
+  GameCamera: {fileID: 3852404991610636026, guid: 25b73a40fd013a645a049da6beb0a1b3, type: 3}
+  BloodSplash: {fileID: 0}
+  WaterSplash: {fileID: 0}
+  FootstepSplash: {fileID: 0}
+  DefaultImpactEffect: {fileID: 0}
+  ImpactEffects: []
+  Equippables: []
+  Footstep: 
+  FallDamage: 
+  DeathSound: 

@@ -34,9 +34,14 @@ namespace Fragsurf.Shared.Maps
 
         public virtual void Tick()
         {
-            if (_fsmActors != null)
+            if(_fsmActors == null)
             {
-                foreach (var actor in _fsmActors)
+                return;
+            }
+
+            foreach (var actor in _fsmActors)
+            {
+                if (actor.isActiveAndEnabled)
                 {
                     actor.Tick();
                 }
@@ -50,16 +55,6 @@ namespace Fragsurf.Shared.Maps
 
         private void InitializeMap()
         {
-            foreach (SurfCharacter c in GameObject.FindObjectsOfType<SurfCharacter>())
-            {
-                var cam = c.GetComponentInChildren<Camera>();
-                if (cam != null && cam == Camera.main)
-                {
-                    cam.transform.parent = null;
-                }
-                GameObject.Destroy(c.gameObject);
-            }
-
             _fsmActors = GameObject.FindObjectsOfType<Fragsurf.FSM.Actors.FSMActor>();
             _spawnPoints = GameObject.FindObjectsOfType<Fragsurf.FSM.Actors.FSMSpawnPoint>();
 
