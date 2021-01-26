@@ -42,6 +42,7 @@ namespace ModTool.Exporting.Editor
             new ImportScripts(),
             new UpdateAssets(),
             new Export(),
+            new UploadToWorkshop()
             //new RestoreProject(),
         };
 

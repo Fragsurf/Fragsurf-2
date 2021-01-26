@@ -81,6 +81,20 @@ namespace ModTool.Exporting.Editor
             set => instance._outputDirectory = value;
         }
 
+        public static bool uploadToWorkshop
+        {
+            get => instance._uploadToWorkshop;
+            set => instance._uploadToWorkshop = value;
+        }
+
+        public static ulong WorkshopId
+        {
+            get => instance._workshopId;
+            set => instance._workshopId = value;
+        }
+
+        public static string WorkshopUrl => "https://steamcommunity.com/sharedfiles/filedetails/?id=" + WorkshopId;
+
         [SerializeField]
         private string _name;
 
@@ -104,5 +118,12 @@ namespace ModTool.Exporting.Editor
 
         [SerializeField]
         private string _outputDirectory;
+
+        [SerializeField]
+        private bool _uploadToWorkshop;
+
+        [SerializeField]
+        private ulong _workshopId;
+
     }
 }

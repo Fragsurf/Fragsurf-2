@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931d054fd6bcb0c478c4a163618dc854, type: 3}
   m_Name: ModToolSettings
   m_EditorClassIdentifier: 
-  _productName: Bhop
+  _productName: Fragsurf
   _unityVersion: 2020.2.2f1
   _supportedPlatforms: 15
   _supportedContent: 7

@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Test Mod
   _scene:
-    sceneAsset: {fileID: 102900000, guid: b9932c319c624a7418a03d74cf9021b4, type: 3}
-    scenePath: Assets/Scenes/TestScene.unity
+    m_SceneAsset: {fileID: 0}
+    m_SceneName: 
+    m_ScenePath: 
   _author: Crayz
   _description: This is a test mod
   _version: 1.0
   _platforms: 15
   _content: 7
   _outputDirectory: C:/Users/Jake/Desktop/Test mod Export
+  _uploadToWorkshop: 0
+  _workshopId: 0

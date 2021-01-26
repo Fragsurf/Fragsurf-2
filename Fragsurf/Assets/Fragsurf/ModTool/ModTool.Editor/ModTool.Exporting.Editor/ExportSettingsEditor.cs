@@ -15,6 +15,7 @@ namespace ModTool.Exporting.Editor
         //private SerializedProperty _platforms;
         //private SerializedProperty _content;
         private SerializedProperty _outputDirectory;
+        private SerializedProperty _uploadToWorkshop;
 
         private FilteredEnumMaskField platforms;
         private FilteredEnumMaskField content;
@@ -29,6 +30,7 @@ namespace ModTool.Exporting.Editor
             //_platforms = serializedObject.FindProperty("_platforms");
             //_content = serializedObject.FindProperty("_content");
             _outputDirectory = serializedObject.FindProperty("_outputDirectory");
+            _uploadToWorkshop = serializedObject.FindProperty("_uploadToWorkshop");
 
             platforms = new FilteredEnumMaskField(typeof(ModPlatform), (int)ModToolSettings.supportedPlatforms);
             content = new FilteredEnumMaskField(typeof(ModContent), (int)ModToolSettings.supportedContent);
@@ -42,8 +44,8 @@ namespace ModTool.Exporting.Editor
 
             GUILayout.Space(5);
 
-            EditorGUILayout.PropertyField(_name, new GUIContent("Mod Name*:"));
-            EditorGUILayout.PropertyField(_scene, new GUIContent("Mod Scene*:"));
+            EditorGUILayout.PropertyField(_name, new GUIContent("Name*:"));
+            EditorGUILayout.PropertyField(_scene, new GUIContent("Entry Scene*:"));
             EditorGUILayout.PropertyField(_author, new GUIContent("Author:"));
             EditorGUILayout.PropertyField(_version, new GUIContent("Version:"));
 
@@ -77,6 +79,14 @@ namespace ModTool.Exporting.Editor
             GUILayout.EndHorizontal();
 
             GUILayout.Space(20);
+
+            _uploadToWorkshop.boolValue = GUILayout.Toggle(_uploadToWorkshop.boolValue, "Upload to Workshop?");
+            if (_uploadToWorkshop.boolValue)
+            {
+                // workshop options
+            }
+
+            GUILayout.Space(5);
 
             EditorGUILayout.EndVertical();
 
