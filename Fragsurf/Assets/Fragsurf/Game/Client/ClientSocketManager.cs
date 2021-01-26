@@ -206,9 +206,12 @@ namespace Fragsurf.Client
 
         public void HandleDisconnected(string reason)
         {
-            SteamUser.EndAuthSession(SteamClient.SteamId);
-            _authTicket?.Dispose();
-            _authTicket = null;
+            if (SteamClient.IsValid)
+            {
+                SteamUser.EndAuthSession(SteamClient.SteamId);
+                _authTicket?.Dispose();
+                _authTicket = null;
+            }
 
             SetSocketStatus(ClientSocketStatus.Disconnected, reason);
         }
