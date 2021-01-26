@@ -1,0 +1,11 @@
+<UITemplate>
+    
+    <Using namespace="NamespaceTest"/>
+
+    <Contents>
+
+        <TemplateBindingTest_Namespace_Resolve_Inner color="new Color()"/>
+        
+    </Contents>
+    
+</UITemplate>

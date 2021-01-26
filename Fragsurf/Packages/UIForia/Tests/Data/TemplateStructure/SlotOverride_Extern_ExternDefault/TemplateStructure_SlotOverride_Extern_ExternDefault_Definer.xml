@@ -1,0 +1,11 @@
+<UITemplate>
+    <Contents>
+
+        <define:override-me>
+            
+            Default original content
+            
+        </define:override-me>
+        
+    </Contents>
+</UITemplate>

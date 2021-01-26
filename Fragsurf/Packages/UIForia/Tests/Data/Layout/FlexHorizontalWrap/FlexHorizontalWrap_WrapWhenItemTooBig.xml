@@ -1,0 +1,29 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            FlexLayoutDirection = Horizontal;
+            PreferredSize = 600px;
+            BackgroundColor = Yellow;
+            FlexLayoutWrap = WrapHorizontal;
+        }
+
+        style child {
+            PreferredSize = 200px 100px;
+            BackgroundColor = red;
+        }
+        
+        style big {
+            PreferredSize = 800px 100px;
+        }
+        
+    </Style>
+
+    <Contents style="container">
+        <Group style='child'/>
+        <Group style='big'/>
+        <Group style='child'/>
+        <Group style='child'/>
+    </Contents>
+</UITemplate>

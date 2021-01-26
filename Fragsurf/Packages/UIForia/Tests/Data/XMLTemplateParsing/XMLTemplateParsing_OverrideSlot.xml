@@ -1,0 +1,11 @@
+<UITemplate>
+    <Contents>
+        Hello Before
+        <XMLTemplateParsing_DefineSlot>
+            <override:my-slot>
+                Hello Between
+            </override:my-slot>
+        </XMLTemplateParsing_DefineSlot>
+        Hello After
+    </Contents>
+</UITemplate>

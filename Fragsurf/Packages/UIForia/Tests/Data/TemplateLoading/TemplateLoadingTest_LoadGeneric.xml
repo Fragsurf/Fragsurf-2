@@ -1,0 +1,16 @@
+<UITemplate>
+    <Contents>
+        
+        <TemplateLoadingTest_Generic value="0.5f"/>
+        
+        <TemplateLoadingTest_Generic value="7"/>
+        
+        <TemplateLoadingTest_Generic value="'str'"/>
+        
+    </Contents>
+    
+    <Contents id="generic">
+        <Text attr:id="text">{value}</Text>    
+    </Contents>
+    
+</UITemplate>

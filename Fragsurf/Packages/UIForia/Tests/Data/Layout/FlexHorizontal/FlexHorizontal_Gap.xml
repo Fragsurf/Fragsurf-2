@@ -1,0 +1,53 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            FlexLayoutDirection = Horizontal;
+            PreferredWidth = 100px;
+            PreferredHeight = 500px;
+        }
+
+        style gap {
+            FlexLayoutGap = 10;
+        }
+
+        style gap-horizontal {
+            FlexLayoutGapHorizontal = 10;
+        }
+
+        style gap-vertical {
+            FlexLayoutGapVertical = 10;
+        }
+
+        style w100h100 {
+            PreferredSize = 100px;
+            BackgroundColor = red;
+        }
+
+    </Style>
+
+    <Contents>
+
+        <Div style="container gap">
+            <Group style='w100h100'/>
+            <Group style='w100h100'/>
+            <Group style='w100h100'/>
+        </Div>
+        
+        <Div style="container gap-horizontal">
+            <Group style='w100h100'/>
+            <Group style='w100h100'/>
+            <Group style='w100h100'/>
+        </Div>
+
+        <!-- no effect -->
+        <Div style="container gap-vertical">
+            <Group style='w100h100'/>
+            <Group style='w100h100'/>
+            <Group style='w100h100'/>
+        </Div>
+
+    </Contents>
+
+</UITemplate>

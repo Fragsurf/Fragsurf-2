@@ -1,0 +1,23 @@
+<UITemplate>
+    
+    <Style>
+        style from_root {
+            PaddingBottom = 5px;
+        }
+    </Style>
+    
+    <Contents>
+
+        <TemplateBindingTest_StyleFromNestedSlots_2>
+            
+            <override:Children style="from_root">
+                
+                <Div id="find-me"/>
+                
+            </override:Children>
+            
+        </TemplateBindingTest_StyleFromNestedSlots_2>
+        
+    </Contents>
+    
+</UITemplate>

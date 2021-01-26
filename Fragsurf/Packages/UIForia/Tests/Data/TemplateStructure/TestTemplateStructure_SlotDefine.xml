@@ -1,0 +1,61 @@
+<UITemplate>
+
+    <Contents id="outer">
+
+        <Text>Hello</Text>
+
+        <TestTemplateStructure_UseDefaultSlotContent_Inner str="'from default slot'"/>
+
+    </Contents>
+
+    <Contents id="outer_override">
+
+        <TestTemplateStructure_UseDefaultSlotContent_Inner str="'from default slot'">
+
+            <override:Slot0>
+                from override slot
+            </override:Slot0>
+
+        </TestTemplateStructure_UseDefaultSlotContent_Inner>
+
+    </Contents>
+
+    <Contents id="slot_definer">
+
+        <define:Slot0>
+            {str}
+        </define:Slot0>
+
+    </Contents>
+
+    <Contents id="use_default_children_outer">
+        
+        <UseDefaultChildrenInner/>
+        
+    </Contents>
+    
+    <Contents id="use_default_children_inner">
+
+        <define:Children>
+            default children
+        </define:Children>
+
+    </Contents>
+    
+     <Contents id="override_children_outer">
+        
+        <UseDefaultChildrenInner>
+            {overrideBinding}
+        </UseDefaultChildrenInner>
+        
+    </Contents>
+    
+    <Contents id="override_children_inner">
+
+        <define:Children>
+            default children
+        </define:Children>
+
+    </Contents>
+
+</UITemplate>

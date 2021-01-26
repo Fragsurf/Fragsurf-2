@@ -1,0 +1,12 @@
+<UITemplate>
+    <Contents>
+
+        <Repeat list="data" var:thing="item">
+            <Div>
+                <Repeat list="$thing.data">
+                    <Text>{$item}</Text>
+                </Repeat>
+            </Div>
+        </Repeat>
+    </Contents>
+</UITemplate>

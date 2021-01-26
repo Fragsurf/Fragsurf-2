@@ -1,0 +1,50 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            LayoutType = Grid;
+            GridLayoutRowTemplate = 100px, 100px, 100px, 100px;
+            GridLayoutDirection = Vertical;
+        }
+
+        style placed1 {
+            GridItemHeight = 2;
+            BackgroundColor = green;
+        }
+
+        style placed3 {
+        GridItemWidth = 2;
+        BackgroundColor = white;
+        }
+        
+         style placed4 {
+        GridItemWidth = 4;
+        BackgroundColor = white;
+        }
+
+        style box {
+            PreferredSize = 100px, 1pca;
+            BackgroundColor = blue;
+        }
+
+        style span-2 {
+            GridItemHeight = 2;
+        }
+        
+        style span-3 {
+            GridItemHeight = 3;
+        }
+        
+    </Style>
+
+    <Contents style="container">
+        <Group style="box"/>
+        <Group style="box span-2"/>
+        <Group style="box span-3"/>
+        <Group style="box"/>
+        <Group style="box"/>
+        <Group style="box"/>
+    </Contents>
+
+</UITemplate>

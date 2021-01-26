@@ -1,0 +1,13 @@
+<UITemplate>
+    
+    <Contents id="outer">
+
+        <Inner/>
+
+    </Contents>
+
+    <Contents id="inner">
+        <Text>Hello from inner</Text>
+    </Contents>
+    
+</UITemplate>

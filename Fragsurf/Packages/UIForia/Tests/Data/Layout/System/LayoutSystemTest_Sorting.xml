@@ -1,0 +1,10 @@
+<UITemplate>
+
+    <Contents id="sort_layers_ascending" style:preferredWidth="100f" style:preferredHeight="200f">
+        <Group style:preferredWidth="100f" style:preferredHeight="100f"/>
+        <Group style:preferredWidth="100f" style:layer="1" style:preferredHeight="100f"/>
+        <Group style:preferredWidth="100f" style:preferredHeight="100f"/>
+        <Group style:preferredWidth="100f" style:preferredHeight="100f"/>
+    </Contents>
+
+</UITemplate>

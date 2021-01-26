@@ -1,0 +1,27 @@
+<UITemplate>
+
+    <Style>
+        
+        style m {
+            PreferredSize = 100px;
+        }
+        
+    </Style>
+    
+    <Contents>
+
+        <Div style="m" key:down="HandleKeyDown_NoParams()"/>
+        
+        <Div style="m" key:down="HandleKeyDown_EvtParam($evt)"/>
+        
+        <Div style="m" key:down="HandleKeyDown_MixedParams($evt, 5)"/>
+        
+        <Div style="m" key:down="HandleKeyDown_NoEvtParam('string goes here', (int)$evt.character)"/>
+        
+        <Div style="m" key:down="(evt) => SetValue(evt.character)"/>
+        
+        <Div style="m" key:down="() => SetValue2($event.character)"/>
+        
+    </Contents>
+    
+</UITemplate>

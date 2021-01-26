@@ -1,0 +1,33 @@
+<UITemplate>
+    
+    <Style>
+        
+        style container {
+            LayoutType = Grid;
+            GridLayoutRowTemplate = 100px, 100px, 100px, 100px;
+            GridLayoutDirection = Vertical;
+            GridLayoutDensity = Dense;
+            GridLayoutColAutoSize = 100px;
+        }
+        
+        style placed1 {
+            GridItemHeight = 2;
+        }
+
+        style placed3 {
+            GridItemWidth = 2;
+        }
+        
+        
+    </Style>
+    
+    <Contents style="container">
+        <Group style.preferredWidth='100f' style.preferredHeight='100f'/>
+        <Group style.preferredWidth='100f' style.preferredHeight='100f'/>
+        <Group style.preferredWidth='100f' style.preferredHeight='100f'/>
+        <Group style.preferredWidth='100f' style.preferredHeight='100f'/>
+        <Group style.preferredWidth='100f' style.preferredHeight='100f'/>
+        <Group style.preferredWidth='100f' style.preferredHeight='100f'/>
+    </Contents>
+    
+</UITemplate>

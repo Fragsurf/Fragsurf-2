@@ -1,0 +1,57 @@
+<UITemplate>
+    
+    <Using namespace="UIForia" />
+
+    <Style>
+        
+        style block {
+            PreferredSize = 100px;
+        }
+        
+    </Style>
+    
+    <Contents id="drag_create_method">
+
+        <Group drag:create="CreateDragFromChild($evt, 0)" style:preferredWidth='100f' style:preferredHeight='100f'/>
+
+    </Contents>
+
+    <Contents id="drag_create_lambda">
+
+        <Group drag:create="() => CreateDragFromChild($evt, 1)" style:preferredWidth='100f' style:preferredHeight='100f'/>
+
+    </Contents>
+
+    <Contents id="drag_create_lambda_arg">
+
+        <Group drag:create="(e) => CreateDragFromChild(e, 3)" style:preferredWidth='100f' style:preferredHeight='100f'/>
+
+    </Contents>
+    
+    <Contents id="drag_create_lambda_arg_invalid_retn">
+
+        <Group drag:create="(e) => CreateDragFromChild(e, 3)" style:preferredWidth='100f' style:preferredHeight='100f'/>
+
+    </Contents>
+    
+    <Contents id="drag_create_annotation_param" style="block"/>
+    
+    <Contents id="drag_create_annotation_invalid_param" style="block"/>
+    
+    <Contents id="drag_create_annotation_invalid_param_count" style="block"/>
+    
+    <Contents id="drag_create_annotation_invalid_return" style="block"/>
+    
+    <Contents id="drag_create_annotation_null" style="block"/>
+
+    <Contents id="drag_and_change_sync_binding" style:preferredWidth="1000" style:preferredHeight="200">
+        <DragElementWithSyncBinding
+                sync:value="syncValue"
+                style:preferredHeight="100"
+                style:preferredWidth="100">
+            Drag This
+        </DragElementWithSyncBinding>
+        <Group style:preferredWidth="1000" style:preferredHeight="100">Over This</Group>
+    </Contents>
+    
+</UITemplate>

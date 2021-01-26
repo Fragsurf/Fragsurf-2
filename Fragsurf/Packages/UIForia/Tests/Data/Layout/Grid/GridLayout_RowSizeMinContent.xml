@@ -1,0 +1,28 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            LayoutType = Grid;
+            GridLayoutRowTemplate = 1mn, 100px, 100px;
+            GridLayoutColTemplate = 100px 100px;
+            FitItemsVertical = Fill;
+        }
+
+        style box {
+            PreferredSize = 100px;
+            BackgroundColor = red;
+        }
+
+    </Style>
+
+    <Contents style="container">
+        <Div style="box" style.preferredHeight="400"/>
+        <Div style="box" style.preferredHeight="600"/>
+        <Div style="box"/>
+        <Div style="box"/>
+        <Div style="box"/>
+        <Div style="box"/>
+    </Contents>
+
+</UITemplate>

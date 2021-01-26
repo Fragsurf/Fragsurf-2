@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UITemplate>
+    <!--<Style path="Documentation/DocumentationElements/NumberStepper.style" />-->
+    
+    <Using namespace="UIForia.Elements" />
+    
+    <Contents>
+	
+		Dumb bitch
+
+    </Contents>
+</UITemplate>

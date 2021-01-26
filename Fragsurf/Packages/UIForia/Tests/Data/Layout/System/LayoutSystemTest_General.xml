@@ -1,0 +1,98 @@
+<UITemplate>
+    <Style>
+        style child1 {
+        MinWidth = 300px;
+        }
+
+        style c {
+        PreferredSize = 100px;
+        }
+
+        style width_changes_to_content {
+        PreferredSize = 300px 50px;
+        }
+
+        style height_changes_to_maxcontent {
+        PreferredSize = 300px 50px;
+        }
+
+        style height_changes_to_mincontent {
+        PreferredSize = 300px 500px;
+        }
+
+    </Style>
+    <Contents>
+        <Group attr:id="child0" style="c child1" style:preferredWidth="100f" style:preferredHeight="100f"/>
+        <Group attr:id="child1" style="c"/>
+        <Group attr:id="child2" style="c"/>
+    </Contents>
+
+    <Contents id="content_sized">
+
+        <Group attr:id="child0" style:preferredWidth="100f" style:preferredHeight="100f"/>
+        <Group attr:id="child1">
+            <Group attr:id="nested-child" style:preferredWidth="300f" style:preferredHeight="50f"/>
+        </Group>
+        <Group attr:id="child2" style:preferredWidth="100f" style:preferredHeight="100f"/>
+    </Contents>
+
+    <Contents id="max_size_changes">
+        <Group attr:id="child0" style="c"/>
+        <Group attr:id="child1">
+            <Group attr:id="nested-child" style:preferredWidth="300f" style:preferredHeight="50f"/>
+        </Group>
+        <Group attr:id="child2" style="c"/>
+    </Contents>
+
+    <Contents id="width_changes_to_content">
+        <Group style="c"/>
+        <Group style:preferredWidth="400f">
+            <Group style="width_changes_to_content"/>
+        </Group>
+        <Group style="c"/>
+    </Contents>
+
+    <Contents id="height_changes_to_maxcontent">
+        <Group style="c"/>
+        <Group style:preferredWidth="400f" style:preferredHeight="300f">
+            <Group style="height_changes_to_maxcontent"/>
+        </Group>
+        <Group style="c"/>
+    </Contents>
+
+    <Contents id="height_changes_to_mincontent">
+        <Group style="c"/>
+        <Group style:preferredWidth="400f" style:preferredHeight="300f">
+            <Group style="height_changes_to_mincontent"/>
+        </Group>
+        <Group style="c"/>
+    </Contents>
+
+    <Contents id="child_enabled">
+        <Group style="c"/>
+        <Group>
+            <Group if.once="false" style:preferredWidth="300f" style:preferredHeight="50f"/>
+            <Group style:preferredWidth="200f" style:preferredHeight="50f"/>
+        </Group>
+        <Group style:preferredWidth="100f" style:preferredHeight="100f"/>
+    </Contents>
+    
+     <Contents id="child_disabled">
+        <Group style="c"/>
+        <Group>
+            <Group style:preferredWidth="300f" style:preferredHeight="50f"/>
+            <Group style:preferredWidth="200f" style:preferredHeight="50f"/>
+        </Group>
+        <Group style:preferredWidth="100f" style:preferredHeight="100f"/>
+    </Contents>
+    
+      <Contents id="screen_pos_updated">
+        <Group style="c"/>
+        <Group>
+            <Group style="c"/>
+            <Group style="c"/>
+        </Group>
+        <Group style="c"/>
+    </Contents>
+
+</UITemplate>

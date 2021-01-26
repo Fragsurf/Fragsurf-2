@@ -1,0 +1,9 @@
+<UITemplate>
+    
+    <Contents>
+        
+        <Div attr:someAttr="attr-value" attr:dynamicAttr="{'dynamic' + intVal}"/>
+        
+    </Contents>
+        
+</UITemplate>

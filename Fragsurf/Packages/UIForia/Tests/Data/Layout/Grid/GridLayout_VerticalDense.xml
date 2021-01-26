@@ -1,0 +1,48 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            LayoutType = Grid;
+            GridLayoutColTemplate = 100px 100px 100px;
+            GridLayoutRowTemplate = 100px 100px 100px;
+            GridLayoutDensity = Dense;
+            GridLayoutDirection = Vertical;
+        }
+
+        style child {
+            PreferredSize = 100px;
+        }
+
+        style item1 {
+            BackgroundColor = lime;
+        }
+
+        style item2 {
+            GridItemWidth = 3;
+            BackgroundColor = yellow;
+            LayoutFitHorizontal = Fill;
+        }
+
+        style item3 {
+            BackgroundColor = blue;
+        }
+
+        style item4 {
+            BackgroundColor = red;
+        }
+
+        style item5 {
+            BackgroundColor = aqua;
+        }
+
+    </Style>
+
+    <Contents style="container">
+        <Div style="child item1"/>
+        <Div style="child item2"/>
+        <Div style="child item3"/>
+        <Div style="child item4"/>
+        <Div style="child item5"/>
+    </Contents>
+</UITemplate>

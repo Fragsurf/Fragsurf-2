@@ -1,0 +1,39 @@
+<UITemplate>
+    <Style>
+
+        style MyMargin { MarginTop = 100px; }
+        
+        style &lt;Heading1&gt; { TextFontSize = 100; }
+        
+        style root {
+            TextFontSize = 100;
+        }
+        
+    </Style>
+
+    <Contents>
+        <Group attr:id="group1">
+            <Group attr:id="group2"/>
+        </Group>
+        <Group attr:id="group3"/>
+        <Group attr:id="group4"/>
+        <Group attr:id="dynamic" style="{marginStyle}"/>
+    </Contents>
+
+    <Contents id="heading">
+
+        <Heading1 attr:id="myHeading">TestMe</Heading1>
+
+    </Contents>
+
+    <Contents id="inherited" style="root">
+        <Repeat list="list">
+            <Text>{$item}</Text>
+        </Repeat>
+    </Contents>
+
+    <Contents id="inherited_enable" style="root">
+        <Group if.once="false"/>
+    </Contents>
+    
+</UITemplate>

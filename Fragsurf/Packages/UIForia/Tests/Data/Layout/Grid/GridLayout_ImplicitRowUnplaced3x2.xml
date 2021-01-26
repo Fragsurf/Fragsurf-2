@@ -1,0 +1,26 @@
+<UITemplate>
+    <Style>
+
+        style container {
+            LayoutType = Grid;
+            GridLayoutRowTemplate = 100px 100px 100px;
+            GridLayoutDirection = Vertical;
+        }
+
+        style box {
+            PreferredSize = 100px;
+        }
+        
+
+    </Style>
+
+    <Contents style="container">
+        <Group style="box"/>
+        <Group style="box"/>
+        <Group style="box"/>
+        <Group style="box"/>
+        <Group style="box"/>
+        <Group style="box"/>
+    </Contents>
+
+</UITemplate>

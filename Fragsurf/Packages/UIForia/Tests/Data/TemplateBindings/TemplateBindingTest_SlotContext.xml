@@ -1,0 +1,23 @@
+<UITemplate>
+
+    <Contents id="level-2">
+
+        <TemplateBindingTest_ResolveSlotContext_1>
+
+            <Text>children go here</Text>
+
+        </TemplateBindingTest_ResolveSlotContext_1>
+
+    </Contents>
+
+    <Contents id="level-1">
+        <TemplateBindingTest_ResolveSlotContext_0>
+            <forward:Children attr:level-1="{ctx}"/>
+        </TemplateBindingTest_ResolveSlotContext_0>
+    </Contents>
+
+    <Contents id="level-0">
+        <define:Children attr:level-0="{ctx}"/>
+    </Contents>
+
+</UITemplate>

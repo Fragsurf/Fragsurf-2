@@ -1,0 +1,9 @@
+<UITemplate>
+    <Contents>
+
+        <define:override-me>
+            Default slot content
+        </define:override-me>
+        
+    </Contents>
+</UITemplate>

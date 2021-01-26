@@ -1,0 +1,13 @@
+<UITemplate>
+
+    <Style path="Data/TemplateStructure/Util.style" alias="util"/>
+
+    <Contents>
+
+        <Div style="util.horizontal"/>
+
+
+        
+    </Contents>
+
+</UITemplate>

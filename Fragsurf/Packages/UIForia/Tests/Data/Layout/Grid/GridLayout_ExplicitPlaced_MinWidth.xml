@@ -1,0 +1,40 @@
+<UITemplate>
+    <Style>
+        style container {
+            LayoutType = Grid;
+            GridLayoutColTemplate = 1mn 100px 100px;
+            GridLayoutRowAutoSize = 100px;
+            FitItemsHorizontal = Fill;
+            FitItemsVertical = Fill;
+        }
+
+        style child-0 {
+            GridItem = 0 0;
+            BackgroundColor = red;
+            PreferredSize = 200px;
+        }
+
+        style child-1 {
+            GridItem = 0 0;
+            BackgroundColor = lime;
+            PreferredWidth = 50px;
+        }
+
+        style child {
+            PreferredSize = 100px;
+            BackgroundColor = yellow;
+        }
+
+    </Style>
+
+    <Contents style="container">
+
+        <Div style="child child-0"/>
+        <Div style="child child-1"/>
+        <Div style="child"/>
+        <Div style="child"/>
+        <Div style="child"/>
+        <Div style="child"/>
+
+    </Contents>
+</UITemplate>

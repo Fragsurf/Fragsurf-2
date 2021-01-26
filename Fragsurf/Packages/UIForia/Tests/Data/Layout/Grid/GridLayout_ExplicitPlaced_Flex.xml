@@ -1,0 +1,46 @@
+<UITemplate>
+    <Style>
+
+        style container {
+            LayoutType = Grid;
+            GridLayoutColTemplate = 100px 1fr 100px;
+            GridLayoutRowTemplate = 100px;
+            FitItemsVertical = Fill;
+            FitItemsHorizontal = Fill;
+            PreferredSize = 400px;
+        }
+
+        style box {
+            PreferredSize = 100px;
+        }
+
+        style box0 {
+            PreferredWidth = 50px;
+            GridItemX = 1;
+            GridItemY = 0;
+            BackgroundColor = white;
+        }
+
+        style box1 {
+            GridItemX = 2;
+            GridItemY = 1;
+            BackgroundColor = red;
+        }
+
+        style box2 {
+            PreferredWidth = 100px;
+            GridItemX = 0;
+            GridItemWidth = 3;
+            BackgroundColor = blue;
+        }
+
+
+    </Style>
+
+    <Contents style="container">
+        <Group style="box box0"/>
+        <Group style="box box1"/>
+        <Group style="box box2"/>
+    </Contents>
+    
+</UITemplate>

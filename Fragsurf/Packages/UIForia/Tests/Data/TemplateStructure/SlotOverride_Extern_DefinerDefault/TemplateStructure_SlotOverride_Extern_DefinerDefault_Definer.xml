@@ -1,0 +1,11 @@
+<UITemplate>
+    
+    <Contents>
+
+        <define:override-me>
+            Not overridden
+        </define:override-me>
+        
+    </Contents>
+    
+</UITemplate>

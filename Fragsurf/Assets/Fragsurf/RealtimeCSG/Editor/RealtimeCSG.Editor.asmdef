@@ -1,0 +1,18 @@
+{
+    "name": "RealtimeCSG.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e3e03a5a27a723f45b16bd5ffb507c99"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

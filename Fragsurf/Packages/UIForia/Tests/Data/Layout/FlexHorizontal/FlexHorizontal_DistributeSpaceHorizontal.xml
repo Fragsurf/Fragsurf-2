@@ -1,0 +1,23 @@
+<UITemplate>
+    
+    <Style>
+        
+        style container {
+            FlexLayoutDirection = Horizontal;
+            PreferredSize = 500px;
+        }
+        
+        style w100h100 {
+            PreferredSize = 100px;
+            BackgroundColor = red;
+        }
+        
+        
+    </Style>
+    
+    <Contents style="container">
+        <Group style='w100h100'/>
+        <Group style='w100h100'/>
+        <Group style='w100h100'/>
+    </Contents>
+</UITemplate>

@@ -1,0 +1,15 @@
+<UITemplate>
+    
+    <Contents id="method_group">
+        
+        <TestTemplateBinding_EventBinding_MethodGroup onSomethingHappened="OnSomethingHappened"/>
+        
+    </Contents>
+    
+    <Contents id="access_expr">
+        
+        <TestTemplateBinding_EventBinding_MethodGroup onSomethingHappened="thing.SomethingHappened(arg0)"/>
+        
+    </Contents>
+    
+</UITemplate>

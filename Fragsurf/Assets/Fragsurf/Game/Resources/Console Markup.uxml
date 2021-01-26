@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" fs="Fragsurf.UI" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="Console Style.uss" />
+    <Fragsurf.UI.Draggable name="DevConsole" class="panel">
+        <ui:VisualElement name="Header">
+            <ui:Label text="Dev Console" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Content">
+            <ui:ScrollView show-vertical-scroller="true" name="History">
+                <ui:Label text="Label Long Label Long Label Long Label Long Label Long Label Long Label Long Label Long Label Long Label Long Label Long Label Long " />
+            </ui:ScrollView>
+            <ui:VisualElement>
+                <ui:TextField name="Input" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement show-vertical-scroller="true" name="AutoComplete">
+            <ui:Label text="AutoComplete Entry" />
+        </ui:VisualElement>
+    </Fragsurf.UI.Draggable>
+</ui:UXML>

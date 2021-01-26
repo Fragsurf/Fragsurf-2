@@ -1,0 +1,11 @@
+<UITemplate>
+    
+    <Contents>
+        
+        <TemplateBindingTest_CreatedBindingInner intVal.const="GetValue()"/>
+        
+    </Contents>
+    
+    <Contents id="inner"/>
+        
+</UITemplate>

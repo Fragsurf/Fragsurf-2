@@ -1,0 +1,23 @@
+<UITemplate>
+    <Contents>
+        <Group attr:id="g1">
+            <Group attr:id="g1_child1"/>
+        </Group>
+        <Group attr:id="g2">
+            <Group attr:id="g2_child1"/>
+            <Group attr:id="g2_child2"/>
+        </Group>
+        <DepthThingChild/>
+    </Contents>
+
+    <Contents id="depth_thing_child">
+        <Group attr:id="g1">
+            <Group attr:id="g1_child1"/>
+        </Group>
+        <Group attr:id="g2">
+            <Group attr:id="g2_child1"/>
+            <Group attr:id="g2_child2"/>
+        </Group>
+    </Contents>
+
+</UITemplate>

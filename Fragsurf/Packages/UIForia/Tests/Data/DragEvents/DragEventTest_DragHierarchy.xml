@@ -1,0 +1,33 @@
+<UITemplate>
+
+    <Style>
+
+        style grid-cell {
+        PreferredSize = 100px;
+        }
+
+        style container {
+        FlexLayoutDirection = Horizontal;
+        }
+
+    </Style>
+
+    <Contents style="container">
+        <Group drag:enter="HandleDragEnterChild($element, 0)" drag:exit="HandleDragExitChild($element, 0)}" style='grid-cell'/>
+        <Group drag:enter="HandleDragEnterChild($element, 1)" drag:exit="HandleDragExitChild($element, 1)}" style='grid-cell'/>
+        <Group drag:enter="HandleDragEnterChild($element, 2)" drag:exit="HandleDragExitChild($element, 2)}" style='grid-cell'/>
+    </Contents>
+
+    <Contents id="move" style='container'>
+        <Group drag:move="HandleDragMoveChild(0)" drag:hover="HandleDragHoverChild(0)" style='grid-cell'/>
+        <Group drag:move="HandleDragMoveChild(1)" drag:hover="HandleDragHoverChild(1)" style='grid-cell'/>
+        <Group drag:move="HandleDragMoveChild(2)" drag:hover="HandleDragHoverChild(2)" style='grid-cell'/>
+    </Contents>
+
+    <Contents id="move_with_event" style='container'>
+        <Group drag:move="HandleDragMoveChild($evt, 0)" drag:hover="HandleDragHoverChild($evt, 0)" style="grid-cell"/>
+        <Group drag:move="HandleDragMoveChild($evt, 1)" drag:hover="HandleDragHoverChild($evt, 1)" style="grid-cell"/>
+        <Group drag:move="HandleDragMoveChild($evt, 2)" drag:hover="HandleDragHoverChild($evt, 2)" style="grid-cell"/>
+    </Contents>
+    
+</UITemplate>

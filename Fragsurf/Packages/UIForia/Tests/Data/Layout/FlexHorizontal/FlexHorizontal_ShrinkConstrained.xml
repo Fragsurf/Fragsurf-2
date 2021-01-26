@@ -1,0 +1,28 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            FlexLayoutDirection = Horizontal;
+            PreferredSize = 600px 100px;
+        }
+
+        style child {
+            PreferredSize = 300px;
+            BackgroundColor = red;
+            FlexItemShrink = 1;
+        }
+        
+        style min {
+            MinWidth = 250px;
+        }
+        
+
+    </Style>
+
+    <Contents style="container">
+        <Group style='child'/>
+        <Group style='child min'/>
+        <Group style='child'/>
+    </Contents>
+</UITemplate>

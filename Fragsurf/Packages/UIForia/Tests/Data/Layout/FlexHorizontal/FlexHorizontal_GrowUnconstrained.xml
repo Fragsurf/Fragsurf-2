@@ -1,0 +1,29 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            FlexLayoutDirection = Horizontal;
+            PreferredSize = 800px 1cnt;
+        }
+
+        style w100h100 {
+            PreferredSize = 100px;
+            BackgroundColor = red;
+            FlexItemGrow = 1;
+        }
+        
+        style child {
+            BackgroundColor = green;
+            FlexItemGrow = 3;
+            LayoutFitHorizontal = None;
+        }
+
+    </Style>
+
+    <Contents style="container">
+        <Group style='w100h100'/>
+        <Group style='w100h100 child'/>
+        <Group style='w100h100'/>
+    </Contents>
+</UITemplate>

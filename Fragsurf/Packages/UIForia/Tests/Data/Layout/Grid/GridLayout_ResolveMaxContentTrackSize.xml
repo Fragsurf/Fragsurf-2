@@ -1,0 +1,27 @@
+<UITemplate>
+    <Style>
+        
+        style container {
+            LayoutType = Grid;
+            GridLayoutColTemplate = 100px 1mx 100px;
+        }
+        
+        style box {
+            PreferredSize = 100px;
+        }
+        
+        style big-box {
+            PreferredSize = 200px;
+            GridItemX = 1;
+            GridItemWidth = 2;
+        }
+        
+    </Style>
+    
+    <Contents style="container">
+        <Div style="box"/>
+        <Div style="big-box"/>
+        <Div style="box"/>
+    </Contents>
+    
+</UITemplate>

@@ -1,0 +1,20 @@
+<UITemplate>
+
+    <Contents id="sync">
+
+        <TemplateBindingTest_SyncBinding_FakeInput sync:value="syncedValue"/>
+
+    </Contents>
+
+    <Contents id="fake_input">
+
+        <Text>{value}</Text>
+
+    </Contents>
+
+    <Contents id="sync_nested">
+        
+        <TemplateBindingTest_SyncBinding_FakeInput sync:value="nested.syncedValue"/>
+        
+    </Contents>
+</UITemplate>

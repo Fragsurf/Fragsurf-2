@@ -1,0 +1,11 @@
+<UITemplate>
+    
+    <Using namespace="UnityEngine"/>
+    
+    <Contents>
+
+        <TemplateBindingTest_NamespaceInner color="new Color(1f, 0f, 0f, 0f)"/>
+        
+    </Contents>
+    
+</UITemplate>

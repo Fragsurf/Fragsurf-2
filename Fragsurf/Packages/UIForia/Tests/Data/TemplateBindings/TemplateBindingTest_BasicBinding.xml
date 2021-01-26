@@ -1,0 +1,11 @@
+<UITemplate>
+    
+    <Contents>
+        
+        <TemplateBindingTest_BasicBindingInner intVal="5 * 5"/>
+        
+    </Contents>
+    
+    <Contents id="inner"/>
+        
+</UITemplate>

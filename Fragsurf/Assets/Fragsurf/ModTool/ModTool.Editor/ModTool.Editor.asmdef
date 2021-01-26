@@ -1,0 +1,17 @@
+{
+    "name": "ModTool.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:2e460d694625c174882648ef3749e5b1",
+        "GUID:6f87a6b03f309ba4ba02a0042ef19a53"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

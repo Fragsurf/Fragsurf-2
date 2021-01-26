@@ -1,0 +1,28 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            FlexLayoutDirection = Vertical;
+            PreferredSize = 1cnt 900px;
+        }
+
+        style w100h100 {
+            PreferredSize = 100px;
+            BackgroundColor = red;
+            FlexItemGrow = 1;
+        }
+        
+        style max200 {
+            BackgroundColor = green;
+            MaxHeight = 200px;
+        }
+
+    </Style>
+
+    <Contents style="container">
+        <Group style='w100h100'/>
+        <Group style='w100h100 max200'/>
+        <Group style='w100h100'/>
+    </Contents>
+</UITemplate>

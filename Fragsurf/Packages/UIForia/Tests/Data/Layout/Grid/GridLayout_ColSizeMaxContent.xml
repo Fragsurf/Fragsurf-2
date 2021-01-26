@@ -1,0 +1,21 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            LayoutType = Grid;
+            GridLayoutRowAutoSize = 100px;
+            GridLayoutColTemplate = 1mx, 100px, 100px;
+        }
+        
+    </Style>
+
+    <Contents style="container">
+        <Group style.preferredWidth='400f' style.preferredHeight='100f'/>
+        <Group style.preferredWidth='100f' style.preferredHeight='100f'/>
+        <Group style.preferredWidth='100f' style.preferredHeight='100f'/>
+        <Group style.preferredWidth='600f' style.preferredHeight='100f'/>
+        <Group style.preferredWidth='100f' style.preferredHeight='100f'/>
+        <Group style.preferredWidth='100f' style.preferredHeight='100f'/>
+    </Contents>
+</UITemplate>

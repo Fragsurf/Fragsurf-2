@@ -1,0 +1,15 @@
+<UITemplate>
+    
+    <Style>
+        style from0 {
+            PaddingLeft = 5px;
+        }
+    </Style>
+    
+    <Contents>
+
+        <define:Children style="from0"/>
+        
+    </Contents>
+    
+</UITemplate>

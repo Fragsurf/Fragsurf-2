@@ -1,0 +1,64 @@
+<UITemplate>
+
+    <Using namespace="UIForia.Elements"/>
+    
+    <Using namespace="TemplateStructure"/>
+    
+    <Contents id="require_type_main">
+        <TestTemplateStructure_ModifySlot_RadioGroupDiv>
+            <Div/>
+            <Div/>
+            <Div/>
+        </TestTemplateStructure_ModifySlot_RadioGroupDiv>
+    </Contents>
+
+    <Contents id="require_type_main_invalid">
+        <TestTemplateStructure_ModifySlot_RadioGroupDiv>
+            <Div/>
+            <Text/>
+            <Div/>
+        </TestTemplateStructure_ModifySlot_RadioGroupDiv>
+    </Contents>
+
+    <Contents id="radio_group_div">
+        <define:Children require:type="UIDivElement"/>
+    </Contents>
+
+    <Contents id="radio_group_with_attr_main">
+        <TestTemplateStructure_ModifySlot_RadioGroupWithAttr>
+            <Div/>
+            <Div/>
+            <Div/>
+        </TestTemplateStructure_ModifySlot_RadioGroupWithAttr>
+    </Contents>
+    
+    <Contents id="require_generic_inner">
+        <define:Children require:type="TestTemplateStructure_ModifySlot_RequireGenericThing[T]"/>
+    </Contents>
+    
+    <Contents id="require_generic_main">
+        <TestTemplateStructure_ModifySlot_RequireGenericInner value="'str'">
+            <TestTemplateStructure_ModifySlot_RequireGenericThing generic:type="string"/>
+            <TestTemplateStructure_ModifySlot_RequireGenericThing generic:type="string"/>
+            <TestTemplateStructure_ModifySlot_RequireGenericThing generic:type="string"/>
+        </TestTemplateStructure_ModifySlot_RequireGenericInner>
+    </Contents>
+
+    <Contents id="radio_group_with_attr">
+        <define:Children inject.attr:selected="{$element.siblingIndex == index ? 'true' : 'false'}"/>
+    </Contents>
+
+     <Contents id="type_with_field_main">
+        <TestTemplateStructure_ModifySlot_TypedWithFieldInner>
+            <TestTemplateStructure_ModifySlot_TypedWithFieldInnerThing/>
+            <TestTemplateStructure_ModifySlot_TypedWithFieldInnerThing/>
+            <TestTemplateStructure_ModifySlot_TypedWithFieldInnerThing/>
+        </TestTemplateStructure_ModifySlot_TypedWithFieldInner>
+    </Contents>
+
+    <Contents id="type_with_field_inner">
+        <define:Children require:type="TestTemplateStructure_ModifySlot_TypedWithFieldInnerThing" inject.property:typedField="{$element.siblingIndex * value}"/>
+    </Contents>
+
+    
+</UITemplate>

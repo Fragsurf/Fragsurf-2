@@ -1,0 +1,19 @@
+<UITemplate>
+
+    <Style>
+        style from1 {
+        PaddingRight = 5px;
+        }
+    </Style>
+
+    <Contents>
+
+        <TemplateBindingTest_StyleFromNestedSlots_0>
+            
+            <forward:Children style="from1"/>
+            
+        </TemplateBindingTest_StyleFromNestedSlots_0>
+
+    </Contents>
+
+</UITemplate>

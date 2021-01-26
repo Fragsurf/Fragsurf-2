@@ -1,0 +1,535 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZFormat</name>
+    </assembly>
+    <members>
+        <member name="T:ZFormat.ZNumberFormatInfo">
+            <summary>
+                Provides culture-specific information for formatting numeric values.
+                Simplified, non-allocating version of <see cref="T:System.Globalization.NumberFormatInfo" />
+            </summary>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatInfo.#ctor">
+            <summary>
+                Initializes a new writable instance of the ZNumberFormatInfo class that is culture-independent (invariant)
+            </summary>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatInfo.#ctor(System.String)">
+            <summary>
+                Initializes a new instance of the ZNumberFormatInfo class based on the culture specified by name.
+            </summary>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatInfo.#ctor(System.Globalization.NumberFormatInfo)">
+            <summary>
+                Initializes a new instance of the ZNumberFormatInfo class based on <see cref="T:System.Globalization.NumberFormatInfo" />
+            </summary>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.CurrencyDecimalDigits">
+            <summary>
+                Gets or sets the number of decimal places to use in currency values.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                The property is being set to a value that is less than 0 or greater than 99
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.CurrencyDecimalSeparator">
+            <summary>
+                Gets or sets the string to use as the decimal separator in currency values.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null or an empty string.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.CurrencyGroupSizes">
+            <summary>
+                Gets or sets the number of digits in each group to the left of the decimal in currency values.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+            <exception cref="T:System.ArgumentException">
+                The property is being set and the array contains an entry that is less than 0 or greater than 9.
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.NumberGroupSizes">
+            <summary>
+                Gets or sets the number of digits in each group to the left of the decimal in numeric values.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+            <exception cref="T:System.ArgumentException">
+                The property is being set and the array contains an entry that is less than 0 or greater than 9.
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.PercentGroupSizes">
+            <summary>
+                Gets or sets the number of digits in each group to the left of the decimal in percent values.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+            <exception cref="T:System.ArgumentException">
+                The property is being set and the array contains an entry that is less than 0 or greater than 9.
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.CurrencyGroupSeparator">
+            <summary>
+                Gets or sets the string that separates groups of digits to the left of the decimal in currency values.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.CurrencySymbol">
+            <summary>
+                Gets or sets the string to use as the currency symbol.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.NaNSymbol">
+            <summary>
+                Gets or sets the string that represents the IEEE NaN (not a number) value.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.CurrencyNegativePattern">
+            <summary>
+                Gets or sets the format pattern for negative currency values.
+                00: ($n)
+                01: -$n
+                02: $-n
+                03: $n-
+                04: (n$)
+                05: -n$
+                06: n-$
+                07: n$-
+                08: -n $
+                09: -$ n
+                10: n $-
+                11: $ n-
+                12: $ -n
+                13: n- $
+                14: ($ n)
+                15: (n $)
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                The property is being set to a value that is less than 0 or greater than 15.
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.NumberNegativePattern">
+            <summary>
+                Gets or sets the format pattern for negative numeric values.
+                0: (n)
+                1: -n
+                2: - n
+                3: n-
+                4: n -
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                The property is being set to a value that is less than 0 or greater than 4.
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.PercentPositivePattern">
+            <summary>
+                Gets or sets the format pattern for positive percent values.
+                0: n %
+                1: n%
+                2: %n
+                3: % n
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                The property is being set to a value that is less than 0 or greater than 3.
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.PercentNegativePattern">
+            <summary>
+                Gets or sets the format pattern for negative percent values.
+                0: -n %
+                1: -n%
+                2: -%n
+                3: %-n
+                4: %n-
+                5: n-%
+                6: n%-
+                7: -% n
+                8: n %-
+                9: % n-
+                10: % -n
+                11: n- %
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                The property is being set to a value that is less than 0 or greater than 11.
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.NegativeInfinitySymbol">
+            <summary>
+                Gets or sets the string that represents negative infinity.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.NegativeSign">
+            <summary>
+                Gets or sets the string that denotes that the associated number is negative.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.NumberDecimalDigits">
+            <summary>
+                Gets or sets the number of decimal places to use in numeric values.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                The property is being set to a value that is less than 0 or greater than 99.
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.NumberDecimalSeparator">
+            <summary>
+                Gets or sets the string to use as the decimal separator in percent values.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.NumberGroupSeparator">
+            <summary>
+                Gets or sets the string that separates groups of digits to the left of the decimal in numeric values.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.CurrencyPositivePattern">
+            <summary>
+                Gets or sets the format pattern for positive currency values.
+                0: $n
+                1: n$
+                2: $ n
+                3: n $
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                The property is being set to a value that is less than 0 or greater than 3.
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.PositiveInfinitySymbol">
+            <summary>
+                Gets or sets the string that represents positive infinity.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.PositiveSign">
+            <summary>
+                Gets or sets the string that denotes that the associated number is positive.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.PercentDecimalDigits">
+            <summary>
+                Gets or sets the number of decimal places to use in percent values.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                The property is being set to a value that is less than 0 or greater than 99.
+            </exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.PercentDecimalSeparator">
+            <summary>
+                Gets or sets the string to use as the decimal separator in percent values.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.PercentGroupSeparator">
+            <summary>
+                Gets or sets the string that separates groups of digits to the left of the decimal in percent values.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.PercentSymbol">
+            <summary>
+                Gets or sets the string to use as the percent symbol.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatInfo.PerMilleSymbol">
+            <summary>
+                Gets or sets the string to use as the per mille symbol.
+            </summary>
+            <exception cref="T:System.ArgumentNullException">The property is being set to null.</exception>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatInfo.GetFormat(System.Type)">
+            <summary>
+                Returns object that provides formatting services for the specified type.
+            </summary>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatInfo.NewInvariantInfo">
+            <summary>
+                Returns a new writable instance of the ZNumberFormatInfo class that is culture-independent (invariant)
+            </summary>
+        </member>
+        <member name="T:ZFormat.ZNumberFormatter">
+            <summary>
+                The ZNumberFormatter class implements methods for formatting numeric values
+                and returns result of formatting in the two instance properties:
+                <see cref="P:ZFormat.ZNumberFormatter.Chars" /> and <see cref="P:ZFormat.ZNumberFormatter.Count" />.
+                To format numeric values, applications should use the 'NumberToChars' methods.
+            </summary>
+            <remarks>
+                Class supports all standard and user-defined format strings:
+                <list type="bullet">
+                    <item>
+                        <description>
+                            Standard Numeric Format Strings: https://msdn.microsoft.com/en-us/library/dwhawy9k(v=vs.110).aspx
+                        </description>
+                    </item>
+                    <item>
+                        <description>
+                            Custom Numeric Format Strings: https://msdn.microsoft.com/en-us/library/0c899ak8(v=vs.110).aspx
+                        </description>
+                    </item>
+                </list>
+            </remarks>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatter.Instance">
+            <summary>
+                Per-thread instance of formatter.
+            </summary>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatter.CurrentCulture">
+            <summary>
+                Sets internal NumberFormatInfo for the current thread according to the <see cref="T:System.Globalization.CultureInfo" /> value.
+            </summary>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.SetThreadCurrentCulture(System.Globalization.CultureInfo)">
+            <summary>
+                Sets internal NumberFormatInfo for the current thread according to the <see cref="T:System.Globalization.CultureInfo" /> value.
+            </summary>
+            <param name="culture"></param>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatter.Chars">
+            <summary>
+                Returns result of formatting. Use together with <see cref="P:ZFormat.ZNumberFormatter.Count" /> property.
+            </summary>
+        </member>
+        <member name="P:ZFormat.ZNumberFormatter.Count">
+            <summary>
+                Returns the number of characters in the result. Use together with <see cref="P:ZFormat.ZNumberFormatter.Chars" /> property.
+            </summary>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.SByte,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Byte,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.UInt16,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Int16,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.UInt32,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Int32,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.UInt64,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Int64,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Single,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Double,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Decimal,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format and culture-specific format information.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+            <param name="znfi">culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.UInt32,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the optional culture-specific format information.
+            </summary>
+            <param name="value">numeric value</param>
+            <param name="znfi">optional culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.Int32,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the optional culture-specific format information.
+            </summary>
+            <param name="value">numeric value</param>
+            <param name="znfi">optional culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.UInt64,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the optional culture-specific format information.
+            </summary>
+            <param name="value">numeric value</param>
+            <param name="znfi">optional culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.Int64,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the optional culture-specific format information.
+            </summary>
+            <param name="value">numeric value</param>
+            <param name="znfi">optional culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.Single,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the optional culture-specific format information.
+            </summary>
+            <param name="value">numeric value</param>
+            <param name="znfi">optional culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.Double,ZFormat.ZNumberFormatInfo)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the optional culture-specific format information.
+            </summary>
+            <param name="value">numeric value</param>
+            <param name="znfi">optional culture-specific format information</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.UInt32)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Int32)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.UInt64)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Int64)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Single)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.String,System.Double)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count
+                using the specified format.
+            </summary>
+            <param name="format">standard formatting string</param>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.UInt32)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count.
+            </summary>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.Int32)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count.
+            </summary>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.UInt64)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count.
+            </summary>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.Int64)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count.
+            </summary>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.Single)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count.
+            </summary>
+            <param name="value">numeric value</param>
+        </member>
+        <member name="M:ZFormat.ZNumberFormatter.NumberToChars(System.Double)">
+            <summary>
+                Converts the numeric value to the reference to the character buffer and characters count.
+            </summary>
+            <param name="value">numeric value</param>
+        </member>
+    </members>
+</doc>

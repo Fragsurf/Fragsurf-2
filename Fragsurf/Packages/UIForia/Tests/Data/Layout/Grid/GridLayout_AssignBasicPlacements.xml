@@ -1,0 +1,46 @@
+<UITemplate>
+    <Style>
+
+        style container {
+        LayoutType = Grid;
+        }
+
+        style child {
+        PreferredSize = 100px;
+        }
+
+        style child-0 {
+        GridItem = 0, 0, 1, 1;
+        }
+
+        style child-1 {
+        GridItem = 1, 0, 1, 1;
+        }
+
+        style child-2 {
+        GridItem = 2, 0, 1, 1;
+        }
+
+        style child-3 {
+        GridItem = 0, 1, 1, 1;
+        }
+
+        style child-4 {
+        GridItem = 1, 1, 1, 1;
+        }
+
+        style child-5 {
+        GridItem = 2, 1, 1, 1;
+        }
+
+
+    </Style>
+    <Contents style="container">
+        <Div style="child child-0"/>
+        <Div style="child child-1"/>
+        <Div style="child child-2"/>
+        <Div style="child child-3"/>
+        <Div style="child child-4"/>
+        <Div style="child child-5"/>
+    </Contents>
+</UITemplate>

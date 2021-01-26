@@ -1,0 +1,38 @@
+<UITemplate>
+    
+    <Contents>
+        
+        <DynamicElement name="'Matt'"/>
+        
+    </Contents>
+    
+    <Element id="DynamicElement">
+        
+        <![CDATA[
+            string name;
+            
+            string Get(string value) {
+                return value;
+            }
+                             
+        ]]>
+        
+        <Template>
+            Hello {Get(name)}!
+        </Template>
+        
+    </Element>
+    
+     <Element id="GenericElement" generic="T, U">
+        
+        <Field name="valueT" type="T"/>
+        <Field name="valueU" type="U"/>
+        
+        <Template>
+            ValueT = {valueT}
+            ValueU = {valueU}
+        </Template>
+        
+    </Element>
+    
+</UITemplate>

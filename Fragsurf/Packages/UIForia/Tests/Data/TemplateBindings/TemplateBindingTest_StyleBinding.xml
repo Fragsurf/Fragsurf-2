@@ -1,0 +1,12 @@
+<UITemplate>
+    
+    <Using namespace="UnityEngine"/>
+    <Using namespace="UIForia"/>
+    
+    <Contents>
+
+        <Div style:backgroundColor="Color.red" style:hover.TransformPositionX="new OffsetMeasurement(53, OffsetMeasurementUnit.ViewportWidth)"/>
+        
+    </Contents>
+    
+</UITemplate>

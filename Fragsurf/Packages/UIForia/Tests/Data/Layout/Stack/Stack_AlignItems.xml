@@ -1,0 +1,31 @@
+<UITemplate>
+    <Style>
+        
+        style container {
+            LayoutType = Stack;
+            PreferredSize = 300px;
+            AlignItems = Start;
+        }
+        
+        style small {
+            PreferredSize = 50px;
+            BackgroundColor = Red;
+        }
+        
+        style medium {
+            PreferredSize = 100px;
+            BackgroundColor = White;
+        }
+        
+        style large {
+            PreferredSize = 150px;
+            BackgroundColor = blue;
+        }
+        
+    </Style>
+    <Contents style="container">
+        <Div style="large"/>
+        <Div style="medium"/>
+        <Div style="small"/>
+    </Contents>
+</UITemplate>

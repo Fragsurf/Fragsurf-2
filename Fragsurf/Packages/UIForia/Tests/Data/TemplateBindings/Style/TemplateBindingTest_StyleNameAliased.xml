@@ -1,0 +1,12 @@
+<UITemplate>
+    
+    <Style path="Data/TemplateBindings/Style/style0.style"/>
+    <Style path="Data/TemplateBindings/Style/style1.style" as="util"/>
+    
+    <Contents >
+        
+        <Div style="util.overloaded"/>
+        
+    </Contents>
+    
+</UITemplate>

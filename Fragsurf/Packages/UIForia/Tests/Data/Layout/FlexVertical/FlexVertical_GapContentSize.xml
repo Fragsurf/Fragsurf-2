@@ -1,0 +1,31 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            FlexLayoutDirection = Vertical;
+            PreferredSize = 1cnt;
+        }
+        
+        style gap {
+            FlexLayoutGap = 10;
+        }
+
+        style w100h100 {
+            PreferredSize = 100px;
+            BackgroundColor = red;
+        }
+
+    </Style>
+
+    <Contents>
+        
+        <Div style="container gap">
+            <Group style='w100h100'/>
+            <Group style='w100h100'/>
+            <Group style='w100h100'/>    
+        </Div>
+
+    </Contents>
+    
+</UITemplate>

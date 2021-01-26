@@ -1,0 +1,43 @@
+<UITemplate>
+
+    <Contents id="main">
+
+        <TemplateBindingTest_ExposeFromSlot_2>
+
+            <Text>{$exposedFieldFrom0}</Text>
+
+            <Text>{$exposedFieldFrom1}</Text>
+            
+            <Text>{$exposedFieldFrom2}</Text>
+
+        </TemplateBindingTest_ExposeFromSlot_2>
+
+    </Contents>
+
+    <Contents id="level-2">
+        
+        <TemplateBindingTest_ExposeFromSlot_1>
+
+            <forward:Children expose:exposedFieldFrom2="fieldFrom2"/>
+
+        </TemplateBindingTest_ExposeFromSlot_1>
+        
+    </Contents>
+
+    <Contents id="level-1">
+        
+        <TemplateBindingTest_ExposeFromSlot_0>
+            
+            <forward:Children expose:exposedFieldFrom1="fieldFrom1"/>
+            
+        </TemplateBindingTest_ExposeFromSlot_0>
+        
+    </Contents>
+
+    <Contents id="level-0">
+
+        <define:Children expose:exposedFieldFrom0="fieldFrom0"/>
+
+    </Contents>
+
+</UITemplate>

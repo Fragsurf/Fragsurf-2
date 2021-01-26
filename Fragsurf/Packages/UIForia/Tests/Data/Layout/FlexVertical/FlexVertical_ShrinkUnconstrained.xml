@@ -1,0 +1,23 @@
+<UITemplate>
+
+    <Style>
+
+        style container {
+            FlexLayoutDirection = Vertical;
+            PreferredSize = 100px 600px;
+        }
+
+        style child {
+            PreferredSize = 300px;
+            BackgroundColor = red;
+            FlexItemShrink = 1;
+        }
+
+    </Style>
+
+    <Contents style="container">
+        <Group style='child'/>
+        <Group style='child'/>
+        <Group style='child'/>
+    </Contents>
+</UITemplate>

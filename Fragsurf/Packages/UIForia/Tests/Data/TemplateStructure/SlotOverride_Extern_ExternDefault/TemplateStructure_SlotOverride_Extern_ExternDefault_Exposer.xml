@@ -1,0 +1,10 @@
+<UITemplate>
+    <Contents>
+
+        <TemplateStructure_SlotOverride_Extern_ExternDefault_Definer>
+            <forward:override-me>
+                Override from exposer layer
+            </forward:override-me>
+        </TemplateStructure_SlotOverride_Extern_ExternDefault_Definer>
+    </Contents>
+</UITemplate>

@@ -1,0 +1,35 @@
+<UITemplate>
+
+    <Contents id="main">
+        <TemplateBindingTest_InvalidForwardSlot_2>
+
+            <Text>children go here</Text>
+
+        </TemplateBindingTest_InvalidForwardSlot_2>
+    </Contents>
+
+    <Contents id="level-2">
+
+        <TemplateBindingTest_InvalidForwardSlot_1>
+
+            <forward:Children/>
+            
+        </TemplateBindingTest_InvalidForwardSlot_1>
+
+    </Contents>
+
+    <Contents id="level-1">
+        <TemplateBindingTest_InvalidForwardSlot_1>
+            <Div>
+
+                <forward:Children/>
+
+            </Div>
+        </TemplateBindingTest_InvalidForwardSlot_1>
+    </Contents>
+
+    <Contents id="level-0">
+        <define:Children/>
+    </Contents>
+
+</UITemplate>

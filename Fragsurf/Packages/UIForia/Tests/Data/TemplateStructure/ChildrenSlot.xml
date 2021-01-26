@@ -1,0 +1,22 @@
+<UITemplate>
+
+    <Contents>
+
+        <RadioGroup sync:value="selectedRadioOption">
+            <RadioButton value="'name'">name</RadioButton>
+            <RadioButton value="'type'">type</RadioButton>
+            <RadioButton value="'amount'">amount</RadioButton>
+            <RadioButton value="'volume'">volume</RadioButton>
+        </RadioGroup>
+        
+    </Contents>
+
+    <Contents id="button">
+        <define:Children/>
+    </Contents>
+
+    <Contents id="group">
+        <define:Children/>
+    </Contents>
+
+</UITemplate>

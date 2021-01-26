@@ -1,0 +1,10 @@
+<UITemplate>
+    <Contents>
+
+        <TemplateBindingTest_ResolveGeneric_Inner1 list="list"/>
+        <TemplateBindingTest_ResolveGeneric_Inner1 option="option"/>
+        <TemplateBindingTest_ResolveGeneric_Inner1 val="3f"/>
+        
+    </Contents>
+    
+</UITemplate>

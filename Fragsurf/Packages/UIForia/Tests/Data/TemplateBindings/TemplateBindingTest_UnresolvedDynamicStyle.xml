@@ -1,0 +1,16 @@
+<UITemplate>
+    
+    <Style>
+        style style-1 { BackgroundColor = Green; }
+        
+        style style-2 {}
+        
+    </Style>
+    
+    <Contents>
+
+        <Div style="{'style-' + val} style-2"/>
+        
+    </Contents>
+    
+</UITemplate>

@@ -1,0 +1,7 @@
+<UITemplate>
+    <Contents>
+        Hello Before
+        <XMLTemplateParsing_ExpandedTemplateChild/>
+        Hello After
+    </Contents>
+</UITemplate>

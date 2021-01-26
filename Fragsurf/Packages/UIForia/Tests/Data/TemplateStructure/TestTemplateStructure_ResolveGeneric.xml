@@ -1,0 +1,13 @@
+<UITemplate>
+    
+    <Using namespace="System.Collections.Generic"/>
+    
+    <Contents>
+
+        <GenericThing1 generic:type="int"/>
+        <GenericThing1 generic:type="float"/>
+        <GenericThing1 generic:type="List[string]"/>
+        <GenericThing1 generic:type="Dictionary[List[string], int]"/>
+        
+    </Contents>
+</UITemplate>

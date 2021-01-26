@@ -1,0 +1,41 @@
+<UITemplate>
+    <Style>
+        style container {
+        FlexLayoutDirection = Horizontal;
+        PreferredSize = 300px, 100px;
+        }
+
+        style cell {
+        PreferredSize = 100px;
+        }
+
+    </Style>
+    <Contents style="container">
+        <Group mouse:down="HandleClickedChild(0)" style="cell"/>
+        <Group mouse:down="HandleClickedChild(1)" style="cell"/>
+        <Group mouse:down="HandleClickedChild(2)" style="cell"/>
+    </Contents>
+
+    <Contents style="container" id="mouse_2">
+        <Group mouse:up="HandleMouseUpChild($evt, 0)"
+               mouse:down="HandleMouseDownChild($evt, 0)"
+               mouse:enter="HandleMouseEnterChild($evt, 0)"
+               mouse:exit="HandleMouseExitChild($evt, 0)"
+               mouse:move="HandleMouseMoveChild($evt, 0)"
+               mouse:hover="HandleMouseHoverChild($evt, 0)"
+               style="cell"
+        />
+        <Group mouse:down.capture="HandleMouseDownChild($evt, 1)"
+               mouse:up.capture="HandleMouseUpChild($evt, 1)"
+               mouse:enter.capture="HandleMouseEnterChild($evt, 1)"
+               mouse:move="HandleMouseMoveChild($evt, 1)"
+               style="cell"
+        />
+        <Group mouse:down="HandleMouseDownChild($evt, 2)"
+               mouse:up="HandleMouseUpChild($evt, 2)"
+               mouse:enter="HandleMouseEnterChild($evt, 2)"
+               mouse:exit="HandleMouseExitChild($evt, 2)"
+               style="cell"
+        />
+    </Contents>
+</UITemplate>

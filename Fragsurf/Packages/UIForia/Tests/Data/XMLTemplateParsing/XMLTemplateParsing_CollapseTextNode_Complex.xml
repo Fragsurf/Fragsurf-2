@@ -1,0 +1,11 @@
+<UITemplate>
+    <Contents>
+        <Div>
+            <Text>
+                Hello
+                <Image/>
+                Templates
+            </Text>
+        </Div>
+    </Contents>
+</UITemplate>

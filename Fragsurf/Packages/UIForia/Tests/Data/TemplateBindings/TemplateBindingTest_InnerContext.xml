@@ -1,0 +1,30 @@
+<UITemplate>
+
+    <Style>
+
+        style from-outer {
+            BackgroundColor = Red;
+        }
+        
+        style one {
+            PreferredWidth = 100;
+        }
+        
+        style two {
+            PreferredHeight = 100;
+        }
+        
+
+    </Style>
+
+    <Contents>
+
+        <TemplateBindingTest_InnerContext_Inner style="from-outer"/>
+
+    </Contents>
+
+    <Contents id="dynamic_styled" style="{dynamicFromInner}">
+
+    </Contents>
+
+</UITemplate>

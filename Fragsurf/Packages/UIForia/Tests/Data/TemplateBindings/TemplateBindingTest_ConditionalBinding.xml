@@ -1,0 +1,13 @@
+<UITemplate>
+    <Contents>
+
+        <Text if="SomeCondition()">
+            Condition is true
+        </Text>
+
+        <Text if="!SomeCondition()">
+            Condition is false
+        </Text>
+        
+    </Contents>
+</UITemplate>
