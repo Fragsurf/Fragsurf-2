@@ -1,4 +1,0 @@
-style test {
-    PreferredSize = 400px 200px;
-    BackgroundColor = orange;
-}
