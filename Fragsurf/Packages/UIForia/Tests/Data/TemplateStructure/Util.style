@@ -1,5 +1,0 @@
-
-style horizontal {
-    PreferredSize = 300px 100px;
-    FlexLayoutDirection = Horizontal;
-}

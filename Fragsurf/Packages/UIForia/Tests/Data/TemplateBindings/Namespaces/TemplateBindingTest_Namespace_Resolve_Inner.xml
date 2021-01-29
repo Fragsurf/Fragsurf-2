@@ -1,9 +1,0 @@
-<UITemplate>
-
-    <Using namespace="UnityEngine"/>
-
-    <Contents style:BackgroundColor="Color.red">
-
-    </Contents>
-
-</UITemplate>

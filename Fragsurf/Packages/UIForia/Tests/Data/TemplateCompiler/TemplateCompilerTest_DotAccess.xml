@@ -1,5 +1,0 @@
-<UITemplate>
-    <Contents>
-        <Text>{left.value} vs {right?.value}</Text>
-    </Contents>
-</UITemplate>

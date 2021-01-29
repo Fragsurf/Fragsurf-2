@@ -51,7 +51,17 @@ namespace RealtimeCSG
 
     public static class CSGSettings
     {
-        public static string RootAssetPath => "Assets/Fragsurf/RealtimeCSG";
+        public static string RootAssetPath
+        {
+            get
+            {
+                const string pkgName = "com.fragsurf.modding-toolkit";
+                var prefix = AssetDatabase.LoadAssetAtPath($"Packages/{pkgName}/Fragsurf/candy.txt", typeof(TextAsset)) != null
+                    ? $"Packages/{pkgName}"
+                    : "Assets";
+                return prefix + "/Fragsurf/RealtimeCSG";
+            }
+        }
         public static bool ShowVisibleSurfaces { get { return (VisibleHelperSurfaces & HelperSurfaceFlags.ShowVisibleSurfaces) != 0; } }
         public static bool ShowHiddenSurfaces { get { return (VisibleHelperSurfaces & HelperSurfaceFlags.ShowHiddenSurfaces) != 0; } }
         public static bool ShowCulledSurfaces { get { return (VisibleHelperSurfaces & HelperSurfaceFlags.ShowCulledSurfaces) != 0; } }

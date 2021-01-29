@@ -1,9 +1,0 @@
-<UITemplate>
-    <Contents>
-
-        <define:override-me>
-            Override failed
-        </define:override-me>
-        
-    </Contents>
-</UITemplate>

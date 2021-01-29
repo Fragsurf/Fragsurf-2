@@ -1,6 +1,0 @@
-export const col0 = red;
-import "Tests/Styles/ImportFromMe.style" as importedThings;
-
-style xyz {
-    BackgroundColor = @importedThings.colorRed;
-}

@@ -5,18 +5,21 @@ using System.Threading.Tasks;
 using UnityEngine.Rendering;
 using System;
 using System.Collections.Generic;
-using UnityEditor.PackageManager.Requests;
 using System.Linq;
 
 namespace ModTool.Editor 
 {
-    [InitializeOnLoad]
     public class SetupProject
     {
 
         private static bool _initializing;
-        private static ListRequest _listRequest;
-        private static AddRequest _addRequest;
+
+        private static List<string> _requiredPackages = new List<string>()
+        {
+            "com.unity.ui@1.0.0-preview.13",
+            "com.unity.render-pipelines.universal@10.2.2"
+        };
+
         private static List<string> _funFacts = new List<string>()
         {
             "The heads on Easter Island have bodies",
@@ -91,23 +94,27 @@ namespace ModTool.Editor
                 return;
             }
 
-            var urp = list.Result.FirstOrDefault(x => x.name == "com.unity.render-pipelines.universal");
-            if(urp == null)
+            foreach(var pkgId in _requiredPackages)
             {
-                var add = Client.Add("com.unity.render-pipelines.universal@10.2.2");
-                while (!add.IsCompleted)
+                var pkgName = pkgId.Split('@')[0];
+                var pkg = list.Result.FirstOrDefault(x => string.Equals(x.name, pkgName, StringComparison.OrdinalIgnoreCase));
+                if(pkg == null)
                 {
-                    EditorUtility.DisplayProgressBar("Setting Up", "Adding URP package", UnityEngine.Random.Range(0, 1f));
+                    var add = Client.Add(pkgId);
+                    while (!add.IsCompleted)
+                    {
+                        EditorUtility.DisplayProgressBar("Setting Up", "Installing package: " + pkgId, UnityEngine.Random.Range(0, 1f));
+                        await Task.Delay(50);
+                    }
+                    if(add.Status == StatusCode.Failure)
+                    {
+                        EditorUtility.ClearProgressBar();
+                        _initializing = false;
+                        Debug.LogError($"Failed to add package: {pkgId}, navigate to Window -> Package Manager and add it manually or try running this again!");
+                        return;
+                    }
                     await Task.Delay(100);
                 }
-                if(add.Status == StatusCode.Failure)
-                {
-                    EditorUtility.ClearProgressBar();
-                    _initializing = false;
-                    Debug.LogError("Failed to add Universal Render Pipeline package, navigate to Window -> Package Manager and add it manually!");
-                    return;
-                }
-                await Task.Delay(500);
             }
 
             if(GraphicsSettings.renderPipelineAsset == null)

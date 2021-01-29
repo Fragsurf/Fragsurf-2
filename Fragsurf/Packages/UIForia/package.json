@@ -1,9 +1,0 @@
-{
-    "name": "com.klang-games.uiforia",
-    "displayName": "UIForia",
-    "version": "0.1.48-preview",
-    "unity": "2019.3",
-    "description": "A new UI framework written for Unity",
-    "keywords": ["UI", "UIForia"],
-    "category": "UI"
-}

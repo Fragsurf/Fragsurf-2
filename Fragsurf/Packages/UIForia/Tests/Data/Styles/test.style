@@ -1,7 +1,0 @@
-style custom-style {
-    MarginTop = 10px;
-}
-
-style <Div> {
-    MarginTop = 20px;
-}

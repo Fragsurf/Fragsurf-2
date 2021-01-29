@@ -70,5 +70,14 @@ MonoBehaviour:
     restrictionMode: 0
     nameSpace: System.IO
     includeNested: 1
-  _apiAssemblies: []
-  _customPaths: []
+  _apiAssemblies:
+  - Fragsurf
+  - SharpConfig
+  - Newtonsoft.Json
+  - XLua.Runtime
+  - Lidgren
+  _customPaths:
+  - Assets\Fragsurf\Content
+  - Assets\Fragsurf\Plugins\Facepunch.Steamworks
+  - Assets\Fragsurf\Plugins\FMOD
+  - Assets\Fragsurf\RealtimeCSG

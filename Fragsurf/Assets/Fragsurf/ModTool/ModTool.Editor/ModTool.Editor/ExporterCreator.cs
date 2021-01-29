@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEditor;
 using ModTool.Shared;
 using ModTool.Shared.Editor;
+using ModTool.Exporting.Editor;
+using Mediatonic.Tools;
 
 //Note: ModTool uses an old version of Mono.Cecil in the editor
 #pragma warning disable CS0618
@@ -16,11 +18,7 @@ namespace ModTool.Editor
 
         private static List<string> _builtInPaths = new List<string>()
         {
-            "Assets\\Fragsurf\\Export",
             "Assets\\Fragsurf\\RealtimeCSG",
-            "Assets\\Fragsurf\\Game\\Plugins\\Facepunch.Steamworks\\redistributable_bin",
-            "Assets\\Fragsurf\\Game\\Plugins\\FMOD\\x86",
-            "Assets\\Fragsurf\\Game\\Plugins\\FMOD\\x86_64",
         };
 
         /// <summary>
@@ -45,6 +43,12 @@ namespace ModTool.Editor
         
         private static void CreateExporter(string path, bool revealPackage = false)
         {
+            var destinationFolder = EditorUtility.OpenFolderPanel("Choose Directory", Application.dataPath, "Modding Toolkit");
+            if (string.IsNullOrEmpty(destinationFolder))
+            {
+                return;
+            }
+
             LogUtility.LogInfo("Creating Exporter");
 
             UpdateSettings();
@@ -54,7 +58,7 @@ namespace ModTool.Editor
 
             string modToolDirectory = AssetUtility.GetModToolDirectory();
             string exporterPath = Path.Combine(modToolDirectory, Path.Combine("Editor", "ModTool.Exporting.Editor.dll"));
-            string fileName = Path.Combine(path, Application.productName + " Mod Tools.unitypackage");
+            string fileName = Path.Combine(path, "Modding Toolkit.unitypackage");
             string projectSettingsDirectory = "ProjectSettings";
 
             List<string> assetPaths = new List<string>
@@ -92,8 +96,34 @@ namespace ModTool.Editor
 
             SetPluginEnabled(exporterPath, false);
 
-            if(revealPackage)
-                EditorUtility.RevealInFinder(fileName);
+            //if(revealPackage)
+            //    EditorUtility.RevealInFinder(fileName);
+
+            var extractDir = Path.Combine(Application.dataPath, "Extraction Point");
+            if (Directory.Exists(extractDir))
+            {
+                Directory.Delete(extractDir);
+            }
+            Directory.CreateDirectory(extractDir);
+
+            PackageExtractor.ExtractPackage(fileName, extractDir);
+
+            var fname = Path.GetFileNameWithoutExtension(fileName);
+            var dirToCopy = Path.Combine(extractDir, fname, "Assets", "Fragsurf");
+            CopyDirectory(dirToCopy, destinationFolder);
+        }
+
+        private static void CopyDirectory(string source, string dest)
+        {
+            //Now Create all of the directories
+            foreach (string dirPath in Directory.GetDirectories(source, "*",
+                SearchOption.AllDirectories))
+                Directory.CreateDirectory(dirPath.Replace(source, dest));
+
+            //Copy all the files & Replaces any files with the same name
+            foreach (string newPath in Directory.GetFiles(source, "*.*",
+                SearchOption.AllDirectories))
+                File.Copy(newPath, newPath.Replace(source, dest), true);
         }
 
         private static void SetPluginEnabled(string pluginPath, bool enabled)

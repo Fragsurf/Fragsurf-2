@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "com.klang-games.uiforia": {
-      "version": "file:UIForia",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.unity.burst": {
       "version": "1.4.3",
       "depth": 0,

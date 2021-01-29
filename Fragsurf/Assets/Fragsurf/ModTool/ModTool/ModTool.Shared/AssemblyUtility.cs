@@ -18,12 +18,6 @@ namespace ModTool.Shared
     {
         private static List<string> _builtInAssemblies = new List<string>()
         {
-            "Fragsurf",
-            "SharpConfig",
-            "FMOD",
-            "Facepunch.Steamworks.Win32",
-            "Facepunch.Steamworks.Win64",
-            "Facepunch.Steamworks.Posix",
             "ModTool",
             "ModTool.Shared.Editor",
             "ModTool.Exporting.Editor"

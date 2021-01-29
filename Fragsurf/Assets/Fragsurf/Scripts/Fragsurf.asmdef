@@ -1,0 +1,20 @@
+{
+    "name": "Fragsurf",
+    "rootNamespace": "",
+    "references": [
+        "GUID:913c6af11d5b17e4882d53f25991099f",
+        "GUID:e3e03a5a27a723f45b16bd5ffb507c99",
+        "GUID:ab3cd0c8189205c4daa4d3f6627169b1",
+        "GUID:3461f4cd84fe37748a091103dcf14a98",
+        "GUID:8c09aa1e4b73db04094be9d510142dd2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

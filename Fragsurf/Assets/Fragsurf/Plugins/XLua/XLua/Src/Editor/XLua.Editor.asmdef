@@ -1,0 +1,16 @@
+{
+    "name": "XLua.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3461f4cd84fe37748a091103dcf14a98"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

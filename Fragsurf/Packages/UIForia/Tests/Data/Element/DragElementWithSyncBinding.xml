@@ -1,5 +1,0 @@
-﻿<UITemplate>
-    <Contents style:alignmentOriginX="value">
-        <define:Children/>
-    </Contents>
-</UITemplate>

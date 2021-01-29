@@ -14,68 +14,32 @@ namespace ModTool.Shared
         /// <summary>
         /// Restrictions related to inheritance of Types inside Mod Assemblies.
         /// </summary>
-        public static List<InheritanceRestriction> inheritanceRestrictions
-        {
-            get
-            {
-                return instance._inheritanceRestrictions;
-            }
-        }
+        public static List<InheritanceRestriction> inheritanceRestrictions => instance._inheritanceRestrictions;
 
         /// <summary>
         /// Restrictions related to the use of fields, properties and methods from other types.
         /// </summary>
-        public static List<MemberRestriction> memberRestrictions
-        {
-            get
-            {
-                return instance._memberRestrictions;
-            }
-        }
+        public static List<MemberRestriction> memberRestrictions => instance._memberRestrictions;
 
         /// <summary>
         /// Restrictions related to the use of Types for fields and properties.
         /// </summary>
-        public static List<TypeRestriction> typeRestrictions
-        {
-            get
-            {
-                return instance._typeRestrictions;
-            }
-        }
+        public static List<TypeRestriction> typeRestrictions => instance._typeRestrictions;
 
         /// <summary>
         /// Restrictions related to the use of entire namespaces.
         /// </summary>
-        public static List<NamespaceRestriction> namespaceRestrictions
-        {
-            get
-            {
-                return instance._namespaceRestrictions;
-            }
-        }
+        public static List<NamespaceRestriction> namespaceRestrictions => instance._namespaceRestrictions;
 
         /// <summary>
         /// List of the Game's api Assembly names.
         /// </summary>
-        public static List<string> apiAssemblies
-        {
-            get
-            {
-                return instance._apiAssemblies;
-            }
-        }
+        public static List<string> apiAssemblies => instance._apiAssemblies;
 
         /// <summary>
         /// List of folders to include in the export.
         /// </summary>
-        public static List<string> customPaths
-        {
-            get
-            {
-                return instance._customPaths;
-            }
-        }
+        public static List<string> customPaths => instance._customPaths;
 
         [SerializeField]
         private List<InheritanceRestriction> _inheritanceRestrictions = new List<InheritanceRestriction>();
