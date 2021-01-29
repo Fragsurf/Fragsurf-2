@@ -1,11 +1,7 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.PackageManager;
-using System.Threading.Tasks;
 using UnityEngine.Rendering;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ModTool.Editor 
 {
@@ -13,12 +9,6 @@ namespace ModTool.Editor
     {
 
         private static bool _initializing;
-
-        private static List<string> _requiredPackages = new List<string>()
-        {
-            "com.unity.ui@1.0.0-preview.13",
-            "com.unity.render-pipelines.universal@10.2.2"
-        };
 
         private static List<string> _funFacts = new List<string>()
         {
@@ -56,7 +46,8 @@ namespace ModTool.Editor
             "Some people have an extra bone in their knee (and it's getting more common)",
             "Pringles aren't actually potato chips",
             "There's a giant fish with a transparent head",
-            "There's a decorated war hero dog"
+            "There's a decorated war hero dog",
+            "Mr.Cow is black"
         };
 
         static SetupProject()
@@ -64,13 +55,13 @@ namespace ModTool.Editor
             Initialize();
         }
 
-        [MenuItem("Fragsurf/Setup Project", priority = 30)]
+        [MenuItem("Fragsurf/Assign URP Asset (DO THIS!)", priority = 30)]
         public static void InitializeProject()
         {
             Initialize();
         }
 
-        private static async void Initialize()
+        private static void Initialize()
         {
             if (_initializing)
             {
@@ -79,44 +70,6 @@ namespace ModTool.Editor
 
             _initializing = true;
 
-            var list = Client.List();
-            while (!list.IsCompleted)
-            {
-                EditorUtility.DisplayProgressBar("Setting Up", "Checking for URP package", UnityEngine.Random.Range(0, 1f));
-                await Task.Delay(100);
-            }
-
-            if(list.Status == StatusCode.Failure)
-            {
-                EditorUtility.ClearProgressBar();
-                Debug.LogError("Failed to add Universal Render Pipeline package, navigate to Window -> Package Manager and add it manually!");
-                _initializing = false;
-                return;
-            }
-
-            foreach(var pkgId in _requiredPackages)
-            {
-                var pkgName = pkgId.Split('@')[0];
-                var pkg = list.Result.FirstOrDefault(x => string.Equals(x.name, pkgName, StringComparison.OrdinalIgnoreCase));
-                if(pkg == null)
-                {
-                    var add = Client.Add(pkgId);
-                    while (!add.IsCompleted)
-                    {
-                        EditorUtility.DisplayProgressBar("Setting Up", "Installing package: " + pkgId, UnityEngine.Random.Range(0, 1f));
-                        await Task.Delay(50);
-                    }
-                    if(add.Status == StatusCode.Failure)
-                    {
-                        EditorUtility.ClearProgressBar();
-                        _initializing = false;
-                        Debug.LogError($"Failed to add package: {pkgId}, navigate to Window -> Package Manager and add it manually or try running this again!");
-                        return;
-                    }
-                    await Task.Delay(100);
-                }
-            }
-
             if(GraphicsSettings.renderPipelineAsset == null)
             {
                 EditorUtility.DisplayProgressBar("Setting Up", "Assigning render pipeline asset", UnityEngine.Random.Range(0, 1f));
@@ -124,19 +77,18 @@ namespace ModTool.Editor
                 var urpAsset = Resources.Load<RenderPipelineAsset>("UniversalRenderPipelineAsset");
                 if (!urpAsset)
                 {
-                    EditorUtility.ClearProgressBar();
                     _initializing = false;
-                    Debug.LogError("Couldn't find Universal Render Pipeline asset.  You need to create one manually!");
+                    if(EditorUtility.DisplayDialog("URP Asset Failed!", "URP Asset failed to assign.  You need to create one manually!", "How?", "Ok"))
+                    {
+                        EditorUtility.DisplayDialog("URP Asset How?", "Ping Crayz on Discord, you have my permission", "Ok");
+                    }
                     return;
                 }
 
                 GraphicsSettings.renderPipelineAsset = urpAsset;
             }
 
-            EditorUtility.ClearProgressBar();
-            Debug.ClearDeveloperConsole();
-
-            //EditorUtility.DisplayDialog("Random Fact", _funFacts[UnityEngine.Random.Range(0, _funFacts.Count)], "Ok");
+            EditorUtility.DisplayDialog("URP Asset Assigned", _funFacts[UnityEngine.Random.Range(0, _funFacts.Count)], "I don't care");
 
             _initializing = false;
         }

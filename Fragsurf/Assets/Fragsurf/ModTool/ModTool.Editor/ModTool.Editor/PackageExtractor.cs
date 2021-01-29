@@ -107,11 +107,13 @@ namespace Mediatonic.Tools
 			EditorUtility.DisplayProgressBar("Extracting", "Extracting package", 0.0f);
 			var inStream = File.OpenRead(packagePath);
 			var gzipStream = new GZipInputStream(inStream);
-			var tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
+			//var tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
+			var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, System.Text.Encoding.ASCII);
 			tarArchive.ExtractContents(workingDir);
 			tarArchive.Close();
 			gzipStream.Close();
 			inStream.Close();
+			EditorUtility.ClearProgressBar();
 			return workingDir;
 		}
 
@@ -126,25 +128,42 @@ namespace Mediatonic.Tools
 				EditorUtility.DisplayProgressBar("Extracting", $"Moving {assetPath} to output folder", (float)i / dirs.Length);
 
 				string pathnamePath = Path.Combine(dir, "pathname");
-				if (!File.Exists(assetPath) || !File.Exists(pathnamePath))
-				{
-					continue;
-				}
+				string metaPath = Path.Combine(dir, "asset.meta");
 
-				string assetTargetPathRelative;
-				// Some packages have a second line containing a GUID, so just grab the path from the first line
-				using (var pathnameFile = new StreamReader(pathnamePath))
-				{
-					assetTargetPathRelative = pathnameFile.ReadLine();
-				}
-				string assetTargetPath = Path.Combine(outPath, assetTargetPathRelative);
-				string assetTargetPathDir = Path.GetDirectoryName(assetTargetPath);
-				if (!Directory.Exists(assetTargetPathDir))
-				{
-					Directory.CreateDirectory(assetTargetPathDir);
-				}
-				File.Move(assetPath, assetTargetPath);
+				// something wrong?
+                if (!File.Exists(pathnamePath))
+                {
+                    continue;
+                }
+
+				using var pathnameFile = new StreamReader(pathnamePath);
+				var pathnameContents = pathnameFile.ReadLine();
+
+                if (File.Exists(metaPath))
+                {
+					var metaTargetPath = Path.Combine(outPath, pathnameContents + ".meta");
+					var metaTargetPathDir = Path.GetDirectoryName(metaTargetPath);
+					if (!Directory.Exists(metaTargetPathDir))
+					{
+						Directory.CreateDirectory(metaTargetPathDir);
+					}
+					Debug.Log(metaTargetPath);
+					File.Move(metaPath, metaTargetPath);
+                }
+
+                if (File.Exists(assetPath))
+                {
+					var assetTargetPath = Path.Combine(outPath, pathnameContents);
+					var assetTargetPathDir = Path.GetDirectoryName(assetTargetPath);
+                    if (!Directory.Exists(assetTargetPathDir))
+                    {
+						Directory.CreateDirectory(assetTargetPathDir);
+					}
+					File.Move(assetPath, assetTargetPath);
+				}				
 			}
+
+			EditorUtility.ClearProgressBar();
 		}
 
 		// Delete the working directory when we're done

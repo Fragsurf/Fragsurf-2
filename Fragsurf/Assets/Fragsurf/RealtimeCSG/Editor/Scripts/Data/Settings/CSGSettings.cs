@@ -56,8 +56,8 @@ namespace RealtimeCSG
             get
             {
                 const string pkgName = "com.fragsurf.modding-toolkit";
-                var prefix = AssetDatabase.LoadAssetAtPath($"Packages/{pkgName}/Fragsurf/candy.txt", typeof(TextAsset)) != null
-                    ? $"Packages/{pkgName}"
+                var prefix = AssetDatabase.LoadAssetAtPath($"Packages/{pkgName}/UnityPackage/Fragsurf/candy.txt", typeof(TextAsset)) != null
+                    ? $"Packages/{pkgName}/UnityPackage"
                     : "Assets";
                 return prefix + "/Fragsurf/RealtimeCSG";
             }

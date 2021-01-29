@@ -86,7 +86,9 @@ namespace ModTool.Editor
             AssetDatabase.ExportPackage(assetPaths.ToArray(), fileName, ExportPackageOptions.Default | ExportPackageOptions.Recurse);
 
             foreach (string assemblyPath in assemblyPaths)
+            {
                 AssetDatabase.DeleteAsset(assemblyPath);
+            } 
 
             SetPluginEnabled(exporterPath, false);
 
@@ -96,7 +98,7 @@ namespace ModTool.Editor
             var extractDir = Path.Combine(Application.temporaryCachePath, "Modkit Extraction");
             if (Directory.Exists(extractDir))
             {
-                Directory.Delete(extractDir);
+                Directory.Delete(extractDir, true);
             }
             Directory.CreateDirectory(extractDir);
 
@@ -107,12 +109,12 @@ namespace ModTool.Editor
             var destinationFolder = Path.Combine(Application.dataPath, @"../", "fragsurf-modding-toolkit", "UnityPackage");
             if (Directory.Exists(destinationFolder))
             {
-                Directory.Delete(destinationFolder);
+                Directory.Delete(destinationFolder, true);
             }
             Directory.CreateDirectory(destinationFolder);
             CopyDirectory(dirToCopy, destinationFolder);
 
-            Directory.Delete(extractDir);
+            Directory.Delete(extractDir, true);
         }
 
         private static void CopyDirectory(string source, string dest)
