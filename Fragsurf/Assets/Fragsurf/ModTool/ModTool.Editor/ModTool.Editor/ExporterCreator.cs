@@ -43,12 +43,6 @@ namespace ModTool.Editor
         
         private static void CreateExporter(string path, bool revealPackage = false)
         {
-            var destinationFolder = EditorUtility.OpenFolderPanel("Choose Directory", Application.dataPath, "Modding Toolkit");
-            if (string.IsNullOrEmpty(destinationFolder))
-            {
-                return;
-            }
-
             LogUtility.LogInfo("Creating Exporter");
 
             UpdateSettings();
@@ -99,7 +93,7 @@ namespace ModTool.Editor
             //if(revealPackage)
             //    EditorUtility.RevealInFinder(fileName);
 
-            var extractDir = Path.Combine(Application.dataPath, "Extraction Point");
+            var extractDir = Path.Combine(Application.temporaryCachePath, "Modkit Extraction");
             if (Directory.Exists(extractDir))
             {
                 Directory.Delete(extractDir);
@@ -109,8 +103,16 @@ namespace ModTool.Editor
             PackageExtractor.ExtractPackage(fileName, extractDir);
 
             var fname = Path.GetFileNameWithoutExtension(fileName);
-            var dirToCopy = Path.Combine(extractDir, fname, "Assets", "Fragsurf");
+            var dirToCopy = Path.Combine(extractDir, fname, "Assets");
+            var destinationFolder = Path.Combine(Application.dataPath, @"../", "fragsurf-modding-toolkit", "UnityPackage");
+            if (Directory.Exists(destinationFolder))
+            {
+                Directory.Delete(destinationFolder);
+            }
+            Directory.CreateDirectory(destinationFolder);
             CopyDirectory(dirToCopy, destinationFolder);
+
+            Directory.Delete(extractDir);
         }
 
         private static void CopyDirectory(string source, string dest)
