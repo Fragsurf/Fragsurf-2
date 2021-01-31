@@ -7,6 +7,7 @@ using UnityEditor.Callbacks;
 using ModTool.Shared;
 using ModTool.Shared.Editor;
 using Mediatonic.Tools;
+using Fragsurf;
 
 //Note: ModTool uses an old version of Mono.Cecil in the editor
 #pragma warning disable CS0618
@@ -16,7 +17,7 @@ namespace ModTool.Editor
     internal class ExporterCreator
     {
 
-        private static string PackageVersion => "0.0.0";
+        private static string PackageVersion => Structure.Version;
         private static string TempExtractionFolder => Path.Combine(Application.temporaryCachePath, "Modkit Extraction");
 
         [MenuItem("Fragsurf Dev/ModTool Build")]
