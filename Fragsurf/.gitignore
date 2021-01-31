@@ -2,6 +2,7 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+/[Ff]ragsurf-modding-toolkit/
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -70,4 +71,4 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-/fragsurf-modding-toolkit/
+fragsurf-modding-toolkit
