@@ -1,3 +1,4 @@
+using Fragsurf.Utility;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace Fragsurf.UI
         private TMP_InputField _inputField;
 
         private Modal_ConsoleEntry _template;
+
+        public CircularBuffer<string> InputHistory = new CircularBuffer<string>(20);
 
         private void Start()
         {
@@ -43,7 +46,7 @@ namespace Fragsurf.UI
                 Message = message,
                 ElapsedTime = Time.time
             };
-            _template.Append(consoleData);
+            _template.Prepend(consoleData);
         }
 
         private void OnInputSubmit(string contents)
@@ -51,6 +54,7 @@ namespace Fragsurf.UI
             if (!string.IsNullOrWhiteSpace(contents))
             {
                 DevConsole.ExecuteLine(contents);
+                InputHistory.PushFront(contents);
             }
             _inputField.text = string.Empty;
             _inputField.ActivateInputField();

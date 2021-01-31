@@ -1,5 +1,4 @@
 ﻿using Fragsurf.Utility;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +7,12 @@ namespace Fragsurf.UI
     public abstract class EntryElement<T> : MonoBehaviour
     {
 
+        public int EntryLimit = 100;
         public abstract void LoadData(T data);
 
-        private WaitForEndOfFrame _eof = new WaitForEndOfFrame();
         private List<GameObject> _children;
+
+        public List<GameObject> Children => _children;
 
         public void Clear()
         {
@@ -26,12 +27,12 @@ namespace Fragsurf.UI
             }
             _children.Clear();
 
-            RebuildLayout();
+            transform.parent.gameObject.RebuildLayout();
         }
 
-        public void Append(T data)
+        private EntryElement<T> SpawnEntry(T data)
         {
-            if(_children == null)
+            if (_children == null)
             {
                 _children = new List<GameObject>();
             }
@@ -42,32 +43,29 @@ namespace Fragsurf.UI
             var rt = clone.GetComponent<RectTransform>();
             var parentRt = transform.parent.GetComponent<RectTransform>();
             rt.SetParent(parentRt);
-            rt.SetSiblingIndex(parentRt.childCount);
             rt.localPosition = Vector3.zero;
             rt.localRotation = Quaternion.identity;
             rt.localScale = Vector3.one;
             clone.LoadData(data);
+            transform.parent.gameObject.RebuildLayout();
 
-            RebuildLayout();
+            if(_children.Count > EntryLimit)
+            {
+                GameObject.Destroy(_children[0]);
+                _children.RemoveAt(0);
+            }
+
+            return clone;
         }
 
-        private void RebuildLayout()
+        public void Prepend(T data)
         {
-            if (gameObject.activeSelf)
-            {
-                StartCoroutine(RebuildLayout(transform.parent.gameObject));
-            }
+            SpawnEntry(data).transform.SetAsFirstSibling();
         }
 
-        private IEnumerator RebuildLayout(GameObject gameObj)
+        public void Append(T data)
         {
-            yield return _eof;
-            yield return _eof;
-
-            if (gameObj)
-            {
-                gameObj.RebuildLayout();
-            }
+            SpawnEntry(data).transform.SetAsLastSibling();
         }
 
     }

@@ -80,15 +80,9 @@ namespace Fragsurf.Utility
         }
         public static void RebuildLayout(this GameObject root)
         {
-            //var layouts = root.GetComponentsInChildren<LayoutGroup>(true);
-            //for (int i = layouts.Length - 1; i >= 0; i--)
-            //{
-            //    LayoutRebuilder.ForceRebuildLayoutImmediate(layouts[i].GetComponent<RectTransform>());
-            //}
             var rt = root.GetComponent<RectTransform>();
             if (rt)
             {
-                LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
                 LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
             }
         }
