@@ -79,24 +79,25 @@ namespace Fragsurf
             }
         }
 
-        public static List<DevConsoleEntry> GetEntriesStartingWith(string value)
+        public static List<DevConsoleEntry> GetEntriesStartingWith(string value, bool skipDuplicates = true)
         {
+            var result = new List<DevConsoleEntry>();
+
             if (string.IsNullOrEmpty(value))
             {
-                return null;
+                return result;
             }
 
-            var result = new List<DevConsoleEntry>();
             foreach(var kvp in _entries)
             {
-                foreach(var entry in kvp.Value)
+                if(kvp.Key.StartsWith(value, StringComparison.OrdinalIgnoreCase)
+                    && kvp.Value != null 
+                    && kvp.Value.Count > 0)
                 {
-                    if(entry.Name.StartsWith(value, StringComparison.OrdinalIgnoreCase))
-                    {
-                        result.Add(entry);
-                    }
+                    result.Add(kvp.Value[0]);
                 }
             }
+
             return result;
         }
 

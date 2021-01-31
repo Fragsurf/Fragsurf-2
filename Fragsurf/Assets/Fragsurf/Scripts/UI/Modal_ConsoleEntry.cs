@@ -17,7 +17,7 @@ namespace Fragsurf.UI
         [SerializeField]
         private TMP_Text _message;
 
-        public override void Initialize(Modal_ConsoleEntryData data)
+        public override void LoadData(Modal_ConsoleEntryData data)
         {
             _message.text = data.Message;
         }
