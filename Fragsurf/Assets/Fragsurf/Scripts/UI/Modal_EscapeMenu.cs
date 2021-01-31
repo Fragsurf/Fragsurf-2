@@ -25,7 +25,13 @@ namespace Fragsurf.UI
 
         private void Start()
         {
-            _returnToGame.onClick.AddListener(Close);
+            _returnToGame.onClick.AddListener(() =>
+            {
+                Close();
+                UGuiManager.Instance.CloseModal<Modal_Console>();
+                UGuiManager.Instance.CloseModal<Modal_Settings>();
+                UGuiManager.Instance.CloseModal("ServerBrowser");
+            });
             _settings.onClick.AddListener(() =>
             {
                 UGuiManager.Instance.OpenModal<Modal_Settings>();
