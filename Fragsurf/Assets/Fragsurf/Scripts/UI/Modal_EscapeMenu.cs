@@ -1,7 +1,5 @@
 using Fragsurf.Client;
 using Fragsurf.Shared;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
