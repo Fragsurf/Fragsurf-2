@@ -31,7 +31,7 @@ namespace Fragsurf.UI
             {
                 if(_escapeStack.Count == 0)
                 {
-                    Debug.Log("Open escape menu!");
+                    OpenModal("EscapeMenu");
                 }
                 else
                 {
