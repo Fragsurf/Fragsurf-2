@@ -58,14 +58,18 @@ namespace Fragsurf.UI
             return clone;
         }
 
-        public void Prepend(T data)
+        public EntryElement<T> Prepend(T data)
         {
-            SpawnEntry(data).transform.SetAsFirstSibling();
+            var entry = SpawnEntry(data);
+            entry.transform.SetAsFirstSibling();
+            return entry;
         }
 
-        public void Append(T data)
+        public EntryElement<T> Append(T data)
         {
-            SpawnEntry(data).transform.SetAsLastSibling();
+            var entry = SpawnEntry(data);
+            entry.transform.SetAsLastSibling();
+            return entry;
         }
 
     }

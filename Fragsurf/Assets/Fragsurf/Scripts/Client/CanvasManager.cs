@@ -1,4 +1,5 @@
 using Fragsurf.Shared;
+using Fragsurf.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,9 +14,10 @@ namespace Fragsurf.Client
 
         private List<string> _defaultModals = new List<string>()
         {
-            "Crosshair",
-            "EscapeMenu",
-            "Console"
+            Modal_Crosshair.Identifier,
+            Modal_EscapeMenu.Identifier,
+            Modal_Console.Identifier,
+            Modal_Settings.Identifier,
         };
 
         protected override void _Start()

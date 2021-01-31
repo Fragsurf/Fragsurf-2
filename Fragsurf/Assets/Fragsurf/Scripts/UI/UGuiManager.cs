@@ -31,7 +31,7 @@ namespace Fragsurf.UI
             {
                 if(_escapeStack.Count == 0)
                 {
-                    OpenModal("EscapeMenu");
+                    OpenModal<Modal_EscapeMenu>();
                 }
                 else
                 {
@@ -64,6 +64,42 @@ namespace Fragsurf.UI
                 }
             }
             return false;
+        }
+
+        public void OpenModal<T>()
+            where T : UGuiModal
+        {
+            foreach (var modal in _modals)
+            {
+                if (modal.Value is T)
+                {
+                    modal.Value.Open();
+                }
+            }
+        }
+
+        public void CloseModal<T>()
+            where T : UGuiModal
+        {
+            foreach (var modal in _modals)
+            {
+                if (modal.Value is T)
+                {
+                    modal.Value.Close();
+                }
+            }
+        }
+
+        public void ToggleModal<T>()
+            where T : UGuiModal
+        {
+            foreach (var modal in _modals)
+            {
+                if (modal.Value is T)
+                {
+                    modal.Value.Toggle();
+                }
+            }
         }
 
         [ConCommand("modal.close", "Closes a modal", ConVarFlags.Silent)]

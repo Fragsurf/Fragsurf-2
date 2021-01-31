@@ -8,6 +8,8 @@ namespace Fragsurf.UI
     public class Modal_EscapeMenu : UGuiModal
     {
 
+        public const string Identifier = "EscapeMenu";
+
         [Header("Buttons")]
 
         [SerializeField]
@@ -26,7 +28,7 @@ namespace Fragsurf.UI
             _returnToGame.onClick.AddListener(Close);
             _settings.onClick.AddListener(() =>
             {
-                UGuiManager.Instance.OpenModal("Settings");
+                UGuiManager.Instance.OpenModal<Modal_Settings>();
             });
             _serverBrowser.onClick.AddListener(() =>
             {

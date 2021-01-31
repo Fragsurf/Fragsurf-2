@@ -7,9 +7,10 @@ namespace Fragsurf.UI
     public class Modal_Console : UGuiModal
     {
 
+        public const string Identifier = "Console";
+
         [SerializeField]
         private TMP_InputField _inputField;
-
         private Modal_ConsoleEntry _template;
 
         public CircularBuffer<string> InputHistory = new CircularBuffer<string>(20);

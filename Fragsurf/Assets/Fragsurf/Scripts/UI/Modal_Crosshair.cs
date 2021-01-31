@@ -6,6 +6,8 @@ namespace Fragsurf.UI
     public class Modal_Crosshair : UGuiModal
     {
 
+        public const string Identifier = "Crosshair";
+
         [SerializeField]
         private Image[] _crosshairImages;
 
