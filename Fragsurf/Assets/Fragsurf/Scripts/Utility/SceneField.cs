@@ -23,6 +23,7 @@ public class SceneField
 
     public static implicit operator SceneField(string scenePath)
     {
+#if UNITY_EDITOR
         var asset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
         if (asset == null)
         {
@@ -35,6 +36,8 @@ public class SceneField
             m_SceneName = asset.name,
             m_ScenePath = scenePath
         };
+#endif
+        return default;
     }
 
 }

@@ -205,10 +205,12 @@ namespace Fragsurf.Server
                 | NetIncomingMessageType.UnconnectedData
                 | NetIncomingMessageType.ConnectionLatencyUpdated);
 
+#if UNITY_EDITOR
             result.SimulatedMinimumLatency = .1f;
             result.SimulatedRandomLatency = .05f;
             result.SimulatedLoss = .03f;
             result.SimulatedDuplicatesChance = .03f;
+#endif
 
             return result;
         }
