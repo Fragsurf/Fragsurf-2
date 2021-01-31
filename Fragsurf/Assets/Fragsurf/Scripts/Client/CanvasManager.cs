@@ -13,7 +13,8 @@ namespace Fragsurf.Client
 
         private List<string> _defaultModals = new List<string>()
         {
-            "Console"
+            "Console",
+            "Crosshair"
         };
 
         protected override void _Start()

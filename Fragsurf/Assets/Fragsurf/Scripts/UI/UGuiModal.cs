@@ -43,6 +43,7 @@ namespace Fragsurf.UI
                 Open();
             }
             UGuiManager.Instance.Add(this);
+            DevConsole.RegisterObject(this);
         }
 
         protected virtual void OnDestroy()
@@ -51,6 +52,7 @@ namespace Fragsurf.UI
             {
                 UGuiManager.Instance.Remove(this);
             }
+            DevConsole.RemoveAll(this);
         }
 
         public bool HasFocusedInput()
