@@ -32,7 +32,15 @@ namespace Fragsurf.UI
             rt.localScale = Vector3.one;
             gameObject.SetActive(true);
             clone.Initialize(data);
-            StartCoroutine(RebuildLayout(parentRt.gameObject));
+
+            if (parentRt.gameObject.activeSelf)
+            {
+                StartCoroutine(RebuildLayout(parentRt.gameObject));
+            }
+            else
+            {
+                parentRt.gameObject.RebuildLayout();
+            }
         }
 
         private IEnumerator RebuildLayout(GameObject gameObj)
