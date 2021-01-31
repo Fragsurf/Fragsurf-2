@@ -25,7 +25,7 @@ namespace Fragsurf.Shared.Player
 
             DevConsole.RegisterCommand("+voicerecord", "", this, (e) =>
             {
-                if(GameDocumentManager.Instance.InputHasFocus())
+                if(UGuiManager.Instance.HasFocusedInput())
                 {
                     return;
                 }

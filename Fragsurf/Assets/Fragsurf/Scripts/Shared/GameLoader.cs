@@ -8,8 +8,8 @@ using Fragsurf.Server;
 using UnityEngine.SceneManagement;
 using Steamworks;
 using Steamworks.Ugc;
-using Fragsurf.UI;
 using UnityEngine;
+using Fragsurf.UI;
 
 namespace Fragsurf.Shared
 {
@@ -316,7 +316,7 @@ namespace Fragsurf.Shared
                 if (!Game.IsHost)
                 {
                     SceneManager.LoadScene(GameData.Instance.MainMenu.ScenePath);
-                    GameDocumentManager.Instance.Alert("Couldn't load that map, something went wrong.");
+                    UGuiManager.Instance.Popup("Couldn't load that map, something went wrong.");
                 }
                 Loading = false;
             }

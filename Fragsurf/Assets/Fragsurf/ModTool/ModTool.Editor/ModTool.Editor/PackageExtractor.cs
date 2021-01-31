@@ -147,7 +147,6 @@ namespace Mediatonic.Tools
 					{
 						Directory.CreateDirectory(metaTargetPathDir);
 					}
-					Debug.Log(metaTargetPath);
 					File.Move(metaPath, metaTargetPath);
                 }
 

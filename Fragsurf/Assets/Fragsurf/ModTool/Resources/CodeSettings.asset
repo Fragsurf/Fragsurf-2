@@ -71,12 +71,12 @@ MonoBehaviour:
     nameSpace: System.IO
     includeNested: 1
   _apiAssemblies:
-  - Fragsurf
   - SharpConfig
   - Newtonsoft.Json
   - XLua.Runtime
   - Lidgren
   _customPaths:
+  - Assets\Fragsurf\Scripts
   - Assets\Fragsurf\Content
   - Assets\Fragsurf\Plugins\Facepunch.Steamworks
   - Assets\Fragsurf\Plugins\FMOD

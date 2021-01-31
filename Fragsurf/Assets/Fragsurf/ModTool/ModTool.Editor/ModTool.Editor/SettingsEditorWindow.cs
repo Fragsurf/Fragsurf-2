@@ -15,7 +15,7 @@ namespace ModTool.Editor
 
         Vector2 scrollPos = Vector2.zero;
 
-        [MenuItem("Fragsurf/ModTool/Settings")]
+        [MenuItem("Fragsurf Dev/ModTool Settings")]
         public static void ShowWindow()
         {
             SettingsEditorWindow window = GetWindow<SettingsEditorWindow>();

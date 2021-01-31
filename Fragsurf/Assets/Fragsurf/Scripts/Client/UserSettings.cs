@@ -3,7 +3,6 @@ using UnityEngine;
 using SharpConfig;
 using System;
 using Fragsurf.Utility;
-using Fragsurf.UI;
 
 namespace Fragsurf.Client
 {
@@ -192,10 +191,10 @@ namespace Fragsurf.Client
             _config["UserSettings"].Add("cam.fov", 75);
             _config["UserSettings"].Add("cam.clipdistance", 500);
 
-            // GameDocument defaults
-            _config["Binds"].Add("backquote", "doc.toggle devconsole");
-            _config["Binds"].Add("y", "doc.toggle chatbox");
-            _config["Binds"].Add("f1", "doc.toggle perf");
+            // Modal defaults
+            _config["Binds"].Add("backquote", "modal.toggle console");
+            _config["Binds"].Add("y", "modal.toggle chatbox");
+            _config["Binds"].Add("f1", "modal.toggle perf");
 
             ExecuteConfigBinds();
             ExecuteUserSettings();

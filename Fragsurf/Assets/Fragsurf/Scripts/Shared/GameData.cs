@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Fragsurf.Shared
 {
-    [CreateAssetMenu(fileName = "GameData", menuName = "Fragsurf/Game Data")]
     public class GameData : ScriptableObject
     {
 
@@ -19,11 +18,10 @@ namespace Fragsurf.Shared
                 }
                 return _instance;
             }
-        }
+        } 
 
         [Header("Game")]
         public SceneReference MainMenu;
-        public Camera GameCamera;
 
         [Header("Effects")]
         public GameObject BloodSplash;

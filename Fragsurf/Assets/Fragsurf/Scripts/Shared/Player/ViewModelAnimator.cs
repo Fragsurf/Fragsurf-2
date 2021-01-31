@@ -1,4 +1,5 @@
-﻿using Fragsurf.UI;
+﻿using Fragsurf.Client;
+using Fragsurf.UI;
 using UnityEngine;
 
 namespace Fragsurf.Shared.Player
@@ -56,7 +57,7 @@ namespace Fragsurf.Shared.Player
 
         private void WeaponSway()
         {
-            if(GameDocumentManager.Instance.HasCursor())
+            if(ClientInput.Blocked)
             {
                 return;
             }

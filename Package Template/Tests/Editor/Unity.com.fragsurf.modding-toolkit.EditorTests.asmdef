@@ -1,0 +1,11 @@
+{
+  "name": "Unity.com.fragsurf.modding-toolkit.Editor.Tests",
+  "references": [
+    "Unity.com.fragsurf.modding-toolkit"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": []
+}

@@ -14,7 +14,7 @@ namespace Fragsurf
         {
             if (!_camera)
             {
-                _camera = GameObject.Instantiate(GameData.Instance.GameCamera);
+                _camera = GameObject.Instantiate(Resources.Load<GameObject>("GameCamera")).GetComponent<Camera>();
             }
             return _camera;
         }

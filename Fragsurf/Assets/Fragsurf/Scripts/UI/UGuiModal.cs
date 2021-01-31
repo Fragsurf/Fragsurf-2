@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +19,7 @@ namespace Fragsurf.UI
         private CursorType _cursorType;
 
         private InputField[] _inputFields;
+        private TMP_InputField[] _tmpInputFields;
 
         public string Name => _modalName;
         public CursorType CursorType => _cursorType;
@@ -28,6 +28,7 @@ namespace Fragsurf.UI
         protected virtual void Awake()
         {
             _inputFields = GetComponentsInChildren<InputField>();
+            _tmpInputFields = GetComponentsInChildren<TMP_InputField>();
 
             if (!_modalContainer)
             {
@@ -52,15 +53,18 @@ namespace Fragsurf.UI
             }
         }
 
-        public bool HasInputFocus()
+        public bool HasFocusedInput()
         {
-            if(_inputFields == null || _inputFields.Length == 0)
-            {
-                return false;
-            }
             foreach(var input in _inputFields)
             {
                 if (input.isFocused)
+                {
+                    return true;
+                }
+            }
+            foreach(var tmpInput in _tmpInputFields)
+            {
+                if (tmpInput.isFocused)
                 {
                     return true;
                 }
@@ -73,7 +77,7 @@ namespace Fragsurf.UI
             _modalContainer.SetActive(true);
             if (!_ignoreEscape)
             {
-                UGuiManager.Instance.AddToEscapeStack(Name);
+                UGuiManager.Instance.AddToEscapeStack(this);
             }
             OnOpen();
         }
@@ -83,7 +87,7 @@ namespace Fragsurf.UI
             _modalContainer.SetActive(false);
             if (!_ignoreEscape)
             {
-                UGuiManager.Instance.RemoveFromEscapeStack(Name);
+                UGuiManager.Instance.RemoveFromEscapeStack(this);
             }
             OnClose();
         }

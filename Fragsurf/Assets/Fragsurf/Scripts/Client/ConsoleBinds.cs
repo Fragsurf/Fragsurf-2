@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Fragsurf.UI;
 
 namespace Fragsurf.Client
 {
@@ -52,6 +53,11 @@ namespace Fragsurf.Client
 
         public void Update()
         {
+            if (UGuiManager.Instance.HasFocusedInput())
+            {
+                return;
+            }
+
             foreach(var bind in Binds)
             {
                 var keyDown = Input.GetKeyDown(bind.Key);

@@ -4,8 +4,8 @@ using Fragsurf.Shared;
 using Fragsurf.Shared.Packets;
 using Steamworks;
 using Fragsurf.Server;
-using Fragsurf.UI;
 using Fragsurf.Utility;
+using Fragsurf.UI;
 
 namespace Fragsurf.Client
 {
@@ -236,12 +236,12 @@ namespace Fragsurf.Client
 
                 if(GameServer.Instance == null)
                 {
-                    GameDocumentManager.Instance.Alert("Disconnected from host: " + reason);
+                    UGuiManager.Instance.Popup("Disconnected from host: " + reason);
                 }
             }
             else if(status == ClientSocketStatus.ProblemDetected)
             {
-                GameDocumentManager.Instance.Alert("Problem detected while connecting to the host.  Try again.");
+                UGuiManager.Instance.Popup("Problem detected while connecting to the host.  Try again.");
             }
 
             Status = status;

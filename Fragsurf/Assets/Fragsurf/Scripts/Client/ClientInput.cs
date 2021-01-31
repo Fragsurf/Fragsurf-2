@@ -15,7 +15,7 @@ namespace Fragsurf.Client
         private float _yaw;
         private float _yawMulti;
 
-        public bool BlockClientInput => GameDocumentManager.Instance.HasCursor();
+        public static bool Blocked => UGuiManager.Instance.HasCursor();
         
         private InputActions _prevActionsDown;
         private InputActions _actionsDown;
@@ -89,7 +89,7 @@ namespace Fragsurf.Client
         {
             if (!Game.Live
                 || Human.Local == null
-                || BlockClientInput)
+                || Blocked)
             {
                 UserCmd.Buttons = 0;
                 _actionsRequiringRelease.Clear();
@@ -131,7 +131,7 @@ namespace Fragsurf.Client
             var processPlayerInput = Game.Live
                 && Human.Local != null
                 && Human.Local.MovementController != null
-                && !BlockClientInput;
+                && !Blocked;
 
             if (processPlayerInput)
             {
@@ -216,7 +216,7 @@ namespace Fragsurf.Client
         {
             var cursorIsVisible = !Game.Live
                 || Input.GetKey(KeyCode.Period)
-                || BlockClientInput
+                || Blocked
                 || (Human.Local != null && Human.Local.MovementController != null && Human.Local.MovementController.ShowsCursor);
 
             return cursorIsVisible;
