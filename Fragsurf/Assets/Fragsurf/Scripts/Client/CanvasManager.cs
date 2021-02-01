@@ -1,7 +1,7 @@
 using Fragsurf.Shared;
 using Fragsurf.UI;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Fragsurf.Client
 {
@@ -10,9 +10,10 @@ namespace Fragsurf.Client
     {
 
         private Canvas _uiCanvas;
+        private EventSystem _uiEventSystem;
         private const string _modalPathPrefix = "UI/Modals/";
 
-        private List<string> _defaultModals = new List<string>()
+        public static readonly string[] DefaultModals = new string[]
         {
             Modal_Crosshair.Identifier,
             Modal_EscapeMenu.Identifier,
@@ -22,10 +23,11 @@ namespace Fragsurf.Client
 
         protected override void _Start()
         {
-            _uiCanvas = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("UICanvas"))
-                .GetComponentInChildren<Canvas>();
+            var container = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("UICanvas"));
+            _uiCanvas = container.GetComponentInChildren<Canvas>();
+            _uiEventSystem = container.GetComponentInChildren<EventSystem>();
 
-            foreach(var modal in _defaultModals)
+            foreach (var modal in DefaultModals)
             {
                 SpawnModal(modal);
             }
@@ -41,6 +43,32 @@ namespace Fragsurf.Client
                 return;
             }
             GameObject.Instantiate<GameObject>(resource, _uiCanvas.transform);
+        }
+
+        public static void EnableEventSystem()
+        {
+            var game = FSGameLoop.GetGameInstance(false);
+            if (game)
+            {
+                var cm = game.Get<CanvasManager>();
+                if (cm && cm._uiEventSystem)
+                {
+                    cm._uiEventSystem.enabled = true;
+                }
+            }
+        }
+
+        public static void DisableEventSystem()
+        {
+            var game = FSGameLoop.GetGameInstance(false);
+            if (game)
+            {
+                var cm = game.Get<CanvasManager>();
+                if (cm && cm._uiEventSystem)
+                {
+                    cm._uiEventSystem.enabled = false;
+                }
+            }
         }
 
     }

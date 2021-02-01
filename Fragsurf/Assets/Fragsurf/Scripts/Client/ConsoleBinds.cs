@@ -9,6 +9,8 @@ namespace Fragsurf.Client
     public class ConsoleBinds
     {
 
+        public static bool Blocked;
+
         public class BindData
         {
 
@@ -53,7 +55,8 @@ namespace Fragsurf.Client
 
         public void Update()
         {
-            if (UGuiManager.Instance.HasFocusedInput())
+            if (UGuiManager.Instance.HasFocusedInput()
+                || Blocked)
             {
                 return;
             }
@@ -122,7 +125,7 @@ namespace Fragsurf.Client
         }
 
         [ConCommand("hardbind", "Unbinds a command from all keys using it, and binds it to only the given key.")]
-        private void HardBind(string key, string command)
+        public void HardBind(string key, string command)
         {
             UnbindCommand(command);
             Bind(key, command);
@@ -133,12 +136,12 @@ namespace Fragsurf.Client
             Binds.Remove(bind);
         }
 
-        private List<BindData> FindBindDatas(KeyCode key)
+        public List<BindData> FindBindDatas(KeyCode key)
         {
             return Binds.Where(x => x.Key == key).ToList();
         }
 
-        private List<BindData> FindBindDatas(string command)
+        public List<BindData> FindBindDatas(string command)
         {
             return Binds.Where(x => string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase)).ToList();
         }

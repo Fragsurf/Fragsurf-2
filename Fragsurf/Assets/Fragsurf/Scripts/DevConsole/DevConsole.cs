@@ -189,6 +189,10 @@ namespace Fragsurf
         public static string GetVariableAsString(string variableName)
         {
             var type = GetVariableType(variableName);
+            if(type == null)
+            {
+                return string.Empty;
+            }
             var method = typeof(DevConsole).GetMethod(nameof(DevConsole.GetVariable));
             var generic = method.MakeGenericMethod(type);
             var result = generic.Invoke(null, new object[] { variableName });

@@ -30,6 +30,8 @@ namespace Fragsurf.UI
         [SerializeField]
         private SettingEnum _enumElement;
         [SerializeField]
+        private SettingBind _bindElement;
+        [SerializeField]
         private TMP_Text _label;
         [SerializeField]
         private TMP_Text _description;
@@ -48,6 +50,11 @@ namespace Fragsurf.UI
             settingElement.Initialize(this, settingName);
         }
 
+        public void SetLabel(string text)
+        {
+            _label.text = text;
+        }
+
         public void SetDescription(string text)
         {
             _description.gameObject.SetActive(!string.IsNullOrEmpty(text));
@@ -62,8 +69,12 @@ namespace Fragsurf.UI
             {
                 return custom.Element;
             }
+            if (settingName.StartsWith("bind/"))
+            {
+                return _bindElement;
+            }
             var type = DevConsole.GetVariableType(settingName);
-            if (type.IsEnum)
+            if(type != null && type.IsEnum)
             {
                 return _enumElement;
             }

@@ -1,5 +1,8 @@
+using Fragsurf.Client;
+using Fragsurf.Movement;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Fragsurf.UI
 {
@@ -36,6 +39,8 @@ namespace Fragsurf.UI
                 var categorySettings = allSettings.FindAll(x => x.StartsWith(category, StringComparison.OrdinalIgnoreCase));
                 CreatePage(category, categorySettings);
             }
+
+            CreateBindsPage();
         }
 
         private void CreatePage(string category, List<string> settingNames)
@@ -54,6 +59,23 @@ namespace Fragsurf.UI
             };
 
             _categoryTemplate.Append(categoryData);
+        }
+
+        private void CreateBindsPage()
+        {
+            var settingNames = new List<string>()
+            {
+                "bind/reset"
+            };
+            foreach(var action in Enum.GetNames(typeof(InputActions)))
+            {
+                settingNames.Add("bind/controls/+input " + action);
+            }
+            foreach(var defaultModal in CanvasManager.DefaultModals)
+            {
+                settingNames.Add("bind/ui/modal.toggle " + defaultModal);
+            }
+            CreatePage("binds", settingNames);
         }
 
     }

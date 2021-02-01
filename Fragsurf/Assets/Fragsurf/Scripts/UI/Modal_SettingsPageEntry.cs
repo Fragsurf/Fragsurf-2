@@ -1,4 +1,8 @@
+using Fragsurf.Utility;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Fragsurf.UI
 {
@@ -12,6 +16,11 @@ namespace Fragsurf.UI
 
         private Modal_SettingsSettingEntry _settingTemplate;
 
+        private void OnEnable()
+        {
+            StartCoroutine(RebuildAfterFrame());
+        }
+
         public override void LoadData(SettingsPageData data)
         {
             _settingTemplate = GetComponentInChildren<Modal_SettingsSettingEntry>(true);
@@ -22,6 +31,19 @@ namespace Fragsurf.UI
                 _settingTemplate.Append(settingName);
             }
         }
+
+        private IEnumerator RebuildAfterFrame()
+        {
+            yield return new WaitForEndOfFrame();
+            gameObject.RebuildLayout();
+            var sr = GetComponentInChildren<ScrollRect>();
+            if (sr)
+            {
+                sr.enabled = !sr.enabled;
+                sr.enabled = !sr.enabled;
+            }
+        }
+
     }
 }
 

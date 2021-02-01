@@ -11,6 +11,8 @@ namespace Fragsurf.UI
         private Dictionary<string, UGuiModal> _modals = new Dictionary<string, UGuiModal>(StringComparer.OrdinalIgnoreCase);
         private List<UGuiModal> _escapeStack = new List<UGuiModal>();
 
+        public bool EscapeEnabled = true;
+
         private void Awake()
         {
             GameObject.DontDestroyOnLoad(gameObject);
@@ -27,7 +29,7 @@ namespace Fragsurf.UI
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (EscapeEnabled && Input.GetKeyDown(KeyCode.Escape))
             {
                 if(_escapeStack.Count == 0)
                 {

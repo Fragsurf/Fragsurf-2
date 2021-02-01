@@ -57,7 +57,7 @@ namespace Fragsurf.Client
                     _config = new Configuration();
                     _config.Add("Binds");
                     _config.Add("UserSettings");
-                    AssignDefaults();
+                    ExecuteDefaultSettings();
                     _config.SaveToFile(filePath);
                 }
                 else
@@ -71,7 +71,7 @@ namespace Fragsurf.Client
                 _config = new Configuration();
                 _config.Add("Binds");
                 _config.Add("UserSettings");
-                AssignDefaults();
+                ExecuteDefaultSettings();
                 _config.SaveToFile(filePath);
             }
 
@@ -140,19 +140,11 @@ namespace Fragsurf.Client
             }
         }
 
-        public void AssignDefaults()
+        public void ExecuteDefaultBinds()
         {
             Binds.Clear();
 
-            _config["UserSettings"].Clear();
             _config["Binds"].Clear();
-
-            // ClientInput defaults
-            _config["UserSettings"].Add("input.sensitivity", 1);
-            _config["UserSettings"].Add("input.pitchmodifier", 1.0f);
-            _config["UserSettings"].Add("input.adsmodifier", 1.0f);
-            _config["UserSettings"].Add("input.toggleads", true);
-            _config["UserSettings"].Add("input.confinecursor", false);
             _config["Binds"].Add("mouse0", "+input handaction");
             _config["Binds"].Add("mouse1", "+input handaction2");
             _config["Binds"].Add("mouse3", "+input yaw 160");
@@ -176,6 +168,26 @@ namespace Fragsurf.Client
             _config["Binds"].Add("q", "+input previtem");
             _config["Binds"].Add("k", "+voicerecord");
 
+            // Modal defaults
+            _config["Binds"].Add("backquote", "modal.toggle console");
+            _config["Binds"].Add("y", "modal.toggle chatbox");
+            _config["Binds"].Add("f1", "modal.toggle perf");
+
+            ExecuteConfigBinds();
+        }
+
+        public void ExecuteDefaultSettings()
+        {
+            ExecuteDefaultBinds();
+
+            _config["UserSettings"].Clear();
+            // ClientInput defaults
+            _config["UserSettings"].Add("input.sensitivity", 1);
+            _config["UserSettings"].Add("input.pitchmodifier", 1.0f);
+            _config["UserSettings"].Add("input.adsmodifier", 1.0f);
+            _config["UserSettings"].Add("input.toggleads", true);
+            _config["UserSettings"].Add("input.confinecursor", false);
+
             // Graphics/video defaults
             _config["UserSettings"].Add("video.vsynccount", 0);
             _config["UserSettings"].Add("video.gpuframequeue", 2);
@@ -191,12 +203,6 @@ namespace Fragsurf.Client
             _config["UserSettings"].Add("cam.fov", 75);
             _config["UserSettings"].Add("cam.clipdistance", 500);
 
-            // Modal defaults
-            _config["Binds"].Add("backquote", "modal.toggle console");
-            _config["Binds"].Add("y", "modal.toggle chatbox");
-            _config["Binds"].Add("f1", "modal.toggle perf");
-
-            ExecuteConfigBinds();
             ExecuteUserSettings();
         }
 

@@ -24,7 +24,7 @@ namespace Fragsurf
                 if(args.Length != _paramInfo.Length)
                 {
                     DevConsole.WriteLine(string.Join(" ", args));
-                    DevConsole.WriteLine($"!> Got {args.Length} parameters, need {_paramInfo.Length}.  Wrap commands in quotes if it includes whitespace.  For example: bind BackQuote \"doc.toggle DevConsole\"");
+                    DevConsole.WriteLine($"!> Got {args.Length} parameters, need {_paramInfo.Length}.  Wrap commands in quotes if it includes whitespace.  For example: bind BackQuote \"modal.toggle console\"");
                     return;
                 }
                 var parameters = new List<object>();

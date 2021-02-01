@@ -21,7 +21,11 @@ namespace Fragsurf.UI
         private InputField[] _inputFields;
         private TMP_InputField[] _tmpInputFields;
 
-        public string Name => _modalName;
+        public string Name
+        {
+            get => _modalName;
+            set => _modalName = value;
+        }
         public CursorType CursorType => _cursorType;
         public bool IsOpen => _modalContainer.activeSelf;
 

@@ -15,7 +15,12 @@ namespace Fragsurf.Client
         private float _yaw;
         private float _yawMulti;
 
-        public static bool Blocked => UGuiManager.Instance.HasCursor();
+        public static bool Blocked 
+        {
+            get => Blockers.Count > 0 || UGuiManager.Instance.HasCursor();
+        }
+
+        public static List<object> Blockers = new List<object>();
         
         private InputActions _prevActionsDown;
         private InputActions _actionsDown;
