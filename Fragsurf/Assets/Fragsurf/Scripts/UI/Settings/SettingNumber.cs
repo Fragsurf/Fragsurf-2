@@ -23,6 +23,15 @@ namespace Fragsurf.UI
                 : TMP_InputField.ContentType.IntegerNumber;
         }
 
+        private void Update()
+        {
+            if(SettingName == "screen.refreshrate")
+            {
+                // anything to do with resolution is fucking jank so let's just make life easy.
+                _input.text = DevConsole.GetVariableAsString(SettingName);
+            }
+        }
+
         private void OnEndEdit(string value)
         {
             if (!_allowDecimal

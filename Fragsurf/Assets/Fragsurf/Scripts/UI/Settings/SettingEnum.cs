@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -12,6 +11,7 @@ namespace Fragsurf.UI
         [SerializeField]
         private TMP_Dropdown _dropdown;
         private Type _enumType;
+        private string[] _enumNames;
 
         protected override void _Initialize()
         {
@@ -27,19 +27,41 @@ namespace Fragsurf.UI
             SetDropdownValue();
         }
 
+        private void Update()
+        {
+            if(SettingName == "screen.mode")
+            {
+                // anything to do with resolution is fucking jank so let's just make life easy.
+                SetDropdownValue();
+            }
+        }
+
         private void OnValueChanged(int index)
         {
             DevConsole.ExecuteLine(SettingName + " " + _dropdown.options[index].text);
-            //SetDropdownValue();
+            SetDropdownValue();
         }
 
         private void SetDropdownValue()
         {
-            var val = DevConsole.GetVariableAsString(SettingName);
-            var names = Enum.GetNames(_enumType);
-            for (int i = 0; i < names.Length; i++)
+            if(_enumType == null)
             {
-                if (names[i].Equals(val, StringComparison.OrdinalIgnoreCase))
+                _enumType = DevConsole.GetVariableType(SettingName);
+                if(_enumType == null)
+                { 
+                    return; 
+                }
+            }
+
+            if(_enumNames == null)
+            {
+                _enumNames = Enum.GetNames(_enumType);
+            }
+
+            var val = DevConsole.GetVariableAsString(SettingName);
+            for (int i = 0; i < _enumNames.Length; i++)
+            {
+                if (_enumNames[i].Equals(val, StringComparison.OrdinalIgnoreCase))
                 {
                     _dropdown.SetValueWithoutNotify(i);
                     _dropdown.RefreshShownValue();
