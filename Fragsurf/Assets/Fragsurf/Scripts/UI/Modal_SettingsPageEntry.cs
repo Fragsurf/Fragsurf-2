@@ -14,6 +14,8 @@ namespace Fragsurf.UI
     public class Modal_SettingsPageEntry : EntryElement<SettingsPageData>
     {
 
+        public List<Modal_SettingsSettingEntry> SettingsEntries { get; } = new List<Modal_SettingsSettingEntry>();
+
         private Modal_SettingsSettingEntry _settingTemplate;
 
         private void OnEnable()
@@ -28,7 +30,8 @@ namespace Fragsurf.UI
 
             foreach (var settingName in data.SettingNames)
             {
-                _settingTemplate.Append(settingName);
+                var entry = _settingTemplate.Append(settingName) as Modal_SettingsSettingEntry;
+                SettingsEntries.Add(entry);
             }
         }
 

@@ -37,14 +37,12 @@ namespace Fragsurf.UI
             _action = path[2];
             Setting.SetLabel($"{header}/{_action}");
             _button.onClick.AddListener(OnClick);
-
-            UpdateValue();
         }
 
         private void OnEnable()
         {
             _settingBinds.Add(this);
-            UpdateValue();
+            LoadValue();
         }
 
         private void OnDisable()
@@ -67,11 +65,13 @@ namespace Fragsurf.UI
                         {
                             break;
                         }
-                        UserSettings.Binds.HardBind(kc.ToString(), _action);
-                        foreach (var settingBind in _settingBinds)
-                        {
-                            settingBind.UpdateValue();
-                        }
+                        Queue($"hardbind {kc} \"{_action}\"");
+                        break;
+                        //UserSettings.Binds.HardBind(kc.ToString(), _action);
+                        //foreach (var settingBind in _settingBinds)
+                        //{
+                        //    settingBind.UpdateValue();
+                        //}
                     }
                 }
             }
@@ -92,7 +92,7 @@ namespace Fragsurf.UI
             DisableInput();
         }
 
-        public void UpdateValue()
+        public override void LoadValue()
         {
             var binds = UserSettings.Binds.FindBindDatas(_action);
             if (binds != null && binds.Count > 0)

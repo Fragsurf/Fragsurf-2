@@ -71,36 +71,30 @@ namespace Fragsurf.UI
         public void OpenModal<T>()
             where T : UGuiModal
         {
-            foreach (var modal in _modals)
+            var m = Find<T>();
+            if (m)
             {
-                if (modal.Value is T)
-                {
-                    modal.Value.Open();
-                }
+                m.Open();
             }
         }
 
         public void CloseModal<T>()
             where T : UGuiModal
         {
-            foreach (var modal in _modals)
+            var m = Find<T>();
+            if (m)
             {
-                if (modal.Value is T)
-                {
-                    modal.Value.Close();
-                }
+                m.Close();
             }
         }
 
         public void ToggleModal<T>()
             where T : UGuiModal
         {
-            foreach (var modal in _modals)
+            var m = Find<T>();
+            if (m)
             {
-                if (modal.Value is T)
-                {
-                    modal.Value.Toggle();
-                }
+                m.Toggle();
             }
         }
 
@@ -132,6 +126,19 @@ namespace Fragsurf.UI
             {
                 modal.Toggle();
             }
+        }
+
+        public T Find<T>()
+            where T : UGuiModal
+        {
+            foreach (var m in _modals)
+            {
+                if (m.Value is T)
+                {
+                    return m.Value as T;
+                }
+            }
+            return null;
         }
 
         public UGuiModal Find(string name)

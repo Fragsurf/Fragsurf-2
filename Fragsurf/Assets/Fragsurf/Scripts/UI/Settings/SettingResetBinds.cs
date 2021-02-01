@@ -23,8 +23,13 @@ namespace Fragsurf.UI
 
             foreach(var sb in GameObject.FindObjectsOfType<SettingBind>(true))
             {
-                sb.UpdateValue();
+                sb.LoadValue();
             }
+        }
+
+        public override void LoadValue()
+        {
+            
         }
 
     }

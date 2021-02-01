@@ -84,6 +84,7 @@ namespace Fragsurf.Utility
             if (rt)
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
             }
         }
 

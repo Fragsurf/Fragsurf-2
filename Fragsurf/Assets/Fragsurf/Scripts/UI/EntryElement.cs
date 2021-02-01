@@ -72,5 +72,14 @@ namespace Fragsurf.UI
             return entry;
         }
 
+        public void Remove(EntryElement<T> child)
+        {
+            if (child && child.gameObject)
+            {
+                _children.Remove(child.gameObject);
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+
     }
 }

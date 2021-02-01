@@ -17,6 +17,8 @@ namespace Fragsurf.UI
     public class Modal_SettingsSettingEntry : EntryElement<string>
     {
 
+        public string SettingName { get; private set; }
+
         [SerializeField]
         private List<CustomSettingElement> _customElements;
         [SerializeField]
@@ -35,9 +37,12 @@ namespace Fragsurf.UI
         private TMP_Text _label;
         [SerializeField]
         private TMP_Text _description;
+        [SerializeField]
+        private GameObject _pendingNotifier;
 
         public override void LoadData(string settingName)
         {
+            SettingName = settingName;
             _label.text = settingName;
             var settingElement = GetSettingElement(settingName);
             if(settingElement == null)
@@ -48,6 +53,17 @@ namespace Fragsurf.UI
             SetDescription(string.Empty);
             settingElement.gameObject.SetActive(true);
             settingElement.Initialize(this, settingName);
+
+            foreach(var se in GetComponentsInChildren<SettingElement>())
+            {
+                if(se == settingElement)
+                {
+                    continue;
+                }
+                GameObject.Destroy(se.gameObject);
+            }
+
+            SetPendingChanges(false);
         }
 
         public void SetLabel(string text)
@@ -60,6 +76,14 @@ namespace Fragsurf.UI
             _description.gameObject.SetActive(!string.IsNullOrEmpty(text));
             _description.text = text;
             transform.parent.gameObject.RebuildLayout();
+        }
+
+        public void SetPendingChanges(bool pending)
+        {
+            if (_pendingNotifier)
+            {
+                _pendingNotifier.SetActive(pending);
+            }
         }
 
         private SettingElement GetSettingElement(string settingName)

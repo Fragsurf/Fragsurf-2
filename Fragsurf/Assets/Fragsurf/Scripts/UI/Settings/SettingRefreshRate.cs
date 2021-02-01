@@ -34,7 +34,7 @@ namespace Fragsurf.UI
 
         private void Update()
         {
-            SetDropdownValue();
+            LoadValue();
             var label = Screen.fullScreenMode != FullScreenMode.ExclusiveFullScreen
                 ? "Refresh rate only applies in ExclusiveFullScreen mode!"
                 : string.Empty;
@@ -46,7 +46,7 @@ namespace Fragsurf.UI
             Screen.SetResolution(Screen.width, Screen.height, Screen.fullScreenMode, int.Parse(_dropdown.options[idx].text));
         }
 
-        private void SetDropdownValue()
+        public override void LoadValue()
         {
             var curRR = Screen.currentResolution.refreshRate.ToString();
             var curRRp1 = (Screen.currentResolution.refreshRate + 1).ToString();

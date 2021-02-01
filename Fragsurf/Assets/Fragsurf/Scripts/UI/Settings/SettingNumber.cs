@@ -15,8 +15,6 @@ namespace Fragsurf.UI
 
         protected override void _Initialize()
         {
-            var val = DevConsole.GetVariableAsString(SettingName);
-            _input.text = val.ToString();
             _input.onEndEdit.AddListener(OnEndEdit);
             _input.contentType = _allowDecimal 
                 ? TMP_InputField.ContentType.DecimalNumber 
@@ -34,6 +32,11 @@ namespace Fragsurf.UI
             {
                 DevConsole.SetVariable(SettingName, fval);
             }
+            _input.text = DevConsole.GetVariableAsString(SettingName);
+        }
+
+        public override void LoadValue()
+        {
             _input.text = DevConsole.GetVariableAsString(SettingName);
         }
 

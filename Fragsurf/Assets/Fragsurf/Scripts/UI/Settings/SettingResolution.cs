@@ -28,8 +28,6 @@ namespace Fragsurf.UI
             _dropdown.ClearOptions();
             _dropdown.AddOptions(resolutions);
             _dropdown.onValueChanged.AddListener(OnValueChanged);
-
-            SetDropdownValue();
         }
 
         private void OnValueChanged(int index)
@@ -40,7 +38,7 @@ namespace Fragsurf.UI
             StartCoroutine(SetValueAfterFrame());
         }
 
-        private void SetDropdownValue()
+        public override void LoadValue()
         {
             var curResString = ScreenSettings.ResolutionToString(ScreenSettings.CurrentResolution());
             for(int i = 0; i < _dropdown.options.Count; i++)
@@ -58,7 +56,7 @@ namespace Fragsurf.UI
         {
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
-            SetDropdownValue();
+            LoadValue();
         }
 
     }

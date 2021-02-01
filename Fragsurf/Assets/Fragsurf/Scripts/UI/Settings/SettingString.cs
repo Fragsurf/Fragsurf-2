@@ -11,8 +11,6 @@ namespace Fragsurf.UI
 
         protected override void _Initialize()
         {
-            var val = DevConsole.GetVariable<string>(SettingName);
-            _input.text = val.ToString();
             _input.onEndEdit.AddListener(OnEndEdit);
             _input.contentType = TMP_InputField.ContentType.Alphanumeric;
         }
@@ -20,7 +18,13 @@ namespace Fragsurf.UI
         private void OnEndEdit(string value)
         {
             DevConsole.SetVariable(SettingName, value);
-            _input.text = DevConsole.GetVariable<string>(SettingName);
+            LoadValue();
+        }
+
+        public override void LoadValue()
+        {
+            var val = DevConsole.GetVariable<string>(SettingName);
+            _input.text = val.ToString();
         }
 
     }

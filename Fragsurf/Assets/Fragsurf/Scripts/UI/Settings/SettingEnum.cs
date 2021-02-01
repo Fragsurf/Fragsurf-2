@@ -24,7 +24,6 @@ namespace Fragsurf.UI
             }
             _dropdown.AddOptions(Enum.GetNames(_enumType).ToList());
             _dropdown.onValueChanged.AddListener(OnValueChanged);
-            SetDropdownValue();
         }
 
         private void Update()
@@ -32,17 +31,17 @@ namespace Fragsurf.UI
             if(SettingName == "screen.mode")
             {
                 // anything to do with resolution is fucking jank so let's just make life easy.
-                SetDropdownValue();
+                LoadValue();
             }
         }
 
         private void OnValueChanged(int index)
         {
             DevConsole.ExecuteLine(SettingName + " " + _dropdown.options[index].text);
-            SetDropdownValue();
+            LoadValue();
         }
 
-        private void SetDropdownValue()
+        public override void LoadValue()
         {
             if(_enumType == null)
             {
