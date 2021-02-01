@@ -10,7 +10,7 @@ namespace Fragsurf.Shared.Player
     public class DefaultMovementController : MovementController, ISurfControllable
     {
 
-        private MovementConfig _moveConfig = new MovementConfig();
+        //private MovementConfig _moveConfig = new MovementConfig();
         private SurfController _surfController = new SurfController();
         private List<FSMTrigger> _touchingTriggers = new List<FSMTrigger>();
         private List<FSMTrigger> _lastTickTriggers = new List<FSMTrigger>();
@@ -65,7 +65,7 @@ namespace Fragsurf.Shared.Player
                 MoveData.SideMove = -Human.Game.GameMovement.Config.SideSpeed;
             }
 
-            _surfController.CalculateMovement(this, _moveConfig, Time.fixedDeltaTime);
+            _surfController.CalculateMovement(this, Human.Game.GameMovement.Config, Time.fixedDeltaTime);
 
             MoveData.OldButtons = MoveData.Buttons;
 

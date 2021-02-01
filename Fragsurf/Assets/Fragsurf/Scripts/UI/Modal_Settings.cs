@@ -2,6 +2,7 @@ using Fragsurf.Client;
 using Fragsurf.Movement;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,16 +53,20 @@ namespace Fragsurf.UI
             }
 
             CreateBindsPage();
+            CreateServerPage();
 
             _saveButton.onClick.AddListener(SaveChanges);
             _cancelButton.onClick.AddListener(ClearChanges);
         }
 
+        protected override void OnOpen()
+        {
+            ClearChanges();
+        }
+
         protected override void OnClose()
         {
             ClearChanges();
-
-            base.OnClose();
         }
 
         private void CreatePage(string category, List<string> settingNames)
@@ -80,6 +85,11 @@ namespace Fragsurf.UI
             };
 
             _categoryTemplate.Append(categoryData);
+        }
+
+        private void CreateServerPage()
+        {
+            CreatePage("server", DevConsole.GetVariablesWithFlags(ConVarFlags.Replicator).Distinct().ToList());
         }
 
         private void CreateBindsPage()

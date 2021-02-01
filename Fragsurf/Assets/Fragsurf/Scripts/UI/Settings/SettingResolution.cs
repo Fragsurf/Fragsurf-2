@@ -30,6 +30,14 @@ namespace Fragsurf.UI
             _dropdown.onValueChanged.AddListener(OnValueChanged);
         }
 
+        private void Update()
+        {
+            if (!Setting.PendingChanges)
+            {
+                LoadValue();
+            }
+        }
+
         private void OnValueChanged(int index)
         {
             Queue($"{SettingName} {_dropdown.options[index].text}");

@@ -1,6 +1,4 @@
 using Fragsurf.Shared;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fragsurf.Mapping
@@ -11,6 +9,7 @@ namespace Fragsurf.Mapping
 
         protected override void _Load(FSGameLoop game)
         {
+            LockVars = false;
             Debug.Log("Test Gamemode Loaded");
         }
 
