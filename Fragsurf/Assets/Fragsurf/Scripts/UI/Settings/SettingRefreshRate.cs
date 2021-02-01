@@ -10,8 +10,6 @@ namespace Fragsurf.UI
     {
 
         [SerializeField]
-        private TMP_Text _warningLabel;
-        [SerializeField]
         private TMP_Dropdown _dropdown;
 
         //private int[] _stupidRefreshRates = { 23, 59, 84, 99, 119, 143 };
@@ -37,9 +35,10 @@ namespace Fragsurf.UI
         private void Update()
         {
             SetDropdownValue();
-            _warningLabel.text = Screen.fullScreenMode != FullScreenMode.ExclusiveFullScreen
+            var label = Screen.fullScreenMode != FullScreenMode.ExclusiveFullScreen
                 ? "Refresh rate only applies in ExclusiveFullScreen mode!"
                 : string.Empty;
+            Setting.SetDescription(label);
         }
 
         private void OnValueChanged(int idx)

@@ -19,23 +19,28 @@ namespace Fragsurf.UI
         [SerializeField]
         private Button _pageButton;
 
-        private static Modal_SettingsPageEntry _visiblePage;
+        private Modal_SettingsPageEntry _page;
+
+        private static Modal_SettingsCategoryEntry _selectedCategory;
 
         public override void LoadData(SettingsCategoryData data)
         {
             _categoryLabel.text = data.CategoryName;
-            _pageButton.onClick.AddListener(() => ShowPage(data.Page));
+            _page = data.Page;
+            _pageButton.onClick.AddListener(ShowPage);
         }
 
-        private void ShowPage(Modal_SettingsPageEntry page)
+        private void ShowPage()
         {
-            if (_visiblePage)
+            if (_selectedCategory)
             {
-                _visiblePage.gameObject.SetActive(false);
-                _visiblePage = null;
+                _selectedCategory._pageButton.interactable = true;
+                _selectedCategory._page.gameObject.SetActive(false);
+                _selectedCategory = null;
             }
-            _visiblePage = page;
-            page.gameObject.SetActive(true);
+            _selectedCategory = this;
+            _selectedCategory._pageButton.interactable = false;
+            _page.gameObject.SetActive(true);
         }
 
     }

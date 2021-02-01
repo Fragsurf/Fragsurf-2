@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Fragsurf.UI
@@ -8,9 +7,11 @@ namespace Fragsurf.UI
     {
 
         public string SettingName { get; private set; }
+        public Modal_SettingsSettingEntry Setting { get; private set; }
 
-        public void Initialize(string settingName)
+        public void Initialize(Modal_SettingsSettingEntry setting, string settingName)
         {
+            Setting = setting;
             SettingName = settingName;
             _Initialize();
         }
