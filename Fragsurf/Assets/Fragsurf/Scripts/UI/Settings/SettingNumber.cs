@@ -13,6 +13,7 @@ namespace Fragsurf.UI
         [SerializeField]
         private bool _allowDecimal;
 
+
         protected override void _Initialize()
         {
             _input.onEndEdit.AddListener(OnEndEdit);
@@ -23,16 +24,11 @@ namespace Fragsurf.UI
 
         private void OnEndEdit(string value)
         {
-            if (!_allowDecimal
-                && int.TryParse(value, out int val))
+            if (value.Equals(DevConsole.GetVariableAsString(SettingName)))
             {
-                DevConsole.SetVariable(SettingName, val);
+                return;
             }
-            else if(float.TryParse(value, out float fval))
-            {
-                DevConsole.SetVariable(SettingName, fval);
-            }
-            _input.text = DevConsole.GetVariableAsString(SettingName);
+            Queue($"{SettingName} {value}");
         }
 
         public override void LoadValue()

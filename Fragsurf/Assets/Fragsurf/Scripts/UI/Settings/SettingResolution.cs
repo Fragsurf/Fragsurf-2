@@ -32,10 +32,11 @@ namespace Fragsurf.UI
 
         private void OnValueChanged(int index)
         {
-            var newRes = _dropdown.options[index].text;
-            var res = ScreenSettings.StringToResolution(newRes);
-            Screen.SetResolution(res.width, res.height, Screen.fullScreenMode, res.refreshRate);
-            StartCoroutine(SetValueAfterFrame());
+            Queue($"{SettingName} {_dropdown.options[index].text}");
+            //var newRes = _dropdown.options[index].text;
+            //var res = ScreenSettings.StringToResolution(newRes);
+            //Screen.SetResolution(res.width, res.height, Screen.fullScreenMode, res.refreshRate);
+            //StartCoroutine(SetValueAfterFrame());
         }
 
         public override void LoadValue()

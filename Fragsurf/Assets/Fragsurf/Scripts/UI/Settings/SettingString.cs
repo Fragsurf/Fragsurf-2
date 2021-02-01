@@ -17,8 +17,11 @@ namespace Fragsurf.UI
 
         private void OnEndEdit(string value)
         {
-            DevConsole.SetVariable(SettingName, value);
-            LoadValue();
+            if (value.Equals(DevConsole.GetVariableAsString(SettingName)))
+            {
+                return;
+            }
+            Queue($"{SettingName} {value}");
         }
 
         public override void LoadValue()

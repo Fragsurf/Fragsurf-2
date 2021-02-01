@@ -28,7 +28,8 @@ namespace Fragsurf.UI
 
         private void Update()
         {
-            if(SettingName == "screen.mode")
+            if(SettingName == "screen.mode"
+                && !Setting.PendingChanges)
             {
                 // anything to do with resolution is fucking jank so let's just make life easy.
                 LoadValue();
@@ -37,8 +38,7 @@ namespace Fragsurf.UI
 
         private void OnValueChanged(int index)
         {
-            DevConsole.ExecuteLine(SettingName + " " + _dropdown.options[index].text);
-            LoadValue();
+            Queue($"{SettingName} {_dropdown.options[index].text}");
         }
 
         public override void LoadValue()

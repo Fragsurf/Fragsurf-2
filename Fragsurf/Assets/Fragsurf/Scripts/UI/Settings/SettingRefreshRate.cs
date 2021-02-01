@@ -34,16 +34,23 @@ namespace Fragsurf.UI
 
         private void Update()
         {
+            if (Setting.PendingChanges)
+            {
+                return;
+            }
+
             LoadValue();
             var label = Screen.fullScreenMode != FullScreenMode.ExclusiveFullScreen
                 ? "Refresh rate only applies in ExclusiveFullScreen mode!"
                 : string.Empty;
+
             Setting.SetDescription(label);
         }
 
         private void OnValueChanged(int idx)
         {
-            Screen.SetResolution(Screen.width, Screen.height, Screen.fullScreenMode, int.Parse(_dropdown.options[idx].text));
+            Queue($"{SettingName} {_dropdown.options[idx].text}");
+            //Screen.SetResolution(Screen.width, Screen.height, Screen.fullScreenMode, int.Parse(_dropdown.options[idx].text));
         }
 
         public override void LoadValue()

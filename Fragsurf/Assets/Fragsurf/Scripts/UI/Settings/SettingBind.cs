@@ -66,6 +66,7 @@ namespace Fragsurf.UI
                             break;
                         }
                         Queue($"hardbind {kc} \"{_action}\"");
+                        _buttonText.text = kc.ToString();
                         break;
                         //UserSettings.Binds.HardBind(kc.ToString(), _action);
                         //foreach (var settingBind in _settingBinds)

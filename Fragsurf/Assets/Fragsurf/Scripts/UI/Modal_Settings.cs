@@ -59,9 +59,9 @@ namespace Fragsurf.UI
 
         protected override void OnClose()
         {
-            base.OnClose();
-
             ClearChanges();
+
+            base.OnClose();
         }
 
         private void CreatePage(string category, List<string> settingNames)
@@ -106,16 +106,6 @@ namespace Fragsurf.UI
                 DevConsole.ExecuteLine(kvp.Value.Data.Command);
             }
             ClearChanges();
-
-            foreach(var settingElement in GetComponentsInChildren<SettingElement>(true))
-            {
-                if (string.IsNullOrEmpty(settingElement.SettingName)
-                    || !settingElement.Initialized)
-                {
-                    continue;
-                }
-                settingElement.LoadValue();
-            }
         }
 
         private void ClearChanges()
@@ -132,6 +122,16 @@ namespace Fragsurf.UI
                         setting.SetPendingChanges(false);
                     }
                 }
+            }
+
+            foreach (var settingElement in GetComponentsInChildren<SettingElement>(true))
+            {
+                if (string.IsNullOrEmpty(settingElement.SettingName)
+                    || !settingElement.Initialized)
+                {
+                    continue;
+                }
+                settingElement.LoadValue();
             }
 
             if (_changeEntry)

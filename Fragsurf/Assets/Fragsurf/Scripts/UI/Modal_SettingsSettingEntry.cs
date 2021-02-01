@@ -18,6 +18,7 @@ namespace Fragsurf.UI
     {
 
         public string SettingName { get; private set; }
+        public bool PendingChanges { get; private set; }
 
         [SerializeField]
         private List<CustomSettingElement> _customElements;
@@ -80,6 +81,8 @@ namespace Fragsurf.UI
 
         public void SetPendingChanges(bool pending)
         {
+            PendingChanges = pending;
+
             if (_pendingNotifier)
             {
                 _pendingNotifier.SetActive(pending);

@@ -16,7 +16,12 @@ namespace Fragsurf.UI
 
         private void OnChanged(bool newValue)
         {
-            DevConsole.SetVariable(SettingName, newValue);
+            if(newValue == DevConsole.GetVariable<bool>(SettingName))
+            {
+                return;
+            }
+            Queue($"{SettingName} {newValue}");
+            //DevConsole.SetVariable(SettingName, newValue);
         }
 
         public override void LoadValue()
