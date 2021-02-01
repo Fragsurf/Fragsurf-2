@@ -20,6 +20,7 @@ namespace Fragsurf.UI
         private void OnEndEdit(string value)
         {
             DevConsole.SetVariable(SettingName, value);
+            _input.text = DevConsole.GetVariable<string>(SettingName);
         }
 
     }

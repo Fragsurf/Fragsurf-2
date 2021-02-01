@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +18,7 @@ namespace Fragsurf.UI
         private void OnChanged(bool newValue)
         {
             DevConsole.SetVariable(SettingName, newValue);
+            _toggle.isOn = DevConsole.GetVariable<bool>(SettingName);
         }
 
     }

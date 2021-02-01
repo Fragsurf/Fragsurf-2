@@ -1,13 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
 namespace Fragsurf.UI
 {
+    [Serializable]
+    public class CustomSettingElement
+    {
+        public string SettingName;
+        public SettingElement Element;
+    }
+
     public class Modal_SettingsSettingEntry : EntryElement<string>
     {
 
+        [SerializeField]
+        private List<CustomSettingElement> _customElements;
         [SerializeField]
         private SettingNumber _integerElement;
         [SerializeField]
@@ -17,24 +27,35 @@ namespace Fragsurf.UI
         [SerializeField]
         private SettingString _stringElement;
         [SerializeField]
+        private SettingEnum _enumElement;
+        [SerializeField]
         private TMP_Text _label;
 
         public override void LoadData(string settingName)
         {
             _label.text = settingName;
-            var settingType = DevConsole.GetVariableType(settingName);
-            var settingElement = GetSettingElement(settingType);
+            var settingElement = GetSettingElement(settingName);
             if(settingElement == null)
             {
-                Debug.LogError("Unsupported setting type: " + settingType.Name);
+                Debug.LogError("Unsupported setting type: " + settingName);
                 return;
             }
             settingElement.gameObject.SetActive(true);
             settingElement.Initialize(settingName);
         }
 
-        private SettingElement GetSettingElement(Type type)
+        private SettingElement GetSettingElement(string settingName)
         {
+            var custom = _customElements.FirstOrDefault(x => x.SettingName.Equals(settingName, StringComparison.OrdinalIgnoreCase));
+            if (custom != null)
+            {
+                return custom.Element;
+            }
+            var type = DevConsole.GetVariableType(settingName);
+            if (type.IsEnum)
+            {
+                return _enumElement;
+            }
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Int32:

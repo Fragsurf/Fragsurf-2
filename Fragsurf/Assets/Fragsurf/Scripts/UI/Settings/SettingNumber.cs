@@ -34,6 +34,7 @@ namespace Fragsurf.UI
             {
                 DevConsole.SetVariable(SettingName, fval);
             }
+            _input.text = DevConsole.GetVariableAsString(SettingName);
         }
 
     }
