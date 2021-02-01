@@ -189,13 +189,10 @@ namespace Fragsurf
         public static string GetVariableAsString(string variableName)
         {
             var type = GetVariableType(variableName);
-            string value = null;
-            if (type == typeof(string)) { value = GetVariable<string>(variableName); }
-            else if (type == typeof(int)) { value = GetVariable<int>(variableName).ToString(); }
-            else if (type == typeof(float)) { value = GetVariable<float>(variableName).ToString(); }
-            else if (type == typeof(bool)) { value = GetVariable<bool>(variableName).ToString(); }
-            else if (type == typeof(byte)) { value = GetVariable<byte>(variableName).ToString(); }
-            return value ?? string.Empty;
+            var method = typeof(DevConsole).GetMethod(nameof(DevConsole.GetVariable));
+            var generic = method.MakeGenericMethod(type);
+            var result = generic.Invoke(null, new object[] { variableName });
+            return result != null ? result.ToString() : string.Empty;
         }
 
         public static T GetVariable<T>(string varName)

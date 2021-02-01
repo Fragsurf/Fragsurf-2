@@ -28,7 +28,7 @@ namespace ModTool.Editor
             CreatePackage(filePath, Path.GetDirectoryName(filePath));
         }
 
-        [PostProcessBuild]
+        //[PostProcessBuild]
         public static void CreateExporterPostBuild(BuildTarget target, string pathToBuiltProject)
         {
             var filePath = Path.Combine(Application.dataPath, "../", "Modding Toolkit.unitypackage");

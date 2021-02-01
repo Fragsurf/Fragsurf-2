@@ -1,4 +1,5 @@
 using Fragsurf.Client;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -36,22 +37,28 @@ namespace Fragsurf.UI
             var newRes = _dropdown.options[index].text;
             var res = ScreenSettings.StringToResolution(newRes);
             Screen.SetResolution(res.width, res.height, Screen.fullScreenMode, res.refreshRate);
-            SetDropdownValue();
+            StartCoroutine(SetValueAfterFrame());
         }
 
         private void SetDropdownValue()
         {
+            var curResString = ScreenSettings.ResolutionToString(ScreenSettings.CurrentResolution());
             for(int i = 0; i < _dropdown.options.Count; i++)
             {
-                var res = ScreenSettings.StringToResolution(_dropdown.options[i].text);
-                if (res.width == Screen.currentResolution.width
-                    && res.height == Screen.currentResolution.height
-                    && res.refreshRate == Screen.currentResolution.refreshRate)
+                if (_dropdown.options[i].text.Equals(curResString))
                 {
                     _dropdown.SetValueWithoutNotify(i);
+                    _dropdown.RefreshShownValue();
                     break;
                 }
             }
+        }
+
+        private IEnumerator SetValueAfterFrame()
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            SetDropdownValue();
         }
 
     }

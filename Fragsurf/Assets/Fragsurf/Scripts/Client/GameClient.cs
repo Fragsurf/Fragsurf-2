@@ -45,19 +45,6 @@ namespace Fragsurf.Client
 
         private void Start()
         {
-            try
-            {
-                var resString = DevConsole.GetVariable<string>("video.resolution");
-                var refreshRate = DevConsole.GetVariable<int>("video.refreshrate");
-                var fsmString = DevConsole.GetVariable<string>("video.screenmode");
-                var res = SettingFactory.StringToResolution(resString);
-                Enum.TryParse(fsmString, out FullScreenMode fsm);
-                Screen.SetResolution(res.width, res.height, fsm, refreshRate);
-            }
-            catch(Exception e)
-            {
-                UnityEngine.Debug.LogError(e.ToString());
-            }
         }
 
     }

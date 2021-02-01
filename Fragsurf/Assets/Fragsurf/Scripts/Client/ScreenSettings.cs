@@ -16,7 +16,7 @@ namespace Fragsurf.Client
         [ConVar("screen.resolution", "", ConVarFlags.UserSetting)]
         public string Resolution
         {
-            get => ResolutionToString(Screen.currentResolution);
+            get => ResolutionToString(CurrentResolution());
             set
             {
                 var res = StringToResolution(value);
@@ -34,10 +34,10 @@ namespace Fragsurf.Client
         [ConVar("screen.refreshrate", "", ConVarFlags.UserSetting)]
         public int RefreshRate
         {
-            get => Screen.currentResolution.refreshRate;
+            get => CurrentResolution().refreshRate;
             set
             {
-                var r = Screen.currentResolution;
+                var r = CurrentResolution();
                 Screen.SetResolution(r.width, r.height, Screen.fullScreenMode, value);
             }
         }
@@ -47,6 +47,16 @@ namespace Fragsurf.Client
         {
             get => QualitySettings.vSyncCount;
             set => QualitySettings.vSyncCount = Mathf.Clamp(value, 0, 2);
+        }
+
+        public static Resolution CurrentResolution()
+        {
+            return new Resolution()
+            {
+                width = Screen.width,
+                height = Screen.height,
+                refreshRate = Screen.currentResolution.refreshRate
+            };
         }
 
         public static string ResolutionToString(Resolution r)
@@ -64,14 +74,14 @@ namespace Fragsurf.Client
                 || !int.TryParse(split[1], out int height))
             {
                 Debug.LogError("Failed to parse resolution: " + s);
-                return Screen.currentResolution;
+                return CurrentResolution();
             }
 
             return new Resolution()
             {
                 width = width,
                 height = height,
-                refreshRate = Screen.currentResolution.refreshRate
+                refreshRate = CurrentResolution().refreshRate
             };
         }
 
