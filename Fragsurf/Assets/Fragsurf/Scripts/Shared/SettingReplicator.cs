@@ -37,8 +37,6 @@ namespace Fragsurf.Shared
                 return;
             }
 
-            UnityEngine.Debug.Log("Changed: " + varName);
-
             var replStr = varName + " " + DevConsole.GetVariableAsString(varName);
             var cp = PacketUtility.TakePacket<CustomPacket>();
             cp.Sc = SendCategory.UI_Important;
