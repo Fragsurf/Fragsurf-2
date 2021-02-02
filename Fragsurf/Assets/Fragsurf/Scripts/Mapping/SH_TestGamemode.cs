@@ -10,6 +10,9 @@ namespace Fragsurf.Mapping
     public class SH_TestGamemode : FSSharedScript
     {
 
+        [ConVar("test.okay", "This is a test variable :()", ConVarFlags.Replicator | ConVarFlags.Gamemode)]
+        public int TestOkay { get; set; }
+
         protected override void OnPlayerIntroduced(IPlayer player)
         {
             if (!Game.IsHost)

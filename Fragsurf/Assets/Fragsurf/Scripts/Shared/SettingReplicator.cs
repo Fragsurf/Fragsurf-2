@@ -22,20 +22,29 @@ namespace Fragsurf.Shared
 
         protected override void OnGameLoaded()
         {
-            var locked = (!Game.IsHost && Server.GameServer.Instance == null) || Game.GamemodeLoader.Gamemode.LockVars;
+            var locked = (FSGameLoop.GetGameInstance(true) == null) || Game.GamemodeLoader.Gamemode.LockVars;
 
             DevConsole.LockFlags(locked, ConVarFlags.Replicator);
             DevConsole.LockFlags(locked, ConVarFlags.Cheat);
+            DevConsole.LockFlags(locked, ConVarFlags.Gamemode);
         }
 
         private void FSConsole_OnVariableChanged(string varName)
         {
-            if (!Game.IsHost || !DevConsole.VariableHasFlags(varName, ConVarFlags.Replicator))
+            if (!Game.IsHost 
+                || !DevConsole.VariableHasFlags(varName, ConVarFlags.Replicator))
             {
                 return;
             }
 
-            // Broadcast new value for varName
+            UnityEngine.Debug.Log("Changed: " + varName);
+
+            var replStr = varName + " " + DevConsole.GetVariableAsString(varName);
+            var cp = PacketUtility.TakePacket<CustomPacket>();
+            cp.Sc = SendCategory.UI_Important;
+            cp.AddString(replStr);
+            cp.Label = "Replicate";
+            Game.Network.BroadcastPacket(cp);
         }
 
         protected override void OnPlayerIntroduced(IPlayer player)
@@ -45,17 +54,45 @@ namespace Fragsurf.Shared
                 return;
             }
 
-            // Send all replicators to player
+            var replStr = string.Empty;
+            var vars = DevConsole.GetVariablesWithFlags(ConVarFlags.Replicator);
+            foreach(var var in vars)
+            {
+                var str = var + " " + DevConsole.GetVariableAsString(var);
+                if(replStr == string.Empty)
+                {
+                    replStr = str;
+                }
+                else
+                {
+                    replStr += "&" + str;
+                }
+            }
+            var cp = PacketUtility.TakePacket<CustomPacket>();
+            cp.Sc = SendCategory.UI_Important;
+            cp.AddString(replStr);
+            cp.Label = "Replicate";
+            Game.Network.SendPacket(player.AccountId, cp);
         }
 
         protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
         {
-            if(Game.IsHost)
+            if(Game.IsHost
+                || FSGameLoop.GetGameInstance(true) != null
+                || !(packet is CustomPacket cp && cp.Label == "Replicate"))
             {
                 return;
             }
 
-            // if packet is replicate
+            var replStr = cp.GetString(0);
+            var cmds = replStr.Split('&');
+            if(cmds != null && cmds.Length > 0)
+            {
+                foreach(var cmd in cmds)
+                {
+                    DevConsole.ExecuteLine(cmd);
+                }
+            }
         }
 
     }

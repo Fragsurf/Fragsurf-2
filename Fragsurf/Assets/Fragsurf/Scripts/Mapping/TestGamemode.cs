@@ -10,6 +10,7 @@ namespace Fragsurf.Mapping
         protected override void _Load(FSGameLoop game)
         {
             LockVars = false;
+
             Debug.Log("Test Gamemode Loaded");
         }
 

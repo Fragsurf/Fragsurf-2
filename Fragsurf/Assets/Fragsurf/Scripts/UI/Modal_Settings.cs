@@ -51,10 +51,6 @@ namespace Fragsurf.UI
 
         private void CreatePages()
         {
-            _pageTemplate.Clear();
-            _categoryTemplate.Clear();
-            _changeEntry.Clear();
-
             var userSettings = DevConsole.GetVariablesWithFlags(ConVarFlags.UserSetting);
             var userSettingCategories = new List<string>();
 
@@ -88,11 +84,25 @@ namespace Fragsurf.UI
             }
 
             CreatePage("binds", bindSettings);
-            CreatePage("server", DevConsole.GetVariablesWithFlags(ConVarFlags.Replicator).Distinct().ToList());
         }
 
-        private void CreatePage(string category, List<string> settingNames)
+        private Dictionary<string, Tuple<Modal_SettingsPageEntry, Modal_SettingsCategoryEntry>> _pages
+            = new Dictionary<string, Tuple<Modal_SettingsPageEntry, Modal_SettingsCategoryEntry>>(StringComparer.OrdinalIgnoreCase);
+
+        public void RemovePage(string pageName)
         {
+            if (_pages.ContainsKey(pageName))
+            {
+                _pageTemplate.Remove(_pages[pageName].Item1);
+                _categoryTemplate.Remove(_pages[pageName].Item2);
+                _pages.Remove(pageName);
+            }
+        }
+
+        public void CreatePage(string pageName, List<string> settingNames)
+        {
+            RemovePage(pageName);
+
             var pageData = new SettingsPageData()
             {
                 SettingNames = settingNames
@@ -102,11 +112,13 @@ namespace Fragsurf.UI
 
             var categoryData = new SettingsCategoryData()
             {
-                CategoryName = category,
+                CategoryName = pageName,
                 Page = page
             };
 
-            _categoryTemplate.Append(categoryData);
+            var cat = _categoryTemplate.Append(categoryData) as Modal_SettingsCategoryEntry;
+
+            _pages[pageName] = new Tuple<Modal_SettingsPageEntry, Modal_SettingsCategoryEntry>(page, cat);
         }
 
         private void SaveChanges()
