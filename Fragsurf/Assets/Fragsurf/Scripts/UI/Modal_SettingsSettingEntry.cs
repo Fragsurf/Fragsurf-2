@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Fragsurf.UI
 {
@@ -14,7 +15,7 @@ namespace Fragsurf.UI
         public SettingElement Element;
     }
 
-    public class Modal_SettingsSettingEntry : EntryElement<string>
+    public class Modal_SettingsSettingEntry : EntryElement<string>, IPointerDownHandler
     {
 
         public string SettingName { get; private set; }
@@ -43,23 +44,26 @@ namespace Fragsurf.UI
         [SerializeField]
         private GameObject _pendingNotifier;
 
+        private string _originalValue;
+        private SettingElement _settingElement;
+
         public override void LoadData(string settingName)
         {
             SettingName = settingName;
             _label.text = settingName;
-            var settingElement = GetSettingElement(settingName);
-            if(settingElement == null)
+            _settingElement = GetSettingElement(settingName);
+            if(_settingElement == null)
             {
                 Debug.LogError("Unsupported setting type: " + settingName);
                 return;
             }
             SetDescription(string.Empty);
-            settingElement.gameObject.SetActive(true);
-            settingElement.Initialize(this, settingName);
+            _settingElement.gameObject.SetActive(true);
+            _settingElement.Initialize(this, settingName);
 
             foreach(var se in GetComponentsInChildren<SettingElement>())
             {
-                if(se == settingElement)
+                if(se == _settingElement)
                 {
                     continue;
                 }
@@ -67,6 +71,8 @@ namespace Fragsurf.UI
             }
 
             SetPendingChanges(false);
+
+            _originalValue = DevConsole.GetVariableAsString(settingName);
         }
 
         public void SetLabel(string text)
@@ -139,6 +145,18 @@ namespace Fragsurf.UI
             }
         }
 
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if(_settingElement == _bindElement
+                || eventData.button != PointerEventData.InputButton.Right)
+            {
+                return;
+            }
+
+            var cmd = $"{SettingName} {_originalValue}";
+            UGuiManager.Instance.Find<Modal_Settings>().QueueCommand(SettingName, cmd);
+            _settingElement.LoadValue(_originalValue);
+        }
     }
 }
 

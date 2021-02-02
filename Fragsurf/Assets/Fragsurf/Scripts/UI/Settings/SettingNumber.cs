@@ -31,9 +31,9 @@ namespace Fragsurf.UI
             Queue($"{SettingName} {value}");
         }
 
-        public override void LoadValue()
+        public override void LoadValue(string val)
         {
-            _input.text = DevConsole.GetVariableAsString(SettingName);
+            _input.text = val;
         }
 
     }

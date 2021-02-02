@@ -22,7 +22,12 @@ namespace Fragsurf.UI
 
         protected abstract void _Initialize();
 
-        public abstract void LoadValue();
+        public virtual void LoadValue()
+        {
+            LoadValue(DevConsole.GetVariableAsString(SettingName));
+        }
+
+        public abstract void LoadValue(string val);
 
         protected void Queue(string command)
         {

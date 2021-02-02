@@ -32,6 +32,11 @@ namespace Fragsurf.UI
             
         }
 
+        public override void LoadValue(string val)
+        {
+
+        }
+
     }
 }
 

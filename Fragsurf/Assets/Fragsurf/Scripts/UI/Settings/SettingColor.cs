@@ -23,9 +23,14 @@ namespace Fragsurf.UI
             });
         }
 
-        public override void LoadValue()
+        public override void LoadValue(string val)
         {
-            _previewColorImage.color = DevConsole.GetVariable<Color>(SettingName);
+            if (val != null && val.Length == 8 && val[0] != '#')
+            {
+                val = "#" + val;
+            }
+            ColorUtility.TryParseHtmlString(val, out Color color);
+            _previewColorImage.color = color;
         }
 
         private void OnSave(Color newColor)

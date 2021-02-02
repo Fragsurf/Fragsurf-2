@@ -53,12 +53,12 @@ namespace Fragsurf.UI
             //Screen.SetResolution(Screen.width, Screen.height, Screen.fullScreenMode, int.Parse(_dropdown.options[idx].text));
         }
 
-        public override void LoadValue()
+        public override void LoadValue(string val)
         {
-            var curRR = Screen.currentResolution.refreshRate.ToString();
-            var curRRp1 = (Screen.currentResolution.refreshRate + 1).ToString();
-            var curRRm1 = (Screen.currentResolution.refreshRate - 1).ToString();
-            for(int i = 0; i < _dropdown.options.Count; i++)
+            int.TryParse(val, out int curRR);
+            var curRRp1 = (curRR + 1).ToString();
+            var curRRm1 = (curRR - 1).ToString();
+            for (int i = 0; i < _dropdown.options.Count; i++)
             {
                 if (_dropdown.options[i].text.Equals(curRR)
                     || _dropdown.options[i].text.Equals(curRRp1)

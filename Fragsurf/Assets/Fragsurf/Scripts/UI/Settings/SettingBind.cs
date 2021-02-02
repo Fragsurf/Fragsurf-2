@@ -93,6 +93,11 @@ namespace Fragsurf.UI
             DisableInput();
         }
 
+        public override void LoadValue(string val)
+        {
+
+        }
+
         public override void LoadValue()
         {
             var binds = UserSettings.Binds.FindBindDatas(_action);

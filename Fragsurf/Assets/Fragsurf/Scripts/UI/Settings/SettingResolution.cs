@@ -41,31 +41,19 @@ namespace Fragsurf.UI
         private void OnValueChanged(int index)
         {
             Queue($"{SettingName} {_dropdown.options[index].text}");
-            //var newRes = _dropdown.options[index].text;
-            //var res = ScreenSettings.StringToResolution(newRes);
-            //Screen.SetResolution(res.width, res.height, Screen.fullScreenMode, res.refreshRate);
-            //StartCoroutine(SetValueAfterFrame());
         }
 
-        public override void LoadValue()
+        public override void LoadValue(string val)
         {
-            var curResString = ScreenSettings.ResolutionToString(ScreenSettings.CurrentResolution());
-            for(int i = 0; i < _dropdown.options.Count; i++)
+            for (int i = 0; i < _dropdown.options.Count; i++)
             {
-                if (_dropdown.options[i].text.Equals(curResString))
+                if (_dropdown.options[i].text.Equals(val))
                 {
                     _dropdown.SetValueWithoutNotify(i);
                     _dropdown.RefreshShownValue();
                     break;
                 }
             }
-        }
-
-        private IEnumerator SetValueAfterFrame()
-        {
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-            LoadValue();
         }
 
     }

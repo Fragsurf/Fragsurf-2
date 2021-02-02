@@ -41,23 +41,22 @@ namespace Fragsurf.UI
             Queue($"{SettingName} {_dropdown.options[index].text}");
         }
 
-        public override void LoadValue()
+        public override void LoadValue(string val)
         {
-            if(_enumType == null)
+            if (_enumType == null)
             {
                 _enumType = DevConsole.GetVariableType(SettingName);
-                if(_enumType == null)
-                { 
-                    return; 
+                if (_enumType == null)
+                {
+                    return;
                 }
             }
 
-            if(_enumNames == null)
+            if (_enumNames == null)
             {
                 _enumNames = Enum.GetNames(_enumType);
             }
 
-            var val = DevConsole.GetVariableAsString(SettingName);
             for (int i = 0; i < _enumNames.Length; i++)
             {
                 if (_enumNames[i].Equals(val, StringComparison.OrdinalIgnoreCase))

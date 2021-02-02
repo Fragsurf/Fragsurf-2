@@ -21,12 +21,17 @@ namespace Fragsurf.UI
                 return;
             }
             Queue($"{SettingName} {newValue}");
-            //DevConsole.SetVariable(SettingName, newValue);
+        }
+
+        public override void LoadValue(string val)
+        {
+            bool.TryParse(val, out bool bval);
+            _toggle.isOn = bval;
         }
 
         public override void LoadValue()
         {
-            _toggle.isOn = DevConsole.GetVariable<bool>(SettingName);
+            LoadValue(DevConsole.GetVariable<bool>(SettingName).ToString());
         }
 
     }
