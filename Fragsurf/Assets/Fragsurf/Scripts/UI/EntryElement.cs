@@ -37,15 +37,9 @@ namespace Fragsurf.UI
                 _children = new List<GameObject>();
             }
 
-            var clone = GameObject.Instantiate(gameObject).GetComponent<EntryElement<T>>();
-            clone.gameObject.SetActive(true);
+            var clone = GameObject.Instantiate(gameObject, transform.parent).GetComponent<EntryElement<T>>();
             _children.Add(clone.gameObject);
-            var rt = clone.GetComponent<RectTransform>();
-            var parentRt = transform.parent.GetComponent<RectTransform>();
-            rt.SetParent(parentRt);
-            rt.localPosition = Vector3.zero;
-            rt.localRotation = Quaternion.identity;
-            rt.localScale = Vector3.one;
+            clone.gameObject.SetActive(true);
             clone.LoadData(data);
             transform.parent.gameObject.RebuildLayout();
 

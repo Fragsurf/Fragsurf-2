@@ -33,30 +33,10 @@ namespace Fragsurf.UI
             _categoryTemplate.gameObject.SetActive(false);
             _changeEntry.gameObject.SetActive(false);
 
-            var allSettings = DevConsole.GetVariablesWithFlags(ConVarFlags.UserSetting);
-            var categories = new List<string>();
-
-            foreach(var cmd in allSettings)
-            {
-                var categoryName = cmd.Substring(0, cmd.IndexOf('.'));
-                if (categories.Contains(categoryName))
-                {
-                    continue;
-                }
-                categories.Add(categoryName);
-            }
-
-            foreach(var category in categories)
-            {
-                var categorySettings = allSettings.FindAll(x => x.StartsWith(category, StringComparison.OrdinalIgnoreCase));
-                CreatePage(category, categorySettings);
-            }
-
-            CreateBindsPage();
-            CreateServerPage();
-
             _saveButton.onClick.AddListener(SaveChanges);
             _cancelButton.onClick.AddListener(ClearChanges);
+
+            CreatePages();
         }
 
         protected override void OnOpen()
@@ -67,6 +47,48 @@ namespace Fragsurf.UI
         protected override void OnClose()
         {
             ClearChanges();
+        }
+
+        private void CreatePages()
+        {
+            _pageTemplate.Clear();
+            _categoryTemplate.Clear();
+            _changeEntry.Clear();
+
+            var userSettings = DevConsole.GetVariablesWithFlags(ConVarFlags.UserSetting);
+            var userSettingCategories = new List<string>();
+
+            foreach (var cmd in userSettings)
+            {
+                var categoryName = cmd.Substring(0, cmd.IndexOf('.'));
+                if (userSettingCategories.Contains(categoryName))
+                {
+                    continue;
+                }
+                userSettingCategories.Add(categoryName);
+            }
+
+            foreach (var category in userSettingCategories)
+            {
+                var categorySettings = userSettings.FindAll(x => x.StartsWith(category, StringComparison.OrdinalIgnoreCase));
+                CreatePage(category, categorySettings);
+            }
+
+            var bindSettings = new List<string>()
+            {
+                "bind/reset"
+            };
+            foreach (var action in Enum.GetNames(typeof(InputActions)))
+            {
+                bindSettings.Add("bind/controls/+input " + action);
+            }
+            foreach (var defaultModal in CanvasManager.DefaultModals)
+            {
+                bindSettings.Add("bind/ui/modal.toggle " + defaultModal);
+            }
+
+            CreatePage("binds", bindSettings);
+            CreatePage("server", DevConsole.GetVariablesWithFlags(ConVarFlags.Replicator).Distinct().ToList());
         }
 
         private void CreatePage(string category, List<string> settingNames)
@@ -85,28 +107,6 @@ namespace Fragsurf.UI
             };
 
             _categoryTemplate.Append(categoryData);
-        }
-
-        private void CreateServerPage()
-        {
-            CreatePage("server", DevConsole.GetVariablesWithFlags(ConVarFlags.Replicator).Distinct().ToList());
-        }
-
-        private void CreateBindsPage()
-        {
-            var settingNames = new List<string>()
-            {
-                "bind/reset"
-            };
-            foreach(var action in Enum.GetNames(typeof(InputActions)))
-            {
-                settingNames.Add("bind/controls/+input " + action);
-            }
-            foreach(var defaultModal in CanvasManager.DefaultModals)
-            {
-                settingNames.Add("bind/ui/modal.toggle " + defaultModal);
-            }
-            CreatePage("binds", settingNames);
         }
 
         private void SaveChanges()
