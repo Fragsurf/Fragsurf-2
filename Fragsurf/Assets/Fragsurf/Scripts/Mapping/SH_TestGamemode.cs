@@ -10,10 +10,25 @@ namespace Fragsurf.Mapping
     public class SH_TestGamemode : FSSharedScript
     {
 
-        [ConVar("test.okay", "This is a test variable :()", ConVarFlags.Replicator | ConVarFlags.Gamemode)]
+        private bool _showTriggers;
+
+        [ConVar("mapmode.testint", "This is a test variable :()", ConVarFlags.Replicator | ConVarFlags.Gamemode)]
         public int TestOkay { get; set; }
-        [ConVar("test.color", "This is a test color ():", ConVarFlags.Gamemode)]
+        [ConVar("mapmode.testcolor", "This is a test color ():", ConVarFlags.Gamemode)]
         public Color TestColor { get; set; } = Color.red;
+        [ConVar("mapmode.showtriggers", "", ConVarFlags.Gamemode)]
+        public bool ShowTriggers
+        {
+            get => _showTriggers;
+            set
+            {
+                _showTriggers = value;
+                foreach(var fsmTrigger in FindObjectsOfType<FSMTrigger>())
+                {
+                    fsmTrigger.EnableRenderers(value);
+                }
+            }
+        }
 
         protected override void OnPlayerIntroduced(IPlayer player)
         {

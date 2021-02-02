@@ -11,14 +11,21 @@ namespace Fragsurf.Client
         protected override void OnGameLoaded()
         {
             var settingsModal = UGuiManager.Instance.Find<Modal_Settings>();
-            settingsModal.CreatePage("server", DevConsole.GetVariablesWithFlags(ConVarFlags.Replicator).Distinct().ToList());
-            settingsModal.CreatePage("gamemode", DevConsole.GetVariablesWithFlags(ConVarFlags.Gamemode).Distinct().ToList());
+            if (settingsModal)
+            {
+                settingsModal.CreatePage("server", DevConsole.GetVariablesWithFlags(ConVarFlags.Replicator).Distinct().ToList());
+                settingsModal.CreatePage("gamemode", DevConsole.GetVariablesWithFlags(ConVarFlags.Gamemode).Distinct().ToList());
+            }
         }
 
         protected override void OnGameUnloaded()
         {
             var settingsModal = UGuiManager.Instance.Find<Modal_Settings>();
-            settingsModal.RemovePage("server");
+            if (settingsModal)
+            {
+                settingsModal.RemovePage("server");
+                settingsModal.RemovePage("gamemode");
+            }
         }
 
     }

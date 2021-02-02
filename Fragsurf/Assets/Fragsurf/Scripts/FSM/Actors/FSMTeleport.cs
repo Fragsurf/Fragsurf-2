@@ -26,7 +26,7 @@ namespace Fragsurf.FSM.Actors
             if (!string.IsNullOrWhiteSpace(TargetActorName))
             {
                 // todo: cache actors for efficient lookup
-                var target = FindObjectsOfType<FSMActor>().FirstOrDefault(x => x.ActorName.Equals(TargetActorName));
+                var target = FindObjectsOfType<FSMActor>().FirstOrDefault(x => x.ActorName.Equals(TargetActorName, System.StringComparison.OrdinalIgnoreCase));
                 if (target)
                 {
                     character.MoveData.Origin = target.transform.position;
