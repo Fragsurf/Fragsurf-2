@@ -69,18 +69,28 @@ namespace Fragsurf
             if(typeof(T) == typeof(Color))
             {
                 var val = (Color)Convert.ChangeType(_getter.Invoke(), typeof(Color));
-                return ColorUtility.ToHtmlStringRGBA(val);
+                return "#" + ColorUtility.ToHtmlStringRGBA(val);
             }
             return _getter.Invoke().ToString();
         }
 
         public T FromString(string input)
         {
+            if (string.IsNullOrEmpty(input))
+            {
+                return default;
+            }
+
             if(typeof(T) == typeof(Color))
             {
+                if(input.Length == 8 && input[0] != '#')
+                {
+                    input = "#" + input;
+                }
                 ColorUtility.TryParseHtmlString(input, out Color result);
                 return (T)Convert.ChangeType(result, typeof(T));
             }
+
             return TryParse<T>(input);
         }
 

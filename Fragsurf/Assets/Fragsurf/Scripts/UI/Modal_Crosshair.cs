@@ -12,8 +12,8 @@ namespace Fragsurf.UI
         private Image[] _crosshairImages;
 
         private Color _color;
-        private float _alpha;
-        private float _outlineAlpha;
+        private float _alpha = 1;
+        private float _outlineAlpha = 1;
 
         [ConVar("crosshair.color", "", ConVarFlags.UserSetting)]
         public Color Color
