@@ -17,8 +17,11 @@ namespace Fragsurf.Client
         {
             Modal_Crosshair.Identifier,
             Modal_EscapeMenu.Identifier,
-            Modal_Console.Identifier,
             Modal_Settings.Identifier,
+            Modal_ColorPicker.Identifier,
+
+
+            Modal_Console.Identifier,
         };
 
         protected override void _Start()

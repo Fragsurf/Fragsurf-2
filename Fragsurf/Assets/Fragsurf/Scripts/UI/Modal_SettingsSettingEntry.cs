@@ -35,6 +35,8 @@ namespace Fragsurf.UI
         [SerializeField]
         private SettingBind _bindElement;
         [SerializeField]
+        private SettingColor _colorElement;
+        [SerializeField]
         private TMP_Text _label;
         [SerializeField]
         private TMP_Text _description;
@@ -100,11 +102,24 @@ namespace Fragsurf.UI
             {
                 return _bindElement;
             }
+
             var type = DevConsole.GetVariableType(settingName);
-            if(type != null && type.IsEnum)
+
+            if(type == null)
+            {
+                return null;
+            }
+
+            if(type.IsEnum)
             {
                 return _enumElement;
             }
+
+            if(type == typeof(Color))
+            {
+                return _colorElement;
+            }
+
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Int32:

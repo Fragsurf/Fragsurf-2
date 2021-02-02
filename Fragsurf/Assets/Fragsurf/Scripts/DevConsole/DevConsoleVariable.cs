@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.ComponentModel;
+using UnityEngine;
+using Fragsurf.Utility;
 
 namespace Fragsurf 
 {
@@ -59,13 +61,34 @@ namespace Fragsurf
             {
                 return;
             }
-            SetValue(TryParse<T>(args[0]));
+            SetValue(FromString(args[0]));
+        }
+
+        public override string ToString()
+        {
+            if(typeof(T) == typeof(Color))
+            {
+                var val = (Color)Convert.ChangeType(_getter.Invoke(), typeof(Color));
+                return ColorUtility.ToHtmlStringRGBA(val);
+            }
+            return _getter.Invoke().ToString();
+        }
+
+        public T FromString(string input)
+        {
+            if(typeof(T) == typeof(Color))
+            {
+                ColorUtility.TryParseHtmlString(input, out Color result);
+                return (T)Convert.ChangeType(result, typeof(T));
+            }
+            return TryParse<T>(input);
         }
 
         /// https://social.msdn.microsoft.com/Forums/en-US/d3a139b0-9c14-400d-94f9-440b64a0122a/convert-or-tryparse-from-string-to-t-generic-possible-work-around?forum=csharplanguage
         public static TType TryParse<TType>(string inValue)
         {
-            if(inValue.IndexOf(',') != -1)
+            if (typeof(TType).IsNumeric()
+                && inValue.IndexOf(',') != -1)
             {
                 inValue = inValue.Replace(',', '.');
             }
@@ -73,14 +96,19 @@ namespace Fragsurf
             try
             {
                 var converter = TypeDescriptor.GetConverter(typeof(TType));
-                return (TType)converter.ConvertFromString(null, CultureInfo.InvariantCulture, inValue);
+                var result = converter.ConvertFromString(null, CultureInfo.InvariantCulture, inValue);
+                return (TType)result;
             }
-            catch
+            catch (Exception e)
             {
+#if UNITY_EDITOR
+                Debug.LogError(e.Message);
+#endif
                 return default;
             }
         }
 
     }
+
 }
 

@@ -11,37 +11,57 @@ namespace Fragsurf.UI
         [SerializeField]
         private Image[] _crosshairImages;
 
-        [ConCommand("crosshair.color", "Sets the crosshair color")]
-        public void SetColor(string colorInput)
+        private Color _color;
+        private float _alpha;
+        private float _outlineAlpha;
+
+        [ConVar("crosshair.color", "", ConVarFlags.UserSetting)]
+        public Color Color
         {
-            if(ColorUtility.TryParseHtmlString(colorInput, out Color color))
-            {
-                foreach(var img in _crosshairImages)
-                {
-                    img.color = color;
-                }
-            }
+            get => _color;
+            set => SetColor(value);
         }
 
-        [ConCommand("crosshair.alpha", "Sets the crosshair alpha")]
-        public void SetAlpha(float alpha)
+        [ConVar("crosshair.alpha", "", ConVarFlags.UserSetting)]
+        public float Alpha
         {
-            alpha = Mathf.Clamp(alpha, 0, 1);
+            get => _alpha;
+            set => SetAlpha(value);
+        }
+
+        [ConVar("crosshair.outlinealpha", "", ConVarFlags.UserSetting)]
+        public float OutlineAlpha
+        {
+            get => _outlineAlpha;
+            set => SetOutlineAlpha(value);
+        }
+
+        private void SetColor(Color color)
+        {
+            _color = color;
             foreach (var img in _crosshairImages)
             {
-                img.color = new Color(img.color.r, img.color.g, img.color.b, alpha);
+                img.color = color;
             }
         }
 
-        [ConCommand("crosshair.outlinealpha", "Sets the crosshair outline alpha")]
-        public void SetOutlineAlpha(float alpha)
+        private void SetAlpha(float alpha)
         {
-            alpha = Mathf.Clamp(alpha, 0, 1);
+            _alpha = Mathf.Clamp(alpha, 0, 1);
+            foreach (var img in _crosshairImages)
+            {
+                img.color = new Color(img.color.r, img.color.g, img.color.b, _alpha);
+            }
+        }
+
+        private void SetOutlineAlpha(float alpha)
+        {
+            _outlineAlpha = Mathf.Clamp(alpha, 0, 1);
             foreach (var img in _crosshairImages)
             {
                 if (img.TryGetComponent(out Outline outline))
                 {
-                    outline.effectColor = new Color(outline.effectColor.r, outline.effectColor.g, outline.effectColor.b, alpha);
+                    outline.effectColor = new Color(outline.effectColor.r, outline.effectColor.g, outline.effectColor.b, _outlineAlpha);
                 }
             }
         }

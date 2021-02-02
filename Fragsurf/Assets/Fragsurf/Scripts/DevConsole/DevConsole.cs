@@ -193,7 +193,11 @@ namespace Fragsurf
             {
                 return string.Empty;
             }
-            var method = typeof(DevConsole).GetMethod(nameof(DevConsole.GetVariable));
+            //var method = typeof(DevConsole).GetMethod(nameof(DevConsole.GetVariable));
+            //var generic = method.MakeGenericMethod(type);
+            //var result = generic.Invoke(null, new object[] { variableName });
+            //return result != null ? result.ToString() : string.Empty;
+            var method = typeof(DevConsole).GetMethod(nameof(DevConsole.GetVariableEntry));
             var generic = method.MakeGenericMethod(type);
             var result = generic.Invoke(null, new object[] { variableName });
             return result != null ? result.ToString() : string.Empty;
@@ -201,13 +205,23 @@ namespace Fragsurf
 
         public static T GetVariable<T>(string varName)
         {
+            var entry = GetVariableEntry<T>(varName);
+            if(entry != null)
+            {
+                return entry.GetValue();
+            }
+            return default;
+        }
+
+        public static DevConsoleVariable<T> GetVariableEntry<T>(string varName)
+        {
             var entry = FindEntry(varName);
             if (entry == null
                 || !(entry is DevConsoleVariable<T> variable))
             {
                 return default;
             }
-            return variable.GetValue();
+            return variable;
         }
 
         public static void SetVariable<T>(string varName, T value, bool bypassLock = false, bool noEvent = false)

@@ -26,7 +26,7 @@ namespace Fragsurf.UI
 
         public override void LoadValue()
         {
-            var val = DevConsole.GetVariable<string>(SettingName);
+            var val = DevConsole.GetVariableAsString(SettingName);
             _input.text = val.ToString();
         }
 

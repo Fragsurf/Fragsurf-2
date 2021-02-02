@@ -12,6 +12,8 @@ namespace Fragsurf.Mapping
 
         [ConVar("test.okay", "This is a test variable :()", ConVarFlags.Replicator | ConVarFlags.Gamemode)]
         public int TestOkay { get; set; }
+        [ConVar("test.color", "This is a test color ():", ConVarFlags.Gamemode)]
+        public Color TestColor { get; set; } = Color.red;
 
         protected override void OnPlayerIntroduced(IPlayer player)
         {
