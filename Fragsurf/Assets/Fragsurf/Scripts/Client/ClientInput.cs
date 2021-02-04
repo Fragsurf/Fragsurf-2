@@ -92,8 +92,11 @@ namespace Fragsurf.Client
 
         protected override void _Tick()
         {
+            var localPlayer = Game.PlayerManager.LocalPlayer;
+
             if (!Game.Live
                 || Human.Local == null
+                || localPlayer == null
                 || Blocked)
             {
                 UserCmd.Buttons = 0;
@@ -112,7 +115,7 @@ namespace Fragsurf.Client
 
             TickUserCmd();
 
-            Game.Get<UserCmdHandler>(true).HandleUserCommand(Game.PlayerManager.LocalPlayer, UserCmd, true);
+            Game.Get<UserCmdHandler>(true).HandleUserCommand(localPlayer, UserCmd, true);
         }
 
         protected override void _Update()

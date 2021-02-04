@@ -7,7 +7,7 @@ using RealtimeCSG.Components;
 
 namespace InternalRealtimeCSG
 {
-    internal sealed partial class MeshInstanceManager
+    public sealed partial class MeshInstanceManager
     {
         [UnityEditor.Callbacks.PostProcessScene(0)]
         internal static void OnBuild()

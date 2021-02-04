@@ -8,7 +8,7 @@ using RealtimeCSG.Components;
 
 namespace InternalRealtimeCSG
 {
-	internal sealed partial class MeshInstanceManager
+	public sealed partial class MeshInstanceManager
 	{
 		public static void Export(CSGModel model, ExportType exportType, bool exportColliders)
 		{

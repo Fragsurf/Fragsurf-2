@@ -3,9 +3,11 @@ using UnityEngine;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared;
+using UnityEngine.Events;
 
 namespace Fragsurf.FSM.Actors
 {
+    [SelectionBase]
     [ExecuteAlways]
     public class FSMTrigger : FSMActor
     {
@@ -25,6 +27,11 @@ namespace Fragsurf.FSM.Actors
         public float MinimumAllowedSpeed;
         public float MaximumAllowedSpeed;
         public FSMTriggerCondition TriggerCondition;
+
+        [Header("Trigger Events")]
+        public UnityEvent<NetEntity> OnTriggerEnter = new UnityEvent<NetEntity>();
+        public UnityEvent<NetEntity> OnTriggerStay = new UnityEvent<NetEntity>();
+        public UnityEvent<NetEntity> OnTriggerExit = new UnityEvent<NetEntity>();
 
         private HashSet<StayingData> _staying = new HashSet<StayingData>();
 
@@ -80,6 +87,7 @@ namespace Fragsurf.FSM.Actors
                 }
                 _TriggerEnter(entity);
                 _staying.Add(sd);
+                OnTriggerEnter?.Invoke(entity);
             }
         }
 
@@ -91,6 +99,7 @@ namespace Fragsurf.FSM.Actors
             {
                 _TriggerExit(entity);
                 _staying.Remove(sd);
+                OnTriggerExit?.Invoke(entity);
             }
         }
 
@@ -106,10 +115,12 @@ namespace Fragsurf.FSM.Actors
                     {
                         _TriggerEnter(entity);
                         _staying.Add(sd);
+                        OnTriggerEnter?.Invoke(entity);
                     }
                     else
                     {
                         _TriggerStay(entity);
+                        OnTriggerStay?.Invoke(entity);
                     }
                 }
                 else
@@ -118,6 +129,7 @@ namespace Fragsurf.FSM.Actors
                     {
                         _TriggerExit(entity);
                         _staying.Remove(sd);
+                        OnTriggerExit?.Invoke(entity);
                     }
                 }
             }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Fragsurf.FSM.Actors
 {
+    [SelectionBase]
     [System.Serializable]
     public class FSMActor : MonoBehaviour
     {

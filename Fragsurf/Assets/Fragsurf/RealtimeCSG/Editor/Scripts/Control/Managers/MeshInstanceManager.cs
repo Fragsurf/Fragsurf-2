@@ -14,7 +14,7 @@ using UnityEditor.Experimental.SceneManagement;
 
 namespace InternalRealtimeCSG
 {
-    internal sealed partial class MeshInstanceManager
+    public sealed partial class MeshInstanceManager
     {
 #if SHOW_GENERATED_MESHES
 		public const HideFlags ComponentHideFlags = HideFlags.DontSaveInBuild;

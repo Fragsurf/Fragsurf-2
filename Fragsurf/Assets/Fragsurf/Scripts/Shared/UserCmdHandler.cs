@@ -111,6 +111,11 @@ namespace Fragsurf.Shared
 
             human.RunCommand(cmd, isPrediction);
 
+            if(Game.IsHost || isPrediction)
+            {
+                Game.PlayerManager.RaiseRunCommand(player);
+            }
+
             if (Game.IsHost && !isPrediction)
             {
                 UserCmd newCmd;
