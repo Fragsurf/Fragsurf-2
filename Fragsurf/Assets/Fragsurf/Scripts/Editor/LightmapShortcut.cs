@@ -8,83 +8,22 @@ using InternalRealtimeCSG;
 public class LightmapShortcut
 {
 
-    private static LightingSettings SuperFast = new LightingSettings
-    {
-        lightmapper = LightingSettings.Lightmapper.Enlighten,
-        ao = true,
-        lightmapMaxSize = 512,
-        compressLightmaps = true,
-        finalGather = false,
-        indirectResolution = 1,
-        lightmapResolution = 8,
-        aoMaxDistance = .5f,
-        aoExponentDirect = 1,
-        aoExponentIndirect = 2f,
-        directionalityMode = LightmapsMode.CombinedDirectional,
-        albedoBoost = 1,
-        indirectScale = 1,
-        bakedGI = true,
-        mixedBakeMode = MixedLightingMode.Subtractive
-    };
-
-    private static LightingSettings Normal = new LightingSettings
-    {
-        lightmapper = LightingSettings.Lightmapper.Enlighten,
-        ao = true,
-        lightmapMaxSize = 1024,
-        compressLightmaps = true,
-        finalGather = false,
-        indirectResolution = 1,
-        lightmapResolution = 20,
-        aoMaxDistance = .5f,
-        aoExponentDirect = 1,
-        aoExponentIndirect = 2f,
-        directionalityMode = LightmapsMode.CombinedDirectional,
-        albedoBoost = 1,
-        indirectScale = 1,
-        bakedGI = true,
-        mixedBakeMode = MixedLightingMode.Subtractive
-    };
-
-    private static LightingSettings Dank = new LightingSettings
-    {
-        lightmapper = LightingSettings.Lightmapper.Enlighten,
-        ao = true,
-        lightmapMaxSize = 2048,
-        compressLightmaps = true,
-        finalGather = true,
-        indirectResolution = 2,
-        lightmapResolution = 40,
-        aoMaxDistance = .5f,
-        aoExponentDirect = 1,
-        aoExponentIndirect = 2f,
-        directionalityMode = LightmapsMode.CombinedDirectional,
-        albedoBoost = 1,
-        indirectScale = 1,
-        bakedGI = true,
-        mixedBakeMode = MixedLightingMode.Subtractive
-    };
-
-    [MenuItem("Fragsurf/Lighting/Bake Fast")]
+    [MenuItem("Fragsurf/Lighting/Bake Fast (Preview)", priority = 1)]
     public static void BuildFast()
     {
-        StartLightmapping(SuperFast);
+        var settings = Resources.Load<LightingSettings>("Misc/Lightmap Fast");
+        StartLightmapping(settings);
     }
 
-    [MenuItem("Fragsurf/Lighting/Bake Normal")]
+    [MenuItem("Fragsurf/Lighting/Bake Normal", priority = 1)]
     public static void BuildNormal()
     {
-        StartLightmapping(Normal);
+        var settings = Resources.Load<LightingSettings>("Misc/Lightmap Normal");
+        StartLightmapping(settings);
     }
 
-    [MenuItem("Fragsurf/Lighting/Bake Dank")]
-    public static void BuildDank()
-    {
-        StartLightmapping(Dank);
-    }
-
-    [MenuItem("Fragsurf/Lighting/Cancel Build")]
-    public static void CancelBuild()
+    [MenuItem("Fragsurf/Lighting/Cancel Bake")]
+    public static void CancelBake()
     {
         if (Lightmapping.isRunning)
         {
@@ -92,10 +31,27 @@ public class LightmapShortcut
         }
     }
 
+    [MenuItem("Fragsurf/Lighting/Clear Baked Data")]
+    public static void ClearBakedData()
+    {
+        if(EditorUtility.DisplayDialog("Clear Baked Data", "Really clear baked lightmaps?", "Yes", "Cancel"))
+        {
+            Lightmapping.Clear();
+        }
+    }
+
+    [MenuItem("Fragsurf/Lighting/Repair UVs")]
+    public static void RepairUVs()
+    {
+        if (EditorUtility.DisplayDialog("Repair Lightmap UVs", "Really repair lightmap UVs?", "Yes", "Cancel"))
+        {
+            GenerateLightmapUVs();
+        }
+    }
+
     private static void StartLightmapping(LightingSettings settings)
     {
         GenerateLightmapUVs();
-        CancelBuild();
         Lightmapping.lightingSettings = settings;
         if (Lightmapping.BakeAsync())
         {
