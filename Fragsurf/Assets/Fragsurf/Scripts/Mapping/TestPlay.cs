@@ -10,6 +10,8 @@ namespace Fragsurf
     public class TestPlay : MonoBehaviour
     {
 
+        public Vector3 SpawnPoint;
+
         private async void Start()
         {
             GameObject.DontDestroyOnLoad(gameObject);

@@ -55,11 +55,11 @@ namespace ModTool.Editor
             Initialize();
         }
 
-        [MenuItem("Fragsurf/Assign URP Asset (DO THIS!)", priority = 30)]
-        public static void InitializeProject()
-        {
-            Initialize();
-        }
+        //[MenuItem("Fragsurf/Assign URP Asset (DO THIS!)", priority = 30)]
+        //public static void InitializeProject()
+        //{
+        //    Initialize();
+        //}
 
         private static void Initialize()
         {

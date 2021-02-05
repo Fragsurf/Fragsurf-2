@@ -307,7 +307,7 @@ namespace FMODUnity
         // --------   Overlay Update ----------------------
         public bool IsOverlayEnabled(FMODPlatform platform)
         {
-            #if DEVELOPMENT_BUILD || UNITY_EDITOR
+            #if DEVELOPMENT_BUILD
             return GetSetting(OverlaySettings, platform, TriStateBool.Disabled) != TriStateBool.Disabled;
             #else
             return GetSetting(OverlaySettings, platform, TriStateBool.Disabled) == TriStateBool.Enabled;
@@ -381,7 +381,7 @@ namespace FMODUnity
             // Default play in editor settings
             SetSetting(LoggingSettings, FMODPlatform.PlayInEditor, TriStateBool.Enabled);
             SetSetting(LiveUpdateSettings, FMODPlatform.PlayInEditor, TriStateBool.Enabled);
-            SetSetting(OverlaySettings, FMODPlatform.PlayInEditor, TriStateBool.Enabled);
+            SetSetting(OverlaySettings, FMODPlatform.PlayInEditor, TriStateBool.Disabled);
             SetSetting(SampleRateSettings, FMODPlatform.PlayInEditor, 48000);
             // These are not editable, set them high
             SetSetting(RealChannelSettings, FMODPlatform.PlayInEditor, 256);

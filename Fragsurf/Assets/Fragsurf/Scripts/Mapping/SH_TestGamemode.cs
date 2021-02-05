@@ -36,14 +36,7 @@ namespace Fragsurf.Mapping
             {
                 return;
             }
-            var spawnPos = Vector3.zero;
-            var spawnAngles = Vector3.zero;
-            var spawnPoint = FindObjectOfType<FSMSpawnPoint>();
-            if(spawnPoint != null)
-            {
-                spawnPos = spawnPoint.transform.position;
-                spawnAngles = spawnPoint.transform.eulerAngles;
-            }
+            MapLoader.Instance.CurrentMap.GetSpawnPoint(out Vector3 spawnPos, out Vector3 spawnAngles);
             var ent = new Human(Game);
             ent.Origin = spawnPos;
             ent.Angles = spawnAngles;

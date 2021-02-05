@@ -423,14 +423,14 @@ retry:
         }
 
 #if DEBUG && UNITY_EDITOR
-        Rect windowRect = new Rect(10, 10, 300, 100);
-        void OnGUI()
-        {
-            if (studioSystem.isValid() && Settings.Instance.IsOverlayEnabled(fmodPlatform))
-            {
-                windowRect = GUI.Window(0, windowRect, DrawDebugOverlay, "FMOD Studio Debug");
-            }
-        }
+        //Rect windowRect = new Rect(10, 10, 300, 100);
+        //void OnGUI()
+        //{
+        //    if (studioSystem.isValid() && Settings.Instance.IsOverlayEnabled(fmodPlatform))
+        //    {
+        //        windowRect = GUI.Window(0, windowRect, DrawDebugOverlay, "FMOD Studio Debug");
+        //    }
+        //}
 #endif
 
         string lastDebugText;

@@ -8,14 +8,14 @@ using InternalRealtimeCSG;
 public class LightmapShortcut
 {
 
-    [MenuItem("Fragsurf/Lighting/Bake Fast (Preview)", priority = 1)]
+    [MenuItem("Fragsurf/Lighting/Bake Fast (Preview)")]
     public static void BuildFast()
     {
         var settings = Resources.Load<LightingSettings>("Misc/Lightmap Fast");
         StartLightmapping(settings);
     }
 
-    [MenuItem("Fragsurf/Lighting/Bake Normal", priority = 1)]
+    [MenuItem("Fragsurf/Lighting/Bake Normal")]
     public static void BuildNormal()
     {
         var settings = Resources.Load<LightingSettings>("Misc/Lightmap Normal");
@@ -37,14 +37,6 @@ public class LightmapShortcut
         if(EditorUtility.DisplayDialog("Clear Baked Data", "Really clear baked lightmaps?", "Yes", "Cancel"))
         {
             Lightmapping.Clear();
-        }
-    }
-
-    [MenuItem("Fragsurf/Lighting/Repair UVs")]
-    public static void RepairUVs()
-    {
-        if (EditorUtility.DisplayDialog("Repair Lightmap UVs", "Really repair lightmap UVs?", "Yes", "Cancel"))
-        {
             GenerateLightmapUVs();
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Fragsurf.Shared.Maps;
 using Fragsurf.Utility;
+using Fragsurf.FSM.Actors;
 
 namespace Fragsurf.Shared
 {
@@ -146,6 +147,21 @@ namespace Fragsurf.Shared
         {
             position = Vector3.zero;
             angles = Vector3.zero;
+
+            var sps = GameObject.FindObjectsOfType<FSMSpawnPoint>();
+            if (sps.Length > 0)
+            {
+                var rnd = sps[UnityEngine.Random.Range(0, sps.Length)];
+                position = rnd.transform.position;
+                angles = rnd.transform.eulerAngles;
+            }
+
+            var tp = GameObject.FindObjectOfType<TestPlay>();
+            if (tp && tp.SpawnPoint != Vector3.zero)
+            {
+                position = tp.SpawnPoint;
+                angles = Vector3.zero;
+            }
         }
 
         public override async Task UnloadAsync()

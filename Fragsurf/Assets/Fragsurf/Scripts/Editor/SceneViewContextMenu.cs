@@ -6,6 +6,8 @@ using InternalRealtimeCSG;
 using System.Collections.Generic;
 using RealtimeCSG.Components;
 using RealtimeCSG;
+using Fragsurf.Shared;
+using Fragsurf.Shared.Entity;
 
 [InitializeOnLoad]
 public class SceneContextMenu : Editor
@@ -16,60 +18,60 @@ public class SceneContextMenu : Editor
 
     static SceneContextMenu()
     {
-        SceneView.beforeSceneGui -= OnSceneGUI;
-        SceneView.beforeSceneGui += OnSceneGUI;
+        SceneView.duringSceneGui -= OnSceneGUI;
+        SceneView.duringSceneGui += OnSceneGUI;
+    }
+
+    static void GetHit(SceneView sceneView, out GameObject hitObject, out Vector3 hitPoint, out Vector3 hitNormal)
+    {
+        hitObject = HandleUtility.PickGameObject(Event.current.mousePosition, out int materialIndex);
+        hitPoint = Vector3.zero;
+        hitNormal = Vector3.zero;
+
+        if (hitObject)
+        {
+            var ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
+            var mf = hitObject.GetComponentInChildren<MeshFilter>();
+            if (mf)
+            {
+                EditorHandles_UnityInternal.IntersectRayMesh(ray, mf, out RaycastHit hit);
+                hitPoint = hit.point;
+                hitNormal = hit.normal;
+            }
+        }
+        else
+        {
+            if (SceneQueryUtility.FindClickWorldIntersection(sceneView.camera, Event.current.mousePosition, out hitObject))
+            {
+                var intersection = SceneQueryUtility.FindMeshIntersection(sceneView.camera, Event.current.mousePosition);
+                hitPoint = intersection.worldIntersection;
+                hitNormal = intersection.worldPlane.normal;
+            }
+        }
     }
 
     static void OnSceneGUI(SceneView sceneview)
     {
-        if (Event.current.button == 1)
+        if (Event.current.type == EventType.MouseUp
+            && Event.current.button == 1
+            && EditorApplication.timeSinceStartup - _downTime < .09
+            && Vector2.Distance(Event.current.mousePosition, _downPos) < 5)
         {
-            if (Event.current.type == EventType.MouseUp)
-            {
-                if (EditorApplication.timeSinceStartup - _downTime < .09
-                    && Vector2.Distance(Event.current.mousePosition, _downPos) < 5)
-                {
-                    var hitObject = UnityEditor.HandleUtility.PickGameObject(Event.current.mousePosition, out int materialIndex);
-                    var hitPoint = Vector3.zero;
-                    var hitNormal = Vector3.zero;
-
-                    if (hitObject)
-                    {
-                        var ray = UnityEditor.HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
-                        var mf = hitObject.GetComponentInChildren<MeshFilter>();
-                        if (mf)
-                        {
-                            EditorHandles_UnityInternal.IntersectRayMesh(ray, mf, out RaycastHit hit);
-                            hitPoint = hit.point;
-                            hitNormal = hit.normal;
-                        }
-                    }
-                    else
-                    {
-                        if (SceneQueryUtility.FindClickWorldIntersection(sceneview.camera, Event.current.mousePosition, out hitObject))
-                        {
-                            var intersection = SceneQueryUtility.FindMeshIntersection(sceneview.camera, Event.current.mousePosition);
-                            hitPoint = intersection.worldIntersection;
-                            hitNormal = intersection.worldPlane.normal;
-                        }
-                    }
-
-                    Event.current.Use();
-                    ShowMenu(hitObject, hitPoint, hitNormal);
-                }
-            }
-            else if (Event.current.type == EventType.MouseDown)
-            {
-                _downTime = EditorApplication.timeSinceStartup;
-                _downPos = Event.current.mousePosition;
-            }
+            GetHit(sceneview, out GameObject hitObject, out Vector3 hitPoint, out Vector3 hitNormal);
+            Event.current.Use();
+            ShowMenu(hitObject, hitPoint, hitNormal);
+        }
+        else if (Event.current.type == EventType.MouseDown
+            && Event.current.button == 1)
+        {
+            _downTime = EditorApplication.timeSinceStartup;
+            _downPos = Event.current.mousePosition;
         }
     }
 
     static void ShowMenu(GameObject obj, Vector3 hitPoint, Vector3 hitNormal)
     {
-        GenericMenu menu = new GenericMenu();
-
+        var menu = new GenericMenu();
 
         if (obj)
         {
@@ -83,7 +85,24 @@ public class SceneContextMenu : Editor
 
         menu.AddItem(new GUIContent("Play From Here"), false, () =>
         {
-            Debug.Log("Play from: " + hitPoint);
+            if (!EditorApplication.isPlaying)
+            {
+                PlayStateNotifier.PlayFrom = hitPoint;
+                EditorApplication.EnterPlaymode();
+            }
+            else
+            {
+                var gs = FSGameLoop.GetGameInstance(true);
+                if (gs 
+                    && Human.Local != null
+                    && gs.EntityManager.TryFindEntity(Human.Local.EntityId, out NetEntity pl)
+                    && pl is Human hu)
+                {
+                    hu.Origin = hitPoint;
+                    hu.Velocity = Vector3.zero;
+                    hu.BaseVelocity = Vector3.zero;
+                }
+            }
         });
         menu.AddSeparator(string.Empty);
 
