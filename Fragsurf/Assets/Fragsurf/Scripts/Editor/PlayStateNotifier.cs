@@ -10,15 +10,15 @@ using Fragsurf.Movement;
 public static class PlayStateNotifier
 {
 
-    [MenuItem("Fragsurf/Play/Toggle Test Play")]
-    public static void ToggleTestPlay()
+    [MenuItem("Fragsurf/Play/Toggle PlayTest")]
+    public static void TogglePlayTest()
     {
-        var pref = EditorPrefs.GetBool("Fragsurf.TestPlay", true);
-        EditorPrefs.SetBool("Fragsurf.TestPlay", !pref);
+        var pref = EditorPrefs.GetBool("Fragsurf.PlayTest", true);
+        EditorPrefs.SetBool("Fragsurf.PlayTest", !pref);
         var str = !pref
-            ? "Test Play has been enabled, Fragsurf will load up when you enter play mode."
-            : "Test Play has been disabled, Fragsurf will NOT load up when you enter play mode.";
-        EditorUtility.DisplayDialog("Test Play", str, "Ok");
+            ? "PlayTesting has been enabled, Fragsurf will load up when you enter play mode."
+            : "PlayTesting has been disabled, Fragsurf will NOT load up when you enter play mode.";
+        EditorUtility.DisplayDialog("PlayTest", str, "Ok");
     }
 
     [MenuItem("Fragsurf/Play/Clear Play From Position")]
@@ -42,9 +42,9 @@ public static class PlayStateNotifier
     static async void ModeChanged(PlayModeStateChange stateChange)
     {
         if(stateChange == PlayModeStateChange.EnteredPlayMode
-            && EditorPrefs.GetBool("Fragsurf.TestPlay", true))
+            && EditorPrefs.GetBool("Fragsurf.PlayTest", true))
         {
-            new GameObject("[Test Play]").AddComponent<TestPlay>().SpawnPoint = PlayFrom;
+            new GameObject("[PlayTest]").AddComponent<PlayTest>().SpawnPoint = PlayFrom;
         }
 
         if(stateChange == PlayModeStateChange.ExitingPlayMode)

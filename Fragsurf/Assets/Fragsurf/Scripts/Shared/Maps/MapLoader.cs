@@ -156,7 +156,7 @@ namespace Fragsurf.Shared
                 angles = rnd.transform.eulerAngles;
             }
 
-            var tp = GameObject.FindObjectOfType<TestPlay>();
+            var tp = GameObject.FindObjectOfType<PlayTest>();
             if (tp && tp.SpawnPoint != Vector3.zero)
             {
                 position = tp.SpawnPoint;

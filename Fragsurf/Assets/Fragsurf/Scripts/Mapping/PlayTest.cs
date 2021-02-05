@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Fragsurf
 {
     [RequireComponent(typeof(BareGameClient))]
-    public class TestPlay : MonoBehaviour
+    public class PlayTest : MonoBehaviour
     {
 
         public Vector3 SpawnPoint;
