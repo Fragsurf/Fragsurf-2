@@ -1,6 +1,7 @@
 using Fragsurf.Client;
 using Fragsurf.Server;
 using Fragsurf.Shared;
+using Lidgren.Network;
 using System.Linq;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ namespace Fragsurf
             if(serverResult == GameLoadResult.Success)
             {
                 var server = FSGameLoop.GetGameInstance(true) as GameServer;
-                var joinResult = await client.GameLoader.JoinGameAsync(server.Socket.LocalIp, server.Socket.GameplayPort, server.Socket.ServerPassword);
+                var joinResult = await client.GameLoader.JoinGameAsync("localhost", server.Socket.GameplayPort, server.Socket.ServerPassword);
             }
         }
 

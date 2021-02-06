@@ -80,7 +80,6 @@ namespace Fragsurf.Client
                     }
                 }
             }
-            _socket?.Update();
         }
 
         public const int HeaderSize = 1;
@@ -272,7 +271,7 @@ namespace Fragsurf.Client
             }
             else
             {
-                _socket = new ClientLidgrenSocket(this);
+                _socket = new ClientLNLSocket(this);
             }
 
             SetSocketStatus(ClientSocketStatus.Connecting);

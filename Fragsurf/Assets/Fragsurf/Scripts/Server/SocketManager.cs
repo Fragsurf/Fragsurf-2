@@ -58,10 +58,10 @@ namespace Fragsurf.Server
         public int MaxPlayers { get; set; } = 10;
         [ConVar("server.connectiontimeout")]
         public int ConnectionTimeout { get; set; } = 30;
-        [ConVar("server.broadcastip")]
-        public string BroadcastIp { get; set; }
-        [ConVar("server.localip")]
-        public string LocalIp { get; set; }
+        //[ConVar("server.broadcastip")]
+        //public string BroadcastIp { get; set; }
+        //[ConVar("server.localip")]
+        //public string LocalIp { get; set; }
 
         public const int MaxServerNameLength = 96;
 
@@ -95,11 +95,6 @@ namespace Fragsurf.Server
 
         protected override void _Update()
         {
-            foreach(var socket in _sockets)
-            {
-                socket.Update();
-            }
-
             for(int i = Game.PlayerManager.Players.Count - 1; i >= 0; i--)
             {
                 var player = Game.PlayerManager.Players[i] as ServerPlayer;
@@ -131,17 +126,17 @@ namespace Fragsurf.Server
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(LocalIp))
-            {
-                using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0);
-                socket.Connect("8.8.8.8", 65530);
-                IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
-                LocalIp = endPoint.Address.ToString();
-            }
+            //if (string.IsNullOrWhiteSpace(LocalIp))
+            //{
+            //    using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0);
+            //    socket.Connect("8.8.8.8", 65530);
+            //    IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+            //    LocalIp = endPoint.Address.ToString();
+            //}
 
             _started = true;
 
-            _sockets.Add(new LidgrenSocket(this));
+            _sockets.Add(new LNLSocket(this));
 
             if (Steamworks.SteamClient.IsValid)
             {

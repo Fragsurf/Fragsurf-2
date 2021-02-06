@@ -460,6 +460,28 @@ namespace Lidgren.Network
 			return bdr.ToString();
 		}
 
+		public static bool MachineSupportsIPv6()
+		{
+			IPAddress[] AllIPs = Dns.GetHostAddresses(Dns.GetHostName());
+			foreach (IPAddress ip in AllIPs)
+			{
+				if (ip.AddressFamily == AddressFamily.InterNetworkV6)
+					return true;
+			}
+			return false;
+		}
+
+		public static bool MachineSupportsIPv4()
+		{
+			IPAddress[] AllIPs = Dns.GetHostAddresses(Dns.GetHostName());
+			foreach (IPAddress ip in AllIPs)
+			{
+				if (ip.AddressFamily == AddressFamily.InterNetwork)
+					return true;
+			}
+			return false;
+		}
+
 		public static byte[] ComputeSHAHash(byte[] bytes)
 		{
 			// this is defined in the platform specific files

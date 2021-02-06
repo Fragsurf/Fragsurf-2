@@ -18,7 +18,7 @@ namespace Fragsurf.Server
 
         public Action<ServerStatus> OnSocketStatusChanged;
 
-        public virtual void Update() { }
+        //public virtual void Update() { }
         public abstract void Tick();
         public abstract void DisconnectPlayer(ServerPlayer player, string reason);
         public abstract void SendPacket(ServerPlayer player, IBasePacket packet);

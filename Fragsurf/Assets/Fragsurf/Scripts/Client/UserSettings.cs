@@ -48,7 +48,7 @@ namespace Fragsurf.Client
 
         public void Load()
         {
-            var filePath = Path.Combine(Application.persistentDataPath, "UserSettings.cfg");
+            var filePath = Path.Combine(Application.persistentDataPath, "UserSettings2.cfg");
 
             try
             {

@@ -182,23 +182,17 @@ namespace Fragsurf.Server
                 ConnectionTimeout = 30f
             };
 
+            result.BroadcastAddress = IPAddress.IPv6Any;
+            //result.LocalAddress = IPAddress.IPv6Loopback;
+
             // todo: some users are failing to connect to localhost
             // I don't know why, but it could be ipv4/ipv6 problem.
-            // for now connect to self using steamid, and debug with ipv6 later
-            if(IPAddress.TryParse(SocketMan.BroadcastIp, out IPAddress broadcast))
-            {
-                result.BroadcastAddress = broadcast;
-            }
+            //if(IPAddress.TryParse(SocketMan.BroadcastIp, out IPAddress broadcast))
+            //{
+            //    result.BroadcastAddress = broadcast;
+            //}
 
-            if(IPAddress.TryParse(SocketMan.LocalIp, out IPAddress local))
-            {
-                result.LocalAddress = local;
-            }
-            else
-            {
-                result.LocalAddress = IPAddress.Any;
-            }
-
+            result.DualStack = true;
             result.SendBufferSize *= 2;
             result.EnableMessageType(NetIncomingMessageType.ConnectionApproval
                 | NetIncomingMessageType.Data
