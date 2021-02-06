@@ -4,6 +4,7 @@ using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared;
 using UnityEngine.Events;
+using Fragsurf.Utility;
 
 namespace Fragsurf.FSM.Actors
 {
@@ -47,23 +48,13 @@ namespace Fragsurf.FSM.Actors
                 return;
             }
 
-            var childrenColliders = GetComponentsInChildren<Collider>();
-            foreach (var collider in childrenColliders)
+            gameObject.SetChildrenCollidersToConvexTrigger();
+
+            if(!TryGetComponent(out Rigidbody rb))
             {
-                if(collider is MeshCollider mc)
-                {
-                    mc.convex = true;
-                }
-                collider.isTrigger = true;
+                rb = gameObject.AddComponent<Rigidbody>();
             }
-            if(childrenColliders.Length > 0 && childrenColliders[0].gameObject != gameObject)
-            {
-                if(!TryGetComponent(out Rigidbody rb))
-                {
-                    rb = gameObject.AddComponent<Rigidbody>();
-                }
-                rb.isKinematic = true;
-            }
+            rb.isKinematic = true;
         }
 
         public void OnInteract(int entityId, bool isHost)
