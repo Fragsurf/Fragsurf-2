@@ -2,7 +2,9 @@ using Fragsurf.Shared.Packets;
 using LiteNetLib;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using NetBuffer = Lidgren.Network.NetBuffer; 
 
 namespace Fragsurf.Client
 {
@@ -11,11 +13,14 @@ namespace Fragsurf.Client
 
         private NetManager _client;
         private float _latency;
+        private NetBuffer _writeBuffer = new NetBuffer();
+        private NetBuffer _readBuffer = new NetBuffer();
 
         public ClientLNLSocket(ClientSocketManager socketMan)
             : base(socketMan)
         {
-
+            _writeBuffer.LengthBytes = 10000;
+            _readBuffer.LengthBytes = 10000;
         }
 
         public override void Connect(string host, int port)
@@ -69,9 +74,11 @@ namespace Fragsurf.Client
                 return;
             }
 
-            var nb = new Lidgren.Network.NetBuffer();
-            SocketMan.WritePacketHeader(packet, nb);
-            packet.Write(nb);
+            _writeBuffer.Position = 0;
+            _writeBuffer.LengthBytes = 0;
+            SocketMan.WritePacketHeader(packet, _writeBuffer);
+            packet.Write(_writeBuffer);
+
             var dm = DeliveryMethod.ReliableOrdered;
             switch (packet.Sc.DeliveryMethod)
             {
@@ -92,7 +99,8 @@ namespace Fragsurf.Client
                     dm = DeliveryMethod.Unreliable;
                     break;
             }
-            _client.SendToAll(nb.Data, (byte)packet.Sc.SequenceChannel, dm);
+
+            _client.SendToAll(_writeBuffer.Data, 0, _writeBuffer.LengthBytes, (byte)packet.Sc.SequenceChannel, dm);
         }
 
         public override void Tick()
@@ -102,11 +110,10 @@ namespace Fragsurf.Client
 
         private void Listener_NetworkReceiveEvent(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
         {
-            var nb = new Lidgren.Network.NetBuffer();
-            nb.Write(reader.GetRemainingBytes());
-
-            SocketMan.HandleIncomingData(nb);
-
+            _readBuffer.LengthBytes = reader.UserDataSize;
+            _readBuffer.Position = 0;
+            reader.GetBytes(_readBuffer.Data, reader.UserDataSize);
+            SocketMan.HandleIncomingData(_readBuffer);
             reader.Recycle();
         }
 

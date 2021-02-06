@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
+using NetBuffer = Lidgren.Network.NetBuffer;
 
 namespace Fragsurf.Server
 {
@@ -12,11 +13,14 @@ namespace Fragsurf.Server
     {
 
         private NetManager _server;
+        private NetBuffer _writeBuffer = new NetBuffer();
+        private NetBuffer _readBuffer = new NetBuffer();
 
         public LNLSocket(SocketManager socketMan)
             : base(socketMan)
         {
-
+            _writeBuffer.LengthBytes = 10000;
+            _readBuffer.LengthBytes = 10000;
         }
 
         public override void Tick()
@@ -107,11 +111,10 @@ namespace Fragsurf.Server
 
         private void Listener_NetworkReceiveEvent(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
         {
-            var nb = new Lidgren.Network.NetBuffer();
-            nb.Write(reader.GetRemainingBytes());
-
-            SocketMan.HandleIncomingData2((ulong)peer.Id, nb);
-
+            _readBuffer.LengthBytes = reader.UserDataSize;
+            _readBuffer.Position = 0;
+            reader.GetBytes(_readBuffer.Data, reader.UserDataSize);
+            SocketMan.HandleIncomingData2((ulong)peer.Id, _readBuffer);
             reader.Recycle();
         }
 
@@ -125,9 +128,11 @@ namespace Fragsurf.Server
                 return;
             }
 
-            var nb = new Lidgren.Network.NetBuffer();
-            SocketMan.WritePacketHeader(nb, packet);
-            packet.Write(nb);
+            _writeBuffer.Position = 0;
+            _writeBuffer.LengthBytes = 0;
+            SocketMan.WritePacketHeader(_writeBuffer, packet);
+            packet.Write(_writeBuffer);
+
             var dm = DeliveryMethod.ReliableOrdered;
             switch (packet.Sc.DeliveryMethod)
             {
@@ -149,7 +154,7 @@ namespace Fragsurf.Server
                     break;
             }
 
-            peer.Send(nb.Data, (byte)packet.Sc.SequenceChannel, dm);
+            peer.Send(_writeBuffer.Data, 0, _writeBuffer.LengthBytes, (byte)packet.Sc.SequenceChannel, dm);
         }
 
     }
