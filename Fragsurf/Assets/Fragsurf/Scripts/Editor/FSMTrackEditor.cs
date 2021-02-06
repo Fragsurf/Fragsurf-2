@@ -28,7 +28,7 @@ namespace Fragsurf.FSM.Actors
             var tt = serializedObject.targetObject as FSMTrack;
             var mainTrackAlreadyExists = false;
 
-            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginVertical();
 
             foreach(var tr in tracks)
             {
@@ -54,7 +54,7 @@ namespace Fragsurf.FSM.Actors
                 }
             }
 
-            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.PropertyField(_trackName);
             EditorGUILayout.PropertyField(_trackType);

@@ -1,0 +1,49 @@
+﻿Skip = /(\s+|\/\/[^\n]*(\n|$))+/;
+
+Escaped
+{
+    Document = ( Definition.BlockList* | Definition.List ) /$/;
+
+    String = '"' Quoted '"' | '“' Quoted '”' | Unquoted
+    {
+        Quoted = /([^"\n\\]|\\[\\"nt])*/;
+        Unquoted = /([^\s\/"{}\\]|\/(?!\/)|\\[\\"nt{}])+/;
+    }
+
+    ignore Skip
+    {
+        Definition = String ( "{" List "}" | String )
+        {
+            List = Definition*;
+
+            collapse
+            {
+                BlockList = "{" Definition.List "}";
+            }
+        }
+    }
+}
+
+Unescaped
+{
+    Document = ( Definition.BlockList* | Definition.List ) /$/;
+
+    String = '"' Quoted '"' | '“' Quoted '”' | Unquoted
+    {
+        Quoted = /[^"\n]*/;
+        Unquoted = /([^\s\/"{}]|\/(?!\/))+/;
+    }
+
+    ignore Skip
+    {
+        Definition = String ( "{" List "}" | String )
+        {
+            List = Definition*;
+
+            collapse
+            {
+                BlockList = "{" Definition.List "}";
+            }
+        }
+    }
+}

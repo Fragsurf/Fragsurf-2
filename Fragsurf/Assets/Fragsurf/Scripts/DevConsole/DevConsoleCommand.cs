@@ -19,9 +19,10 @@ namespace Fragsurf
 
         protected override void _OnExecute(string[] args)
         {
-            if(_paramInfo != null)
+            if(_paramInfo != null
+                && _paramInfo.Length > 0)
             {
-                if(args.Length != _paramInfo.Length)
+                if(args == null || args.Length != _paramInfo.Length)
                 {
                     DevConsole.WriteLine(string.Join(" ", args));
                     DevConsole.WriteLine($"!> Got {args.Length} parameters, need {_paramInfo.Length}.  Wrap commands in quotes if it includes whitespace.  For example: bind BackQuote \"modal.toggle console\"");
