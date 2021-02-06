@@ -587,6 +587,7 @@ PlayerSettings:
     30: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68
     31: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68
     32: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68
+    33: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

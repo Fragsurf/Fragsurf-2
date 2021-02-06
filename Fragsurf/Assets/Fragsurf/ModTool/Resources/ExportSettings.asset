@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Test Mod
   _scene:
-    m_SceneAsset: {fileID: 0}
-    m_SceneName: 
-    m_ScenePath: 
+    m_SceneAsset: {fileID: 102900000, guid: b9932c319c624a7418a03d74cf9021b4, type: 3}
+    m_SceneName: TestScene
+    m_ScenePath: Assets/Fragsurf/Content/Scenes/TestScene.unity
   _author: Crayz
   _description: This is a test mod
   _version: 1.0
   _platforms: 15
   _content: 7
   _outputDirectory: C:/Users/Jake/Desktop/Test mod Export
-  _uploadToWorkshop: 0
+  _uploadToWorkshop: 1
   _workshopId: 0
