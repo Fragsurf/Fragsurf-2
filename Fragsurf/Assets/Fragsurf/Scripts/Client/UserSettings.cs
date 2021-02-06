@@ -106,7 +106,7 @@ namespace Fragsurf.Client
             }
             SaveBinds();
 
-            var filePath = Application.persistentDataPath + "/UserSettings.cfg";
+            var filePath = Application.persistentDataPath + "/UserSettings2.cfg";
             _config.SaveToFile(filePath);
         }
 

@@ -21,6 +21,14 @@ namespace Fragsurf.Client
         {
             UserSettings.Instance.Load();
         }
+
+        protected override void OnDestroy()
+        {
+            UserSettings.Instance.Save();
+
+            base.OnDestroy();
+        }
+
     }
 }
 

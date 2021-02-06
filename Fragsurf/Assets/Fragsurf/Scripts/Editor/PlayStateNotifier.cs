@@ -44,7 +44,11 @@ public static class PlayStateNotifier
         if(stateChange == PlayModeStateChange.EnteredPlayMode
             && EditorPrefs.GetBool("Fragsurf.PlayTest", true))
         {
-            new GameObject("[PlayTest]").AddComponent<PlayTest>().SpawnPoint = PlayFrom;
+            var pt = GameObject.FindObjectOfType<PlayTest>(false);
+            if (!pt)
+            {
+                new GameObject("[PlayTest]").AddComponent<PlayTest>().SpawnPoint = PlayFrom;
+            }
         }
 
         if(stateChange == PlayModeStateChange.ExitingPlayMode)

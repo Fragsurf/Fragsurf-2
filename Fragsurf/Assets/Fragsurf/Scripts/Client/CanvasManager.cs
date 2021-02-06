@@ -19,7 +19,7 @@ namespace Fragsurf.Client
             Modal_EscapeMenu.Identifier,
             Modal_Settings.Identifier,
             Modal_ColorPicker.Identifier,
-
+            "Perf",
 
             Modal_Console.Identifier,
         };
