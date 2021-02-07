@@ -24,28 +24,28 @@ public class SceneContextMenu : Editor
 
     static void GetHit(SceneView sceneView, out GameObject hitObject, out Vector3 hitPoint, out Vector3 hitNormal)
     {
-        hitObject = HandleUtility.PickGameObject(Event.current.mousePosition, out int materialIndex);
-        hitPoint = Vector3.zero;
-        hitNormal = Vector3.zero;
-
-        if (hitObject)
+        if (SceneQueryUtility.FindClickWorldIntersection(sceneView.camera, Event.current.mousePosition, out hitObject))
         {
-            var ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
-            var mf = hitObject.GetComponentInChildren<MeshFilter>();
-            if (mf)
-            {
-                EditorHandles_UnityInternal.IntersectRayMesh(ray, mf, out RaycastHit hit);
-                hitPoint = hit.point;
-                hitNormal = hit.normal;
-            }
+            var intersection = SceneQueryUtility.FindMeshIntersection(sceneView.camera, Event.current.mousePosition);
+            hitPoint = intersection.worldIntersection;
+            hitNormal = intersection.worldPlane.normal;
         }
         else
         {
-            if (SceneQueryUtility.FindClickWorldIntersection(sceneView.camera, Event.current.mousePosition, out hitObject))
+            hitObject = HandleUtility.PickGameObject(Event.current.mousePosition, out int materialIndex);
+            hitPoint = Vector3.zero;
+            hitNormal = Vector3.zero;
+
+            if (hitObject)
             {
-                var intersection = SceneQueryUtility.FindMeshIntersection(sceneView.camera, Event.current.mousePosition);
-                hitPoint = intersection.worldIntersection;
-                hitNormal = intersection.worldPlane.normal;
+                var ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
+                var mf = hitObject.GetComponentInChildren<MeshFilter>();
+                if (mf)
+                {
+                    EditorHandles_UnityInternal.IntersectRayMesh(ray, mf, out RaycastHit hit);
+                    hitPoint = hit.point;
+                    hitNormal = hit.normal;
+                }
             }
         }
     }
