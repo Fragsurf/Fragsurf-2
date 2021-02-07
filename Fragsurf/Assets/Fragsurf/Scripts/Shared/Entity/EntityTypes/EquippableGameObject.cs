@@ -1,5 +1,4 @@
-using FMODUnity;
-using FMOD.Studio;
+using Fragsurf.Client;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Utility;
@@ -167,11 +166,6 @@ namespace Fragsurf.Shared.Entity
 
             //PlaySound(Data.UnequipSound, true);
 
-            if (_instance.isValid())
-            {
-                _instance.stop(STOP_MODE.IMMEDIATE);
-            }
-
             StopAllCoroutines();
 
             WorldModel.SetCollidersEnabled(true);
@@ -257,31 +251,21 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
-        EventInstance _instance;
-        public void PlaySound(string sound, bool usePersistentInstance = false)
+        public void PlaySound(AudioClip clip, bool usePersistentInstance = false)
         {
             if (Entity.Game.IsHost
-                || string.IsNullOrWhiteSpace(sound)
                 || Equippable.Human == null
                 || Equippable.Human.HumanGameObject == null)
             {
                 return;
             }
 
-            EventInstance instance = RuntimeManager.CreateInstance(sound);
             if (usePersistentInstance)
             {
-                if (_instance.isValid())
-                {
-                    _instance.stop(STOP_MODE.IMMEDIATE);
-                }
-                _instance = instance;
+                // stop persisting sound
             }
 
-            RuntimeManager.AttachInstanceToGameObject(instance, Equippable.Human.HumanGameObject.HeadAttachment, rigidBody: null);
-
-            instance.start();
-            instance.release();
+            SoundManager.PlaySoundAttached(clip, 1.0f, Equippable.Human.HumanGameObject.HeadAttachment);
         }
 
         protected virtual void ImpactEffect(RaycastHit hit)

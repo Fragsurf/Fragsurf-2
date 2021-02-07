@@ -1,4 +1,3 @@
-using FMODUnity;
 using Fragsurf.Client;
 using Fragsurf.Shared.Entity;
 using UnityEngine;
@@ -15,11 +14,9 @@ namespace Fragsurf.Misc
         [SerializeField]
         private float _velocityMaxVolume = 2f;
         [SerializeField]
-        [EventRef]
-        private string _softCollisionSound;
+        private AudioClip _softCollisionSound;
         [SerializeField]
-        [EventRef]
-        private string _hardCollisionSound;
+        private AudioClip _hardCollisionSound;
 
         private float _soundTimer;
 

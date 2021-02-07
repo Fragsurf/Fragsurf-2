@@ -108,7 +108,7 @@ namespace Fragsurf.Shared.Player
         {
             for (int i = 0; i < Players.Count; i++)
             {
-                if (Players[i].AccountId == steamid)
+                if (Players[i].SteamId == steamid)
                     return Players[i];
             }
             return null;
@@ -183,11 +183,11 @@ namespace Fragsurf.Shared.Player
         {
             foreach(var kvp in SpecList)
             {
-                kvp.Value.Remove(spectator.AccountId);
+                kvp.Value.Remove(spectator.SteamId);
             }
             if(target != null)
             {
-                SpecList[target].Add(spectator.AccountId);
+                SpecList[target].Add(spectator.SteamId);
             }
             OnPlayerSpectate?.Invoke(spectator, target);
         }

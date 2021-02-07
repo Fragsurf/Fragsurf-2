@@ -2,8 +2,6 @@
 using System.Runtime.InteropServices;
 using Fragsurf.Shared.Packets;
 using Steamworks;
-using FMOD;
-using FMODUnity;
 using Fragsurf.UI;
 
 namespace Fragsurf.Shared.Player
@@ -13,15 +11,12 @@ namespace Fragsurf.Shared.Player
 
         private byte[] _data = new byte[1024 * 64];
         private float _readTime = 0.25f;
-        private ChannelGroup _chatChannelGroup;
         private bool _loopback;
         private const float _audioReadTime = 0.4f;
 
         protected override void _Start()
         {
             base._Start();
-
-            RuntimeManager.LowlevelSystem.createChannelGroup("VoiceChatGroup", out _chatChannelGroup);
 
             DevConsole.RegisterCommand("+voicerecord", "", this, (e) =>
             {
@@ -91,8 +86,6 @@ namespace Fragsurf.Shared.Player
                     return;
                 }
 
-                _chatChannelGroup.setVolume(vol);
-
                 var clientIndex = voicePacket.ClientIndex;
 
                 if (clientIndex == Game.ClientIndex && !_loopback)
@@ -114,15 +107,8 @@ namespace Fragsurf.Shared.Player
                     return;
                 }
 
-                var soundInfo = new CREATESOUNDEXINFO();
-                soundInfo.format = SOUND_FORMAT.PCM16;
-                soundInfo.defaultfrequency = (int)SteamUser.SampleRate;
-                soundInfo.numchannels = 1;
-                soundInfo.cbsize = Marshal.SizeOf(soundInfo);
-                soundInfo.length = (uint)uncompressedDataLength;
-
-                var createSoundResult = RuntimeManager.LowlevelSystem.createStream(_data, MODE._2D | MODE.OPENMEMORY | MODE.OPENRAW, ref soundInfo, out Sound newSound);
-                var playSoundResult = RuntimeManager.LowlevelSystem.playSound(newSound, _chatChannelGroup, false, out Channel channel);
+                throw new System.NotImplementedException();
+                // _data to audio..
 
                 //UnityEngine.Debug.Log($"size: {data.Length} - group: {getChannelGroupResult} - create: {createSoundResult} - play: {playSoundResult}");
             }

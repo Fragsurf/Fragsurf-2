@@ -8,7 +8,7 @@ namespace Fragsurf.Server
 
         public ServerPlayer(ulong steamId, int index, float connectionTime, bool isFake = false)
         {
-            AccountId = steamId;
+            SteamId = steamId;
             ConnectionTime = connectionTime;
             ClientIndex = index;
             IsFake = isFake;
@@ -18,7 +18,7 @@ namespace Fragsurf.Server
         public int MTU = 1000;
         public bool IsFake { get; }
         public int ClientIndex { get; private set; }
-        public ulong AccountId { get; set; } = 0;
+        public ulong SteamId { get; set; } = 0;
         public NetEntity Entity { get; set; }
         public string DisplayName { get; set; }
         public bool Introduced { get; set; }

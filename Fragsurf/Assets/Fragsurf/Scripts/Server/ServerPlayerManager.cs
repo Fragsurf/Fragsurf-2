@@ -131,9 +131,9 @@ namespace Fragsurf.Server
                     ev.DisplayName = playerToSend.DisplayName;
                     ev.TeamNumber = playerToSend.Team;
                     ev.Latency = playerToSend.Latency;
-                    ev.SteamID = playerToSend.AccountId;
+                    ev.SteamID = playerToSend.SteamId;
 
-                    Game.GetFSComponent<SocketManager>().SendPacketBrute(player.AccountId, ev);
+                    Game.GetFSComponent<SocketManager>().SendPacketBrute(player.ClientIndex, ev);
                 }
             }
 
@@ -145,7 +145,7 @@ namespace Fragsurf.Server
                     updatePacket.Sc = SendCategory.UI_Important;
                     updatePacket.Load(ent);
 
-                    Game.GetFSComponent<SocketManager>().SendPacketBrute(player.AccountId, updatePacket);
+                    Game.GetFSComponent<SocketManager>().SendPacketBrute(player.ClientIndex, updatePacket);
                 }
             }
         }
@@ -158,7 +158,7 @@ namespace Fragsurf.Server
             ev.DisplayName = player.DisplayName;
             ev.TeamNumber = player.Team;
             ev.Latency = player.Latency;
-            ev.SteamID = player.AccountId;
+            ev.SteamID = player.SteamId;
             Game.GetFSComponent<SocketManager>().BroadcastPacket(ev);
         }
 

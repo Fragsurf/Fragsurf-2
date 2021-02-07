@@ -58,7 +58,7 @@ namespace Fragsurf.Client
             var peer = new PeerPlayer(e.ClientIndex);
             peer.DisplayName = e.DisplayName;
             peer.Team = e.TeamNumber;
-            peer.AccountId = e.SteamID;
+            peer.SteamId = e.SteamID;
             Game.PlayerManager.IntroducePlayer(peer);
         }
 

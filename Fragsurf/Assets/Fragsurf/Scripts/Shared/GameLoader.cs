@@ -189,11 +189,6 @@ namespace Fragsurf.Shared
                 _retrying = false;
             }
 
-            if (!Game.IsHost)
-            {
-                SoundManager.StopAmbience2D();
-            }
-
             State = GameLoaderState.Playing;
 
             return result;

@@ -36,12 +36,9 @@ namespace Fragsurf.Shared
         public BaseEquippableData[] Equippables;
 
         [Header("FMOD Audio")]
-        [FMODUnity.EventRef]
-        public string Footstep;
-        [FMODUnity.EventRef]
-        public string FallDamage;
-        [FMODUnity.EventRef]
-        public string DeathSound;
+        public AudioClip Footstep;
+        public AudioClip FallDamage;
+        public AudioClip DeathSound;
 
         public GameObject GetImpactEffect(SurfaceMaterialType materialType)
         {

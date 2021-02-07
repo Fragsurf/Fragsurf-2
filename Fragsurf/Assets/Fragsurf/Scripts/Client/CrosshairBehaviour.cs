@@ -38,7 +38,7 @@ namespace Fragsurf.Client
 
         public void Hitmarker()
         {
-            SoundManager.PlaySound2D("UI/Hitmarker", 1.0f);
+            //SoundManager.PlaySound2D("UI/Hitmarker", 1.0f);
             _hitmarkerObject.SetActive(true);
             Invoke("DisableHitmarker", .15f);
         }

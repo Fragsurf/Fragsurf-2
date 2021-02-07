@@ -79,7 +79,7 @@ namespace Fragsurf.Shared.Player
             {
                 throw new NotImplementedException();
             }
-            Game.Network.SendPacket(player.AccountId, GetChatPacket(message));
+            Game.Network.SendPacket(player.ClientIndex, GetChatPacket(message));
         }
 
         public void MessageAll(string message)

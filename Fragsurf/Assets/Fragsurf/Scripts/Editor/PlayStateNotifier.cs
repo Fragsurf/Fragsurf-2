@@ -61,6 +61,10 @@ public static class PlayStateNotifier
             }
             if (SteamClient.IsValid)
             {
+                if(UserSettings.Instance != null)
+                {
+                    UserSettings.Instance.Save();
+                }
                 SteamClient.Shutdown();
                 SteamClient.RunCallbacks();
                 SteamClient.RunCallbacks();

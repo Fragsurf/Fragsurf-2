@@ -16,7 +16,7 @@ namespace Fragsurf.Server.ServerScripts
             public FileStream InputStream;
             public int SentOffset;
             public int ChunkLength;
-            public ulong AccountId;
+            public int ClientIndex;
         }
 
         private List<FileUpload> _uploads = new List<FileUpload>();
@@ -54,7 +54,7 @@ namespace Fragsurf.Server.ServerScripts
                 var fu = new FileUpload();
                 fu.InputStream = new FileStream(file.FullPath, FileMode.Open, FileAccess.Read);
                 fu.File = file.RelativePath;
-                fu.AccountId = player.AccountId;
+                fu.ClientIndex = player.ClientIndex;
                 fu.ChunkLength = ((ServerPlayer)player).MTU - 20;
                 fu.SentOffset = 0;
                 _uploads.Add(fu);
@@ -66,7 +66,7 @@ namespace Fragsurf.Server.ServerScripts
             var serverPlayer = (ServerPlayer)player;
             for(int i = _uploads.Count - 1; i >= 0; i--)
             {
-                if(_uploads[i].AccountId == serverPlayer.AccountId)
+                if(_uploads[i].ClientIndex == serverPlayer.ClientIndex)
                 {
                     _uploads[i].InputStream?.Close();
                     _uploads[i].InputStream?.Dispose();
@@ -109,7 +109,7 @@ namespace Fragsurf.Server.ServerScripts
             fu.InputStream.Read(chunk.Data, 0, sendBytes);
 
             // send it
-            GameServer.Instance.Socket.SendPacketBrute(fu.AccountId, chunk);
+            GameServer.Instance.Socket.SendPacketBrute(fu.ClientIndex, chunk);
 
             fu.SentOffset += sendBytes;
 

@@ -1,7 +1,6 @@
 using Fragsurf.Shared.Packets;
 using LiteNetLib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
@@ -28,16 +27,31 @@ namespace Fragsurf.Server
             _server?.PollEvents();
         }
 
+        private bool FindPeer(ServerPlayer player, out NetPeer result)
+        {
+            result = null;
+            foreach(var peer in _server.ConnectedPeerList)
+            {
+                if(peer.Tag == player)
+                {
+                    result = peer;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public override void DisconnectPlayer(ServerPlayer player, string reason)
         {
-            var peer = _server.GetPeerById((int)player.AccountId);
-            peer?.Disconnect();
+            if(FindPeer(player, out NetPeer peer))
+            {
+                peer.Disconnect();
+            }
         }
 
         public override void SendPacket(ServerPlayer player, IBasePacket packet)
         {
-            var peer = _server.GetPeerById((int)player.AccountId);
-            if (peer != null)
+            if(FindPeer(player, out NetPeer peer))
             {
                 _SendPacket(peer, packet);
             }
@@ -86,15 +100,17 @@ namespace Fragsurf.Server
 
         private void Listener_PeerDisconnectedEvent(NetPeer peer, DisconnectInfo disconnectInfo)
         {
-            SocketMan.HandlePlayerDisconnected((ulong)peer.Id);
+            var pl = peer.Tag as ServerPlayer;
+            if(pl == null)
+            {
+                throw new Exception("ServerPlayer tag undefined on disconnect");
+            }
+            SocketMan.HandlePlayerDisconnected(pl.ClientIndex);
         }
 
         private void Listener_PeerConnectedEvent(NetPeer peer)
         {
-            if (!SocketMan.InitiatePlayer((ulong)peer.Id))
-            {
-                peer.Disconnect();
-            }
+            peer.Tag = SocketMan.CreatePlayer();
         }
 
         private void Listener_ConnectionRequestEvent(ConnectionRequest request)
@@ -111,10 +127,17 @@ namespace Fragsurf.Server
 
         private void Listener_NetworkReceiveEvent(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
         {
+            var pl = peer.Tag as ServerPlayer;
+            if(pl == null)
+            {
+                Debug.LogError("ServerPlayer tag is undefined on receive event, disconnecting peer.");
+                peer.Disconnect();
+                return;
+            }
             _readBuffer.LengthBytes = reader.UserDataSize;
             _readBuffer.Position = 0;
             reader.GetBytes(_readBuffer.Data, reader.UserDataSize);
-            SocketMan.HandleIncomingData2((ulong)peer.Id, _readBuffer);
+            SocketMan.HandleIncomingData2(pl.ClientIndex, _readBuffer);
             reader.Recycle();
         }
 

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using Fragsurf.Shared.Player;
 using Fragsurf.Shared.Packets;
-using FMODUnity;
 
 namespace Fragsurf.Shared
 {
@@ -22,16 +21,7 @@ namespace Fragsurf.Shared
             {
                 throw new System.NotImplementedException();
             }
-
-            var fixedPath = FixPath(eventPath);
-            if (!twod)
-            {
-                RuntimeManager.PlayOneShot(fixedPath, position);
-            }
-            else
-            {
-                RuntimeManager.PlayOneShotAttached(fixedPath, GameCamera.Camera.gameObject);
-            }
+            throw new System.NotImplementedException();
         }
 
         public void EmitToAll(string eventPath, Vector3 position = default)
@@ -57,7 +47,7 @@ namespace Fragsurf.Shared
             sound.Event = eventPath;
             sound.Position = position;
             sound.Twod = position == Vector3.zero;
-            Game.Network.SendPacket(player.AccountId, sound);
+            Game.Network.SendPacket(player.ClientIndex, sound);
         }
 
         public static string FixPath(string path)

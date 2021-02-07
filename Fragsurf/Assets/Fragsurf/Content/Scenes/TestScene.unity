@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 3977024}
   - component: {fileID: 3977023}
   - component: {fileID: 3977022}
+  - component: {fileID: 3977025}
   m_Layer: 0
   m_Name: '[Playtest]'
   m_TagString: Untagged
@@ -182,6 +183,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3977025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3977021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8ca1483cc33a0641bfe696461475464, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &40429667
 GameObject:
   m_ObjectHideFlags: 16
@@ -249,7 +262,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 21438
+    surfaceParameter: 22644
     meshQueryIndex: 3
     subMeshQueryIndex: 0
     geometryHashValue: -4537615815773363004
@@ -2307,7 +2320,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 21442
+    surfaceParameter: 22648
     meshQueryIndex: 2
     subMeshQueryIndex: 0
     geometryHashValue: -7616724796203094217
@@ -3027,7 +3040,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 21438
+    surfaceParameter: 22644
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: -249210041189295188
@@ -5001,7 +5014,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 1
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &955472919
 Transform:
   m_ObjectHideFlags: 0
@@ -5457,7 +5470,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1076530077
 Transform:
   m_ObjectHideFlags: 0
@@ -7686,71 +7699,6 @@ MonoBehaviour:
     - EdgeIndices: 17000000160000001500000014000000130000001200000011000000100000000f0000000e0000000d0000000c000000
       TexGenIndex: 13
     Generation: 2
---- !u!1 &1737422848
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1737422850}
-  - component: {fileID: 1737422849}
-  m_Layer: 0
-  m_Name: Load BSP
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1737422849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1737422848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a0be43859bdbe6418cc42cd1660c7e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MapDirectory: sa://
-  LoadOnStart: 1
-  ReflectionProbe: {fileID: 782103370}
-  Options:
-    FilePath: surf_stonework3
-    WorldScale: 0.0254
-    WithModels: 1
-    WithDisplacements: 1
-    WithLightmaps: 1
-    WithConvexColliders: 1
-    WithEntities: 1
-    WithSkybox: 1
-    WithProps: 1
-    GamesToMount:
-    - 240
-    ShaderMaterials:
-    - ShaderName: LightmappedGeneric
-      Material: {fileID: 2100000, guid: bf763c1e6f3610c47bb505962c72cd01, type: 2}
-    WaterMaterial: {fileID: 2100000, guid: 3f9dbed3c7462cb4e91d5f98b8c05679, type: 2}
-    MissingMaterial: {fileID: 2100000, guid: 22882887e17667a4f9f3f45f093c8b59, type: 2}
-    SkyMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
-    Sun: {fileID: 887240411}
---- !u!4 &1737422850
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1737422848}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1761091358
 Mesh:
   m_ObjectHideFlags: 16
@@ -8018,7 +7966,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 21444
+    surfaceParameter: 22650
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -157442139781638726

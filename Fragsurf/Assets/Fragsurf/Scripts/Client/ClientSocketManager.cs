@@ -322,7 +322,7 @@ namespace Fragsurf.Client
             BroadcastPacket(packet);
         }
 
-        public void SendPacket(ulong steamid, IBasePacket packet)
+        public void SendPacket(int clientIndex, IBasePacket packet)
         {
             BroadcastPacket(packet);
         }

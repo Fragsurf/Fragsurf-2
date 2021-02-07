@@ -6,7 +6,7 @@ namespace Fragsurf.Shared.Player
     public interface IPlayer
     {
         int ClientIndex { get; }
-        ulong AccountId { get; }
+        ulong SteamId { get; }
         string DisplayName { get; set; }
         bool Introduced { get; set; }
         byte Team { get; set; }

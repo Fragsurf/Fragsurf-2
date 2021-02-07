@@ -1,4 +1,3 @@
-using FMODUnity;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
 using System;
@@ -11,18 +10,12 @@ namespace Fragsurf.Shared
     public class GunEquippableData : BaseEquippableData
     {
         [Header("Audio")]
-        [EventRef]
-        public string FireSound;
-        [EventRef]
-        public string FireTailSound;
-        [EventRef]
-        public string ReloadSound;
-        [EventRef]
-        public string BoltActionSound;
-        [EventRef]
-        public string ScopeSound;
-        [EventRef]
-        public string DryFireSound;
+        public AudioClip FireSound;
+        public AudioClip FireTailSound;
+        public AudioClip ReloadSound;
+        public AudioClip BoltActionSound;
+        public AudioClip ScopeSound;
+        public AudioClip DryFireSound;
         [Header("Ammo")]
         public int RoundsPerClip = 30;
         public int MaxClips = 3;

@@ -70,7 +70,7 @@ namespace Fragsurf.Shared
             cp.Sc = SendCategory.UI_Important;
             cp.AddString(replStr);
             cp.Label = "Replicate";
-            Game.Network.SendPacket(player.AccountId, cp);
+            Game.Network.SendPacket(player.ClientIndex, cp);
         }
 
         protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)

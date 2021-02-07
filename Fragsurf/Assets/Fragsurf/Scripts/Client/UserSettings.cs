@@ -3,6 +3,8 @@ using UnityEngine;
 using SharpConfig;
 using System;
 using Fragsurf.Utility;
+using Steamworks;
+using System.Text;
 
 namespace Fragsurf.Client
 {
@@ -10,6 +12,7 @@ namespace Fragsurf.Client
     {
 
         private Configuration _config;
+        private const string _settingFileName = "UserSettings2.cfg";
         public static ConsoleBinds Binds { get; } = new ConsoleBinds();
 
         private void Start()
@@ -17,9 +20,16 @@ namespace Fragsurf.Client
             Load();
         }
 
-        private void OnApplicationQuit()
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
+
+        protected override void OnApplicationQuit()
         {
             Save();
+
+            base.OnApplicationQuit();
         }
 
         private void Update()
@@ -36,7 +46,7 @@ namespace Fragsurf.Client
 
         public void UpdateUserSetting(string settingName, string value)
         {
-            if (_config["UserSettings"][settingName] == null)
+            if (!_config["UserSettings"].Contains(settingName))
             {
                 _config["UserSettings"].Add(settingName, value);
             }
@@ -48,31 +58,33 @@ namespace Fragsurf.Client
 
         public void Load()
         {
-            var filePath = Path.Combine(Application.persistentDataPath, "UserSettings2.cfg");
+            var filePath = Path.Combine(Application.persistentDataPath, _settingFileName);
 
             try
             {
-                if (!File.Exists(filePath))
+                if (SteamClient.IsValid
+                    && SteamRemoteStorage.FileExists(_settingFileName))
                 {
-                    _config = new Configuration();
-                    _config.Add("Binds");
-                    _config.Add("UserSettings");
-                    ExecuteDefaultSettings();
-                    _config.SaveToFile(filePath);
+                    var str = Encoding.UTF8.GetString(SteamRemoteStorage.FileRead(_settingFileName));
+                    _config = Configuration.LoadFromString(str);
                 }
-                else
+                else if (File.Exists(filePath))
                 {
                     _config = Configuration.LoadFromFile(filePath);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Debug.LogError(e);
+                Debug.LogError(e.Message);
+            }
+
+            if(_config == null)
+            {
                 _config = new Configuration();
                 _config.Add("Binds");
                 _config.Add("UserSettings");
                 ExecuteDefaultSettings();
-                _config.SaveToFile(filePath);
+                Save();
             }
 
             try
@@ -94,20 +106,23 @@ namespace Fragsurf.Client
             }
         }
 
-        public void Save(bool bindsOnly = false)
+        public void Save()
         {
-            if(!bindsOnly)
+            foreach (string varName in DevConsole.GetVariablesWithFlags(ConVarFlags.UserSetting))
             {
-                var userSettings = DevConsole.GetVariablesWithFlags(ConVarFlags.UserSetting);
-                foreach (string varName in userSettings)
-                {
-                    UpdateUserSetting(varName, DevConsole.GetVariableAsString(varName));
-                }
+                UpdateUserSetting(varName, DevConsole.GetVariableAsString(varName));
             }
+
             SaveBinds();
 
-            var filePath = Application.persistentDataPath + "/UserSettings2.cfg";
+            var filePath = Path.Combine(Application.persistentDataPath, _settingFileName);
             _config.SaveToFile(filePath);
+
+            if (SteamClient.IsValid)
+            {
+                var bytes = Encoding.UTF8.GetBytes(File.ReadAllText(filePath));
+                SteamRemoteStorage.FileWrite(_settingFileName, bytes);
+            }
         }
 
         private void ExecuteUserSettings()

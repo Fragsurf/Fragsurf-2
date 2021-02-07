@@ -1,4 +1,3 @@
-using FMODUnity;
 using Fragsurf.Shared.Entity;
 using System;
 using UnityEngine;
@@ -20,10 +19,8 @@ namespace Fragsurf.Shared
         public GameObject WorldModelPrefab;
         public EquippableViewModel ViewModelPrefab;
         public EquippableAnimationLayer PlayerAnimationLayer;
-        [EventRef]
-        public string EquipSound;
-        [EventRef]
-        public string UnequipSound;
+        public AudioClip EquipSound;
+        public AudioClip UnequipSound;
 
         public float TimeToEquip = .5f;
         public float TimeToUnequip = .5f;

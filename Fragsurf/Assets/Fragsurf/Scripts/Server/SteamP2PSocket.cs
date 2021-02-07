@@ -101,6 +101,7 @@ namespace Fragsurf.Server
     {
 
         private SteamSocketInterface _socket;
+        private Dictionary<ulong, int> _steamidToClientIndex = new Dictionary<ulong, int>();
 
         public SteamP2PSocket(SocketManager socketMan) 
             : base(socketMan)
@@ -113,12 +114,12 @@ namespace Fragsurf.Server
         public override void DisconnectPlayer(ServerPlayer player, string reason)
         {
             Enum.TryParse(reason, out DenyReason dr);
-            _socket.Disconnect(player.AccountId, (int)dr);
+            _socket.Disconnect(player.SteamId, (int)dr);
         }
 
         public override void SendPacket(ServerPlayer player, IBasePacket packet)
         {
-            SendPacket(player.AccountId, packet);
+            SendPacket(player.SteamId, packet);
         }
 
         public override void SendPacket(List<ServerPlayer> players, IBasePacket packet)
@@ -129,7 +130,7 @@ namespace Fragsurf.Server
             {
                 if (player.Introduced)
                 {
-                    SendPacket(player.AccountId, data, dataLength, type);
+                    SendPacket(player.SteamId, data, dataLength, type);
                 }
             }
         }
@@ -146,10 +147,8 @@ namespace Fragsurf.Server
 
             _socket._OnConnected = (connection, connectionInfo) =>
             {
-                if(!SocketMan.InitiatePlayer(connectionInfo.Identity.SteamId))
-                {
-                    connection.Close();
-                }
+                var pl = SocketMan.CreatePlayer();
+                _steamidToClientIndex[connectionInfo.Identity.SteamId] = pl.ClientIndex;
             };
 
             _socket._OnConnecting = (connection, connectionInfo) =>
@@ -159,7 +158,7 @@ namespace Fragsurf.Server
 
             _socket._OnDisconnected = (connection, connectionInfo) =>
             {
-                SocketMan.HandlePlayerDisconnected(connectionInfo.Identity.SteamId);
+                SocketMan.HandlePlayerDisconnected(GetClientIndex(connectionInfo.Identity.SteamId));
             };
 
             _socket._OnMessage = (connection, id, data, size, msgNum, recvTime, channel) =>
@@ -171,10 +170,19 @@ namespace Fragsurf.Server
                  _recvBuffer.Position = 0;
                  _recvBuffer.LengthBytes = size;
                  Marshal.Copy(data, _recvBuffer.Data, 0, size);
-                 SocketMan.HandleIncomingData2((SteamId)id, _recvBuffer);
+                 SocketMan.HandleIncomingData2(GetClientIndex((SteamId)id), _recvBuffer);
              };
 
             SetSocketStatus(ServerStatus.AcceptingConnections);
+        }
+
+        private int GetClientIndex(ulong steamid)
+        {
+            if (_steamidToClientIndex.ContainsKey(steamid))
+            {
+                return _steamidToClientIndex[steamid];
+            }
+            return 0;
         }
 
         public override void StopSocket(string reason)
@@ -194,13 +202,18 @@ namespace Fragsurf.Server
 
         public override void Tick()
         {
-            _socket?.Receive();
+            if(SteamServer.IsValid
+                && _socket != null)
+            {
+                _socket.Receive();
+            }
         }
 
         private void DisconnectPlayer(ulong steamid, string reason)
         {
             Enum.TryParse(reason, out DenyReason dr);
             _socket.Disconnect(steamid, (int)dr);
+            _steamidToClientIndex.Remove(steamid);
         }
 
         private void SendPacket(ulong steamid, IBasePacket packet)

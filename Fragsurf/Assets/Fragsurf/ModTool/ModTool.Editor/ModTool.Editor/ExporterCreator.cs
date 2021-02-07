@@ -28,12 +28,24 @@ namespace ModTool.Editor
             CreatePackage(filePath, Path.GetDirectoryName(filePath));
         }
 
-        //[PostProcessBuild]
+        [PostProcessBuild]
         public static void CreateExporterPostBuild(BuildTarget target, string pathToBuiltProject)
         {
+            if(IsFileBelowDirectory(pathToBuiltProject, Application.temporaryCachePath))
+            {
+                Debug.Log("Is temp");
+                return;
+            }
             var filePath = Path.Combine(Application.dataPath, "../", "Modding Toolkit.unitypackage");
             CreateExporter(filePath);
             CreatePackage(filePath, Path.GetDirectoryName(pathToBuiltProject));
+        }
+
+        public static bool IsFileBelowDirectory(string fileInfo, string directoryInfo)
+        {
+            var di1 = new DirectoryInfo(Path.GetDirectoryName(fileInfo));
+            var di2 = new DirectoryInfo(directoryInfo);
+            return di1.FullName.Contains(di2.FullName);
         }
 
         private static void CreatePackage(string unityPackagePath, string directory)

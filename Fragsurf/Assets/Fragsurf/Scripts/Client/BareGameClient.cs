@@ -19,12 +19,15 @@ namespace Fragsurf.Client
 
         protected override void Initialize()
         {
-            UserSettings.Instance.Load();
+            UserSettings.Instance.useGUILayout = UserSettings.Instance.useGUILayout;
         }
 
         protected override void OnDestroy()
         {
-            UserSettings.Instance.Save();
+            if (UserSettings.Instance)
+            {
+                UserSettings.Instance.Save();
+            }
 
             base.OnDestroy();
         }

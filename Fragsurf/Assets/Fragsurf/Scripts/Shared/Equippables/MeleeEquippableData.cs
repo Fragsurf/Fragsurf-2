@@ -1,4 +1,3 @@
-using FMODUnity;
 using System;
 using UnityEngine;
 
@@ -22,12 +21,9 @@ namespace Fragsurf.Shared
         public float HitRadius = .1f;
 
         [Header("Audio")]
-        [EventRef]
-        public string SwingSound;
-        [EventRef]
-        public string HitFleshSound;
-        [EventRef]
-        public string HitSolidSound;
+        public AudioClip SwingSound;
+        public AudioClip HitFleshSound;
+        public AudioClip HitSolidSound;
 
     }
 }

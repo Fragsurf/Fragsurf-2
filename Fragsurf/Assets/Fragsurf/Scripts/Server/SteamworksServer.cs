@@ -81,17 +81,19 @@ namespace Fragsurf.Server
 
         private void SteamServer_OnValidateAuthTicketResponse(SteamId steamid, SteamId owner, AuthResponse response)
         {
+            var player = Game.PlayerManager.FindPlayer(steamid);
+            if(player == null)
+            {
+                return;
+            }
+
             if (response != AuthResponse.OK)
             {
-                GameServer.Instance.Socket.DisconnectPlayer(steamid, DenyReason.SteamAuthFailed.ToString());
+                GameServer.Instance.Socket.DisconnectPlayer(player.ClientIndex, DenyReason.SteamAuthFailed.ToString());
             }
             else
             {
-                var player = Game.PlayerManager.FindPlayer(steamid);
-                if(player != null)
-                {
-                    SteamServer.UpdatePlayer(steamid, player.DisplayName, 0);
-                }
+                SteamServer.UpdatePlayer(steamid, player.DisplayName, 0);
             }
         }
 
@@ -121,7 +123,7 @@ namespace Fragsurf.Server
                 if(sp.TicketData != null 
                     && sp.TicketData.Length > 0
                     && !Game.IsLocalServer
-                    && !SteamServer.BeginAuthSession(sp.TicketData, sp.AccountId))
+                    && !SteamServer.BeginAuthSession(sp.TicketData, sp.SteamId))
                 {
                     ((GameServer)Game).Socket.DisconnectPlayer(sp, DenyReason.SteamAuthFailed.ToString());
                 }
@@ -136,7 +138,7 @@ namespace Fragsurf.Server
             }
             else
             {
-                SteamServer.EndSession(player.AccountId);
+                SteamServer.EndSession(player.SteamId);
             }
         }
 

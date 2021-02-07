@@ -1,4 +1,3 @@
-using FMODUnity;
 using System;
 using UnityEngine;
 
@@ -9,10 +8,8 @@ namespace Fragsurf.Shared
     {
 
         [Header("Shotgun Sounds")]
-        [EventRef]
-        public string InsertShellSound;
-        [EventRef]
-        public string PumpSound;
+        public AudioClip InsertShellSound;
+        public AudioClip PumpSound;
 
         [Header("Shotgun")]
         public int PelletCount = 5;

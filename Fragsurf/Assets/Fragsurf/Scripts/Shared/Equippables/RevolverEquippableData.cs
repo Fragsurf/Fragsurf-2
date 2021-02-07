@@ -1,4 +1,3 @@
-using FMODUnity;
 using System;
 using UnityEngine;
 
@@ -9,12 +8,9 @@ namespace Fragsurf.Shared
     {
 
         [Header("Revolver Sounds")]
-        [EventRef]
-        public string BeginReloadSound;
-        [EventRef]
-        public string EndReloadSound;
-        [EventRef]
-        public string InsertRoundSound;
+        public AudioClip BeginReloadSound;
+        public AudioClip EndReloadSound;
+        public AudioClip InsertRoundSound;
 
         public override Type ComponentType => typeof(RevolverEquippable);
 

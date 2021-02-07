@@ -8,6 +8,7 @@ namespace Fragsurf.Utility
         //private static bool m_ShuttingDown = false;
         private static object m_Lock = new object();
         private static T m_Instance;
+        private static bool m_ShuttingDown;
 
         /// <summary>
         /// Access singleton instance through this propriety.
@@ -16,12 +17,12 @@ namespace Fragsurf.Utility
         {
             get
             {
-                //if (m_ShuttingDown)
-                //{
-                //    Debug.LogWarning("[Singleton] Instance '" + typeof(T) +
-                //        "' already destroyed. Returning null.");
-                //    return null;
-                //}
+                if (m_ShuttingDown)
+                {
+                    Debug.LogWarning("[Singleton] Instance '" + typeof(T) +
+                        "' already destroyed. Returning null.");
+                    return null;
+                }
 
                 lock (m_Lock)
                 {
@@ -48,15 +49,14 @@ namespace Fragsurf.Utility
             }
         }
 
-        //protected virtual void OnApplicationQuit()
-        //{
-        //    m_ShuttingDown = true;
-        //}
+        protected virtual void OnApplicationQuit()
+        {
+            m_ShuttingDown = true;
+        }
 
         protected virtual void OnDestroy()
         {
             m_Instance = null;
-            //m_ShuttingDown = true;
         }
     }
 }

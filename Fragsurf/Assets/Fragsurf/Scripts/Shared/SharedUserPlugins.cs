@@ -312,7 +312,7 @@ namespace Fragsurf.Shared
             var cp1 = PacketUtility.TakePacket<CustomPacket>();
             cp1.Label = _clearTempPacketLabel;
             cp1.Sc = SendCategory.FileTransfer;
-            Game.Network.SendPacket(player.AccountId, cp1);
+            Game.Network.SendPacket(player.ClientIndex, cp1);
 
             foreach(var file in _filesToSync)
             {
@@ -329,7 +329,7 @@ namespace Fragsurf.Shared
             var cp = PacketUtility.TakePacket<CustomPacket>();
             cp.Label = _loadTemplPacketLabel;
             cp.Sc = SendCategory.FileTransfer;
-            Game.Network.SendPacket(player.AccountId, cp);
+            Game.Network.SendPacket(player.ClientIndex, cp);
         }
 
         private void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)

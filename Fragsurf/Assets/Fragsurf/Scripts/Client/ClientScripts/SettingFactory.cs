@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using Fragsurf.Shared;
-using FMODUnity;
 
 namespace Fragsurf.Client
 {
@@ -9,11 +8,6 @@ namespace Fragsurf.Client
     {
         public static event Action MonitorNumberChanged; 
 
-        private float _audioMaster = 1f;
-        private float _audioWeapons = 1f;
-        private float _audioPlayers = 1f;
-        private float _audioUi = 1f;
-        private float _audioMusic = 1f;
         private string _resolution = string.Empty;
         private int _refreshRate = 144;
         private string _screenMode = "ExclusiveFullScreen";
@@ -47,11 +41,6 @@ namespace Fragsurf.Client
             DevConsole.RegisterVariable("sensitivity", "Mouse sensitivity", () => _sensitivity, v => { _sensitivity = v; }, this, ConVarFlags.UserSetting);
             DevConsole.RegisterVariable("input.sensitivity", "Mouse sensitivity", () => _sensitivity, v => { _sensitivity = v; }, this, ConVarFlags.UserSetting);
             DevConsole.RegisterVariable("input.pitchmodifier", "Y axis sensitivity modifier", () => _pitchModifier, v => { _pitchModifier = v; }, this, ConVarFlags.UserSetting);
-            DevConsole.RegisterVariable("audio.master", "Master volume level", () => _audioMaster, v => SetAudioMaster(v), this, ConVarFlags.UserSetting);
-            DevConsole.RegisterVariable("audio.weapons", "Volume for gunshots and other weapon sounds", () => _audioWeapons, delegate (float v) { SetAudioVCA("Weapons", v); _audioWeapons = v; }, this, ConVarFlags.UserSetting);
-            DevConsole.RegisterVariable("audio.players", "Volume for footsteps and other player sounds", () => _audioPlayers, delegate (float v) { SetAudioVCA("Players", v); _audioPlayers = v; }, this, ConVarFlags.UserSetting);
-            DevConsole.RegisterVariable("audio.ui", "Volume for user interface elements", () => _audioUi, delegate (float v) { SetAudioVCA("UI", v); _audioUi = v; }, this, ConVarFlags.UserSetting);
-            DevConsole.RegisterVariable("audio.music", "Volume for background music", () => _audioMusic, delegate (float v) { SetAudioVCA("Music", v); _audioMusic = v; }, this, ConVarFlags.UserSetting);
             DevConsole.RegisterVariable("audio.voiceoutput", "Volume for voice chat output", () => _voiceOutputVolume, v => _voiceOutputVolume = v, this, ConVarFlags.UserSetting);
             //FSLog.RegisterVariable("graphics.gamma", "", v => SetGamma(v), () => _gamma, this, FSLog.VarFlags.UserSetting);
             //FSLog.RegisterVariable("graphics.post.motionblur", "Blurs frames in motion", v => SetMotionBlur(v), () => _motionBlur, this, FSLog.VarFlags.UserSetting);
@@ -287,17 +276,6 @@ namespace Fragsurf.Client
                 Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, mode, Screen.currentResolution.refreshRate);
                 PlayerPrefs.SetString("ScreenMode", value);
             }
-        }
-
-        private void SetAudioMaster(float level)
-        {
-            _audioMaster = level;
-            RuntimeManager.GetBus("bus:/").setVolume(level);
-        }
-
-        private void SetAudioVCA(string vca, float level)
-        {
-            RuntimeManager.GetVCA("vca:/" + vca).setVolume(level);
         }
 
     }

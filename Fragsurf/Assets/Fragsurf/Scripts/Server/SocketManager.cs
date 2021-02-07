@@ -7,7 +7,7 @@ using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
 using Lidgren.Network;
 using System.Net.NetworkInformation;
-using System.Net.Sockets;
+using UnityEngine;
 
 namespace Fragsurf.Server
 {
@@ -46,7 +46,7 @@ namespace Fragsurf.Server
         public string ServerName
         {
             get => _serverName;
-            set => _serverName = value.Substring(0, MaxServerNameLength);
+            set => _serverName = value.Substring(0, Mathf.Min(value.Length - 1, MaxServerNameLength));
         }
         [ConVar("server.description")]
         public string ServerDescription { get; set; }
@@ -184,9 +184,9 @@ namespace Fragsurf.Server
             }
         }
 
-        public void DisconnectPlayer(ulong steamid, string reason = "Disconnected")
+        public void DisconnectPlayer(int clientIndex, string reason = "Disconnected")
         {
-            var player = FindPlayer(steamid);
+            var player = FindPlayer(clientIndex);
             if(player != null)
             {
                 DisconnectPlayer(player, reason);
@@ -200,7 +200,7 @@ namespace Fragsurf.Server
                 socket.DisconnectPlayer(player, reason);
             }
 
-            HandlePlayerDisconnected(player.AccountId);
+            HandlePlayerDisconnected(player.ClientIndex);
         }
 
         public void BroadcastPacket(IBasePacket packet)
@@ -208,9 +208,9 @@ namespace Fragsurf.Server
             SendPacket(Game.PlayerManager.Players, packet);
         }
 
-        public void SendPacket(ulong steamid, IBasePacket packet)
+        public void SendPacket(int clientIndex, IBasePacket packet)
         {
-            var player = FindPlayer(steamid);
+            var player = FindPlayer(clientIndex);
             if(player != null)
             {
                 SendPacket(player, packet);
@@ -221,9 +221,9 @@ namespace Fragsurf.Server
             }
         }
 
-        public void SendPacketBrute(ulong steamid, IBasePacket packet)
+        public void SendPacketBrute(int clientIndex, IBasePacket packet)
         {
-            var player = FindPlayer(steamid);
+            var player = FindPlayer(clientIndex);
             if(player != null)
             {
                 SendPacketBrute(player, packet);
@@ -302,34 +302,33 @@ namespace Fragsurf.Server
             buffer.Write(PacketUtility.GetPacketTypeId(packet.GetType()));
         }
 
-        public void InitiatePlayer(ServerPlayer player)
+        public ServerPlayer CreatePlayer()
         {
-            if(_players.Contains(player))
-            {
-                return;
-            }
+            var player = new ServerPlayer(0, NextClientIndex, Game.ElapsedTime);
             _players.Add(player);
             Game.PlayerManager.RaisePlayerConnected(player);
+            return player;
         }
 
         public bool InitiatePlayer(ulong steamid)
         {
-            var player = FindPlayer(steamid);
-            if (player != null)
-            {
-                DisconnectPlayer(player, DenyReason.MapChange.ToString());
-                HandlePlayerDisconnected(steamid);
-                return false;
-            }
-            player = new ServerPlayer(steamid, NextClientIndex, Game.ElapsedTime);
-            _players.Add(player);
-            Game.PlayerManager.RaisePlayerConnected(player);
-            return true;
+            throw new NotImplementedException();
+            //var player = FindPlayer(steamid);
+            //if (player != null)
+            //{
+            //    DisconnectPlayer(player, DenyReason.MapChange.ToString());
+            //    HandlePlayerDisconnected(steamid);
+            //    return false;
+            //}
+            //player = new ServerPlayer(steamid, NextClientIndex, Game.ElapsedTime);
+            //_players.Add(player);
+            //Game.PlayerManager.RaisePlayerConnected(player);
+            //return true;
         }
 
-        public void HandlePlayerDisconnected(ulong steamid)
+        public void HandlePlayerDisconnected(int clientIndex)
         {
-            var player = FindPlayer(steamid);
+            var player = FindPlayer(clientIndex);
             if(player == null)
             {
                 return;
@@ -355,13 +354,13 @@ namespace Fragsurf.Server
             }
         }
 
-        public void HandleIncomingData2(ulong steamid, NetBuffer data)
+        public void HandleIncomingData2(int clientIndex, NetBuffer data)
         {
-            var player = FindPlayer(steamid);
+            var player = FindPlayer(clientIndex);
 
             if(player == null)
             {
-                DisconnectPlayer(steamid);
+                DisconnectPlayer(clientIndex);
                 return;
             }
 
@@ -387,7 +386,7 @@ namespace Fragsurf.Server
                 var deny = CanPlayerJoin(ca);
                 if (deny == DenyReason.None)
                 {
-                    player.AccountId = ca.SteamID;
+                    player.SteamId = ca.SteamID;
                     player.DisplayName = ca.DisplayName;
                     player.TicketData = ca.TicketData;
                     Game.PlayerManager.RaisePlayerApprovedToJoin(player);
@@ -434,11 +433,11 @@ namespace Fragsurf.Server
             RaisePlayerPacketReceivedEvent(player, packet);
         }
 
-        public ServerPlayer FindPlayer(ulong steamid)
+        public ServerPlayer FindPlayer(int clientIndex)
         {
             foreach (var player in _players)
             {
-                if (player.AccountId == steamid)
+                if (player.ClientIndex == clientIndex)
                 {
                     return player;
                 }
@@ -467,11 +466,6 @@ namespace Fragsurf.Server
             if (!string.IsNullOrEmpty(ServerPassword) && !string.Equals(approval.Password, ServerPassword))
             {
                 return DenyReason.WrongPassword;
-            }
-
-            if (Game.PlayerManager.FindPlayer(approval.SteamID) != null)
-            {
-                return DenyReason.AlreadyConnecting;
             }
 
             if (approval.GameVersion != Structure.Version)

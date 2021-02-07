@@ -55,7 +55,7 @@ namespace Fragsurf.Shared
             chunk.Temporary = state.IsTemporaryFile;
 
             state.InputStream.Read(chunk.Data, 0, sendBytes);
-            Game.Network.SendPacket(player.AccountId, chunk);
+            Game.Network.SendPacket(player.ClientIndex, chunk);
 
             state.SentOffset += sendBytes;
 
