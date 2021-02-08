@@ -29,11 +29,12 @@ namespace Fragsurf.Shared.Player
         public DefaultMovementController(Human human) 
             : base(human)
         {
-
         }
 
         public override void ExecuteMovement(UserCmd.CmdFields cmd)
         {
+            var oldBtns = MoveData.Buttons;
+
             Right = Quaternion.Euler(cmd.Angles) * Vector3.right;
             Forward = Quaternion.Euler(new Vector3(0, cmd.Angles.y, 0)) * Vector3.forward;
             Up = Quaternion.Euler(cmd.Angles) * Vector3.up;
@@ -51,7 +52,8 @@ namespace Fragsurf.Shared.Player
             {
                 MoveData.ForwardMove = -Human.Game.GameMovement.Config.ForwardSpeed;
             }
-            else if (cmd.Buttons.HasFlag(InputActions.MoveForward))
+
+            if (cmd.Buttons.HasFlag(InputActions.MoveForward))
             {
                 MoveData.ForwardMove = Human.Game.GameMovement.Config.ForwardSpeed;
             }
@@ -60,7 +62,8 @@ namespace Fragsurf.Shared.Player
             {
                 MoveData.SideMove = Human.Game.GameMovement.Config.SideSpeed;
             }
-            else if (cmd.Buttons.HasFlag(InputActions.MoveLeft))
+
+            if (cmd.Buttons.HasFlag(InputActions.MoveLeft))
             {
                 MoveData.SideMove = -Human.Game.GameMovement.Config.SideSpeed;
             }

@@ -29,6 +29,8 @@ namespace Fragsurf.Client
         private Queue<InputActions> _actionsQueue = new Queue<InputActions>(128);
         private List<InputActions> _inputActionsArray = new List<InputActions>();
         private List<InputActions> _actionsRequiringRelease = new List<InputActions>(128);
+        private Dictionary<InputActions, int> _actionPriority = new Dictionary<InputActions, int>(128);
+        private int _currentPriority;
 
         private static List<InputActions> _oneshotActions = new List<InputActions>()
         {
@@ -190,6 +192,7 @@ namespace Fragsurf.Client
             }
         }
 
+        private InputActions _prevButtons;
         // todo: build usercmds in a way that is modular and configurable
         protected virtual void TickUserCmd()
         {
@@ -213,7 +216,43 @@ namespace Fragsurf.Client
                         _actionsRequiringRelease.Remove(btn);
                     }
                 }
+                var isDown = UserCmd.Buttons.HasFlag(btn);
+                var wasDown = _prevButtons.HasFlag(btn);
+                if (isDown && !wasDown)
+                {
+                    _currentPriority++;
+                    _actionPriority[btn] = _currentPriority;
+                }
+                else if (!isDown)
+                {
+                    _actionPriority[btn] = 0;
+                }
             }
+
+            _prevButtons = UserCmd.Buttons;
+
+            var lp = _actionPriority[InputActions.MoveLeft];
+            var rp = _actionPriority[InputActions.MoveRight];
+            var fwp = _actionPriority[InputActions.MoveForward];
+            var bwp = _actionPriority[InputActions.MoveBack];
+            if (lp > 0 && lp > rp)
+            {
+                UserCmd.Buttons &= ~InputActions.MoveRight;
+            }
+            else if (rp > 0 && rp > lp)
+            {
+                UserCmd.Buttons &= ~InputActions.MoveLeft;
+            }
+            if (fwp > 0 && fwp > bwp)
+            {
+                UserCmd.Buttons &= ~InputActions.MoveBack;
+            }
+            else if (bwp > 0 && bwp > fwp)
+            {
+                UserCmd.Buttons &= ~InputActions.MoveForward;
+            }
+
+            
         }
 
         private Vector3 ProcessMouseLook(Vector3 start, float x, float y)
