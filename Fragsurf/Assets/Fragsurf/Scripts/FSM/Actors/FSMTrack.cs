@@ -322,7 +322,7 @@ namespace Fragsurf.FSM.Actors
 
             if(_trackType == FSMTrackType.Linear
                 && _linearData.Checkpoints.Length > 0
-                && runData.Checkpoint != _linearData.Checkpoints.Length)
+                && runData.Checkpoint != _linearData.Checkpoints.Length - 1)
             {
                 Debug.LogError("Missed a checkpoint...");
                 return;
@@ -330,7 +330,7 @@ namespace Fragsurf.FSM.Actors
 
             if(_trackType == FSMTrackType.Staged
                 && _stageData.Stages.Length > 0
-                && runData.Checkpoint != _stageData.Stages.Length - 1)
+                && runData.Stage != _stageData.Stages.Length - 1)
             {
                 Debug.LogError("Missed a stage...");
                 return;

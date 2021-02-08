@@ -11,6 +11,7 @@ namespace Fragsurf.Utility
 		public UnityEvent<float, float, float> OnFrame = new UnityEvent<float, float, float>();
 
 		private float _accumulator;
+		private float _desiredTimeScale = 1f;
 
 		public FPSCounter FPSCounter { get; } = new FPSCounter();
 		public float ElapsedTime { get; private set; }
@@ -36,7 +37,7 @@ namespace Fragsurf.Utility
 		public float TimeScale
 		{
 			get => Time.timeScale;
-			set => Time.timeScale = Mathf.Clamp(value, 0.1f, 20);
+			set => Time.timeScale = Mathf.Clamp(value, 0.1f, 10f);
 		}
 
 		private void Awake()
@@ -71,7 +72,7 @@ namespace Fragsurf.Utility
 		void Update()
 		{
 			DeltaTime = Time.deltaTime;
-			FixedDeltaTime = 1f / TickRate;
+			FixedDeltaTime = (1f / TickRate) * (1f / Time.timeScale);
 
 			var newTime = Time.realtimeSinceStartup;
 			var frameTime = Mathf.Min(newTime - ElapsedTime, FixedDeltaTime);
