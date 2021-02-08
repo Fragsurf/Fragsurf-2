@@ -6,13 +6,17 @@ namespace Fragsurf.Shared.Player
     public class FirstPersonCameraController : CameraController
     {
 
+        private Vector3 _eyeOffset;
+        private Vector3 _targetEyeOffset;
+        private Vector3 _offsetVelocity;
+
+        protected override bool HideViewer => true;
+
         public FirstPersonCameraController(NetEntity viewer, Camera camera)
             : base(viewer, camera)
         {
 
         }
-
-        protected override bool HideViewer => true;
 
         public override void Update()
         {
@@ -29,17 +33,21 @@ namespace Fragsurf.Shared.Player
                 ? Viewer.EntityGameObject.transform.eulerAngles
                 : Viewer.Angles;
 
-            if(Viewer is Human player)
+            _targetEyeOffset = Vector3.zero;
+
+            if (Viewer is Human player)
             {
-                targetOrigin += player.HumanGameObject.EyeOffset;
-                if(Viewer == Human.Local)
+                _targetEyeOffset = player.HumanGameObject.EyeOffset;
+                _targetEyeOffset.y += player.Ducked ? -.5f : 0;
+                if (Viewer == Human.Local)
                 {
                     targetAngles = Viewer.Angles;
                 }
-                //targetAngles += human.Viewpunch;
             }
 
-            Camera.transform.position = targetOrigin;
+            _eyeOffset = Vector3.SmoothDamp(_eyeOffset, _targetEyeOffset, ref _offsetVelocity, .07f);
+
+            Camera.transform.position = targetOrigin + _eyeOffset;
             Camera.transform.eulerAngles = targetAngles;
         }
     }

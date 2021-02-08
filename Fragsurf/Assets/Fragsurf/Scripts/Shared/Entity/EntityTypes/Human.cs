@@ -36,6 +36,8 @@ namespace Fragsurf.Shared.Entity
             get => _ownerId;
             set => SetOwnerId(value);
         }
+        [NetProperty]
+        public bool Ducked { get; set; }
 
         protected override void _Start()
         {

@@ -78,6 +78,7 @@ namespace Fragsurf.Shared.Player
                 Human.BaseVelocity = MoveData.BaseVelocity;
                 Human.Origin = MoveData.Origin;
                 Human.Angles = MoveData.ViewAngles;
+                Human.Ducked = MoveData.Ducked;
             }
         }
 

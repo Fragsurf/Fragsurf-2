@@ -128,6 +128,14 @@ namespace Fragsurf.Client
 
         protected override void _Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                _yawLeft = false;
+                _yawRight = false;
+                _yaw = 0;
+                _yawMulti = 0;
+            }
+
             if (CursorIsVisible())
             {
                 Cursor.visible = true;
