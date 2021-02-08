@@ -97,6 +97,11 @@ namespace Chisel.Editors
             if( usingLabel && searchLabel == string.Empty )
                 Debug.LogError( $"usingLabel set to true, but no search term was given. This may give undesired results." );
 
+            foreach(var m in materials)
+            {
+                m.Dispose();
+            }
+
             materials.Clear();
 
             ChiselMaterialThumbnailRenderer.CancelAll();
@@ -135,17 +140,21 @@ namespace Chisel.Editors
             //cache.Save();
         }
 
+        private static MethodInfo _minfo;
         public static Texture2D GetAssetPreviewFromGUID( string guid )
         {
-            MethodInfo info = typeof( AssetPreview ).GetMethod(
+            if (_minfo == null)
+            {
+                _minfo = typeof(AssetPreview).GetMethod(
                     "GetAssetPreviewFromGUID",
                     BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod,
                     null,
-                    new [] { typeof( string ) },
+                    new[] { typeof(string) },
                     null
-            );
+                );
+            }
 
-            return info.Invoke( null, new object[] { guid } ) as Texture2D;
+            return _minfo.Invoke(null, new object[] { guid }) as Texture2D;
         }
     }
 } //

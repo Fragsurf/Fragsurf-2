@@ -94,7 +94,7 @@ namespace RealtimeCSG
 			Rect tempRect = rect;
 			tempRect.x = rect.x + 4;
 			tempRect.y = rect.y + 1;
-			tempRect.width  = 213;
+			tempRect.width  = 80;
 			tempRect.height = 16;
 			GUI.Label(tempRect, ContentJustifyLabel);
 			{
@@ -255,7 +255,7 @@ namespace RealtimeCSG
 			}
 		}
 
-		sealed class SurfaceState
+		public class SurfaceState
 		{
 			public Material material;
 			public TexGen	currentTexGen = new TexGen();
@@ -452,7 +452,8 @@ namespace RealtimeCSG
 		
 		const int boxOffset					= 4;
 		const int boxWidth					= 213;
-		
+		const int contentWidth				= 205;
+
 		const int materialViewBoxHeight		= 134;
 		const int textureLockedBoxHeight	= 22;
 		const int selectionBoxHeight        = 22;
@@ -472,7 +473,7 @@ namespace RealtimeCSG
 
 											  13;
 
-		private static void OnGUIContents(Rect rect, EditModeSurface tool, bool needLightmapUVUpdate)
+		public static void OnGUIContents(Rect rect, EditModeSurface tool, bool needLightmapUVUpdate)
 		{
 			if (Event.current.type == EventType.Layout)
 			{
@@ -499,7 +500,7 @@ namespace RealtimeCSG
 					{
 						if (needLightmapUVUpdate)
 						{
-							tempRect.Set(rect.x + 8, rect.y + offset + 4, 204, 16);
+							tempRect.Set(rect.x + 8, rect.y + offset + 4, contentWidth, 16);
 							EditModeCommonGUI.UpdateLightmapUVButton(ref tempRect);
 							rect.y += contentOffset;
 						}
@@ -512,7 +513,7 @@ namespace RealtimeCSG
 							EditorGUI.BeginChangeCheck();
 							{
 								EditorGUI.showMixedValue = surfaceState.multipleMaterials;
-								tempRect.Set(rect.x + 8, rect.y + offset + 4, 204, 16);
+								tempRect.Set(rect.x + 8, rect.y + offset + 4, contentWidth, 16);
 								newMaterial = EditorGUI.ObjectField(tempRect, surfaceState.material, typeof(Material), true) as Material;
 								EditorGUI.showMixedValue = false;
 							}
@@ -551,7 +552,7 @@ namespace RealtimeCSG
 						EditorGUI.BeginChangeCheck();
 						{
 							EditorGUI.showMixedValue = !surfaceState.textureLocked.HasValue;
-							tempRect.Set(rect.x+8, rect.y + offset + 3, 205, 16);
+							tempRect.Set(rect.x+8, rect.y + offset + 3, contentWidth, 16);
 							surfaceState.textureLocked = EditorGUI.ToggleLeft(tempRect, ContentLockTexture, surfaceState.textureLocked.HasValue ? surfaceState.textureLocked.Value : false);
 							TooltipUtility.SetToolTip(ToolTipLockTexture, tempRect);
 						}
@@ -566,7 +567,7 @@ namespace RealtimeCSG
 					tempRect.Set(rect.x+4, rect.y + offset, boxWidth, selectionBoxHeight);
 					GUI.Box(tempRect, GUIContent.none, GUI.skin.box);
 					{
-						tempRect.Set(rect.x+8, rect.y + offset + 3, 205, 16);
+						tempRect.Set(rect.x+8, rect.y + offset + 3, contentWidth, 16);
 						var clicked = GUI.Button(tempRect, ContentSelectAllSurfaces);
 						TooltipUtility.SetToolTip(TooltipSelectAllSurfaces, tempRect);
 						if (clicked)
@@ -736,7 +737,7 @@ namespace RealtimeCSG
 					tempRect.Set(rect.x+4, rect.y + offset, boxWidth, surfaceFlagsBoxHeight);
 					GUI.Box(tempRect, GUIContent.none, GUI.skin.box);
 					{
-						tempRect.Set(rect.x+8-4, rect.y + offset + 2, 205, 15);
+						tempRect.Set(rect.x+8-4, rect.y + offset + 2, contentWidth, 15);
 						EditModeCommonGUI.OnSurfaceFlagButtons(tempRect, surfaceState.surfaceFlagState, surfaceState.selectedBrushSurfaces);
 						{
 							EditorGUI.BeginDisabledGroup(!surfaceState.canSmooth);

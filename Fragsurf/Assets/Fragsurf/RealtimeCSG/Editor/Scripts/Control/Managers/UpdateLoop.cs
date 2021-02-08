@@ -15,7 +15,7 @@ namespace RealtimeCSG
 	internal sealed class UpdateLoop
 	{
 
-		[MenuItem("Fragsurf/Level Editor/Toggle %F3")]
+		[MenuItem("Fragsurf/Level Editor/Toggle %F3", priority = 1)]
 		public static void ToggleRealtimeCSG()
         {
 			CSGSettings.SetRealtimeCSGEnabled(!CSGSettings.EnableRealtimeCSG);

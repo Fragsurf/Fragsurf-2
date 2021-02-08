@@ -27,44 +27,46 @@ namespace Chisel.Editors
             // used for debug
             public string taskName;
 
-            public Func<bool> Completed    { get; }
-            public Action     ContinueWith { get; }
+            public Action StartWith { get; }
+            public Func<bool> Completed { get; }
+            public Action ContinueWith { get; }
 
-            public RenderJob( string name, Func<bool> completed, Action continueWith )
+            public RenderJob(string name, Func<bool> completed, Action continueWith)
             {
-                Completed    = completed;
+                Completed = completed;
                 ContinueWith = continueWith;
-                taskName     = name;
+                taskName = name;
             }
         }
 
         private static readonly List<RenderJob> jobs = new List<RenderJob>();
 
-        public static void Add( string name, Func<bool> completed, Action continueWith )
+        public static void Add(string name, Action startWith, Func<bool> completed, Action continueWith)
         {
-            if( !jobs.Any() ) EditorApplication.update += Update;
-            jobs.Add( new RenderJob( name, completed, continueWith ) );
+            if (!jobs.Any()) EditorApplication.update += Update;
+            jobs.Add(new RenderJob(name, completed, continueWith));
+            startWith?.Invoke();
         }
 
         private static void Update()
         {
-            if( jobs.Count > 0 )
+            if (jobs.Count > 0)
             {
                 int i = 0;
-                for( i = 0; i >= 0; i-- )
+                for (i = 0; i >= 0; i--)
                 {
-                    if( jobs[i].Completed() )
+                    if (jobs[i].Completed())
                     {
-                        if( debug )
-                            Debug.Log( $"Completed thumbnail render task for [{jobs[i].taskName}]" );
+                        if (debug)
+                            Debug.Log($"Completed thumbnail render task for [{jobs[i].taskName}]");
 
                         jobs[i].ContinueWith();
-                        jobs.RemoveAt( i );
+                        jobs.RemoveAt(i);
                     }
                 }
             }
 
-            if( !jobs.Any() ) EditorApplication.update -= Update;
+            if (!jobs.Any()) EditorApplication.update -= Update;
         }
 
         public static void CancelAll()

@@ -62,7 +62,7 @@ namespace Chisel.Editors
 
             applyToSelectedFaceLabelContent = new GUIContent
             (
-                    "Apply to Selected Face",
+                    "Apply to Selected Faces",
                     "Test"
                     //$"Apply the currently selected material to the face selected in the scene view. Shortcut: {ShortcutManager.instance.GetShortcutBinding( "Chisel/Material Browser/Apply Last Selected Material" )}"
             );
