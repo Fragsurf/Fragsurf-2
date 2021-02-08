@@ -227,16 +227,16 @@ namespace Fragsurf.Movement
             if (!moveLeft && !moveRight)
                 MoveData.SideMove = 0;
             else if (moveLeft)
-                MoveData.SideMove = -MoveConfig.Accel;
+                MoveData.SideMove = -MoveConfig.Accelerate;
             else if (moveRight)
-                MoveData.SideMove = MoveConfig.Accel;
+                MoveData.SideMove = MoveConfig.Accelerate;
 
             if (!moveFwd && !moveBack)
                 MoveData.ForwardMove = 0;
             else if (moveFwd)
-                MoveData.ForwardMove = MoveConfig.Accel;
+                MoveData.ForwardMove = MoveConfig.Accelerate;
             else if (moveBack)
-                MoveData.ForwardMove = -MoveConfig.Accel;
+                MoveData.ForwardMove = -MoveConfig.Accelerate;
 
             if (jump)
                 MoveData.Buttons |= InputActions.Jump;

@@ -72,7 +72,9 @@ namespace Fragsurf.UI
 
             var bindSettings = new List<string>()
             {
-                "bind/reset"
+                "bind/reset",
+                "bind/controls/+left",
+                "bind/controls/+right"
             };
             foreach (var action in Enum.GetNames(typeof(InputActions)))
             {

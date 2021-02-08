@@ -8,8 +8,9 @@ namespace Fragsurf.Movement
         private ISurfControllable _surfer;
         private MovementConfig _config;
         private float _deltaTime;
-        private const float WorldScale = 0.0253999862840074f;
         private static RaycastHit[] _hitCache = new RaycastHit[32];
+
+        public const float HammerScale = .0254f;
 
         public void CalculateMovement(ISurfControllable surfer, MovementConfig config, float deltaTime)
         {
@@ -176,7 +177,7 @@ namespace Fragsurf.Movement
                     Vector3 velocity, perp, cross, lateral, tmp;
                     velocity = fwd * forwardSpeed + rightSpeed * right;
                     tmp = Vector3.zero;
-                    tmp[1] = .0254f;
+                    tmp[1] = HammerScale;
                     perp = Vector3.Cross(tmp, trace.PlaneNormal).normalized;
                     float normal = Vector3.Dot(velocity, trace.PlaneNormal);
                     cross = trace.PlaneNormal * normal;
@@ -218,12 +219,12 @@ namespace Fragsurf.Movement
 
             if (_surfer.MoveData.Buttons.HasFlag(InputActions.Jump))
             {
-                _surfer.MoveData.Velocity.y = 100 * WorldScale;
+                _surfer.MoveData.Velocity.y = 100 * HammerScale;
                 wishVel.y += _config.MaxSpeed;
             }
             else
             {
-                wishVel.y -= 60f * WorldScale;
+                wishVel.y -= 60f * HammerScale;
             }
 
             wishDir = wishVel;
@@ -265,7 +266,7 @@ namespace Fragsurf.Movement
                 if (addspeed > 0)
                 {
                     wishVel.Normalize();
-                    accelspeed = _config.Accel * wishSpeed * _deltaTime * _surfer.MoveData.SurfaceFriction;
+                    accelspeed = _config.Accelerate * wishSpeed * _deltaTime * _surfer.MoveData.SurfaceFriction;
                     if (accelspeed > addspeed)
                     {
                         accelspeed = addspeed;
@@ -361,7 +362,7 @@ namespace Fragsurf.Movement
             wishSpeed *= _surfer.MoveData.WalkFactor;
 
             return SurfPhysics.Accelerate(_surfer.MoveData.Velocity, wishDir,
-                wishSpeed, _config.Accel, _deltaTime, _surfer.MoveData.SurfaceFriction);
+                wishSpeed, _config.Accelerate, _deltaTime, _surfer.MoveData.SurfaceFriction);
         }
 
         private Vector3 AirInputMovement()
@@ -471,7 +472,7 @@ namespace Fragsurf.Movement
                 }
                 _surfer.MoveData.GroundTest = 0;
                 SetGround(trace.HitCollider.gameObject);
-                _surfer.MoveData.Origin.y = trace.HitPoint.y + WorldScale;
+                _surfer.MoveData.Origin.y = trace.HitPoint.y + HammerScale;
 
                 // slant boost, but only if velocity is away from slope 
                 if (_surfer.MoveData.JustGrounded)
@@ -573,11 +574,11 @@ namespace Fragsurf.Movement
                     var stepHeight = Mathf.Abs(hit.point.y - _surfer.MoveData.Origin.y);
                     if (_surfer.MoveData.Origin.y > hit.point.y)
                     {
-                        stepHeight -= WorldScale * 2f;
+                        stepHeight -= HammerScale * 2f;
                     }
                     if (stepHeight <= _config.StepSize)
                     {
-                        _surfer.MoveData.Origin.y = hit.point.y + WorldScale;
+                        _surfer.MoveData.Origin.y = hit.point.y + HammerScale;
                     }
                 }
             }
@@ -712,7 +713,7 @@ namespace Fragsurf.Movement
 
             if (_surfer.GroundObject == null)
             {
-                var toGround = BoxCastToFloor(duckHalf + WorldScale, 1f);
+                var toGround = BoxCastToFloor(duckHalf + HammerScale, 1f);
                 if (toGround.HitCollider != null)
                 {
                     // don't unduck if on slope
@@ -720,7 +721,7 @@ namespace Fragsurf.Movement
                     {
                         return;
                     }
-                    _surfer.MoveData.Origin.y = toGround.HitPoint.y + WorldScale;
+                    _surfer.MoveData.Origin.y = toGround.HitPoint.y + HammerScale;
                 }
                 else
                 {

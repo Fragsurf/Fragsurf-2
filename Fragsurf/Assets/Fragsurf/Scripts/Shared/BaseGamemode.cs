@@ -168,26 +168,26 @@ namespace Fragsurf.Shared
         {
             DevConsole.SetVariable("game.tickrate", 100, true, true);
             DevConsole.SetVariable("game.physx", true, true, true);
-            DevConsole.SetVariable("mv.autobhop", true, true, true);
-            DevConsole.SetVariable("mv.gravity", 20.3199f, true, true);
-            DevConsole.SetVariable("mv.aircap", 0.762f, true, true);
-            DevConsole.SetVariable("mv.airacceleration", 1500f, true, true);
-            DevConsole.SetVariable("mv.acceleration", 6.2f, true, true);
-            DevConsole.SetVariable("mv.friction", 4f, true, true);
-            DevConsole.SetVariable("mv.stopspeed", 4.2f, true, true);
-            DevConsole.SetVariable("mv.jumppower", 7.15f, true, true);
-            DevConsole.SetVariable("mv.maxspeed", 6.9f, true, true);
-            DevConsole.SetVariable("mv.maxvelocity", 88.9f, true, true);
-            DevConsole.SetVariable("mv.stepsize", 0.48f, true, true);
-            DevConsole.SetVariable("mv.duckdistance", 0.35f, true, true);
-            DevConsole.SetVariable("mv.duckdistance", 0.4f, true, true);
-            DevConsole.SetVariable("mv.falldamage", false, true, true);
-            DevConsole.SetVariable("mv.waterpreventsfalldamage", true, true, true);
-            DevConsole.SetVariable("mv.solidplayers", false, true, true);
-            DevConsole.SetVariable("mv.movinguprapidlyfactor", 0.85f, true, true);
-            DevConsole.SetVariable("mv.maxclimbspeed", 6.9f, true, true);
-            DevConsole.SetVariable("mv.forwardspeed", 10.16f, true, true);
-            DevConsole.SetVariable("mv.sidespeed", 10.16f, true, true);
+            //DevConsole.SetVariable("mv.autobhop", true, true, true);
+            //DevConsole.SetVariable("mv.gravity", 20.3199f, true, true);
+            //DevConsole.SetVariable("mv.aircap", 0.762f, true, true);
+            //DevConsole.SetVariable("mv.airacceleration", 1500f, true, true);
+            //DevConsole.SetVariable("mv.acceleration", 6.2f, true, true);
+            //DevConsole.SetVariable("mv.friction", 4f, true, true);
+            //DevConsole.SetVariable("mv.stopspeed", 4.2f, true, true);
+            //DevConsole.SetVariable("mv.jumppower", 7.15f, true, true);
+            //DevConsole.SetVariable("mv.maxspeed", 6.9f, true, true);
+            //DevConsole.SetVariable("mv.maxvelocity", 88.9f, true, true);
+            //DevConsole.SetVariable("mv.stepsize", 0.48f, true, true);
+            //DevConsole.SetVariable("mv.duckdistance", 0.35f, true, true);
+            //DevConsole.SetVariable("mv.duckdistance", 0.4f, true, true);
+            //DevConsole.SetVariable("mv.falldamage", false, true, true);
+            //DevConsole.SetVariable("mv.waterpreventsfalldamage", true, true, true);
+            //DevConsole.SetVariable("mv.solidplayers", false, true, true);
+            //DevConsole.SetVariable("mv.movinguprapidlyfactor", 0.85f, true, true);
+            //DevConsole.SetVariable("mv.maxclimbspeed", 6.9f, true, true);
+            //DevConsole.SetVariable("mv.forwardspeed", 10.16f, true, true);
+            //DevConsole.SetVariable("mv.sidespeed", 10.16f, true, true);
         }
     }
 

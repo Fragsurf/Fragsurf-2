@@ -6,20 +6,18 @@ namespace Fragsurf.Movement
     public class MovementConfig
     {
 
-        public const float WORLD_SCALE = 0.0253999862840074f;
-
-        public float Gravity = 800 * WORLD_SCALE;
+        public float Gravity = 800 * SurfController.HammerScale;
         public bool AutoBhop = true;
-        public float AirCap = 30 * WORLD_SCALE;
+        public float AirCap = 30 * SurfController.HammerScale;
         public float AirCapSurfModifier = 1f;
-        public float AirAccel = 1500;
-        public float Accel = 8.2f;
+        public int AirAccel = 1500;
+        public float Accelerate = 5f;
         public float Friction = 4f;
         public float BrakeSpeed = 1f;
-        public float StopSpeed = 4.2f;
+        public float StopSpeed = 75 * SurfController.HammerScale;
         public float JumpPower = 7.15f;
-        public float MaxSpeed = 320 * WORLD_SCALE;
-        public float MaxVelocity = 3500 * WORLD_SCALE;
+        public float MaxSpeed = 270 * SurfController.HammerScale;
+        public float MaxVelocity = 99999 * SurfController.HammerScale;
         public float NoclipSpeed = 6.5f;
         public float NoclipFriction = 12f;
         public bool NoclipCollide = false;
@@ -37,8 +35,9 @@ namespace Fragsurf.Movement
         public float MovingUpRapidlyFactor = 0.85f;
         public float SlideFactor = 0.75f;
         public float SlideDot = 0.08f;
-        public float ForwardSpeed = 400 * WORLD_SCALE;
-        public float SideSpeed = 400 * WORLD_SCALE;
+        public float ForwardSpeed = 400 * SurfController.HammerScale;
+        public float SideSpeed = 400 * SurfController.HammerScale;
         public float WaterDepthToSwim = 0.6f;
+
     }
 }

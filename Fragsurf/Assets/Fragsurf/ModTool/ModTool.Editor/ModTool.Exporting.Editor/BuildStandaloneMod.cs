@@ -8,12 +8,14 @@ using System.IO;
 using UnityEditor.Build.Reporting;
 using ModTool.Shared.Editor;
 using System.Diagnostics;
+using DTCommandPalette;
 
 namespace Fragsurf
 {
     public class BuildStandaloneMod
     {
 
+        [MethodCommand("Mod/Build Standalone Mod (Experimental)")]
         [MenuItem("Fragsurf/Mod/Experimental/Build Standalone")]
         public static void BuildStandloneMod() 
         {

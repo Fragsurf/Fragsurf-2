@@ -54,26 +54,33 @@ namespace Fragsurf.UI
 
         private void Update()
         {
-            if (_settingBind && Input.anyKeyDown)
+            if (_settingBind)
             {
-                DeactivateAll();
-                foreach (var kc in _keyCodes)
+                if (Input.anyKeyDown)
                 {
-                    if (Input.GetKeyDown(kc))
+                    DeactivateAll();
+                    foreach (var kc in _keyCodes)
                     {
-                        if (kc == KeyCode.Escape)
+                        if (Input.GetKeyDown(kc))
                         {
+                            if (kc == KeyCode.Escape)
+                            {
+                                break;
+                            }
+                            Queue($"hardbind {kc} \"{_action}\"");
+                            _buttonText.text = kc.ToString().ToLower();
                             break;
                         }
-                        Queue($"hardbind {kc} \"{_action}\"");
-                        _buttonText.text = kc.ToString();
-                        break;
-                        //UserSettings.Binds.HardBind(kc.ToString(), _action);
-                        //foreach (var settingBind in _settingBinds)
-                        //{
-                        //    settingBind.UpdateValue();
-                        //}
                     }
+                }
+                else if(Input.mouseScrollDelta.y != 0)
+                {
+                    DeactivateAll();
+                    var dir = Input.mouseScrollDelta.y > 0
+                        ? "mwheelup"
+                        : "mwheeldown";
+                    Queue($"hardbind {dir} \"{_action}\"");
+                    _buttonText.text = dir;
                 }
             }
 
@@ -103,12 +110,12 @@ namespace Fragsurf.UI
             var binds = UserSettings.Binds.FindBindDatas(_action);
             if (binds != null && binds.Count > 0)
             {
-                _buttonText.text = binds[0].Key.ToString();
+                _buttonText.text = binds[0].KeyName.ToString().ToLower();
                 Setting.SetDescription(string.Empty);
             }
             else
             {
-                _buttonText.text = "<color=#FF0000>Unbound</color>";
+                _buttonText.text = "<color=#FF0000>-</color>";
             }
         }
 

@@ -4,25 +4,29 @@ using UnityEngine;
 using UnityEditor;
 using RealtimeCSG.Components;
 using InternalRealtimeCSG;
+using DTCommandPalette;
 
 public class LightmapShortcut
 {
 
-    [MenuItem("Fragsurf/Lighting/Bake Fast (Preview)")]
+    [MethodCommand("Lightmap/Bake Preview")]
+    [MenuItem("Fragsurf/Lightmap/Bake (Preview)")]
     public static void BuildFast()
     {
         var settings = Resources.Load<LightingSettings>("Misc/Lightmap Fast");
         StartLightmapping(settings);
     }
 
-    [MenuItem("Fragsurf/Lighting/Bake Normal")]
+    [MethodCommand("Lightmap/Bake Normal")]
+    [MenuItem("Fragsurf/Lightmap/Bake (Normal)")]
     public static void BuildNormal()
     {
         var settings = Resources.Load<LightingSettings>("Misc/Lightmap Normal");
         StartLightmapping(settings);
     }
 
-    [MenuItem("Fragsurf/Lighting/Cancel Bake")]
+    [MethodCommand("Lightmap/Cancel")]
+    [MenuItem("Fragsurf/Lightmap/Cancel")]
     public static void CancelBake()
     {
         if (Lightmapping.isRunning)
@@ -31,7 +35,8 @@ public class LightmapShortcut
         }
     }
 
-    [MenuItem("Fragsurf/Lighting/Clear Baked Data")]
+    [MethodCommand("Lightmap/Clear Baked Data")]
+    [MenuItem("Fragsurf/Lightmap/Clear Baked Data")]
     public static void ClearBakedData()
     {
         if(EditorUtility.DisplayDialog("Clear Baked Data", "Really clear baked lightmaps?", "Yes", "Cancel"))

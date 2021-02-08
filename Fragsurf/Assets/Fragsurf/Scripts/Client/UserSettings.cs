@@ -149,7 +149,7 @@ namespace Fragsurf.Client
             var bindSection = _config.Add("Binds");
             foreach (var bind in Binds.Binds)
             {
-                var settingName = bind.Key.ToString();
+                var settingName = bind.KeyName.ToString();
                 var settingValue = bind.Command;
                 bindSection.Add(settingName, settingValue);
             }

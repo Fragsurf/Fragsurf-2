@@ -1,3 +1,4 @@
+using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
 using System.Collections;
@@ -108,7 +109,7 @@ namespace Fragsurf.Shared
                 Time = CurrentFrame.Time + Time.fixedDeltaTime,
                 Strafes = 0,
                 Jumps = 0,
-                Velocity = (int)(vel.magnitude * .0254f)
+                Velocity = (int)(vel.magnitude * SurfController.HammerScale)
             };
         }
 

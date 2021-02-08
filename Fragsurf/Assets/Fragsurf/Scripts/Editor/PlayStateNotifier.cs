@@ -5,10 +5,17 @@ using Steamworks;
 using UnityEngine;
 using Fragsurf;
 using Fragsurf.Movement;
+using DTCommandPalette;
 
 [InitializeOnLoad]
 public static class PlayStateNotifier
 {
+
+    [MethodCommand("Fragsurf/Toggle Realtime-CSG")]
+    static void ToggleRealtimeCSG()
+    {
+        RealtimeCSG.CSGSettings.SetRealtimeCSGEnabled(!RealtimeCSG.CSGSettings.EnableRealtimeCSG);
+    }
 
     [MenuItem("Fragsurf/Play/Toggle PlayTest")]
     public static void TogglePlayTest()
@@ -21,6 +28,7 @@ public static class PlayStateNotifier
         EditorUtility.DisplayDialog("PlayTest", str, "Ok");
     }
 
+    [MethodCommand("Clear Play From")]
     [MenuItem("Fragsurf/Play/Clear Play From Position")]
     public static void ClearPlayFrom()
     {

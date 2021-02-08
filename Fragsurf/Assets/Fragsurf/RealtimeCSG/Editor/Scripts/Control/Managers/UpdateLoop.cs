@@ -14,11 +14,6 @@ namespace RealtimeCSG
 	[InitializeOnLoad]
 	internal sealed class UpdateLoop
 	{
-		[MenuItem("Fragsurf/Toggle Realtime-CSG %F3", false)]
-		static void ToggleRealtimeCSG()
-		{
-			RealtimeCSG.CSGSettings.SetRealtimeCSGEnabled(!RealtimeCSG.CSGSettings.EnableRealtimeCSG);
-		}
 
 		public static bool IsActive() { return (editor != null && editor.initialized); }
 

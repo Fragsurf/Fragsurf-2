@@ -14,19 +14,58 @@ namespace Fragsurf.Client
         public class BindData
         {
 
-            public BindData(KeyCode key, string command)
+            public BindData(string key, string command)
             {
                 Type = (command[0] == '+') ? BindType.Hold : BindType.Normal;
-                Key = key;
+                KeyName = key;
                 Command = command;
                 ReleaseCommand = Command.Replace('+', '-');
+
+                if (Enum.TryParse(key, out _keyCode))
+                {
+                    _scroll = 0;
+                    IsValid = true;
+                }
+                else if (key.Equals("mwheelup", StringComparison.OrdinalIgnoreCase))
+                {
+                    _scroll = 1;
+                    IsValid = true;
+                }
+                else if (key.Equals("mwheeldown", StringComparison.OrdinalIgnoreCase))
+                {
+                    _scroll = -1;
+                    IsValid = true;
+                }
             }
 
             public readonly BindType Type;
-            public readonly KeyCode Key;
+            public readonly string KeyName;
             public readonly string Command;
             public readonly string ReleaseCommand;
+            public readonly bool IsValid;
             public bool IsPressed;
+
+            private int _scroll;
+            private KeyCode _keyCode;
+
+            public bool JustDown()
+            {
+                if(_scroll != 0)
+                {
+                    return Mathf.Sign(Input.mouseScrollDelta.y) == Mathf.Sign(_scroll);
+                }
+                return Input.GetKeyDown(_keyCode);
+            }
+
+            public bool JustUp()
+            {
+                if (_scroll != 0)
+                {
+                    return IsPressed && Mathf.Sign(Input.mouseScrollDelta.y) != Mathf.Sign(_scroll);
+                }
+                return Input.GetKeyUp(_keyCode);
+            }
+
         }
 
         public enum BindType
@@ -63,8 +102,8 @@ namespace Fragsurf.Client
 
             foreach(var bind in Binds)
             {
-                var keyDown = Input.GetKeyDown(bind.Key);
-                var keyUp = Input.GetKeyUp(bind.Key);
+                var keyDown = bind.JustDown();
+                var keyUp = bind.JustUp();
 
                 bind.IsPressed = keyDown && !keyUp;
 
@@ -89,28 +128,31 @@ namespace Fragsurf.Client
         [ConCommand("bind", "Binds a key to a command", ConVarFlags.None)]
         public void Bind(string key, string command)
         {
+            var scrollDown = key.Equals("mwheeldown", StringComparison.OrdinalIgnoreCase);
+            var scrollUp = key.Equals("mwheelup", StringComparison.OrdinalIgnoreCase);
+            var scroll = scrollDown ? -1 : (scrollUp ? 1 : 0);
+
             if (string.IsNullOrWhiteSpace(command)
-                || !Enum.TryParse(key, true, out KeyCode keyCode))
+                || !Enum.TryParse(key, true, out KeyCode keyCode)
+                && !scrollDown
+                && !scrollUp)
             {
                 return;
             }
 
             Unbind(key);
-
-            Binds.Add(new BindData(keyCode, command));
+            Binds.Add(new BindData(key, command));
         }
 
         [ConCommand("unbind", "Unbinds all commands from a key")]
         public void Unbind(string key)
         {
-            if (!Enum.TryParse(key, true, out KeyCode keyCode))
+            for (int i = Binds.Count - 1; i >= 0; i--)
             {
-                Debug.Log("No key: " + key);
-                return;
-            }
-            foreach(var bd in FindBindDatas(keyCode))
-            {
-                RemoveBind(bd);
+                if (Binds[i].KeyName.Equals(key, StringComparison.OrdinalIgnoreCase))
+                {
+                    Binds.RemoveAt(i);
+                }
             }
         }
 
@@ -134,11 +176,6 @@ namespace Fragsurf.Client
         private void RemoveBind(BindData bind)
         {
             Binds.Remove(bind);
-        }
-
-        public List<BindData> FindBindDatas(KeyCode key)
-        {
-            return Binds.Where(x => x.Key == key).ToList();
         }
 
         public List<BindData> FindBindDatas(string command)

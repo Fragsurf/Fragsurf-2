@@ -13,15 +13,17 @@ namespace Fragsurf.Client
     {
         private int _moveTick;
         private float _yaw;
+        private bool _yawLeft;
+        private bool _yawRight;
         private float _yawMulti;
 
-        public static bool Blocked 
+        public static bool Blocked
         {
             get => Blockers.Count > 0 || UGuiManager.Instance.HasCursor();
         }
 
         public static List<object> Blockers = new List<object>();
-        
+
         private InputActions _prevActionsDown;
         private InputActions _actionsDown;
         private Queue<InputActions> _actionsQueue = new Queue<InputActions>(128);
@@ -56,7 +58,7 @@ namespace Fragsurf.Client
         [ConCommand("+input", "", ConVarFlags.Silent)]
         private void SetInput(string actionName)
         {
-            if(Enum.TryParse(actionName, true, out InputActions action))
+            if (Enum.TryParse(actionName, true, out InputActions action))
             {
                 _actionsDown |= action;
             }
@@ -73,14 +75,20 @@ namespace Fragsurf.Client
 
         [ConCommand("+yaw", flags: ConVarFlags.Silent)]
         private void Yaw(float v) => _yaw = v;
+        [ConCommand("-yaw", flags: ConVarFlags.Silent)]
+        private void ReleaseYaw() => _yaw = 0;
         [ConCommand("+yawmultiplier", flags: ConVarFlags.Silent)]
         private void ApplyYawMultiplier(float v) => _yawMulti = v;
         [ConCommand("-yawmultiplier", flags: ConVarFlags.Silent)]
         private void ResetYawMultiplier() => _yawMulti = 0;
         [ConCommand("+left", flags: ConVarFlags.Silent)]
-        private void YawLeft() => _yaw = -YawSpeed;
+        private void YawLeft() => _yawLeft = true;
         [ConCommand("+right", flags: ConVarFlags.Silent)]
-        private void YawRight() => _yaw = YawSpeed;
+        private void YawRight() => _yawRight = true;
+        [ConCommand("-left", flags: ConVarFlags.Silent)]
+        private void ReleaseYawLeft() => _yawLeft = false;
+        [ConCommand("-right", flags: ConVarFlags.Silent)]
+        private void ReleaseYawRight() => _yawRight = false;
 
         protected override void _Initialize()
         {
@@ -149,17 +157,18 @@ namespace Fragsurf.Client
                 {
                     Human.Local.Angles = ProcessMouseLook(Human.Local.Angles, delta.x, delta.y);
 
-                    if (_yaw != 0)
+                    var yaw = _yaw != 0 ? _yaw : (_yawLeft ? -YawSpeed : (_yawRight) ? YawSpeed : 0);
+
+                    if (yaw != 0)
                     {
                         if (_yawMulti != 0)
                         {
-                            _yaw *= _yawMulti;
+                            yaw *= _yawMulti;
                         }
                         var rot = Human.Local.Angles;
-                        rot.y += _yaw * Time.deltaTime;
+                        rot.y += yaw * Time.deltaTime;
                         if (rot.y > 360) rot.y -= 360;
                         else if (rot.y < -360) rot.y += 360;
-                        _yaw = 0;
                         Human.Local.Angles = rot;
                     }
                 }
