@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using DTCommandPalette;
+using UnityEditor;
 using UnityEngine;
 
 namespace ModTool.Exporting.Editor
@@ -7,6 +8,7 @@ namespace ModTool.Exporting.Editor
     {
         private UnityEditor.Editor exportSettingsEditor;
 
+        [MethodCommand("Mod/Export")]
         [MenuItem("Fragsurf/Mod/Export")]
         public static void ShowWindow()
         {

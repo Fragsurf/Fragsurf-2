@@ -11,14 +11,14 @@ using DTCommandPalette.ScriptingDefines;
 
 namespace DTCommandPalette.DefaultCommands {
 	public static class ScriptingDefinesCommands {
-		[MethodCommand]
-		public static void ScriptingDefines() {
-			var commandManager = new CommandManager();
-			commandManager.AddCommand(new GenericCommand<string>("Add New Define", "ScriptingDefine", AddScriptingDefineIfNotFound));
-			commandManager.AddLoader(new ScriptingDefineCommandLoader(s => ShowScriptingDefineContextMenu(s)));
+		//[MethodCommand]
+		//public static void ScriptingDefines() {
+		//	var commandManager = new CommandManager();
+		//	commandManager.AddCommand(new GenericCommand<string>("Add New Define", "ScriptingDefine", AddScriptingDefineIfNotFound));
+		//	commandManager.AddLoader(new ScriptingDefineCommandLoader(s => ShowScriptingDefineContextMenu(s)));
 
-			CommandPaletteWindow.InitializeWindow("Scripting Defines..", commandManager, clearInput: true);
-		}
+		//	CommandPaletteWindow.InitializeWindow("Scripting Defines..", commandManager, clearInput: true);
+		//}
 
 
 		private static void ShowScriptingDefineContextMenu(string scriptingDefine) {

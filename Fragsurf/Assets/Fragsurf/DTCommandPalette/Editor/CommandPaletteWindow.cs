@@ -48,7 +48,7 @@ namespace DTCommandPalette {
 			commandManager.AddLoader(new SelectGameObjectCommandLoader());
 			commandManager.AddLoader(new MethodCommandLoader());
 
-			InitializeWindow("Command Palette.. ", commandManager);
+			InitializeWindow("Command Palette ", commandManager);
 		}
 
 		//[MenuItem("Window/Open Command Palette.. %t")]

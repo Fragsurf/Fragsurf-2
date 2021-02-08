@@ -23,7 +23,8 @@ namespace DTCommandPalette {
 			"Fragsurf.Editor",
 			"RealtimeCSG",
 			"RealtimeCSG.Editor",
-			"ModTool.Exporting.Editor"
+			"ModTool.Exporting.Editor",
+			"DTCommandPalette.Editor"
 		};
 
 		private static List<ICommand> staticCommands_ = new List<ICommand>();

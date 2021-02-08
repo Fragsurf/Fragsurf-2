@@ -22,33 +22,33 @@ namespace DTCommandPalette {
 			EditorApplication.isPlaying = true;
 		}
 
-		[MethodCommand]
-		public static void DeletePersistentData() {
-			if (Application.isPlaying) {
-				Debug.Log("Won't delete persistent data because the application is playing!");
-				return;
-			}
+		//[MethodCommand]
+		//public static void DeletePersistentData() {
+		//	if (Application.isPlaying) {
+		//		Debug.Log("Won't delete persistent data because the application is playing!");
+		//		return;
+		//	}
 
-			DirectoryInfo dataDir = new DirectoryInfo(Application.persistentDataPath);
-			dataDir.Delete(recursive: true);
-			Debug.Log("Successfully deleted persistent data!");
-		}
+		//	DirectoryInfo dataDir = new DirectoryInfo(Application.persistentDataPath);
+		//	dataDir.Delete(recursive: true);
+		//	Debug.Log("Successfully deleted persistent data!");
+		//}
 
-		[MethodCommand]
-		public static void DeletePlayerPrefs() {
-			if (Application.isPlaying) {
-				Debug.Log("Won't delete player prefs because the application is playing!");
-				return;
-			}
+		//[MethodCommand]
+		//public static void DeletePlayerPrefs() {
+		//	if (Application.isPlaying) {
+		//		Debug.Log("Won't delete player prefs because the application is playing!");
+		//		return;
+		//	}
 
-			PlayerPrefs.DeleteAll();
-			Debug.Log("Successfully deleted player prefs!");
-		}
+		//	PlayerPrefs.DeleteAll();
+		//	Debug.Log("Successfully deleted player prefs!");
+		//}
 
-		[MethodCommand]
-		public static void DeleteUserData() {
-			DeletePlayerPrefs();
-			DeletePersistentData();
-		}
+		//[MethodCommand]
+		//public static void DeleteUserData() {
+		//	DeletePlayerPrefs();
+		//	DeletePersistentData();
+		//}
 	}
 }

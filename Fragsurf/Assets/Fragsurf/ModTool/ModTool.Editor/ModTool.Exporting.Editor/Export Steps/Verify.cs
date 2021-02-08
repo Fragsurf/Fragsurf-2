@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using ModTool.Shared;
 using ModTool.Shared.Verification;
+using DTCommandPalette;
 
 namespace ModTool.Exporting.Editor
 {
@@ -88,6 +89,7 @@ namespace ModTool.Exporting.Editor
             return true;            
         }
 
+        [MethodCommand("Mod/Verify Scripts")]
         [MenuItem("Fragsurf/Mod/Verify Scripts")]
         public static void VerifyScriptsMenuItem()
         {
