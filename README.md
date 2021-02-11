@@ -1,8 +1,6 @@
-# Fragsurf-2
-
 ![Fragsurf Logo](cover.png)
 
-The source code for Fragsurf.
+The full source code for Fragsurf.
 
 https://store.steampowered.com/app/1033410/Fragsurf/
 
