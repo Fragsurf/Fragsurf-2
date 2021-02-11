@@ -1,12 +1,8 @@
 ![Fragsurf Logo](cover.png)
 
-The full source code for Fragsurf.
-
-https://store.steampowered.com/app/1033410/Fragsurf/
+This repository is being made public to give creators of surf & bhop as much power and flexibility as possible with the modding toolkit, and to provide a place for anybody to contribute to development of Fragsurf in the form of bug reports, bug fixes, improvements, and additions.
 
 Feel free to clone it, play with it, and create issues and pull requests.  Steam is not required to play Fragsurf, but because it relies on Steam for P2P and other multiplayer features some systems will not work properly without it.
-
-The code is going public because in order for the modding toolkit to be as powerful and flexible as possible for creators, it contains the source code.  Due to this, it only makes sense to create an official public source repository for Fragsurf.
 
 ## Links
 
