@@ -1,5 +1,7 @@
 # Fragsurf-2
 
+![Fragsurf Logo](/Branding/Forum 192.jpg)
+
 The source code for Fragsurf.
 
 https://store.steampowered.com/app/1033410/Fragsurf/
