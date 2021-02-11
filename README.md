@@ -1,6 +1,6 @@
 # Fragsurf-2
 
-![Fragsurf Logo](/Branding/Fragsurf 192.jpg?raw=true)
+![Fragsurf Logo](cover.png)
 
 The source code for Fragsurf.
 
