@@ -32,7 +32,7 @@ namespace Chisel.Editors
 
         private readonly GUIContent[] m_PropsTabLabels = new GUIContent[]
         {
-                new GUIContent( "Current Selection    " )
+                new GUIContent( "Filter\t    " ), new GUIContent( "Current Selection    " )
         };
 
         [MenuItem("Fragsurf/Level Editor/Material Browser")]
@@ -48,7 +48,7 @@ namespace Chisel.Editors
             EditorPrefs.SetInt(PREVIEW_SIZE_PREF_KEY, tileSize);
             EditorPrefs.SetBool(TILE_LABEL_PREF_KEY, showNameLabels);
 
-            foreach(var tile in m_Tiles)
+            foreach (var tile in m_Tiles)
             {
                 tile.Dispose();
             }
@@ -164,43 +164,43 @@ namespace Chisel.Editors
 
                     switch (m_CurrentPropsTab)
                     {
-                        //case 0:
-                        //{
-                        //    m_PropsAreaRect.x      = position.width - 256;
-                        //    m_PropsAreaRect.y      = 50;
-                        //    m_PropsAreaRect.width  = 240;
-                        //    m_PropsAreaRect.height = position.height;
-
-
-                        //    m_LabelScrollViewArea.x      = position.width - 256;
-                        //    m_LabelScrollViewArea.y      = 50;
-                        //    m_LabelScrollViewArea.width  = 240;
-                        //    m_LabelScrollViewArea.height = 0;
-
-                        //    m_LabelScrollPositon = GUI.BeginScrollView( m_PropsAreaRect, m_LabelScrollPositon, m_LabelScrollViewArea );
-                        //    {
-                        //        m_PropsAreaRect.height = 24;
-
-                        //        for( int i = 0; i < m_Labels.Count; i++ )
-                        //        {
-                        //            m_LabelScrollViewArea.height += 24;
-
-                        //            if( i > 0 )
-                        //                m_PropsAreaRect.y += 26;
-                        //            if( GUI.Button( m_PropsAreaRect, m_Labels[i] ) )
-                        //            {
-                        //                ChiselMaterialBrowserUtilities.GetMaterials( ref m_Tiles, ref m_Labels, true, m_Labels[i], "" );
-                        //                lastSelectedMaterialIndex = 0;
-
-                        //                previewEditor = Editor.CreateEditor( previewMaterial = GetPreviewMaterial( 0 ) );
-                        //            }
-                        //        }
-                        //    }
-                        //    GUI.EndScrollView();
-
-                        //    break;
-                        //}
                         case 0:
+                            {
+                                m_PropsAreaRect.x = position.width - 256;
+                                m_PropsAreaRect.y = 50;
+                                m_PropsAreaRect.width = 240;
+                                m_PropsAreaRect.height = position.height;
+
+
+                                m_LabelScrollViewArea.x = position.width - 256;
+                                m_LabelScrollViewArea.y = 50;
+                                m_LabelScrollViewArea.width = 240;
+                                m_LabelScrollViewArea.height = 0;
+
+                                m_LabelScrollPositon = GUI.BeginScrollView(m_PropsAreaRect, m_LabelScrollPositon, m_LabelScrollViewArea);
+                                {
+                                    m_PropsAreaRect.height = 24;
+
+                                    for (int i = 0; i < m_Labels.Count; i++)
+                                    {
+                                        m_LabelScrollViewArea.height += 24;
+
+                                        if (i > 0)
+                                            m_PropsAreaRect.y += 26;
+                                        if (GUI.Button(m_PropsAreaRect, m_Labels[i]))
+                                        {
+                                            ChiselMaterialBrowserUtilities.GetMaterials(ref m_Tiles, ref m_Labels, true, m_Labels[i], "");
+                                            lastSelectedMaterialIndex = 0;
+
+                                            previewEditor = Editor.CreateEditor(previewMaterial = GetPreviewMaterial(0));
+                                        }
+                                    }
+                                }
+                                GUI.EndScrollView();
+
+                                break;
+                            }
+                        case 1:
                             {
                                 m_PropsAreaRect.x = position.width - 260;
                                 m_PropsAreaRect.y = 50;
@@ -406,7 +406,7 @@ namespace Chisel.Editors
                         if (m_Tiles[idx].CheckVisible(yOffset, tileSize, tileScrollPos, m_ScrollViewRect.height))
                         {
                             previewCount++;
-                            m_Tiles[idx].RenderThumbnail();
+                            m_Tiles[idx].RenderPreview();
                             m_TileContentText.image = m_Tiles[idx].Preview;
                             m_TileContentText.tooltip = $"{m_Tiles[idx].materialName}\n\nDouble click to apply to the currently selected surfaces.";
 
@@ -453,7 +453,7 @@ namespace Chisel.Editors
                     // end horizontal
                 }
 
-                AssetPreview.SetPreviewTextureCacheSize(previewCount * 2);
+                //AssetPreview.SetPreviewTextureCacheSize(previewCount * 2);
 
             }
             GUI.EndScrollView();

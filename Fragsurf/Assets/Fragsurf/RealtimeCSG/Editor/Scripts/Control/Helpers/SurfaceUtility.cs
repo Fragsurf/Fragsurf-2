@@ -765,8 +765,11 @@ namespace RealtimeCSG
             scale.y /= srcBrushScale.y; if (float.IsNaN(scale.y) || float.IsInfinity(scale.y)) scale.y = 1;
             scale.z /= srcBrushScale.z; if (float.IsNaN(scale.z) || float.IsInfinity(scale.z)) scale.z = 1;
 
-            if (AlignTextureSpaces(srcBrushFromModel,     srcTexGens[srcTexGenIndex], srcTexGenFlags[srcTexGenIndex], ref srcSurfaces[srcSurfaceIndex], srcModelPoint1, srcModelPoint2,
-                                   dstBrushFromModel, ref dstTexGens[dstTexGenIndex], dstTexGenFlags[dstTexGenIndex], ref dstSurfaces[dstSurfaceIndex], dstModelPoint1, dstModelPoint2, flipX, scale))
+            var p = GenerateModelSpaceToPlaneSpaceMatrix(srcSurfaces[srcSurfaceIndex], srcTexGenFlags[srcTexGenIndex], srcBrushFromLocal);
+            var m = srcTexGens[srcTexGenIndex].GeneratePlaneSpaceToTextureSpaceMatrix();
+
+            //if (AlignTextureSpaces(m, true, ref dstTexGens[dstTexGenIndex], ref dstTexGenFlags[dstTexGenIndex], ref dstSurfaces[dstSurfaceIndex]))
+            if (AlignTextureSpaces(srcBrushFromModel,     srcTexGens[srcTexGenIndex], srcTexGenFlags[srcTexGenIndex], ref srcSurfaces[srcSurfaceIndex], srcModelPoint1, srcModelPoint2, dstBrushFromModel, ref dstTexGens[dstTexGenIndex], dstTexGenFlags[dstTexGenIndex], ref dstSurfaces[dstSurfaceIndex], dstModelPoint1, dstModelPoint2, flipX, scale))
             {
                 if (dstTexGens.Length != dstTexGenFlags.Length)
                 {

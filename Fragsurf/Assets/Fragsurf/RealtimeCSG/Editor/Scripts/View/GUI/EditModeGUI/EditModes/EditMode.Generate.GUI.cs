@@ -26,6 +26,8 @@ namespace RealtimeCSG
 			InitLocalStyles();
 			GUILayout.BeginHorizontal(CSG_GUIStyleUtility.ContentEmpty);
 			{
+				GUILayout.FlexibleSpace();
+
 				GUILayout.BeginVertical(CSG_GUIStyleUtility.ContentEmpty);
 				{
 					GUILayout.BeginVertical(CSG_GUIStyleUtility.ContentEmpty);
@@ -65,7 +67,6 @@ namespace RealtimeCSG
 					GUILayout.EndVertical();
 				}
 				GUILayout.EndVertical();
-				GUILayout.FlexibleSpace();
 			}
 			GUILayout.EndHorizontal();			
 			tool.CurrentGenerator.FinishGUI();
@@ -229,7 +230,7 @@ namespace RealtimeCSG
 
 						var csg_skin = CSG_GUIStyleUtility.Skin;
 						Rect shapeModeBounds;
-						tool.BuilderMode = (ShapeMode)CSG_EditorGUIUtility.ToolbarWrapped((int)tool.BuilderMode, ref shapeModeRects, out shapeModeBounds, csg_skin.shapeModeNames, tooltips: CSG_GUIStyleUtility.shapeModeTooltips, yOffset: rect.y, areaWidth: 100);
+						tool.BuilderMode = (ShapeMode)CSG_EditorGUIUtility.ToolbarWrapped((int)tool.BuilderMode, ref shapeModeRects, out shapeModeBounds, csg_skin.shapeModeNames, tooltips: CSG_GUIStyleUtility.shapeModeTooltips, yOffset: rect.y, xOffset: rect.x, areaWidth: 100);
 						GUILayout.Space(shapeModeBounds.height);
 				
 						ChooseOperation(tool, isSceneGUI);

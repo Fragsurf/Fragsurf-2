@@ -91,7 +91,7 @@ namespace RealtimeCSG
 			return operation;
 		}
 
-		static void CalcSize(ref Rect[] rects, out Rect bounds, out int xCount, GUIContent[] contents, float yOffset, float areaWidth = -1)
+		static void CalcSize(ref Rect[] rects, out Rect bounds, out int xCount, GUIContent[] contents, float yOffset, float areaWidth = -1, float xOffset = 0)
 		{
 			if (areaWidth <= 0)
 				areaWidth = EditorGUIUtility.currentViewWidth;
@@ -129,7 +129,7 @@ namespace RealtimeCSG
 				position.x = 0;
 				position.y = yOffset;
 				position.width = realButtonWidth;
-				position.height = 15;
+				position.height = 24;
 
 				bounds = new Rect();
 				bounds.width = areaWidth;
@@ -138,8 +138,8 @@ namespace RealtimeCSG
 				int count = 0;
 				while (count < contents.Length)
 				{
-					position.y ++;
-					position.x = 2;
+					position.y += 3;
+					position.x = 2 + xOffset;
 					for (int x = 0; x <= xCount; x++)
 					{
 						position.x ++;
@@ -152,20 +152,20 @@ namespace RealtimeCSG
 						if (count >= contents.Length)
 							break;
 					}
-					position.y += 16;
+					position.y += 17;
 				}
 				
 				bounds.height = (position.y - yOffset);
 			}
 		}
 
-		public static int ToolbarWrapped(int selected, ref Rect[] rects, out Rect bounds, GUIContent[] contents, ToolTip[] tooltips = null, float yOffset = 0, float areaWidth = -1)
+		public static int ToolbarWrapped(int selected, ref Rect[] rects, out Rect bounds, GUIContent[] contents, ToolTip[] tooltips = null, float yOffset = 0, float areaWidth = -1, float xOffset = 0)
 		{
 			if (areaWidth <= 0)
 				areaWidth = EditorGUIUtility.currentViewWidth;
 
 			int xCount;
-			CalcSize(ref rects, out bounds, out xCount, contents, yOffset, areaWidth);
+			CalcSize(ref rects, out bounds, out xCount, contents, yOffset, areaWidth, xOffset);
 			
 			var leftStyle	= EditorStyles.miniButtonLeft;
 			var middleStyle = EditorStyles.miniButtonMid;

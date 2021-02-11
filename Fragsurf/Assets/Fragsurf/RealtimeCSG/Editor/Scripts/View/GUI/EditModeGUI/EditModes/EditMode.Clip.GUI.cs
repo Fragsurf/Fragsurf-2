@@ -38,6 +38,7 @@ namespace RealtimeCSG
 			InitLocalStyles();
 			GUILayout.BeginHorizontal(CSG_GUIStyleUtility.ContentEmpty);
 			{
+				GUILayout.FlexibleSpace();
 				GUILayout.BeginVertical(CSG_GUIStyleUtility.ContentEmpty);
 				{
 					GUILayout.BeginVertical(CSG_GUIStyleUtility.ContentEmpty);
@@ -45,13 +46,14 @@ namespace RealtimeCSG
 						GUILayout.FlexibleSpace();
 
 						CSG_GUIStyleUtility.ResetGUIState();
-						
+
 						GUIStyle windowStyle = GUI.skin.window;
 						GUILayout.BeginVertical(ContentClipLabel, windowStyle, CSG_GUIStyleUtility.ContentEmpty);
 						{
 							OnGUIContents(true, tool);
 						}
 						GUILayout.EndVertical();
+
 						var currentArea = GUILayoutUtility.GetLastRect();
 						lastGuiRect = currentArea;
 
@@ -77,7 +79,6 @@ namespace RealtimeCSG
 					GUILayout.EndVertical();
 				}
 				GUILayout.EndVertical();
-				GUILayout.FlexibleSpace();
 			}
 			GUILayout.EndHorizontal();
 

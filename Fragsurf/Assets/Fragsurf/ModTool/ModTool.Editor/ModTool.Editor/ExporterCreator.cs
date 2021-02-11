@@ -33,7 +33,6 @@ namespace ModTool.Editor
         {
             if(IsFileBelowDirectory(pathToBuiltProject, Application.temporaryCachePath))
             {
-                Debug.Log("Is temp");
                 return;
             }
             var filePath = Path.Combine(Application.dataPath, "../", "Modding Toolkit.unitypackage");

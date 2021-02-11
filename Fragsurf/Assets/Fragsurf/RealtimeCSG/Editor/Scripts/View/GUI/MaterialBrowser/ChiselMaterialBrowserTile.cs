@@ -28,7 +28,7 @@ namespace Chisel.Editors
 
         public float lastClickTime;
 
-        private bool _rendering;
+        private bool m_Rendering;
         private Texture2D m_Preview;
         public Texture2D Preview => m_Preview;
         
@@ -46,20 +46,20 @@ namespace Chisel.Editors
             return true;
         }
 
-        public void RenderThumbnail()
+        public void RenderPreview()
         {
-            if (m_Preview
+            if ((m_Preview && m_Preview != AssetPreview.GetMiniTypeThumbnail(typeof(Material)))
+                || AssetPreview.IsLoadingAssetPreview(id)
                 || materialName.Contains("Font Material")
-                || !ChiselMaterialBrowserUtilities.IsValidEntry(this)
-                || _rendering)
+                || !ChiselMaterialBrowserUtilities.IsValidEntry(this))
             {
                 return;
             }
-            _rendering = true;
-            ChiselMaterialThumbnailRenderer.Add(materialName,
-                () => m_Preview = AssetPreview.GetAssetPreview(AssetDatabase.LoadAssetAtPath<Material>(path)),
-                () => !AssetPreview.IsLoadingAssetPreview(id),
-                () => _rendering = false);
+            m_Preview = ChiselMaterialBrowserUtilities.GetAssetPreviewFromGUID(guid);
+            //ChiselMaterialThumbnailRenderer.Add(materialName,
+            //    () => ,
+            //    () => !AssetPreview.IsLoadingAssetPreview(id),
+            //    () => { });
         }
 
         public ChiselMaterialBrowserTile(string instID)
@@ -73,6 +73,8 @@ namespace Chisel.Editors
             labels = AssetDatabase.GetLabels(m);
             shaderName = m.shader.name;
             materialName = m.name;
+
+            RenderPreview();
         }
     }
 }

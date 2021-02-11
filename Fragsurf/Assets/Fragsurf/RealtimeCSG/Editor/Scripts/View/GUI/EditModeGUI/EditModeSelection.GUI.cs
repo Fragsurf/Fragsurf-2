@@ -51,13 +51,14 @@ namespace RealtimeCSG
 				if (!SceneDragToolManager.IsDraggingObjectInScene)
 					OnEditModeSelectionSceneGUI();
 
-				var viewRect = new Rect(4, 0, sceneView.position.width, sceneView.position.height - (CSG_GUIStyleUtility.BottomToolBarHeight + 4));
+				var viewRect = new Rect(4, 2, sceneView.position.width - 5, sceneView.position.height - (CSG_GUIStyleUtility.BottomToolBarHeight + 4));
 				GUILayout.BeginArea(viewRect);
 
 				if (EditModeManager.ActiveTool != null)
 				{
 					EditModeManager.ActiveTool.OnSceneGUI(viewRect);
 				}
+
 				GUILayout.EndArea();
 
 				if (RealtimeCSG.CSGSettings.EnableRealtimeCSG && !SceneDragToolManager.IsDraggingObjectInScene)
@@ -126,7 +127,7 @@ namespace RealtimeCSG
 #endif
 
 
-				var bounds = new Rect(10, 10 + topBarSize, 500, 40);
+				var bounds = new Rect(10, 30, 100, 103);
 
 				GUILayout.BeginArea(bounds, ContentTitleLabel, windowStyle);
 				{
@@ -135,7 +136,7 @@ namespace RealtimeCSG
 			
 					CSG_GUIStyleUtility.InitStyles();
 					EditorGUI.BeginChangeCheck();
-					var newEditMode = (ToolEditMode)CSG_EditorGUIUtility.ToolbarWrapped((int)EditModeManager.EditMode, ref editModeRects, out editModeBounds, CSG_GUIStyleUtility.brushEditModeContent, CSG_GUIStyleUtility.brushEditModeTooltips, yOffset:20, areaWidth: bounds.width);
+					var newEditMode = (ToolEditMode)CSG_EditorGUIUtility.ToolbarWrapped((int)EditModeManager.EditMode, ref editModeRects, out editModeBounds, CSG_GUIStyleUtility.brushEditModeContent, CSG_GUIStyleUtility.brushEditModeTooltips, yOffset:0, areaWidth: bounds.width);
 					//var newEditMode = (ToolEditMode)GUILayout.Toolbar((int)CSGBrushEditorManager.EditMode, GUIStyleUtility.brushEditModeContent, GUIStyleUtility.brushEditModeTooltips);
 					if (EditorGUI.EndChangeCheck())
 					{
@@ -144,7 +145,7 @@ namespace RealtimeCSG
 					}
 				
 					var buttonArea = bounds;
-					buttonArea.x = bounds.width - 17;
+					buttonArea.x = bounds.width + 17;
 					buttonArea.y = 2;
 					buttonArea.height = 13;
 					buttonArea.width = 13;
@@ -152,13 +153,13 @@ namespace RealtimeCSG
 						EditModeToolWindowSceneGUI.GetWindow();
 					TooltipUtility.SetToolTip(CSG_GUIStyleUtility.PopOutTooltip, buttonArea); 
 
-					var versionWidth = CSG_GUIStyleUtility.versionLabelStyle.CalcSize(VersionLabel);
-					var versionArea = bounds;
-					versionArea.x = bounds.width - (17 + versionWidth.x);
-					versionArea.y = 1;
-					versionArea.height = 15;
-					versionArea.width = versionWidth.x;
-					GUI.Label(versionArea, VersionLabel, CSG_GUIStyleUtility.versionLabelStyle);
+					//var versionWidth = CSG_GUIStyleUtility.versionLabelStyle.CalcSize(VersionLabel);
+					//var versionArea = bounds;
+					//versionArea.x = bounds.width - (17 + versionWidth.x);
+					//versionArea.y = 1;
+					//versionArea.height = 15;
+					//versionArea.width = versionWidth.x;
+					//GUI.Label(versionArea, VersionLabel, CSG_GUIStyleUtility.versionLabelStyle);
 				}
 				GUILayout.EndArea();
 					 

@@ -6,7 +6,7 @@ Author: Daniel Cornelius
 
 * * * * * * * * * * * * * * * * * * * * * */
 
-#define CHISEL_MWIN_DEBUG_UI
+//#define CHISEL_MWIN_DEBUG_UI
 
 using UnityEditor;
 using UnityEditor.ShortcutManagement;
@@ -103,7 +103,8 @@ namespace Chisel.Editors
             applyToSelectedFaceLabelContent ??= new GUIContent
             (
                     "Apply to Selected Face",
-                    $"Apply the currently selected material to the face selected in the scene view. Shortcut: {ShortcutManager.instance.GetShortcutBinding( "Chisel/Material Browser/Apply Last Selected Material" )}"
+                    $"Apply the currently selected material to the face selected in the scene view."
+                    //$"Apply the currently selected material to the face selected in the scene view. Shortcut: {ShortcutManager.instance.GetShortcutBinding( "Chisel/Material Browser/Apply Last Selected Material" )}"
             );
 
             assetLabelStyle ??= new GUIStyle( "assetlabel" ) { alignment = TextAnchor.UpperCenter };
@@ -117,12 +118,12 @@ namespace Chisel.Editors
 
             tileLabelStyle ??= new GUIStyle()
             {
-                    font = ChiselEmbeddedFonts.Consolas,
-                    fontSize = 12,
-                    fontStyle = FontStyle.Normal,
-                    alignment = TextAnchor.MiddleLeft,
-                    normal = { textColor = Color.white },
-                    clipping = TextClipping.Clip
+                //font      = ChiselEmbeddedFonts.Consolas,
+                fontSize = 10,
+                fontStyle = FontStyle.Normal,
+                alignment = TextAnchor.MiddleLeft,
+                normal = { textColor = Color.white },
+                clipping = TextClipping.Clip
             };
 
             tileButtonStyle ??= new GUIStyle()

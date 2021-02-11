@@ -34,7 +34,7 @@ namespace RealtimeCSG
         [SerializeField] internal Vector3 forcedDirection;
 
 
-        [SerializeField] internal bool smearTextures = true;
+        [SerializeField] internal bool smearTextures = false;
         [NonSerialized] internal bool forceDragHandle;
         [NonSerialized] internal CSGOperationType? forceDragSource = null;
         [NonSerialized] internal bool commitExtrusionAfterRelease = false;

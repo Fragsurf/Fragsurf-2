@@ -21,7 +21,7 @@ namespace Fragsurf.Client
                 Command = command;
                 ReleaseCommand = Command.Replace('+', '-');
 
-                if (Enum.TryParse(key, out _keyCode))
+                if (Enum.TryParse(key, true, out _keyCode))
                 {
                     _scroll = 0;
                     IsValid = true;

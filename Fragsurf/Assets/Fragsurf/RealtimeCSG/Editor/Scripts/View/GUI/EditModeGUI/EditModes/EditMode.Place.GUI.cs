@@ -25,6 +25,8 @@ namespace RealtimeCSG
 			InitLocalStyles();
 			GUILayout.BeginHorizontal(CSG_GUIStyleUtility.ContentEmpty);
 			{
+				GUILayout.FlexibleSpace();
+
 				GUILayout.BeginVertical(CSG_GUIStyleUtility.ContentEmpty);
 				{
 					GUILayout.BeginVertical(CSG_GUIStyleUtility.ContentEmpty);
@@ -65,7 +67,6 @@ namespace RealtimeCSG
 					GUILayout.EndVertical();
 				}
 				GUILayout.EndVertical();
-				GUILayout.FlexibleSpace();
 			}
 			GUILayout.EndHorizontal();
 		}
