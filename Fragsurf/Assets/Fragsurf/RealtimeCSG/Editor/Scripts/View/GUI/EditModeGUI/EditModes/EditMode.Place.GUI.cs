@@ -192,6 +192,8 @@ namespace RealtimeCSG
 			var displayNewCenter = GridUtility.CleanPosition((Tools.pivotRotation == PivotRotation.Local) ?
 																tool.LocalSpacePivotCenter :
 																tool.WorldSpacePivotCenter);
+			var defaultMoveLocally = true;
+
 			GUILayout.BeginVertical(CSG_GUIStyleUtility.ContentEmpty);
 			{
 				GUILayout.BeginHorizontal(CSG_GUIStyleUtility.ContentEmpty);
@@ -201,46 +203,73 @@ namespace RealtimeCSG
 					{
 						EditorGUI.BeginDisabledGroup(!tool.HaveSelection);
 						{
-							if (Tools.current == Tool.Move)
-							{
+							if(Tools.current == Tool.Move
+								|| Tools.current == Tool.Rotate)
+                            {
 								EditorGUI.BeginDisabledGroup(defaultMoveOffset.sqrMagnitude < MathConstants.EqualityEpsilonSqr);
-								{
+                                {
+									defaultMoveLocally = GUILayout.Toggle(defaultMoveLocally, "Move in local space");
+									if (GUILayout.Button("Clone"))
+									{
+										tool.CloneMoveByOffset(CSGSettings.DefaultMoveOffset, defaultMoveLocally);
+									}
 									if (GUILayout.Button(MoveByOffsetContent))
-									{
-										tool.MoveByOffset(RealtimeCSG.CSGSettings.DefaultMoveOffset);
-									}
-									TooltipUtility.SetToolTip(MoveByOffsetTooltip);
-									if (GUILayout.Button(CloneMoveByOffsetContent))
-									{
-										tool.CloneMoveByOffset(RealtimeCSG.CSGSettings.DefaultMoveOffset);
-									}
-									TooltipUtility.SetToolTip(CloneMoveByOffsetTooltip);
+                                    {
+										tool.MoveByOffset(CSGSettings.DefaultMoveOffset, defaultMoveLocally);
+                                    }
 								}
 								EditorGUI.EndDisabledGroup();
-							}
-							else
-							if (Tools.current == Tool.Rotate)
-							{
-								EditorGUI.BeginDisabledGroup(defaultMoveOffset.sqrMagnitude < MathConstants.EqualityEpsilonSqr);
+								EditorGUI.BeginDisabledGroup(defaultRotateOffset.sqrMagnitude < MathConstants.EqualityEpsilonSqr);
 								{
 									if (GUILayout.Button(RotateByOffsetContent))
 									{
-										tool.RotateByOffset(Quaternion.Euler(RealtimeCSG.CSGSettings.DefaultRotateOffset));
+										tool.RotateByOffset(Quaternion.Euler(CSGSettings.DefaultRotateOffset));
 									}
-									TooltipUtility.SetToolTip(RotateByOffsetTooltip);
-									if (GUILayout.Button(CloneRotateByOffsetContent))
-									{
-										tool.CloneRotateByOffset(Quaternion.Euler(RealtimeCSG.CSGSettings.DefaultRotateOffset));
-									}
-									TooltipUtility.SetToolTip(CloneRotateByOffsetTooltip);
 								}
 								EditorGUI.EndDisabledGroup();
-								if (GUILayout.Button(RecenterPivotContent))
-								{
-									tool.RecenterPivot();
-								}
-								TooltipUtility.SetToolTip(RecenterPivotTooltip);
 							}
+							//if (Tools.current == Tool.Move)
+							//{
+							//	EditorGUI.BeginDisabledGroup(defaultMoveOffset.sqrMagnitude < MathConstants.EqualityEpsilonSqr);
+							//	{
+							//		defaultMoveLocally = GUILayout.Toggle(defaultMoveLocally, "Move Locally");
+
+							//		if (GUILayout.Button(MoveByOffsetContent))
+							//		{
+							//			tool.MoveByOffset(RealtimeCSG.CSGSettings.DefaultMoveOffset, defaultMoveLocally);
+							//		}
+							//		TooltipUtility.SetToolTip(MoveByOffsetTooltip);
+							//		if (GUILayout.Button(CloneMoveByOffsetContent))
+							//		{
+							//			tool.CloneMoveByOffset(RealtimeCSG.CSGSettings.DefaultMoveOffset, defaultMoveLocally);
+							//		}
+							//		TooltipUtility.SetToolTip(CloneMoveByOffsetTooltip);
+							//	}
+							//	EditorGUI.EndDisabledGroup();
+							//}
+							//else
+							//if (Tools.current == Tool.Rotate)
+							//{
+							//	EditorGUI.BeginDisabledGroup(defaultRotateOffset.sqrMagnitude < MathConstants.EqualityEpsilonSqr);
+							//	{
+							//		if (GUILayout.Button(RotateByOffsetContent))
+							//		{
+							//			tool.RotateByOffset(Quaternion.Euler(RealtimeCSG.CSGSettings.DefaultRotateOffset));
+							//		}
+							//		TooltipUtility.SetToolTip(RotateByOffsetTooltip);
+							//		if (GUILayout.Button(CloneRotateByOffsetContent))
+							//		{
+							//			tool.CloneRotateByOffset(Quaternion.Euler(RealtimeCSG.CSGSettings.DefaultRotateOffset));
+							//		}
+							//		TooltipUtility.SetToolTip(CloneRotateByOffsetTooltip);
+							//	}
+							//	EditorGUI.EndDisabledGroup();
+							//	if (GUILayout.Button(RecenterPivotContent))
+							//	{
+							//		tool.RecenterPivot();
+							//	}
+							//	TooltipUtility.SetToolTip(RecenterPivotTooltip);
+							//}
 						}
 						EditorGUI.EndDisabledGroup();
 					}
@@ -248,7 +277,7 @@ namespace RealtimeCSG
 				}
 				GUILayout.EndHorizontal();
 				GUILayout.Space(5);
-				if (Tools.current == Tool.Move)
+				if (Tools.current == Tool.Move || Tools.current == Tool.Rotate)
 				{
 					var doubleFieldOptions = isSceneGUI ? MaxWidth150 : CSG_GUIStyleUtility.ContentEmpty;
 					EditorGUI.BeginDisabledGroup(!tool.HaveSelection);
@@ -263,14 +292,6 @@ namespace RealtimeCSG
 							RealtimeCSG.CSGSettings.DefaultMoveOffset = defaultMoveOffset;
 							RealtimeCSG.CSGSettings.Save();
 						}
-					}
-					EditorGUI.EndDisabledGroup();
-				} else
-				if (Tools.current == Tool.Rotate)
-				{
-					var doubleFieldOptions = isSceneGUI ? MaxWidth150 : CSG_GUIStyleUtility.ContentEmpty;
-					EditorGUI.BeginDisabledGroup(Tools.pivotMode == PivotMode.Center || !tool.HaveSelection);
-					{
 						EditorGUI.BeginChangeCheck();
 						{
 							GUILayout.Label(RotationCenterContent);
@@ -281,9 +302,9 @@ namespace RealtimeCSG
 							RealtimeCSG.CSGSettings.DefaultRotateOffset = defaultRotateOffset;
 							RealtimeCSG.CSGSettings.Save();
 						}
-	
+
 						EditorGUI.BeginChangeCheck();
-						{ 
+						{
 							GUILayout.Label(PivotCenterContent);
 							displayNewCenter = CSG_EditorGUIUtility.DistanceVector3Field(displayNewCenter, false, doubleFieldOptions);
 							TooltipUtility.SetToolTip(PivotVectorTooltip);

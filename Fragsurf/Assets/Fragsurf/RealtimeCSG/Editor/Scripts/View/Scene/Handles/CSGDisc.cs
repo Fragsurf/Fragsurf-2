@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace RealtimeCSG.Helpers
@@ -111,7 +112,7 @@ namespace RealtimeCSG.Helpers
 				case EventType.Repaint:
 				{
 					var originalColor = Handles.color;
-					if (id == GUIUtility.keyboardControl)
+					if (id == GUIUtility.keyboardControl || id == HandleUtility.nearestControl)
 						Handles.color = Handles.selectedColor;
 					
 					// If we're dragging it, we'll go a bit further and draw a selection pie
@@ -144,10 +145,10 @@ namespace RealtimeCSG.Helpers
 					if (cutoffPlane)
 					{
 						Vector3 from = Vector3.Cross(axis, camera.transform.forward).normalized;
-						Handles.DrawWireArc(position, axis, from, 180, size);
+						Handles.DrawWireArc(position, axis, from, 180, size, Handles.lineThickness);
 					} else
 					{
-						Handles.DrawWireDisc(position, axis, size);
+						Handles.DrawWireDisc(position, axis, size, Handles.lineThickness);
 					}
 
 					Handles.color = originalColor;

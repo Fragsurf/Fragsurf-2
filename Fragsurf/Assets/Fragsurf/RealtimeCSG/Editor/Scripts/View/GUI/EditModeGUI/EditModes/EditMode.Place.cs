@@ -879,37 +879,39 @@ namespace RealtimeCSG
 			return MoveObjects(transforms, offset);
 		}
 
-		bool MoveObjects(Transform[] transforms, Vector3 offset)
+		bool MoveObjects(Transform[] transforms, Vector3 offset, bool localSpace = false)
 		{
-			if (float.IsNaN(offset.x) || 
-				float.IsNaN(offset.y) || 
-				float.IsNaN(offset.z))
-				return false;			
-				
+			if (float.IsNaN(offset.x) 
+				|| float.IsNaN(offset.y) 
+				|| float.IsNaN(offset.z))
+            {
+				return false;
+            }
+
 			Undo.RecordObjects(transforms, "Move objects");
 			for (int t = 0; t < transforms.Length; t++)
 			{
-				transforms[t].position = GridUtility.CleanPosition(backupPositions[t] + offset);
-				//transforms[t].rotation = backupRotations[t];				
+				transforms[t].Translate(offset, localSpace ? Space.Self : Space.World);		
 			}
+
 			UpdateTargetBounds();
 			CSG_EditorGUIUtility.RepaintAll();
 			return false;
 		}
 
-		internal void CloneMoveByOffset(Vector3 offset)
+		internal void CloneMoveByOffset(Vector3 offset, bool localSpace = false)
 		{
 			var groupId = Undo.GetCurrentGroup();
 			Undo.IncrementCurrentGroup();
 			topTransforms = EditModeManager.CloneTargets();
-			MoveByOffset(offset);
+			MoveByOffset(offset, localSpace);
 			Undo.CollapseUndoOperations(groupId);
 		}
 
-		internal void MoveByOffset(Vector3 offset)
+		internal void MoveByOffset(Vector3 offset, bool localSpace = false)
 		{
 			UpdateTargetInfo();
-			MoveObjects(topTransforms, offset);
+			MoveObjects(topTransforms, offset, localSpace);
 		}
 		
 		internal void CloneRotateByOffset(Quaternion rotation)

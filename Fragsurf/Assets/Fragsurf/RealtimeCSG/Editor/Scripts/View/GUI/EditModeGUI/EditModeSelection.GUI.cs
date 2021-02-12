@@ -4,6 +4,7 @@ using InternalRealtimeCSG;
 using RealtimeCSG.Foundation;
 using RealtimeCSG.Legacy;
 using RealtimeCSG.Components;
+using UnityEditor.EditorTools;
 
 namespace RealtimeCSG
 {

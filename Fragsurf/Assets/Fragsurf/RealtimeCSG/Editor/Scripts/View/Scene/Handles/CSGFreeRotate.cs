@@ -85,11 +85,10 @@ namespace RealtimeCSG.Helpers
 					if (CSGHandles.disabled)
 						Handles.color = Color.Lerp(originalColor, Handles.secondaryColor, 0.75f);
 
-					// We only want the position to be affected by the Handles.matrix.
-					Handles.matrix = Matrix4x4.identity;
-					Handles.DrawWireDisc(worldPosition, camera.transform.forward, size);
-					Handles.matrix = origMatrix;
-
+						// We only want the position to be affected by the Handles.matrix.
+						//Handles.matrix = Matrix4x4.identity;
+						//Handles.DrawWireDisc(worldPosition, camera.transform.forward, size);
+						//Handles.matrix = origMatrix;
 					Handles.color = originalColor;
 					break;
 				}

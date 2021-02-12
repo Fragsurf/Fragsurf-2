@@ -180,7 +180,7 @@ namespace RealtimeCSG
 
 		public static bool HandleSceneKeyUp(IEditMode tool, bool checkForTextEditing = true)
 		{
-			if (EditorGUIUtility.editingTextField && checkForTextEditing)
+			if (EditorGUIUtility.editingTextField/* && checkForTextEditing*/)
 			{
 				return false;
 			}
