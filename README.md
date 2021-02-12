@@ -14,6 +14,8 @@ Feel free to clone it, play with it, and create issues and pull requests.  Steam
 
 [Discord](https://discord.com/invite/P9YPvCa)
 
+[Patreon](https://www.patreon.com/Fragsurf)
+
 [Wiki](https://wiki.fragsurf.com)
 
 [Forum](https://forum.fragsurf.com)
