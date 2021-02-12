@@ -42,6 +42,7 @@ public class LightmapShortcut
         if(EditorUtility.DisplayDialog("Clear Baked Data", "Really clear baked lightmaps?", "Yes", "Cancel"))
         {
             Lightmapping.Clear();
+            Lightmapping.ClearLightingDataAsset();
             GenerateLightmapUVs();
         }
     }
