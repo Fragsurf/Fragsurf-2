@@ -105,7 +105,9 @@ namespace RealtimeCSG
 
 		public static Color GeneratorGuideline { get; set; } = Color.yellow;
 		public static Color HelperPolygonCenter { get; set; } = new Color(1, 1, 1, 0.35f);
-		public static Color SimpleOutlineColor { get; set; } = new Color32(42, 189, 13, 255);
+		public static Color SimpleOutlineAdditiveColor { get; set; } = new Color32(42, 189, 13, 255);
+		public static Color SimpleOutlineSubtractiveColor { get; set; } = new Color32(189, 42, 13, 200);
+		public static Color SimpleOutlineIntersectingColor { get; set; } = new Color32(42, 13, 255, 200);
 		public static Color BoxBuilderColor { get; set; } = Color.white;
 
 

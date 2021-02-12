@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RealtimeCSG.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -58,14 +59,34 @@ namespace RealtimeCSG
 							continue;
                         }
 
-						if (!brush.outlineColor.HasValue)
+						//if (!brush.outlineColor.HasValue)
+						//                  {
+						//	//brush.outlineColor = ColorSettings.GetBrushOutlineColor(brush);
+						//	brush.outlineColor = ColorSettings.SimpleOutlineColor;
+						//}
+
+						var color = Color.white;
+						var comparison = brush.OperationType;
+						var op = brush.GetComponentInParent<CSGOperation>();
+                        if (op)
                         {
-							//brush.outlineColor = ColorSettings.GetBrushOutlineColor(brush);
-							brush.outlineColor = ColorSettings.SimpleOutlineColor;
-						}
+							comparison = op.OperationType;
+                        }
+                        switch (comparison)
+                        {
+							case Foundation.CSGOperationType.Additive:
+								color = ColorSettings.SimpleOutlineAdditiveColor;
+								break;
+							case Foundation.CSGOperationType.Subtractive:
+								color = ColorSettings.SimpleOutlineSubtractiveColor;
+								break;
+							case Foundation.CSGOperationType.Intersecting:
+								color = ColorSettings.SimpleOutlineIntersectingColor;
+								break;
+                        }
 
 						var brushTransformation = brush.compareTransformation.localToWorldMatrix;
-						CSGRenderer.DrawSimpleOutlines(lineMeshManager, brush.brushNodeID, brushTransformation, brush.outlineColor.Value);
+						CSGRenderer.DrawSimpleOutlines(lineMeshManager, brush.brushNodeID, brushTransformation, color);
 						CSGRenderer.DrawPolygonCenters(lineMeshManager, brush);
 					}
 					lineMeshManager.End();
