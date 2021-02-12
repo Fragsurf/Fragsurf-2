@@ -141,6 +141,11 @@ namespace Chisel.Editors
 
             foreach( CSGModel m in models )
             {
+                if (!m.generatedMeshes)
+                {
+                    continue;
+                }
+
                 MeshRenderer[] renderMeshes = m.generatedMeshes.GetComponentsInChildren<MeshRenderer>();
 
                 if( renderMeshes.Length > 0 )
