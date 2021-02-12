@@ -95,40 +95,32 @@ namespace RealtimeCSG
             //    sceneView.pivot = camPos;
             //}
 
-            //if (sceneView.orthographic)
-            //{
-            //    if ((Event.current.type == EventType.KeyDown
-            //        || Event.current.type == EventType.KeyUp)
-            //        && Event.current.keyCode == KeyCode.F)
-            //    {
-            //        Event.current.Use();
-            //        sceneView.pivot = Vector3.zero;
-            //        if (TryGetSelectionBounds(out Bounds bounds))
-            //        {
-            //            var sz = bounds.extents.magnitude;
-            //            if (float.IsInfinity(sz))
-            //            {
-            //                sz = 10;
-            //            }
-            //            else if(sz < .05f)
-            //            {
-            //                sz = .05f;
-            //            }
-            //            sceneView.pivot = bounds.center;
-            //            sceneView.size = sz;
-            //        }
-            //    }
+            if (sceneView.orthographic)
+            {
+                if (Event.current.type == EventType.KeyDown
+                    && Event.current.keyCode == KeyCode.F)
+                {
+                    Event.current.Use();
+                    sceneView.pivot = Vector3.zero;
+                    if (TryGetSelectionBounds(out Bounds bounds))
+                    {
+                        var sz = bounds.extents.magnitude;
+                        sz = Mathf.Clamp(sz, 0.05f, 500);
+                        sceneView.pivot = bounds.center;
+                        sceneView.size = sz;
+                    }
+                }
 
-            //    if(sceneView.size > 500)
-            //    {
-            //        sceneView.size = 500;
-            //    }
+                if (sceneView.size > 500)
+                {
+                    sceneView.size = 500;
+                }
 
-            //    if(sceneView.size < .05f)
-            //    {
-            //        sceneView.size = .05f;
-            //    }
-            //}
+                if (sceneView.size < .05f)
+                {
+                    sceneView.size = .05f;
+                }
+            }
 
             CSGSettings.RegisterSceneView(sceneView);
 
