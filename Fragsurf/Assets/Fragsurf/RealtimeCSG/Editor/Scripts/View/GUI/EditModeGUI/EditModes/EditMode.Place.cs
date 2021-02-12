@@ -1701,10 +1701,6 @@ namespace RealtimeCSG
                             EditorGUI.BeginChangeCheck();
                             {
                                 var activeSnappingMode = CSGSettings.ActiveSnappingMode;
-                                if(snapVertices != null)
-                                {
-                                    Debug.Log(snapVertices.Length);
-                                }
                                 newPosition = Helpers.CSGHandles.PositionHandle(camera, 
                                     newPosition, 
                                     Tools.handleRotation, 
