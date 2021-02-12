@@ -4,11 +4,12 @@ Chisel.Editors.ChiselMaterialBrowserCache.cs
 License: MIT (https://tldrlegal.com/license/mit-license)
 Author: Daniel Cornelius
 
-$TODO: Do we want to filter by label, too? it would allow user-ignored materials.
 * * * * * * * * * * * * * * * * * * * * * */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using RealtimeCSG.Components;
 using UnityEditor;
 using UnityEngine;
 
@@ -33,23 +34,10 @@ namespace Chisel.Editors
 
                 string[] excludedShaders = new string[]
                 {
-                        "skybox/",
-                        "textmeshpro/",
-                        "gui/",
-                        "ui/",
-                        "highlightplus/",
-                        "hidden/"
+                        "skybox/"
                 };
 
-                foreach(var excludedShader in excludedShaders)
-                {
-                    if (shader.Contains(excludedShader))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                return shader.Contains( excludedShaders[0] );
             }
 
             string chiselPath = "packages/com.chisel.components/package resources/";
@@ -88,23 +76,23 @@ namespace Chisel.Editors
         // gets all materials and the labels on them in the project, compares them against a filter,
         // and then adds them to the list of materials to be used in this window
         public static void GetMaterials( ref List<ChiselMaterialBrowserTile> materials,
+                                         ref List<ChiselMaterialBrowserTile> usedMaterials,
                                          ref List<string>                    labels,
-                                         //ref ChiselMaterialBrowserCache      cache,
-                                         bool   usingLabel,
-                                         string searchLabel = "",
-                                         string searchText  = "" )
+                                         ref List<CSGModel>                  models,
+                                         bool                                usingLabel,
+                                         string                              searchLabel = "",
+                                         string                              searchText  = "" )
         {
             if( usingLabel && searchLabel == string.Empty )
                 Debug.LogError( $"usingLabel set to true, but no search term was given. This may give undesired results." );
 
-            foreach(var m in materials)
+            materials.ForEach( e =>
             {
-                m.Dispose();
-            }
+                e.Dispose();
+                e = null;
+            } );
 
             materials.Clear();
-
-            ChiselMaterialThumbnailRenderer.CancelAll();
 
             // exclude the label search tag if we arent searching for a specific label right now
             string search = usingLabel ? $"l:{searchLabel} {searchText}" : $"{searchText}";
@@ -112,7 +100,7 @@ namespace Chisel.Editors
             string[] guids = AssetDatabase.FindAssets( $"t:Material {search}" );
 
             // assemble preview tiles
-            foreach( var id in guids )
+            foreach( string id in guids )
             {
                 ChiselMaterialBrowserTile browserTile = new ChiselMaterialBrowserTile( id ); //, ref cache );
 
@@ -134,27 +122,90 @@ namespace Chisel.Editors
                 }
             }
 
-            AssetPreview.SetPreviewTextureCacheSize(materials.Count + 1);
+            AssetPreview.SetPreviewTextureCacheSize( materials.Count + 1 );
 
-            //Debug.Log( $"Found {materials.Count} materials with applied filters." );
-            //cache.Save();
+            models = Object.FindObjectsOfType<CSGModel>().ToList();
+
+            PopulateUsedMaterials( ref usedMaterials, ref models, searchLabel, searchText );
         }
 
-        private static MethodInfo _minfo;
+        private static void PopulateUsedMaterials( ref List<ChiselMaterialBrowserTile> tiles, ref List<CSGModel> models, string searchLabel, string searchText )
+        {
+            tiles.ForEach( e =>
+            {
+                e.Dispose();
+                e = null;
+            } );
+
+            tiles.Clear();
+
+            foreach( CSGModel m in models )
+            {
+                MeshRenderer[] renderMeshes = m.generatedMeshes.GetComponentsInChildren<MeshRenderer>();
+
+                if( renderMeshes.Length > 0 )
+                    foreach( MeshRenderer mesh in renderMeshes )
+                    {
+                        foreach( Material mat in mesh.sharedMaterials )
+                        {
+                            if( mat != null )
+                                if( mat.name.Contains( searchText ) || MaterialContainsLabel( searchLabel, mat ) )
+                                {
+                                    AssetDatabase.TryGetGUIDAndLocalFileIdentifier( mat, out string guid, out long id );
+
+                                    tiles.Add( new ChiselMaterialBrowserTile( guid ) );
+                                }
+                        }
+                    }
+            }
+        }
+
+        private static bool MaterialContainsLabel( string label, Material material )
+        {
+            string[] labels = AssetDatabase.GetLabels( material );
+
+            if( labels.Length > 0 )
+                foreach( string l in labels )
+                {
+                    if( l.Contains( label ) ) return true;
+                }
+
+            return false;
+        }
+
+        public static void SelectMaterialInScene( string name )
+        {
+            MeshRenderer[] objects = Object.FindObjectsOfType<MeshRenderer>();
+
+            if( objects.Length > 0 )
+                foreach( MeshRenderer r in objects )
+                {
+                    if( r.sharedMaterials.Length > 0 )
+                        foreach( Material m in r.sharedMaterials )
+                        {
+                            if( m != null )
+                                if( m.name.Contains( name ) )
+                                {
+                                    EditorGUIUtility.PingObject( r.gameObject );
+                                    Selection.activeObject = r.gameObject;
+                                }
+                        }
+                }
+        }
+
+        private static MethodInfo m_GetAssetPreviewMethod;
+
         public static Texture2D GetAssetPreviewFromGUID( string guid )
         {
-            if (_minfo == null)
-            {
-                _minfo = typeof(AssetPreview).GetMethod(
+            m_GetAssetPreviewMethod ??= typeof( AssetPreview ).GetMethod(
                     "GetAssetPreviewFromGUID",
                     BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod,
                     null,
-                    new[] { typeof(string) },
+                    new[] { typeof( string ) },
                     null
-                );
-            }
+            );
 
-            return _minfo.Invoke(null, new object[] { guid }) as Texture2D;
+            return m_GetAssetPreviewMethod.Invoke( null, new object[] { guid } ) as Texture2D;
         }
     }
-} //
+}
