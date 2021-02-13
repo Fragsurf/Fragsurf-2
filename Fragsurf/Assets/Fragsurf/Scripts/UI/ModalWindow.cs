@@ -15,6 +15,8 @@ namespace Fragsurf.UI
         [SerializeField]
         private bool _draggable = true;
         [SerializeField]
+        private bool _resetPositionOnEnable;
+        [SerializeField]
         private TMP_Text _titleText;
         [SerializeField]
         private Button _closeButton;
@@ -22,8 +24,9 @@ namespace Fragsurf.UI
         private string _modalName;
         private Canvas _canvas;
         private RectTransform _rt;
+        private Vector2 _originalAnchoredPosition;
 
-        private void Start()
+        private void Awake()
         {
             var modal = GetComponentInParent<UGuiModal>();
             if (!modal)
@@ -57,8 +60,17 @@ namespace Fragsurf.UI
 
             _rt = GetComponent<RectTransform>();
             _canvas = GetComponentInParent<Canvas>();
+            _originalAnchoredPosition = _rt.anchoredPosition;
 
             LoadPosition();
+        }
+
+        private void OnEnable()
+        {
+            if (_resetPositionOnEnable)
+            {
+                _rt.anchoredPosition = _originalAnchoredPosition;
+            }
         }
 
         private void SavePosition()
