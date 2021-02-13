@@ -64,6 +64,7 @@ namespace RealtimeCSG
 					}
 					GUILayout.EndVertical();
 				}
+				GUILayout.Space(18);
 				GUILayout.EndVertical();
 			}
 			GUILayout.EndHorizontal();

@@ -44,7 +44,10 @@ namespace RealtimeCSG
                     EditorGUILayout.LabelField(ContentJustifyLabel, largeLabelWidth);
                 }
                 else
+                {
                     GUILayout.Label(ContentJustifyLabel);
+                }
+
                 GUILayout.BeginVertical(CSG_GUIStyleUtility.ContentEmpty);
                 {
                     GUILayout.BeginHorizontal(CSG_GUIStyleUtility.ContentEmpty);
@@ -1040,12 +1043,12 @@ namespace RealtimeCSG
             var needLightmapUVUpdate = EditModeCommonGUI.NeedLightmapUVUpdate(models);
             var originalHeight = surfaceEditWindowHeight + (needLightmapUVUpdate ? lightMapUVButtonOffset : 0);
             var visibleHeight = Math.Min(originalHeight, maxHeight);
-            var height = windowRect.height - 20;//Math.Min(originalHeight, maxHeight);
+            var height = Math.Min(originalHeight, maxHeight);//;
             var y = windowRect.height - height;// 252
 
             var currentArea = sceneGUIRect;
-            currentArea.x = windowRect.width - sceneGUIRect.width;
-            currentArea.y = y;
+            currentArea.x = windowRect.width - sceneGUIRect.width - 10;
+            currentArea.y = y - 17 - 10;
             currentArea.height = height;
 
             var boxArea = currentArea;
@@ -1063,6 +1066,7 @@ namespace RealtimeCSG
                 scrollbarArea.x += scrollbarArea.width - scrollbarRightOffset;
                 scrollbarArea.width = scrollbarWidth;
                 boxArea.width += scrollbarWidth;
+                boxArea.x -= scrollbarWidth;
                 currentArea.x -= scrollbarWidth;
             }
 
@@ -1082,7 +1086,10 @@ namespace RealtimeCSG
                     scrollbarPosition = GUI.BeginScrollView(currentArea, scrollbarPosition, internalScrollbarArea);
                 }
                 else
+                {
                     scrollbarPosition.y = 0;
+                }
+
                 currentArea.y += 8;
                 currentArea.height -= 8;
                 OnGUIContents(currentArea, tool, needLightmapUVUpdate);

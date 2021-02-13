@@ -588,9 +588,13 @@ namespace RealtimeCSG
 						try
 						{
 							Handles.BeginGUI();
-							Rect windowRect = new Rect(Vector2.zero, sceneView.position.size); 
+							var windowRect = new Rect(Vector2.zero, sceneView.position.size);
 							EditModeSelectionGUI.HandleWindowGUI(windowRect);
 						}
+						catch(Exception e)
+                        {
+							Debug.LogError(e.Message);
+                        }
 						finally
 						{
 							Handles.EndGUI();

@@ -51,7 +51,9 @@ namespace RealtimeCSG
 						buttonArea.height = 13;
 						buttonArea.width = 13;
 						if (GUI.Button(buttonArea, GUIContent.none, "WinBtnClose"))
+                        {
 							EditModeToolWindowSceneGUI.GetWindow();
+						}
 						TooltipUtility.SetToolTip(CSG_GUIStyleUtility.PopOutTooltip, buttonArea);
 
 						int controlID = GUIUtility.GetControlID(SceneViewMeshOverlayHash, FocusType.Keyboard, currentArea);
@@ -64,8 +66,10 @@ namespace RealtimeCSG
 							case EventType.ScrollWheel: { if (currentArea.Contains(Event.current.mousePosition)) { Event.current.Use(); } break; }
 						}
 					}
+
 					GUILayout.EndVertical();
 				}
+				GUILayout.Space(18);
 				GUILayout.EndVertical();
 			}
 			GUILayout.EndHorizontal();			
