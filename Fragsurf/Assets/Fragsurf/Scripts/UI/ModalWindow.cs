@@ -19,9 +19,9 @@ namespace Fragsurf.UI
         [SerializeField]
         private Button _closeButton;
 
+        private string _modalName;
         private Canvas _canvas;
         private RectTransform _rt;
-
 
         private void Start()
         {
@@ -30,6 +30,8 @@ namespace Fragsurf.UI
             {
                 return;
             }
+
+            _modalName = modal.Name;
 
             if (_dragHeader)
             {
@@ -55,6 +57,45 @@ namespace Fragsurf.UI
 
             _rt = GetComponent<RectTransform>();
             _canvas = GetComponentInParent<Canvas>();
+
+            LoadPosition();
+        }
+
+        private void SavePosition()
+        {
+            if (_draggable && !string.IsNullOrEmpty(_modalName))
+            {
+                var pos = _rt.anchoredPosition;
+                PlayerPrefs.SetString("Window." + _modalName, $"{pos.x}x{pos.y}");
+            }
+        }
+
+        private void LoadPosition()
+        {
+            if (_draggable && !string.IsNullOrEmpty(_modalName))
+            {
+                var pref = PlayerPrefs.GetString($"Window." + _modalName);
+                if (string.IsNullOrEmpty(pref))
+                {
+                    return;
+                }
+                var split = pref.Split('x');
+                if(split == null || split.Length != 2)
+                {
+                    return;
+                }
+                if(float.TryParse(split[0], out float x)
+                    && float.TryParse(split[1], out float y))
+                {
+                    _rt.anchoredPosition = new Vector2(x, y);
+                    _rt.ClampToParent(_rt.parent as RectTransform);
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            SavePosition();
         }
 
         private void OnPointerUp(PointerEventData ed)
