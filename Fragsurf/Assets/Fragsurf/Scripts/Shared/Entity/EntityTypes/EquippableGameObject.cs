@@ -255,7 +255,8 @@ namespace Fragsurf.Shared.Entity
         {
             if (Entity.Game.IsHost
                 || Equippable.Human == null
-                || Equippable.Human.HumanGameObject == null)
+                || Equippable.Human.HumanGameObject == null
+                || Equippable.Human.HumanGameObject.AudioSource == null)
             {
                 return;
             }
@@ -265,7 +266,7 @@ namespace Fragsurf.Shared.Entity
                 // stop persisting sound
             }
 
-            SoundManager.PlaySoundAttached(clip, 1.0f, Equippable.Human.HumanGameObject.HeadAttachment);
+            Equippable.Human.HumanGameObject.AudioSource.PlayOneShot(clip, 1.0f);
         }
 
         protected virtual void ImpactEffect(RaycastHit hit)

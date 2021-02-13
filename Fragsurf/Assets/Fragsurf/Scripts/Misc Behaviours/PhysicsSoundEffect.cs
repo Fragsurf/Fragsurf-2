@@ -1,9 +1,9 @@
-using Fragsurf.Client;
 using Fragsurf.Shared.Entity;
 using UnityEngine;
 
 namespace Fragsurf.Misc
 {
+    [RequireComponent(typeof(AudioSource))]
     public class PhysicsSoundEffect : MonoBehaviour, IClientComponent
     {
 
@@ -19,6 +19,12 @@ namespace Fragsurf.Misc
         private AudioClip _hardCollisionSound;
 
         private float _soundTimer;
+        private AudioSource _source;
+
+        private void Start()
+        {
+            _source = GetComponent<AudioSource>();
+        }
 
         void OnCollisionEnter(Collision coll)
         {
@@ -34,7 +40,7 @@ namespace Fragsurf.Misc
                 ? _softCollisionSound
                 : _hardCollisionSound;
 
-            SoundManager.PlaySoundAttached(sound, vol, transform);
+            _source.PlayOneShot(sound, vol);
         }
 
         private void Update()

@@ -9,6 +9,8 @@ namespace Fragsurf.UI
     public class Modal_Perf : UGuiModal
     {
 
+        public const string Identifier = "Perf";
+
         [SerializeField]
         private TMP_Text _text;
 

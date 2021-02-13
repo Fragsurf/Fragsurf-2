@@ -45,6 +45,7 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
+        public AudioSource AudioSource { get; private set; }
         public Animator Animator => _animator;
         public HitboxBehaviour[] Hitboxes { get; private set; }
         public Renderer[] Renderers { get; private set; }
@@ -59,6 +60,7 @@ namespace Fragsurf.Shared.Entity
             {
                 _animator = GetComponentInChildren<Animator>();
             }
+            AudioSource = GetComponentInChildren<AudioSource>();
             Renderers = gameObject.GetComponentsInChildren<Renderer>();
             Hitboxes = gameObject.GetComponentsInChildren<HitboxBehaviour>();
         }

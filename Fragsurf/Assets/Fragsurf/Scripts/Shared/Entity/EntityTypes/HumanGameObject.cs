@@ -114,7 +114,12 @@ namespace Fragsurf.Shared.Entity
             if (!Entity.Game.IsHost)
             {
                 SetVisible(false);
-                SoundManager.PlaySoundAttached(GameData.Instance.DeathSound, 1.0f, FeetAttachment);
+
+                if (AudioSource
+                    && GameData.Instance.DeathSound)
+                {
+                    AudioSource.PlayOneShot(GameData.Instance.DeathSound, 1.0f);
+                }
 
                 var killer = Entity.Game.EntityManager.FindEntity(dmgInfo.AttackerEntityId);
                 var ragdollDirection = Vector3.zero;

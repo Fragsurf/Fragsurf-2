@@ -3,27 +3,38 @@ using Fragsurf.Shared;
 
 namespace Fragsurf.Client
 {
-    public static class SoundManager
+    [Inject(InjectRealm.Shared)]
+    public class SoundManager : FSSharedScript
     {
 
-        public static void PlayAmbience2D(string path, float volume)
+        public enum SoundCategory
         {
-            throw new System.NotImplementedException();
+            UI,
+            Weapon,
+            Player,
+            Music,
+            Voice
         }
 
-        public static void StopAmbience2D()
+        public void PlayAudioClip(AudioClip clip, SoundCategory category, float volume)
         {
-            throw new System.NotImplementedException();
+            if (!Game.IsHost)
+            {
+                var cam = Camera.main ? Camera.main : GameCamera.Camera;
+                if (!cam.TryGetComponent(out AudioSource src))
+                {
+                    src = cam.gameObject.AddComponent<AudioSource>();
+                }
+                src.PlayOneShot(clip, volume);
+            }
+            else
+            {
+                // network the sound?
+            }
         }
 
-        public static void PlaySound2D(AudioClip clip, float volume)
+        public void PlayAudioClipAttached(AudioClip clip, SoundCategory category, float volume, Transform transform)
         {
-            PlaySoundAttached(clip, volume, GameCamera.Camera.transform);
-        }
-
-        public static void PlaySoundAttached(AudioClip clip, float volume, Transform transform, string parameterName = null, float parameterValue = 0f)
-        {
-            throw new System.NotImplementedException();
         }
 
     }

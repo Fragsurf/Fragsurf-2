@@ -203,9 +203,13 @@ namespace Fragsurf.Shared
         }
 
         [ConCommand("quit", "Exits the game")]
-        public void Quit()
+        public static void Quit()
         {
-            Destroy();
+            var cl = GetGameInstance(false);
+            if (cl)
+            {
+                cl.Destroy();
+            }
 
             if (!Application.isEditor)
             {

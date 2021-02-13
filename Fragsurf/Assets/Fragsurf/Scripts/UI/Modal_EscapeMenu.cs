@@ -51,11 +51,16 @@ namespace Fragsurf.UI
             });
             _quit.onClick.AddListener(() =>
             {
-                var game = FSGameLoop.GetGameInstance(false);
-                if (game)
+                var dialog = UGuiManager.Instance.Find<Modal_Dialog>();
+                if (!dialog)
                 {
-                    game.Quit();
+                    FSGameLoop.Quit();
+                    return;
                 }
+                dialog.Confirmation("Exit Fragsurf", "Are you sure you want to quit the game", () =>
+                {
+                    FSGameLoop.Quit();
+                });
             });
         }
 

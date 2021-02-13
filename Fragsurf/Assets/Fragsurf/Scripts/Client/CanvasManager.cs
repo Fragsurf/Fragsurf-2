@@ -15,13 +15,14 @@ namespace Fragsurf.Client
 
         public static readonly string[] DefaultModals = new string[]
         {
+            // todo: something better
             Modal_Crosshair.Identifier,
             Modal_EscapeMenu.Identifier,
             Modal_Settings.Identifier,
             Modal_ColorPicker.Identifier,
-            "Perf",
-
+            Modal_Perf.Identifier,
             Modal_Console.Identifier,
+            Modal_Dialog.Identifier
         };
 
         protected override void _Start()
