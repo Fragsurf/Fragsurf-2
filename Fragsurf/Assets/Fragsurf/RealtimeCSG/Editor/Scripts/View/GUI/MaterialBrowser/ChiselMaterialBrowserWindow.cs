@@ -524,6 +524,11 @@ namespace Chisel.Editors
 
         private static Material GetPreviewMaterial( int index )
         {
+            if (m_Tiles.Count == 0 || index >= m_Tiles.Count)
+            {
+                return Resources.Load<Material>("Default Material");
+            }
+
             Material m = AssetDatabase.LoadAssetAtPath<Material>( AssetDatabase.GUIDToAssetPath( m_CurrentTilesTab > 0 ? m_UsedTiles[index].guid : m_Tiles[index].guid ) );
 
             return m == null ? Resources.Load<Material>("Default Material") : m;

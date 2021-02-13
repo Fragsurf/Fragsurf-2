@@ -1038,7 +1038,6 @@ namespace RealtimeCSG
 
             GUIStyle windowStyle = GUI.skin.window;
 
-
             var models = InternalCSGModelManager.Models;
             var needLightmapUVUpdate = EditModeCommonGUI.NeedLightmapUVUpdate(models);
             var originalHeight = surfaceEditWindowHeight + (needLightmapUVUpdate ? lightMapUVButtonOffset : 0);
