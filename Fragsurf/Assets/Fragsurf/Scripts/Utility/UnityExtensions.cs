@@ -88,6 +88,32 @@ namespace Fragsurf.Utility
             }
         }
 
+        public static Vector3 ClampToParent(this RectTransform rt, RectTransform parent)
+        {
+            var op = rt.anchoredPosition;
+            var pos = op;
+
+            Vector3 minPosition = parent.rect.min - rt.rect.min;
+            Vector3 maxPosition = parent.rect.max - rt.rect.max;
+
+            pos.x = Mathf.Clamp(rt.anchoredPosition.x, minPosition.x, maxPosition.x);
+            pos.y = Mathf.Clamp(rt.anchoredPosition.y, minPosition.y, maxPosition.y);
+
+            rt.anchoredPosition = pos;
+
+            return pos - op;
+        }
+
+        public static bool MouseIsHovering(this RectTransform tr)
+        {
+            Vector2 localMousePosition = tr.InverseTransformPoint(Input.mousePosition);
+            if (tr.rect.Contains(localMousePosition))
+            {
+                return true;
+            }
+            return false;
+        }
+
 
 
         // VECTOR/QUATERNION

@@ -485,6 +485,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fbe72b9b1470614aa869376b08f395a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dragHeader: {fileID: 4515490508152441634}
+  _draggable: 1
   _titleText: {fileID: 4515490506631162731}
   _closeButton: {fileID: 4515490506686376404}
 --- !u!1 &4515490507759344807
