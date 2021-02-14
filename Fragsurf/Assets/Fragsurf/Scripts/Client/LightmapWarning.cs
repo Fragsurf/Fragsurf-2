@@ -7,6 +7,11 @@ namespace Fragsurf.Client
     public class LightmapWarning : FSSharedScript
     {
 
+        protected override void _Initialize()
+        {
+            enabled = false;
+        }
+
         protected override void OnGameLoaded()
         {
             enabled = LightmapSettings.lightmaps == null || LightmapSettings.lightmaps.Length == 0;
