@@ -545,11 +545,17 @@ namespace Chisel.Editors
 
         private static void ApplyMaterial( Material material )
         {
+            if (!material)
+            {
+                return;
+            }
             var activetool = EditModeManager.ActiveTool as EditModeSurface;
             if (activetool != null)
             {
                 var selectedBrushSurfaces = activetool.GetSelectedSurfaces();
                 SurfaceUtility.SetMaterials(selectedBrushSurfaces, material);
+                CSGSettings.DefaultMaterial = material;
+                CSGSettings.Save();
             }
         }
     }
