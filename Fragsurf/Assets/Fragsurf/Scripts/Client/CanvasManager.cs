@@ -17,6 +17,7 @@ namespace Fragsurf.Client
         {
             // todo: something better
             Modal_Crosshair.Identifier,
+            "MainMenu",
             Modal_ColorPicker.Identifier,
             Modal_Perf.Identifier,
             Modal_Dialog.Identifier

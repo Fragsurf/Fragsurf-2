@@ -22,8 +22,10 @@ namespace Fragsurf.UI
 
         private Dictionary<string, Modal_SettingsChangeEntry> _pendingChanges = new Dictionary<string, Modal_SettingsChangeEntry>(StringComparer.OrdinalIgnoreCase);
 
-        private void Start()
+        protected override void Awake()
         {
+            base.Awake();
+
             _pageTemplate = GetComponentInChildren<Modal_SettingsPageEntry>(true);
             _categoryTemplate = GetComponentInChildren<Modal_SettingsCategoryEntry>(true);
             _changeEntry = GetComponentInChildren<Modal_SettingsChangeEntry>(true);

@@ -32,7 +32,7 @@ namespace Fragsurf.UI
             set => _modalName = value;
         }
         public CursorType CursorType => _cursorType;
-        public bool IsOpen => _modalContainer.activeSelf;
+        public bool IsOpen => _modalContainer.activeInHierarchy;
 
         protected virtual void Awake()
         {
@@ -94,12 +94,20 @@ namespace Fragsurf.UI
         public void Open()
         {
             _modalContainer.SetActive(true);
+            if (transform.parent)
+            {
+                var parentModal = transform.parent.GetComponentInParent<UGuiModal>();
+                if (parentModal)
+                {
+                    parentModal.Open();
+                }
+            }
             if (!_ignoreEscape)
             {
                 UGuiManager.Instance.AddToEscapeStack(this);
             }
-            OnOpen();
             OnOpened?.Invoke();
+            OnOpen();
         }
 
         public void Close()
@@ -109,13 +117,13 @@ namespace Fragsurf.UI
             {
                 UGuiManager.Instance.RemoveFromEscapeStack(this);
             }
-            OnClose();
             OnClosed?.Invoke();
+            OnClose();
         }
 
         public void Toggle()
         {
-            if (_modalContainer.activeSelf)
+            if (IsOpen)
             {
                 Close();
             }

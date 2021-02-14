@@ -1,4 +1,5 @@
 using Fragsurf.Utility;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -36,7 +37,13 @@ namespace Fragsurf.UI
             CloseParentModalOnClose = true;
             _inputField.text = string.Empty;
             _inputField.ActivateInputField();
+            _inputField.Select();
         }
+
+        //private IEnumerator ActivateInputField()
+        //{
+
+        //}
 
         protected override void OnClose()
         {

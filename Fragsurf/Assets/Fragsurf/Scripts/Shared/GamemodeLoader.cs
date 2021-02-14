@@ -6,29 +6,36 @@ namespace Fragsurf.Shared
     public class GamemodeLoader : FSSharedScript
     {
 
-        public void LoadGamemode(GamemodeData data)
+        public bool LoadGamemode(GamemodeData data)
         {
-            Gamemode = Activator.CreateInstance(data.GamemodeType) as BaseGamemode;
-            if(Gamemode == null)
+            try
             {
-                DevConsole.WriteLine("Failed to instatiate gamemode type: " + data.GamemodeType);
-                Gamemode = new DefaultGamemode();
+                Gamemode = Activator.CreateInstance(data.GamemodeType) as BaseGamemode;
+                if (Gamemode == null)
+                {
+                    Debug.LogError("Failed to instatiate gamemode type for: " + data.Name);
+                    Gamemode = new DefaultGamemode();
+                }
+                Gamemode.Load(data, Game);
+                Game.DefaultConfig.ExecutePostLoad();
+                return true;
             }
-            Gamemode.Load(Game);
-            Game.DefaultConfig.ExecutePostLoad();
+            catch(Exception e)
+            {
+                Debug.LogError($"Failed to load {data.Name}: {e.Message}");
+            }
+            return false;
         }
 
         public bool LoadGamemode(string gamemodeName = null)
         {
-            foreach(var gm in Resources.FindObjectsOfTypeAll<GamemodeData>())
+            var resource = Resources.Load<GamemodeData>(gamemodeName);
+            if (!resource)
             {
-                if(gm.Name.Equals(gamemodeName, StringComparison.OrdinalIgnoreCase))
-                {
-                    LoadGamemode(gm);
-                    return true;
-                }
+                Debug.LogError("Missing gamemode data: " + gamemodeName);
+                return false;
             }
-            return false;
+            return LoadGamemode(resource);
         }
 
         protected override void OnGameUnloaded()

@@ -31,9 +31,16 @@ namespace Fragsurf.UI
         {
             if (EscapeEnabled && Input.GetKeyDown(KeyCode.Escape))
             {
-                if(_escapeStack.Count == 0)
+                for (int i = _escapeStack.Count - 1; i >= 0; i--)
                 {
-                    OpenModal<Modal_EscapeMenu>();
+                    if (!_escapeStack[i].IsOpen)
+                    {
+                        _escapeStack.RemoveAt(i);
+                    }
+                }
+                if (_escapeStack.Count == 0)
+                {
+                    OpenModal<Modal_MainMenu>();
                 }
                 else
                 {

@@ -18,10 +18,12 @@ namespace Fragsurf.Shared
         private GameObject _resource;
         private List<FSComponent> _addedComponents = new List<FSComponent>();
 
-        public GamemodeData Data { get; private set; }
+        public GamemodeData Data { get; set; }
 
-        public void Load(FSGameLoop game)
+        public void Load(GamemodeData data, FSGameLoop game)
         {
+            Data = data;
+
             LoadConfig();
 
             if (game.IsHost || Server.GameServer.Instance == null)
