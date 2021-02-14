@@ -1,5 +1,7 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Fragsurf.UI
@@ -7,8 +9,9 @@ namespace Fragsurf.UI
     public class UGuiModal : MonoBehaviour
     {
 
-        [SerializeField]
-        private bool _standalone;
+        public UnityEvent OnOpened = new UnityEvent();
+        public UnityEvent OnClosed = new UnityEvent();
+
         [SerializeField]
         private GameObject _modalContainer;
         [SerializeField]
@@ -23,8 +26,6 @@ namespace Fragsurf.UI
         private InputField[] _inputFields;
         private TMP_InputField[] _tmpInputFields;
 
-        public bool IsStandalone => _standalone;
-
         public string Name
         {
             get => _modalName;
@@ -35,6 +36,9 @@ namespace Fragsurf.UI
 
         protected virtual void Awake()
         {
+            UGuiManager.Instance.Add(this);
+            DevConsole.RegisterObject(this);
+
             _inputFields = GetComponentsInChildren<InputField>();
             _tmpInputFields = GetComponentsInChildren<TMP_InputField>();
 
@@ -43,46 +47,29 @@ namespace Fragsurf.UI
                 _modalContainer = gameObject;
             }
 
-            if (!_standalone)
-            {
-                if (_closeOnStart)
-                {
-                    Close();
-                }
-                else
-                {
-                    Open();
-                }
-                UGuiManager.Instance.Add(this);
-            }
-
-            DevConsole.RegisterObject(this);
+            StartCoroutine(CloseOnStart());
         }
 
-        protected virtual void OnDestroy()
+        private IEnumerator CloseOnStart()
         {
-            if (UGuiManager.Instance
-                && !_standalone)
+            yield return new WaitForEndOfFrame();
+            if (_closeOnStart)
             {
-                UGuiManager.Instance.Remove(this);
+                Close();
             }
-            DevConsole.RemoveAll(this);
-        }
-
-        protected virtual void OnEnable()
-        {
-            if (_standalone)
+            else
             {
                 Open();
             }
         }
 
-        protected virtual void OnDisable()
+        protected virtual void OnDestroy()
         {
-            if (_standalone)
+            if (UGuiManager.Instance)
             {
-                Close();
+                UGuiManager.Instance.Remove(this);
             }
+            DevConsole.RemoveAll(this);
         }
 
         public bool HasFocusedInput()
@@ -106,38 +93,28 @@ namespace Fragsurf.UI
 
         public void Open()
         {
-            if (_standalone)
-            {
-                return;
-            }
             _modalContainer.SetActive(true);
-            if (!_ignoreEscape && !_standalone)
+            if (!_ignoreEscape)
             {
                 UGuiManager.Instance.AddToEscapeStack(this);
             }
             OnOpen();
+            OnOpened?.Invoke();
         }
 
         public void Close()
         {
-            if (_standalone)
-            {
-                return;
-            }
             _modalContainer.SetActive(false);
-            if (!_ignoreEscape && !_standalone)
+            if (!_ignoreEscape)
             {
                 UGuiManager.Instance.RemoveFromEscapeStack(this);
             }
             OnClose();
+            OnClosed?.Invoke();
         }
 
         public void Toggle()
         {
-            if (_standalone)
-            {
-                return;
-            }
             if (_modalContainer.activeSelf)
             {
                 Close();

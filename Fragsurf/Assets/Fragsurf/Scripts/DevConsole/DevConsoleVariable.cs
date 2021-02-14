@@ -82,21 +82,31 @@ namespace Fragsurf
                 return default;
             }
 
-            if(typeof(T) == typeof(Color))
+            try
             {
-                if(input.Length == 8 && input[0] != '#')
+                if (typeof(T) == typeof(Color))
                 {
-                    input = "#" + input;
+                    if (input.Length == 8 && input[0] != '#')
+                    {
+                        input = "#" + input;
+                    }
+                    ColorUtility.TryParseHtmlString(input, out Color result);
+                    return (T)Convert.ChangeType(result, typeof(T));
                 }
-                ColorUtility.TryParseHtmlString(input, out Color result);
-                return (T)Convert.ChangeType(result, typeof(T));
+                return TryParse<T>(input);
             }
-
-            return TryParse<T>(input);
+            catch(Exception e)
+            {
+                DevConsole.WriteLine($"`{input}` is an invalid input for {Name}, expected input: {typeof(T).Name}");
+#if UNITY_EDITOR
+                Debug.LogError(e.Message);
+#endif
+                return default;
+            }
         }
 
         /// https://social.msdn.microsoft.com/Forums/en-US/d3a139b0-9c14-400d-94f9-440b64a0122a/convert-or-tryparse-from-string-to-t-generic-possible-work-around?forum=csharplanguage
-        public static TType TryParse<TType>(string inValue)
+        private static TType TryParse<TType>(string inValue)
         {
             if (typeof(TType).IsNumeric()
                 && inValue.IndexOf(',') != -1)
@@ -104,19 +114,9 @@ namespace Fragsurf
                 inValue = inValue.Replace(',', '.');
             }
 
-            try
-            {
-                var converter = TypeDescriptor.GetConverter(typeof(TType));
-                var result = converter.ConvertFromString(null, CultureInfo.InvariantCulture, inValue);
-                return (TType)result;
-            }
-            catch (Exception e)
-            {
-#if UNITY_EDITOR
-                Debug.LogError(e.Message);
-#endif
-                return default;
-            }
+            var converter = TypeDescriptor.GetConverter(typeof(TType));
+            var result = converter.ConvertFromString(null, CultureInfo.InvariantCulture, inValue);
+            return (TType)result;
         }
 
     }

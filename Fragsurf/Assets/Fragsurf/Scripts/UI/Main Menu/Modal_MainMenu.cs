@@ -3,8 +3,16 @@ using UnityEngine;
 
 namespace Fragsurf.UI
 {
-    public class MainMenu : MonoBehaviour
+    public class Modal_MainMenu : UGuiModal
     {
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.BackQuote))
+            {
+                OpenModal("Console");
+            }
+        }
 
         public void OpenModal(string name)
         {

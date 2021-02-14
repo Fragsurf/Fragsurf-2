@@ -43,7 +43,7 @@ namespace Fragsurf.UI
                     md = _dragHeader.AddComponent<ModalDragHandler>();
                 }
                 md.OnDrag.AddListener(OnDrag);
-                md.OnPointerUp.AddListener(OnPointerUp);
+                md.OnEndDrag.AddListener(OnEndDrag);
             }
 
             _titleText.text = modal.Name;
@@ -61,11 +61,6 @@ namespace Fragsurf.UI
             _rt = GetComponent<RectTransform>();
             _canvas = GetComponentInParent<Canvas>();
             _originalAnchoredPosition = _rt.anchoredPosition;
-
-            if (modal.IsStandalone)
-            {
-                _closeButton.gameObject.SetActive(false);
-            }
 
             LoadPosition();
         }
@@ -115,7 +110,7 @@ namespace Fragsurf.UI
             SavePosition();
         }
 
-        private void OnPointerUp(PointerEventData ed)
+        private void OnEndDrag(PointerEventData ed)
         {
             if (!_draggable)
             {
@@ -133,11 +128,12 @@ namespace Fragsurf.UI
             _rt.anchoredPosition += eventData.delta / _canvas.scaleFactor;
         }
 
-        public class ModalDragHandler : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
+        public class ModalDragHandler : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler, IEndDragHandler
         {
             public UnityEvent<PointerEventData> OnPointerDown = new UnityEvent<PointerEventData>();
             public UnityEvent<PointerEventData> OnPointerUp = new UnityEvent<PointerEventData>();
             public UnityEvent<PointerEventData> OnDrag = new UnityEvent<PointerEventData>();
+            public UnityEvent<PointerEventData> OnEndDrag = new UnityEvent<PointerEventData>();
 
             void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
             {
@@ -152,6 +148,11 @@ namespace Fragsurf.UI
             void IDragHandler.OnDrag(PointerEventData eventData)
             {
                 OnDrag?.Invoke(eventData);
+            }
+
+            void IEndDragHandler.OnEndDrag(PointerEventData eventData)
+            {
+                OnEndDrag?.Invoke(eventData);
             }
         }
 

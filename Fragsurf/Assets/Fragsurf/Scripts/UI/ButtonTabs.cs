@@ -38,13 +38,27 @@ namespace Fragsurf.UI
                 {
                     tab.OriginalColor = tab.Button.image.color;
                 }
+
                 tab.Button.onClick.AddListener(() => OpenTab(tab));
+
+                if(tab.Content.TryGetComponent(out UGuiModal modal))
+                {
+                    modal.OnOpened.AddListener(() =>
+                    {
+                        OpenTab(tab, false);
+                    });
+                    modal.OnClosed.AddListener(() =>
+                    {
+                        CloseTab(tab, false);
+                    });
+                }
+
                 CloseTab(tab);
             }
             OpenTab(_tabs[0]);
         }
         
-        private void OpenTab(ButtonTab tab)
+        private void OpenTab(ButtonTab tab, bool openModal = true)
         {
             if(_enabledTab == tab)
             {
@@ -54,6 +68,7 @@ namespace Fragsurf.UI
             {
                 CloseTab(_enabledTab);
             }
+
             tab.Content.SetActive(true);
             tab.Button.interactable = false;
 
@@ -62,21 +77,36 @@ namespace Fragsurf.UI
                 tab.Button.image.color = _enabledColor;
             }
 
+            if(openModal && tab.Content.TryGetComponent(out UGuiModal modal))
+            {
+                modal.Open();
+            }
+
             _enabledTab = tab;
         }
 
-        private void CloseTab(ButtonTab tab)
+        private void CloseTab(ButtonTab tab, bool closeModal = true)
         {
             if(_enabledTab == tab)
             {
                 _enabledTab = null;
             }
+
             tab.Content.SetActive(false);
             tab.Button.interactable = true;
 
             if (tab.Button.image)
             {
                 tab.Button.image.color = tab.OriginalColor;
+            }
+
+            if (closeModal && tab.Content.TryGetComponent(out UGuiModal modal))
+            {
+                if (modal is Modal_Console console)
+                {
+                    console.CloseParentModalOnClose = false;
+                }
+                modal.Close();
             }
         }
 

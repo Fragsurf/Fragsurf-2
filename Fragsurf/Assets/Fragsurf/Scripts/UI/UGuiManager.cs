@@ -114,6 +114,11 @@ namespace Fragsurf.UI
             var modal = Find(modalName);
             if(modal)
             {
+                var mp = modal.GetComponentInParent<UGuiModal>();
+                if (mp)
+                {
+                    mp.Open();
+                }
                 modal.Open();
             }
         }

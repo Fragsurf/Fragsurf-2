@@ -13,15 +13,12 @@ namespace Fragsurf.UI
         private TMP_InputField _inputField;
         private Modal_ConsoleEntry _template;
 
+        public bool CloseParentModalOnClose;
         public CircularBuffer<string> InputHistory = new CircularBuffer<string>(20);
-
+        
         private void Start()
         {
             _template = GetComponentInChildren<Modal_ConsoleEntry>(true);
-            if (!_template)
-            {
-                throw new System.Exception("Console is missing entry template or container!");
-            }
             _template.gameObject.SetActive(false);
             _inputField.onSubmit.AddListener(OnInputSubmit);
             DevConsole.OnMessageLogged += OnMessageLogged;
@@ -36,8 +33,21 @@ namespace Fragsurf.UI
 
         protected override void OnOpen()
         {
+            CloseParentModalOnClose = true;
             _inputField.text = string.Empty;
             _inputField.ActivateInputField();
+        }
+
+        protected override void OnClose()
+        {
+            if (CloseParentModalOnClose && transform.parent)
+            {
+                var p = transform.parent.GetComponentInParent<UGuiModal>();
+                if (p)
+                {
+                    p.Close();
+                }
+            }
         }
 
         private void OnMessageLogged(string message)
@@ -47,7 +57,7 @@ namespace Fragsurf.UI
                 Message = message,
                 ElapsedTime = Time.time
             };
-            _template.Prepend(consoleData);
+            _template.Append(consoleData);
         }
 
         private void OnInputSubmit(string contents)
