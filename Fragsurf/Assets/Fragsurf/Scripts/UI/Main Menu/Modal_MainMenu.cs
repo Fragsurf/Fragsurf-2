@@ -8,9 +8,12 @@ namespace Fragsurf.UI
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.BackQuote))
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (!cl 
+                || cl.GameLoader.State == GameLoaderState.None 
+                || cl.GameLoader.State == GameLoaderState.Idle)
             {
-                OpenModal("Console");
+                Open();
             }
         }
 
