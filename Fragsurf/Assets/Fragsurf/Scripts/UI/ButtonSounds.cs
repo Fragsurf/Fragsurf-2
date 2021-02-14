@@ -24,25 +24,6 @@ namespace Fragsurf.UI
             _src.spatialBlend = 0;
             _src.volume = 1f;
             _src.loop = false;
-
-            StartCoroutine(SetPan());
-        }
-
-        private IEnumerator SetPan()
-        {
-            yield return new WaitForEndOfFrame();
-            if (TryGetComponent(out RectTransform rt))
-            {
-                var arr = new Vector3[4];
-                rt.GetWorldCorners(arr);
-                var centerx = (arr[0].x + arr[3].x) / 2f;
-                if (centerx == 0)
-                {
-                    yield break;
-                }
-                var tx = centerx / Screen.width;
-                _src.panStereo = Mathf.Lerp(-0.75f, 0.75f, tx);
-            }
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
@@ -51,6 +32,7 @@ namespace Fragsurf.UI
             {
                 return;
             }
+            SetPan();
             _src.PlayOneShot(_hover, Random.Range(0.9f, 1f));
         }
 
@@ -60,6 +42,7 @@ namespace Fragsurf.UI
             {
                 return;
             }
+            SetPan();
             _src.PlayOneShot(_exit, Random.Range(0.9f, 1f));
         }
 
@@ -69,8 +52,16 @@ namespace Fragsurf.UI
             {
                 return;
             }
+            SetPan();
             _src.PlayOneShot(_click, Random.Range(0.9f, 1f));
         }
+
+        private void SetPan()
+        {
+            var px = Input.mousePosition.x / Screen.width;
+            _src.panStereo = Mathf.Lerp(-0.75f, 0.75f, px);
+        }
+
     }
 }
 
