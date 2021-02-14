@@ -108,7 +108,7 @@ namespace Fragsurf.Server
 
         protected override void OnGameLoaded()
         {
-            SteamServer.GameTags = Game.GamemodeLoader.Gamemode.Name;
+            SteamServer.GameTags = Game.GamemodeLoader.Gamemode.Data.Name;
         }
 
         protected override void OnPlayerIntroduced(IPlayer player)

@@ -18,7 +18,7 @@ namespace Fragsurf
             GameObject.DontDestroyOnLoad(gameObject);
 
             var client = GetComponent<BareGameClient>();
-            var serverResult = await client.GameLoader.CreateServerAsync("LoadActiveScene", "TestGamemode", "Testing my map!", RandomString(8));
+            var serverResult = await client.GameLoader.CreateServerAsync("LoadActiveScene", "Playtest", "Testing my map!", RandomString(8));
             if(serverResult == GameLoadResult.Success)
             {
                 var server = FSGameLoop.GetGameInstance(true) as GameServer;

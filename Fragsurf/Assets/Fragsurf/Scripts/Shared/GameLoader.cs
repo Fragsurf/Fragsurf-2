@@ -65,7 +65,7 @@ namespace Fragsurf.Shared
                     if (e.Length > 1)
                     {
                         var map = e[1];
-                        string gamemode = Game.GamemodeLoader.Gamemode.Name;
+                        string gamemode = Game.GamemodeLoader.Gamemode.Data.Name;
                         if (e.Length > 2)
                         {
                             gamemode = e[2];
@@ -80,7 +80,7 @@ namespace Fragsurf.Shared
 
         public void ChangeMap(string mapName)
         {
-            string gamemode = Game.GamemodeLoader.Gamemode.Name;
+            string gamemode = Game.GamemodeLoader.Gamemode.Data.Name;
             var name = DevConsole.GetVariable<string>("server.name");
             var pass = DevConsole.GetVariable<string>("server.password");
             ChangeMapAsync(mapName, gamemode, name, pass);

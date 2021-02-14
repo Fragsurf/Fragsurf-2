@@ -4,10 +4,10 @@ using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
 using UnityEngine;
 
-namespace Fragsurf.Mapping
+namespace Fragsurf.Gamemodes.Playtest
 {
-    [Inject(InjectRealm.Shared, typeof(TestGamemode))]
-    public class SH_TestGamemode : FSSharedScript
+    [Inject(InjectRealm.Shared, typeof(PlaytestGamemode))]
+    public class SH_PlaytestSpawner : FSSharedScript
     {
 
         private bool _showTriggers;

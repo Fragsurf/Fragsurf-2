@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using SharpConfig;
-using Fragsurf.FSM;
 using UnityEngine;
 using System.Reflection;
 
@@ -11,19 +10,20 @@ namespace Fragsurf.Shared
 {
     public abstract class BaseGamemode
     {
-        public abstract string Name { get; }
-        public virtual string[] Dependencies { get; } = null;
+
         public bool LockVars = true;
-        public static Func<BaseGamemode> GetDefaultGamemode = () => {return new DefaultGamemode();};
 
-        protected List<FSComponent> _addedComponents = new List<FSComponent>();
-        public Configuration Config;
-
+        private Configuration _config;
         private FSGameLoop _game;
         private GameObject _resource;
+        private List<FSComponent> _addedComponents = new List<FSComponent>();
+
+        public GamemodeData Data { get; private set; }
 
         public void Load(FSGameLoop game)
         {
+            LoadConfig();
+
             if (game.IsHost || Server.GameServer.Instance == null)
             {
                 ExecuteGameConfig();
@@ -42,7 +42,7 @@ namespace Fragsurf.Shared
 
             if (!game.IsHost)
             {
-                var resource = Resources.Load<GameObject>(Name);
+                var resource = Resources.Load<GameObject>(Data.Name);
                 if (resource != null)
                 {
                     _resource = GameObject.Instantiate(resource, game.ObjectContainer.transform);
@@ -131,12 +131,12 @@ namespace Fragsurf.Shared
 
         public string GetDataDirectory()
         {
-            return Structure.GamemodeDataPath + "\\" + Name;
+            return Structure.GamemodeDataPath + "\\" + Data.Name;
         }
 
         public string GetConfigPath()
         {
-            return GetDataDirectory() + "\\" + Name + ".ini";
+            return GetDataDirectory() + "\\" + Data.Name + ".ini";
         }
 
         protected virtual void InitConfig() { }
@@ -145,7 +145,7 @@ namespace Fragsurf.Shared
         {
             var path = GetConfigPath();
             Directory.CreateDirectory(Path.GetDirectoryName(path));
-            Config.SaveToFile(path);
+            _config.SaveToFile(path);
         }
 
         public void LoadConfig()
@@ -154,11 +154,11 @@ namespace Fragsurf.Shared
 
             if (File.Exists(cfgPath))
             {
-                Config = Configuration.LoadFromFile(cfgPath);
+                _config = Configuration.LoadFromFile(cfgPath);
             }
             else
             {
-                Config = new Configuration();
+                _config = new Configuration();
                 InitConfig();
                 WriteConfig();
             }
@@ -168,33 +168,11 @@ namespace Fragsurf.Shared
         {
             DevConsole.SetVariable("game.tickrate", 100, true, true);
             DevConsole.SetVariable("game.physx", true, true, true);
-            //DevConsole.SetVariable("mv.autobhop", true, true, true);
-            //DevConsole.SetVariable("mv.gravity", 20.3199f, true, true);
-            //DevConsole.SetVariable("mv.aircap", 0.762f, true, true);
-            //DevConsole.SetVariable("mv.airacceleration", 1500f, true, true);
-            //DevConsole.SetVariable("mv.acceleration", 6.2f, true, true);
-            //DevConsole.SetVariable("mv.friction", 4f, true, true);
-            //DevConsole.SetVariable("mv.stopspeed", 4.2f, true, true);
-            //DevConsole.SetVariable("mv.jumppower", 7.15f, true, true);
-            //DevConsole.SetVariable("mv.maxspeed", 6.9f, true, true);
-            //DevConsole.SetVariable("mv.maxvelocity", 88.9f, true, true);
-            //DevConsole.SetVariable("mv.stepsize", 0.48f, true, true);
-            //DevConsole.SetVariable("mv.duckdistance", 0.35f, true, true);
-            //DevConsole.SetVariable("mv.duckdistance", 0.4f, true, true);
-            //DevConsole.SetVariable("mv.falldamage", false, true, true);
-            //DevConsole.SetVariable("mv.waterpreventsfalldamage", true, true, true);
-            //DevConsole.SetVariable("mv.solidplayers", false, true, true);
-            //DevConsole.SetVariable("mv.movinguprapidlyfactor", 0.85f, true, true);
-            //DevConsole.SetVariable("mv.maxclimbspeed", 6.9f, true, true);
-            //DevConsole.SetVariable("mv.forwardspeed", 10.16f, true, true);
-            //DevConsole.SetVariable("mv.sidespeed", 10.16f, true, true);
         }
     }
 
     public class DefaultGamemode : BaseGamemode
     {
-        public override string Name => "Default";
-
         protected override void _Load(FSGameLoop game)
         {
         }
