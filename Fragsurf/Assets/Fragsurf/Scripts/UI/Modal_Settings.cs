@@ -11,8 +11,6 @@ namespace Fragsurf.UI
     public class Modal_Settings : UGuiModal
     {
 
-        public const string Identifier = "Settings";
-
         [SerializeField]
         private Button _saveButton;
         [SerializeField]

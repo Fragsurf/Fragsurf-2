@@ -62,6 +62,11 @@ namespace Fragsurf.UI
             _canvas = GetComponentInParent<Canvas>();
             _originalAnchoredPosition = _rt.anchoredPosition;
 
+            if (modal.IsStandalone)
+            {
+                _closeButton.gameObject.SetActive(false);
+            }
+
             LoadPosition();
         }
 

@@ -8,6 +8,8 @@ namespace Fragsurf.UI
     {
 
         [SerializeField]
+        private bool _standalone;
+        [SerializeField]
         private GameObject _modalContainer;
         [SerializeField]
         private string _modalName;
@@ -20,6 +22,8 @@ namespace Fragsurf.UI
 
         private InputField[] _inputFields;
         private TMP_InputField[] _tmpInputFields;
+
+        public bool IsStandalone => _standalone;
 
         public string Name
         {
@@ -38,25 +42,47 @@ namespace Fragsurf.UI
             {
                 _modalContainer = gameObject;
             }
-            if (_closeOnStart)
+
+            if (!_standalone)
             {
-                Close();
+                if (_closeOnStart)
+                {
+                    Close();
+                }
+                else
+                {
+                    Open();
+                }
+                UGuiManager.Instance.Add(this);
             }
-            else
-            {
-                Open();
-            }
-            UGuiManager.Instance.Add(this);
+
             DevConsole.RegisterObject(this);
         }
 
         protected virtual void OnDestroy()
         {
-            if (UGuiManager.Instance)
+            if (UGuiManager.Instance
+                && !_standalone)
             {
                 UGuiManager.Instance.Remove(this);
             }
             DevConsole.RemoveAll(this);
+        }
+
+        protected virtual void OnEnable()
+        {
+            if (_standalone)
+            {
+                Open();
+            }
+        }
+
+        protected virtual void OnDisable()
+        {
+            if (_standalone)
+            {
+                Close();
+            }
         }
 
         public bool HasFocusedInput()
@@ -80,8 +106,12 @@ namespace Fragsurf.UI
 
         public void Open()
         {
+            if (_standalone)
+            {
+                return;
+            }
             _modalContainer.SetActive(true);
-            if (!_ignoreEscape)
+            if (!_ignoreEscape && !_standalone)
             {
                 UGuiManager.Instance.AddToEscapeStack(this);
             }
@@ -90,8 +120,12 @@ namespace Fragsurf.UI
 
         public void Close()
         {
+            if (_standalone)
+            {
+                return;
+            }
             _modalContainer.SetActive(false);
-            if (!_ignoreEscape)
+            if (!_ignoreEscape && !_standalone)
             {
                 UGuiManager.Instance.RemoveFromEscapeStack(this);
             }
@@ -100,6 +134,10 @@ namespace Fragsurf.UI
 
         public void Toggle()
         {
+            if (_standalone)
+            {
+                return;
+            }
             if (_modalContainer.activeSelf)
             {
                 Close();

@@ -131,17 +131,25 @@ namespace Fragsurf.UI
         private void DisableInput()
         {
             CanvasManager.DisableEventSystem();
-            UGuiManager.Instance.EscapeEnabled = false;
             ConsoleBinds.Blocked = true;
             ClientInput.Blockers.Add(this);
+
+            if (UGuiManager.Instance)
+            {
+                UGuiManager.Instance.EscapeEnabled = false;
+            }
         }
 
         private void EnableInput()
         {
             CanvasManager.EnableEventSystem();
-            UGuiManager.Instance.EscapeEnabled = true;
             ConsoleBinds.Blocked = false;
             ClientInput.Blockers.Remove(this);
+
+            if (UGuiManager.Instance)
+            {
+                UGuiManager.Instance.EscapeEnabled = true;
+            }
         }
 
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Fragsurf.UI
 {
-    public class CreateGame : MonoBehaviour
+    public class Modal_CreateGame : UGuiModal
     {
 
         private GamemodeEntry _gamemodeTemplate;
