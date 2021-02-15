@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Fragsurf.FSM.Actors
+namespace Fragsurf.Actors
 {
     public enum FSMTriggerCondition
     {

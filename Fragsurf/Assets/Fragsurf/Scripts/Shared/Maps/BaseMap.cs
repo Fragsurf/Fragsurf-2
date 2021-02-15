@@ -1,5 +1,5 @@
 using Fragsurf.Client;
-using Fragsurf.FSM.Actors;
+using Fragsurf.Actors;
 using Fragsurf.Movement;
 using Fragsurf.Server;
 using Fragsurf.Shared.Entity;
@@ -55,8 +55,8 @@ namespace Fragsurf.Shared.Maps
 
         private void InitializeMap()
         {
-            _fsmActors = GameObject.FindObjectsOfType<Fragsurf.FSM.Actors.FSMActor>();
-            _spawnPoints = GameObject.FindObjectsOfType<Fragsurf.FSM.Actors.FSMSpawnPoint>();
+            _fsmActors = GameObject.FindObjectsOfType<Fragsurf.Actors.FSMActor>();
+            _spawnPoints = GameObject.FindObjectsOfType<Fragsurf.Actors.FSMSpawnPoint>();
 
             var dynamicActors = GameObject.FindObjectsOfType<MonoBehaviour>().OfType<IHasNetProps>();
             var uniqueIndex = int.MaxValue;

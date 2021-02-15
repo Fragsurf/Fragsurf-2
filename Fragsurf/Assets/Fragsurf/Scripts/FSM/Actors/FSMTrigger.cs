@@ -6,7 +6,7 @@ using Fragsurf.Shared;
 using UnityEngine.Events;
 using Fragsurf.Utility;
 
-namespace Fragsurf.FSM.Actors
+namespace Fragsurf.Actors
 {
     [SelectionBase]
     [ExecuteAlways]

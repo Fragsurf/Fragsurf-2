@@ -1,6 +1,6 @@
 using Fragsurf.BSP;
 using Fragsurf.Client;
-using Fragsurf.FSM.Actors;
+using Fragsurf.Actors;
 using Fragsurf.Movement;
 using Fragsurf.Server;
 using Fragsurf.Shared.Entity;

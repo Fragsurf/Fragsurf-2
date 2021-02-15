@@ -2,7 +2,7 @@
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Movement;
-using Fragsurf.FSM.Actors;
+using Fragsurf.Actors;
 
 namespace Fragsurf.Shared.Player
 {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Fragsurf.FSM.Actors
+namespace Fragsurf.Actors
 {
     [CustomEditor(typeof(FSMTrack))]
     public class FSMTrackEditor : Editor

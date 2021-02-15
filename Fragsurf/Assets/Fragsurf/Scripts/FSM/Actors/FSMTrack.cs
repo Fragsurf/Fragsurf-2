@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Fragsurf.FSM.Actors
+namespace Fragsurf.Actors
 {
     public enum FSMTrackType
     {

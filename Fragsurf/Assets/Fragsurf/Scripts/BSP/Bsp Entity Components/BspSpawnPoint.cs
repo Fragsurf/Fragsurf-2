@@ -1,5 +1,5 @@
 using Fragsurf.BSP;
-using Fragsurf.FSM.Actors;
+using Fragsurf.Actors;
 
 namespace Fragsurf.BSP
 {

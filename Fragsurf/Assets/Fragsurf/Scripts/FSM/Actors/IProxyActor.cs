@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Fragsurf.FSM.Actors 
+namespace Fragsurf.Actors 
 {
     public interface IProxyActor
     {

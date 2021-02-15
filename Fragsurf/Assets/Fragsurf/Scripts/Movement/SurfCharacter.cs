@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
-using Fragsurf.FSM.Actors;
+using Fragsurf.Actors;
 
 namespace Fragsurf.Movement
 {

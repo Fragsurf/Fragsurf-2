@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fragsurf.Movement;
 using Fragsurf.Utility;
-using Fragsurf.FSM.Actors;
+using Fragsurf.Actors;
 
 namespace Fragsurf.Shared.Entity
 {

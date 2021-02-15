@@ -1,7 +1,7 @@
 ﻿using Fragsurf.Shared.Entity;
 using UnityEngine;
 
-namespace Fragsurf.FSM.Actors
+namespace Fragsurf.Actors
 {
     public class FSMSetEntityName : FSMTrigger
     {

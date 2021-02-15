@@ -1,7 +1,7 @@
 ﻿using Fragsurf.Utility;
 using UnityEngine;
 
-namespace Fragsurf.FSM.Actors
+namespace Fragsurf.Actors
 {
     public class FSMTeleportDestination : FSMActor
     {

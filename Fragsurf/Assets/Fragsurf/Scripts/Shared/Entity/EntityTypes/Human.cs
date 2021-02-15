@@ -1,4 +1,4 @@
-using Fragsurf.FSM.Actors;
+using Fragsurf.Actors;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
 using System.Collections.Generic;

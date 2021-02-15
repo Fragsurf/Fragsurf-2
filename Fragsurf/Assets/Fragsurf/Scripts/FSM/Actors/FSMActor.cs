@@ -2,7 +2,7 @@
 //using RealtimeCSG.Components;
 using UnityEngine;
 
-namespace Fragsurf.FSM.Actors
+namespace Fragsurf.Actors
 {
     [SelectionBase]
     [System.Serializable]

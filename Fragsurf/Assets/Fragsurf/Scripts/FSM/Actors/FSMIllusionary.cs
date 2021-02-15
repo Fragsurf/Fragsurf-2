@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Fragsurf.FSM.Actors
+namespace Fragsurf.Actors
 {
     public class FSMIllusionary : FSMActor
     {

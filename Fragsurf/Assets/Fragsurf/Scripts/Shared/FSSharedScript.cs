@@ -67,7 +67,7 @@ namespace Fragsurf.Shared
         protected virtual void OnEntityAdded(NetEntity entity) { }
         protected virtual void OnEntityDestroyed(NetEntity entity) { }
         protected virtual void OnEntityUpdated(NetEntity entity, int remoteTick, double remoteTime) { }
-        protected virtual void OnHumanTrigger(NetEntity entity, FSM.Actors.FSMTrigger trigger, TriggerEventType type, float offset = 0f) { }
+        protected virtual void OnHumanTrigger(NetEntity entity, Actors.FSMTrigger trigger, TriggerEventType type, float offset = 0f) { }
         protected virtual void OnPlayerPacketReceived(IPlayer player, IBasePacket packet) { }
         protected virtual void OnPlayerConnected(IPlayer player) { }
         protected virtual void OnPlayerApprovedToJoin(IPlayer player) { }

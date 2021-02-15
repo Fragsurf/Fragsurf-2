@@ -3,7 +3,7 @@ using Fragsurf.Movement;
 using System.Collections.Generic;
 using Fragsurf.Shared.Entity;
 
-namespace Fragsurf.FSM.Actors
+namespace Fragsurf.Actors
 {
     public class FSMGravity : FSMTrigger
     {

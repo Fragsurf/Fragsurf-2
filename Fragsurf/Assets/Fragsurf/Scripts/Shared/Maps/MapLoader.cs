@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Fragsurf.Shared.Maps;
 using Fragsurf.Utility;
-using Fragsurf.FSM.Actors;
+using Fragsurf.Actors;
 
 namespace Fragsurf.Shared
 {

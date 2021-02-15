@@ -1,4 +1,4 @@
-using Fragsurf.FSM.Actors;
+using Fragsurf.Actors;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.UI;

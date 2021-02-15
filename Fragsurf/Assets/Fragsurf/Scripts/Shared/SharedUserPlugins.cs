@@ -235,7 +235,7 @@ namespace Fragsurf.Shared
             InvokeEventSubscriptions("OnEntityUpdated", entity);
         }
 
-        private void OnHumanTrigger(NetEntity human, FSM.Actors.FSMTrigger trigger, TriggerEventType type, float offset = 0f)
+        private void OnHumanTrigger(NetEntity human, Actors.FSMTrigger trigger, TriggerEventType type, float offset = 0f)
         {
             InvokeEventSubscriptions("OnHumanTrigger", human, trigger, type, offset);
         }

@@ -2,7 +2,7 @@
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 
-namespace Fragsurf.FSM.Actors
+namespace Fragsurf.Actors
 {
     public class FSMPush : FSMTrigger
     {

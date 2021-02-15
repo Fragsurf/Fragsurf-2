@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Fragsurf/Content/Scenes/TestScene.unity
+    path: Assets/Fragsurf/Content/Scenes/pt_testscene.unity
     guid: b9932c319c624a7418a03d74cf9021b4
   m_configObjects: {}
