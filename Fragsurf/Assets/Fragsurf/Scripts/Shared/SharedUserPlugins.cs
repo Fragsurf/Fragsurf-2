@@ -25,7 +25,6 @@ namespace Fragsurf.Shared
 
         protected override void _Hook()
         {
-            MapLoader.Instance.OnMapEvent += OnMapEvent;
             Game.PlayerManager.OnPlayerConnected += OnPlayerConnected;
             Game.PlayerManager.OnPlayerDisconnected += OnPlayerDisconnected;
             Game.PlayerManager.OnPlayerIntroduced += OnPlayerIntroduced;
@@ -43,11 +42,6 @@ namespace Fragsurf.Shared
 
         protected override void _Unhook()
         {
-            if (MapLoader.Instance)
-            {
-                MapLoader.Instance.OnMapEvent -= OnMapEvent;
-            }
-
             Game.PlayerManager.OnPlayerConnected -= OnPlayerConnected;
             Game.PlayerManager.OnPlayerDisconnected -= OnPlayerDisconnected;
             Game.PlayerManager.OnPlayerIntroduced -= OnPlayerIntroduced;
@@ -87,21 +81,6 @@ namespace Fragsurf.Shared
         protected override void _Destroy()
         {
             UnloadLoaders();
-        }
-
-        private void OnMapEvent(IFragsurfMap map, MapEventType eventType, bool hasNextMap)
-        {
-            switch (eventType)
-            {
-                case MapEventType.Loaded:
-                    _inMap = true;
-                    LoadPlugins(PluginSpace.InGame);
-                    break;
-                case MapEventType.Unloaded:
-                    _inMap = false;
-                    UnloadPlugins(PluginSpace.InGame);
-                    break;
-            }
         }
 
         private void LoadLoaders(string rootDirectory)
@@ -208,15 +187,26 @@ namespace Fragsurf.Shared
 
         private void OnGameLoaded()
         {
-            if(Game.IsHost)
+            // todo: needs testing.  this use to be in OnMapEvent event
+            _inMap = true;
+            LoadPlugins(PluginSpace.InGame);
+            //
+
+            if (Game.IsHost)
             {
                 LoadLoaders(Structure.PluginsPath);
             }
+
             InvokeEventSubscriptions("OnGameLoaded");
         }
 
         private void OnGameUnloaded()
         {
+            // todo: needs testing.  this use to be in OnMapEvent event
+            _inMap = false;
+            UnloadPlugins(PluginSpace.InGame);
+            //
+
             InvokeEventSubscriptions("OnGameUnloaded");
         }
 

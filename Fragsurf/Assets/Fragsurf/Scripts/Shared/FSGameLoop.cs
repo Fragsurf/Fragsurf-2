@@ -18,9 +18,23 @@ namespace Fragsurf.Shared
         public Action PostExecConfig;
 
         public abstract bool IsHost { get; }
-        public abstract INetworkInterface Network { get; }
         protected abstract void RegisterComponents();
         protected abstract void Initialize();
+
+        public INetworkInterface Network
+        {
+            get
+            {
+                foreach (var c in FSComponents)
+                {
+                    if (c is INetworkInterface ni)
+                    {
+                        return ni;
+                    }
+                }
+                return null;
+            }
+        }
 
         public LagCompensator LagCompensator => Get<LagCompensator>(true);
         public GamemodeLoader GamemodeLoader => Get<GamemodeLoader>(true);
@@ -161,7 +175,7 @@ namespace Fragsurf.Shared
                 if (FSComponents[i].Started
                     && FSComponents[i].enabled)
                 {
-                    FSComponents[i].OnLateUpdate(); 
+                    FSComponents[i].OnLateUpdate();
                 }
             }
         }
@@ -247,7 +261,7 @@ namespace Fragsurf.Shared
         public T AddFSComponent<T>(bool autoReady = true)
             where T : FSComponent, new()
         {
-            if(gameObject.GetComponent<T>() != null)
+            if (gameObject.GetComponent<T>() != null)
             {
                 UnityEngine.Debug.LogError("Adding same component twice: " + typeof(T));
                 return null;
@@ -264,7 +278,7 @@ namespace Fragsurf.Shared
             where T : FSComponent
         {
             var type = typeof(T);
-            if(_getCache.ContainsKey(type))
+            if (_getCache.ContainsKey(type))
             {
                 return _getCache[type] as T;
             }
@@ -272,7 +286,7 @@ namespace Fragsurf.Shared
             {
                 if (FSComponents[i] is T t1)
                 {
-                    if(allowCache)
+                    if (allowCache)
                     {
                         _getCache[type] = FSComponents[i];
                     }
@@ -282,7 +296,7 @@ namespace Fragsurf.Shared
             return null;
         }
 
-        public T Get<T>(bool allowCache = false) 
+        public T Get<T>(bool allowCache = false)
             where T : FSComponent
         {
             return GetFSComponent<T>(allowCache);
@@ -309,7 +323,7 @@ namespace Fragsurf.Shared
             where T : UnityEngine.Object
         {
             var result = GameObject.Instantiate<T>(original);
-            if(result is GameObject obj)
+            if (result is GameObject obj)
             {
                 obj.transform.SetParent(ObjectContainer.transform, true);
             }

@@ -97,18 +97,11 @@ namespace Fragsurf.Server
             }
         }
 
-        protected override void OnMapEvent(IFragsurfMap map, MapEventType eventType, bool hasNextMap)
-        {
-            if(eventType == MapEventType.Loaded)
-            {
-                SteamServer.ServerName = GameServer.Instance.Socket.ServerName ?? DefaultServerName;
-                SteamServer.MapName = MapLoader.Instance.CurrentMap.Name;
-            }
-        }
-
         protected override void OnGameLoaded()
         {
             SteamServer.GameTags = Game.GamemodeLoader.Gamemode.Data.Name;
+            SteamServer.ServerName = GameServer.Instance.Socket.ServerName ?? DefaultServerName;
+            SteamServer.MapName = MapLoader.Instance.CurrentMap.Data.Name;
         }
 
         protected override void OnPlayerIntroduced(IPlayer player)

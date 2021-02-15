@@ -5,7 +5,7 @@ namespace Fragsurf.Maps
 {
     public interface IFragsurfMap
     {
-        string Name { get; }
+        MapData Data { get; }
         MapLoadState State { get; }
         void Tick();
         Task<MapLoadState> LoadAsync();

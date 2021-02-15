@@ -16,7 +16,7 @@ namespace Fragsurf.Maps
         protected FSMActor[] _fsmActors;
         protected FSMSpawnPoint[] _spawnPoints;
 
-        public abstract string Name { get; }
+        public MapData Data { get; set; } = new MapData();
         public abstract MapLoadState State { get; set; }
         public abstract void GetSpawnPoint(out Vector3 position, out Vector3 angles, int teamNumber = 255);
         protected abstract Task<MapLoadState> _LoadAsync();

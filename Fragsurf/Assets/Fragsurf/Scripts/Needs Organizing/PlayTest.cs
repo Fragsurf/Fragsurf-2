@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Fragsurf
 {
-    [RequireComponent(typeof(BareGameClient))]
+    [RequireComponent(typeof(GameClient))]
     public class PlayTest : MonoBehaviour
     {
 
@@ -17,7 +17,7 @@ namespace Fragsurf
         {
             GameObject.DontDestroyOnLoad(gameObject);
 
-            var client = GetComponent<BareGameClient>();
+            var client = GetComponent<GameClient>();
             var serverResult = await client.GameLoader.CreateServerAsync("LoadActiveScene", "Playtest", "Testing my map!", RandomString(8));
             if(serverResult == GameLoadResult.Success)
             {

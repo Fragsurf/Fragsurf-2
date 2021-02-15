@@ -1,3 +1,4 @@
+using Fragsurf.Shared;
 using UnityEngine;
 
 namespace Fragsurf.Client
@@ -7,7 +8,11 @@ namespace Fragsurf.Client
 
         private void Awake()
         {
-            GameClient.Instance.AddFSComponent(this);
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (cl)
+            {
+                cl.AddFSComponent(this);
+            }
         }
 
     }

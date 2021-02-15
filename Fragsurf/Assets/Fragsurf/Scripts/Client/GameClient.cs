@@ -1,51 +1,38 @@
-﻿using Fragsurf.Shared;
 using Fragsurf.Client.Interpolation;
-using System;
-using UnityEngine;
+using Fragsurf.Shared;
 
 namespace Fragsurf.Client
 {
     public class GameClient : FSGameLoop
     {
-        public static GameClient Instance { get; private set; }
         public override bool IsHost => false;
         public ClientSocketManager Socket => GetFSComponent<ClientSocketManager>();
-        public override INetworkInterface Network => Socket;
 
         protected override void RegisterComponents()
-        {
-            // order may be important
-            // some components require references to exist.  should maybe take a look at this later
-            AddFSComponent<ClientSocketManager>();
-            AddFSComponent<ClientInput>();
-            AddFSComponent<FileDownloader>();
-            AddFSComponent<SettingFactory>();
-            AddFSComponent<ClientPlayerManager>();
+        { 
+            AddFSComponent<ClientSocketManager>(); // INetworkInterface
             AddFSComponent<EntityInterpolator>();
-            AddFSComponent<ConnectLaunchParam>();
-
-            foreach (var clientBehaviour in FindObjectsOfType<FSClientBehaviour>())
-            {
-                AddFSComponent(clientBehaviour);
-            }
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-
-            Instance = null;
-            UserSettings.Instance.Save();
+            AddFSComponent<ClientPlayerManager>();
+            AddFSComponent<ClientInput>();
         }
 
         protected override void Initialize()
         {
-            Instance = this;
+            // I feel like I put this here on purpose for absolutely no reason other than I could
+            // but idk.  I like it so it stays
+            UserSettings.Instance.useGUILayout = UserSettings.Instance.useGUILayout;
         }
 
-        private void Start()
+        protected override void OnDestroy()
         {
+            if (UserSettings.Instance)
+            {
+                UserSettings.Instance.Save();
+            }
+
+            base.OnDestroy();
         }
 
     }
 }
+

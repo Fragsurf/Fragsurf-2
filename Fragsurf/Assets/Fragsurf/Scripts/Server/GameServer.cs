@@ -9,8 +9,6 @@ namespace Fragsurf.Server
         public override bool IsHost => true;
         public SocketManager Socket => GetFSComponent<SocketManager>();
 
-        public override INetworkInterface Network => Socket;
-
         protected override void RegisterComponents()
         {
             AddFSComponent<SocketManager>();

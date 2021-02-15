@@ -1,4 +1,5 @@
-﻿using Fragsurf.Shared.Packets;
+﻿using Fragsurf.Shared;
+using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
 
 namespace Fragsurf.Client
@@ -47,7 +48,7 @@ namespace Fragsurf.Client
                     peer.Latency = playerEvent.Latency;
                     break;
                 case PlayerEventType.Spectate:
-                    if (peer.ClientIndex != GameClient.Instance.ClientIndex)
+                    if (peer.ClientIndex != Game.ClientIndex)
                         Game.PlayerManager.SetPlayerSpectateTarget(peer, Game.PlayerManager.FindPlayer(playerEvent.SpecTarget));
                     break;
             }

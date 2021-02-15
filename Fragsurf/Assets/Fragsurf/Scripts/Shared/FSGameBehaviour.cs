@@ -13,7 +13,7 @@ namespace Fragsurf.Shared
 
         protected void Init(FSGameLoop game)
         {
-            MapLoader.Instance.OnMapEvent += OnMapEvent;
+            //MapLoader.Instance.OnMapEvent += OnMapEvent;
             game.PlayerManager.OnPlayerPacketReceived += OnPlayerPacketReceived;
             game.PlayerManager.OnPlayerConnected += OnPlayerConnected;
             game.PlayerManager.OnPlayerApprovedToJoin += OnPlayerApprovedToJoin;
@@ -41,10 +41,10 @@ namespace Fragsurf.Shared
         {
             if (_game)
             {
-                if (MapLoader.Instance != null)
-                {
-                    MapLoader.Instance.OnMapEvent -= OnMapEvent;
-                }
+                //if (MapLoader.Instance != null)
+                //{
+                //    MapLoader.Instance.OnMapEvent -= OnMapEvent;
+                //}
                 _game.PlayerManager.OnPlayerPacketReceived -= OnPlayerPacketReceived;
                 _game.PlayerManager.OnPlayerConnected -= OnPlayerConnected;
                 _game.PlayerManager.OnPlayerApprovedToJoin -= OnPlayerApprovedToJoin;
@@ -67,7 +67,7 @@ namespace Fragsurf.Shared
             }   
         }
 
-        protected virtual void OnMapEvent(IFragsurfMap map, MapEventType eventType, bool hasNextMap) { }
+        //protected virtual void OnMapEvent(IFragsurfMap map, MapEventType eventType, bool hasNextMap) { }
         protected virtual void OnGameLoaded() { }
         protected virtual void OnPreGameLoaded() { }
         protected virtual void OnGameUnloaded() { }

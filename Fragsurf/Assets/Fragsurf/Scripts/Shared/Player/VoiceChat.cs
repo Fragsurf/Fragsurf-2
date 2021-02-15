@@ -60,7 +60,12 @@ namespace Fragsurf.Shared.Player
                 var voicePacket = PacketUtility.TakePacket<CompressedVoiceData>();
                 voicePacket.ClientIndex = Game.ClientIndex;
                 voicePacket.SetData(data, data.Length);
-                Client.GameClient.Instance.Socket.BroadcastPacket(voicePacket);
+
+                var cl = FSGameLoop.GetGameInstance(false);
+                if (cl)
+                {
+                    cl.Network.BroadcastPacket(voicePacket);
+                }
             }
         }
 

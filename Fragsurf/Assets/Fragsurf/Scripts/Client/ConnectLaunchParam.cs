@@ -2,6 +2,7 @@
 
 namespace Fragsurf.Client
 {
+    [Inject(InjectRealm.Client)]
     public class ConnectLaunchParam : FSSharedScript
     {
         protected override void _Start()
