@@ -37,7 +37,16 @@ namespace Fragsurf.Gamemodes.Playtest
             {
                 return;
             }
-            MapLoader.Instance.CurrentMap.GetSpawnPoint(out Vector3 spawnPos, out Vector3 spawnAngles);
+
+            MapLoader.Instance.GetSpawnPoint(out Vector3 spawnPos, out Vector3 spawnAngles);
+
+            var tp = GameObject.FindObjectOfType<PlayTest>();
+            if (tp && tp.SpawnPoint != Vector3.zero)
+            {
+                spawnPos = tp.SpawnPoint;
+                spawnAngles = Vector3.zero;
+            }
+
             var ent = new Human(Game);
             ent.Origin = spawnPos;
             ent.Angles = spawnAngles;

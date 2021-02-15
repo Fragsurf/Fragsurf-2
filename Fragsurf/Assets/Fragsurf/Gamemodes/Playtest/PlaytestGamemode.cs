@@ -9,7 +9,7 @@ namespace Fragsurf.Gamemodes.Playtest
         {
             LockVars = false;
 
-            Debug.Log("Playtest Gamemode Loaded");
+            Debug.Log(game.IsHost + ": Playtest Gamemode Loaded");
         }
 
         protected override void _Unload(FSGameLoop game)

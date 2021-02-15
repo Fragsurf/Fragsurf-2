@@ -1,99 +1,94 @@
-using Fragsurf.Client;
 using Fragsurf.Actors;
-using Fragsurf.Movement;
-using Fragsurf.Server;
-using Fragsurf.Shared.Entity;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Fragsurf.Maps
 {
-    public abstract class BaseMap : IFragsurfMap
+    public abstract class BaseMap
     {
 
-        protected FSMActor[] _fsmActors;
-        protected FSMSpawnPoint[] _spawnPoints;
+        public string Name;
+        public string Identifier;
+        public string Author;
+        public Texture2D Cover;
 
-        public MapData Data { get; set; } = new MapData();
-        public abstract MapLoadState State { get; set; }
-        public abstract void GetSpawnPoint(out Vector3 position, out Vector3 angles, int teamNumber = 255);
-        protected abstract Task<MapLoadState> _LoadAsync();
-        public abstract Task UnloadAsync();
+        private FSMActor[] _actors;
 
         public async Task<MapLoadState> LoadAsync()
         {
             var result = await _LoadAsync();
-            if (result == MapLoadState.Loaded)
+
+            if(result == MapLoadState.Loaded)
             {
-                InitializeMap();
+                _actors = GameObject.FindObjectsOfType<FSMActor>(true);
             }
+
             return result;
         }
 
-        public virtual void Tick()
+        public async Task UnloadAsync()
         {
-            if(_fsmActors == null)
-            {
-                return;
-            }
+            await _UnloadAsync();
+        }
 
-            foreach (var actor in _fsmActors)
+        public void Tick()
+        {
+            foreach(var actor in _actors)
             {
                 if (actor.isActiveAndEnabled)
                 {
                     actor.Tick();
                 }
             }
+            _Tick();
         }
 
-        public virtual void Hotload()
-        {
+        protected virtual void _Tick() { }
+        protected abstract Task<MapLoadState> _LoadAsync();
+        protected abstract Task _UnloadAsync();
 
-        }
+        // stuff from previous maploader, just in case...
+        //private void InitializeMap()
+        //{
+        //    _fsmActors = GameObject.FindObjectsOfType<Fragsurf.Actors.FSMActor>();
+        //    _spawnPoints = GameObject.FindObjectsOfType<Fragsurf.Actors.FSMSpawnPoint>();
 
-        private void InitializeMap()
-        {
-            _fsmActors = GameObject.FindObjectsOfType<Fragsurf.Actors.FSMActor>();
-            _spawnPoints = GameObject.FindObjectsOfType<Fragsurf.Actors.FSMSpawnPoint>();
+        //    var dynamicActors = GameObject.FindObjectsOfType<MonoBehaviour>().OfType<IHasNetProps>();
+        //    var uniqueIndex = int.MaxValue;
+        //    foreach (var actor in dynamicActors)
+        //    {
+        //        actor.UniqueId = uniqueIndex;
+        //        uniqueIndex--;
+        //        if (GameServer.Instance != null)
+        //        {
+        //            var ent = new ActorSync(actor.UniqueId, GameServer.Instance);
+        //            GameServer.Instance.EntityManager.AddEntity(ent);
+        //        }
+        //    }
 
-            var dynamicActors = GameObject.FindObjectsOfType<MonoBehaviour>().OfType<IHasNetProps>();
-            var uniqueIndex = int.MaxValue;
-            foreach (var actor in dynamicActors)
-            {
-                actor.UniqueId = uniqueIndex;
-                uniqueIndex--;
-                if (GameServer.Instance != null)
-                {
-                    var ent = new ActorSync(actor.UniqueId, GameServer.Instance);
-                    GameServer.Instance.EntityManager.AddEntity(ent);
-                }
-            }
-
-            foreach (var actor in _fsmActors)
-            {
-                if (actor is FSMTrigger trigger)
-                {
-                    foreach (var collider in trigger.GetComponentsInChildren<Collider>())
-                    {
-                        collider.gameObject.tag = "Trigger";
-                    }
-                }
-                if (actor is IProxyActor proxy)
-                {
-                    var t = Type.GetType(proxy.ProxyTarget);
-                    var targetObj = (FSMActor)actor.gameObject.AddComponent(t);
-                    var srcFields = actor.GetType().GetFields().Where(f => f.IsPublic);
-                    var targetFields = t.GetFields().Where(f => f.IsPublic);
-                    foreach (var srcField in srcFields)
-                    {
-                        var targetField = targetFields.First(x => x.Name == srcField.Name);
-                        targetField.SetValue(targetObj, srcField.GetValue(actor));
-                    }
-                }
-            }
-        }
+        //    foreach (var actor in _fsmActors)
+        //    {
+        //        if (actor is FSMTrigger trigger)
+        //        {
+        //            foreach (var collider in trigger.GetComponentsInChildren<Collider>())
+        //            {
+        //                collider.gameObject.tag = "Trigger";
+        //            }
+        //        }
+        //        if (actor is IProxyActor proxy)
+        //        {
+        //            var t = Type.GetType(proxy.ProxyTarget);
+        //            var targetObj = (FSMActor)actor.gameObject.AddComponent(t);
+        //            var srcFields = actor.GetType().GetFields().Where(f => f.IsPublic);
+        //            var targetFields = t.GetFields().Where(f => f.IsPublic);
+        //            foreach (var srcField in srcFields)
+        //            {
+        //                var targetField = targetFields.First(x => x.Name == srcField.Name);
+        //                targetField.SetValue(targetObj, srcField.GetValue(actor));
+        //            }
+        //        }
+        //    }
+        //}
 
     }
 }

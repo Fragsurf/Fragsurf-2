@@ -1,84 +1,30 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Fragsurf.Utility;
+using Fragsurf.Actors;
 
 namespace Fragsurf.Maps
 {
     public class MapLoader : SingletonComponent<MapLoader>
     {
 
-        public IFragsurfMap CurrentMap { get; private set; }
-        public MapLoadState State { get; private set; }
+        public BaseMap CurrentMap { get; private set; }
 
         [ConVar("map.default", "")]
         public string DefaultMap { get; set; } = "surf_fst_skyworld";
 
         private void Awake()
         {
-            TimeStep.Instance.OnTick.AddListener((a, b) =>
-            {
-                if(CurrentMap != null && CurrentMap.State == MapLoadState.Loaded)
-                {
-                    CurrentMap.Tick();
-                }
-            });
+            TimeStep.Instance.OnTick.AddListener(OnTick);
         }
 
-        private bool SceneExists(string name)
+        private void OnTick(float a, float b)
         {
-            var sceneCount = SceneManager.sceneCountInBuildSettings;
-            for (int i = 0; i < sceneCount; i++)
-            {
-                var sceneName = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
-                if(string.Equals(name, sceneName, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return true;
-                }
-            }
-            return false;
+            CurrentMap?.Tick();
         }
 
-        //private IFragsurfMap GetMapLoader(string path)
-        //{
-        //    if(path == "LoadActiveScene")
-        //    {
-        //        return new PlayTestMap();
-        //    }
-
-        //    FSFileInfo fileInfo = null;
-
-        //    if (!Path.HasExtension(path) && !ulong.TryParse(path, out ulong workshopId))
-        //    {
-        //        foreach (var ext in _validExtensions)
-        //        {
-        //            fileInfo = FileSystem.GetOrAcquire($"{path}.{ext}", true);
-        //            if (fileInfo != null)
-        //            {
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        fileInfo = FileSystem.GetOrAcquire(path, true);
-        //    }
-
-        //    if(fileInfo == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    switch (fileInfo.Extension)
-        //    {
-        //        default:
-        //            return null;
-        //    }
-        //}
-
-        public async Task<MapLoadState> LoadMapAsync(IFragsurfMap map)
+        public async Task<MapLoadState> LoadMapAsync(BaseMap map)
         {
             if (CurrentMap != null)
             {
@@ -99,11 +45,10 @@ namespace Fragsurf.Maps
         {
             if (mapName == "LoadActiveScene")
             {
-                return await LoadMapAsync(new PlayTestMap());
+                return await LoadMapAsync(new PlayTestMap() { Name = "Playtest" });
             }
-            // todo: mapName to MapData
-            // todo: MapData.GetFragsurfMap
-            return await LoadMapAsync(new MapData().GetFragsurfMap());
+            // todo: mapName to BaseMap
+            return MapLoadState.Failed;
         }
 
         public async Task UnloadMapAsync()
@@ -119,6 +64,20 @@ namespace Fragsurf.Maps
 
             Resources.UnloadUnusedAssets();
             GC.Collect(2, GCCollectionMode.Forced);
+        }
+
+        public void GetSpawnPoint(out Vector3 position, out Vector3 angles, int teamNumber = 255)
+        {
+            position = Vector3.zero;
+            angles = Vector3.zero;
+
+            var sps = GameObject.FindObjectsOfType<FSMSpawnPoint>();
+            if (sps.Length > 0)
+            {
+                var rnd = sps[UnityEngine.Random.Range(0, sps.Length)];
+                position = rnd.transform.position;
+                angles = rnd.transform.eulerAngles;
+            }
         }
 
     }
