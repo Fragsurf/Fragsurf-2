@@ -34,20 +34,18 @@ namespace Fragsurf.Client
         private void OnApplicationQuit()
         {
             _quitting = true;
-
-            if (UserSettings.Instance)
-            {
-                UserSettings.Instance.Save();
-            }
         }
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
+            if (UserSettings.Instance)
+            {
+                UserSettings.Instance.Save();
+            }
 
             if (!_quitting)
             {
-                if(Map.Current != null)
+                if (Map.Current != null)
                 {
                     Map.UnloadAsync();
                 }
@@ -58,6 +56,8 @@ namespace Fragsurf.Client
                     server.Destroy();
                 }
             }
+
+            base.OnDestroy();
         }
 
     }

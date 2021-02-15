@@ -58,6 +58,7 @@ namespace Fragsurf.Client
             try
             {
                 if (SteamClient.IsValid
+                    && SteamRemoteStorage.IsCloudEnabled
                     && SteamRemoteStorage.FileExists(_settingFileName))
                 {
                     var str = Encoding.UTF8.GetString(SteamRemoteStorage.FileRead(_settingFileName));
@@ -113,7 +114,7 @@ namespace Fragsurf.Client
             var filePath = Path.Combine(Application.persistentDataPath, _settingFileName);
             _config.SaveToFile(filePath);
 
-            if (SteamClient.IsValid)
+            if (SteamClient.IsValid && SteamRemoteStorage.IsCloudEnabled)
             {
                 var bytes = Encoding.UTF8.GetBytes(File.ReadAllText(filePath));
                 SteamRemoteStorage.FileWrite(_settingFileName, bytes);
