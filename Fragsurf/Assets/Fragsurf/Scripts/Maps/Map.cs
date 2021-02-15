@@ -6,10 +6,10 @@ using Fragsurf.Actors;
 
 namespace Fragsurf.Maps
 {
-    public class MapLoader : SingletonComponent<MapLoader>
+    public class Map : SingletonComponent<Map>
     {
 
-        public BaseMap CurrentMap { get; private set; }
+        public BaseMap Current { get; private set; }
 
         [ConVar("map.default", "")]
         public string DefaultMap { get; set; } = "surf_fst_skyworld";
@@ -21,46 +21,46 @@ namespace Fragsurf.Maps
 
         private void OnTick(float a, float b)
         {
-            CurrentMap?.Tick();
+            Current?.Tick();
         }
 
-        public async Task<MapLoadState> LoadMapAsync(BaseMap map)
+        public async Task<MapLoadState> LoadAsync(BaseMap map)
         {
-            if (CurrentMap != null)
+            if (Current != null)
             {
-                await UnloadMapAsync();
+                await UnloadAsync();
             }
 
             var result = await map.LoadAsync();
             if (result == MapLoadState.Loaded)
             {
-                CurrentMap = map;
+                Current = map;
                 GC.Collect(2, GCCollectionMode.Forced);
             }
 
             return result;
         }
 
-        public async Task<MapLoadState> LoadMapAsync(string mapName)
+        public async Task<MapLoadState> LoadAsync(string mapName)
         {
             if (mapName == "LoadActiveScene")
             {
-                return await LoadMapAsync(new PlayTestMap() { Name = "Playtest" });
+                return await LoadAsync(new PlayTestMap() { Name = "Playtest" });
             }
             // todo: mapName to BaseMap
             return MapLoadState.Failed;
         }
 
-        public async Task UnloadMapAsync()
+        public async Task UnloadAsync()
         {
-            if(CurrentMap == null)
+            if(Current == null)
             {
                 Debug.LogError("Trying to unload map when one isn't loaded");
                 return;
             }
 
-            await CurrentMap.UnloadAsync();
-            CurrentMap = null;
+            await Current.UnloadAsync();
+            Current = null;
 
             Resources.UnloadUnusedAssets();
             GC.Collect(2, GCCollectionMode.Forced);

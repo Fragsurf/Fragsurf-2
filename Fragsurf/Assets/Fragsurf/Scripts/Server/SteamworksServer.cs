@@ -101,7 +101,7 @@ namespace Fragsurf.Server
         {
             SteamServer.GameTags = Game.GamemodeLoader.Gamemode.Data.Name;
             SteamServer.ServerName = GameServer.Instance.Socket.ServerName ?? DefaultServerName;
-            SteamServer.MapName = MapLoader.Instance.CurrentMap.Name;
+            SteamServer.MapName = Map.Instance.Current.Name;
         }
 
         protected override void OnPlayerIntroduced(IPlayer player)
