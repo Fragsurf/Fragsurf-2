@@ -1,7 +1,6 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Fragsurf.Shared
+namespace Fragsurf.Maps
 {
     public class SurfaceMaterialIdentifier : MonoBehaviour
     {

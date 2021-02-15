@@ -32,7 +32,6 @@ namespace Fragsurf.Shared
         public GameMovement GameMovement => Get<GameMovement>(true);
         public PlayerManager PlayerManager => Get<PlayerManager>(true);
         public FileTransfer FileTransfer => Get<FileTransfer>(true);
-        public SoundEmitter SoundEmitter => GetFSComponent<SoundEmitter>(true);
         public GameObjectPool Pool => GetFSComponent<GameObjectPool>(true);
 
         public int ScopeLayer => IsHost ? Layers.Host : Layers.Client;
@@ -73,7 +72,6 @@ namespace Fragsurf.Shared
             AddFSComponent<SettingReplicator>();
             AddFSComponent<FileTransfer>();
             AddFSComponent<SharedUserPlugins>();
-            AddFSComponent<SoundEmitter>();
             AddFSComponent<GameObjectPool>();
             AddFSComponent<UserCmdHandler>();
 

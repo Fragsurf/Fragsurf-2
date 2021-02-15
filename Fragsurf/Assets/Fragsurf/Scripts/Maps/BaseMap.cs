@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Fragsurf.Shared.Maps
+namespace Fragsurf.Maps
 {
     public abstract class BaseMap : IFragsurfMap
     {

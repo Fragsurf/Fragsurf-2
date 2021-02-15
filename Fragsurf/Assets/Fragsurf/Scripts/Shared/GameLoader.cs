@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Fragsurf.Shared.Maps;
+using Fragsurf.Maps;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Client;
 using Fragsurf.Server;

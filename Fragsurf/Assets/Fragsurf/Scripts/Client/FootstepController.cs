@@ -4,7 +4,7 @@ using UnityEngine;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
-using Fragsurf.Shared.Maps;
+using Fragsurf.Maps;
 using Fragsurf.Movement;
 
 namespace Fragsurf.Client

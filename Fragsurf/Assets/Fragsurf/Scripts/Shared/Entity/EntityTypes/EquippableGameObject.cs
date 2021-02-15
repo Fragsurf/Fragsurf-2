@@ -1,4 +1,4 @@
-using Fragsurf.Client;
+using Fragsurf.Maps;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Utility;

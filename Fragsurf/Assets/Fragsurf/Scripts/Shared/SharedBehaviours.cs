@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Fragsurf.Shared.Maps;
+using Fragsurf.Maps;
 
 namespace Fragsurf.Shared
 {

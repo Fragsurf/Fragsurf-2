@@ -1,5 +1,5 @@
 ﻿
-namespace Fragsurf.Shared.Maps
+namespace Fragsurf.Maps
 {
     public enum MapEventType
     {

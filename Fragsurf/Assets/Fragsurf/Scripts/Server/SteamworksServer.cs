@@ -1,6 +1,6 @@
 ﻿using Steamworks;
 using Fragsurf.Shared;
-using Fragsurf.Shared.Maps;
+using Fragsurf.Maps;
 using Fragsurf.Shared.Player;
 using UnityEngine;
 using System;

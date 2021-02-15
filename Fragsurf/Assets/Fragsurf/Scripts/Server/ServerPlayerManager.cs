@@ -1,6 +1,6 @@
 ﻿using Fragsurf.Shared.Packets;
 using Fragsurf.Shared;
-using Fragsurf.Shared.Entity;
+using Fragsurf.Maps;
 using Fragsurf.Shared.Player;
 
 namespace Fragsurf.Server

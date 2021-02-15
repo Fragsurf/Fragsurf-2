@@ -3,11 +3,11 @@ using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Fragsurf.Shared.Maps;
+using Fragsurf.Shared;
 using Fragsurf.Utility;
 using Fragsurf.Actors;
 
-namespace Fragsurf.Shared
+namespace Fragsurf.Maps
 {
     public class MapLoader : SingletonComponent<MapLoader>
     {

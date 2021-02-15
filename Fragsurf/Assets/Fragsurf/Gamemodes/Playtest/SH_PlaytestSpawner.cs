@@ -1,4 +1,5 @@
 using Fragsurf.Actors;
+using Fragsurf.Maps;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;

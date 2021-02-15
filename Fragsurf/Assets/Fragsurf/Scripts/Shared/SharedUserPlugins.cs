@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Fragsurf.Shared.Entity;
-using Fragsurf.Shared.Maps;
+using Fragsurf.Maps;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
 using Fragsurf.Shared.UserPlugins;

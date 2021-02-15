@@ -1,5 +1,5 @@
 ﻿
-namespace Fragsurf.Shared
+namespace Fragsurf.Maps
 {
     public enum SurfaceMaterialType
     {
@@ -17,7 +17,7 @@ namespace Fragsurf.Shared
         Mud = 11,
         Glass = 12,
         Plastic = 13,
-        Carpet = 2, // no audio yet
+        Carpet = 2,
         Ladder = 15,
     }
 }

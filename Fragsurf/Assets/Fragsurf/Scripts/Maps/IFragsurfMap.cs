@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Threading.Tasks;
 
-namespace Fragsurf.Shared.Maps
+namespace Fragsurf.Maps
 {
     public interface IFragsurfMap
     {

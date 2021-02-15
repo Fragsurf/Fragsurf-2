@@ -1,4 +1,4 @@
-﻿using Fragsurf.Shared.Maps;
+﻿using Fragsurf.Maps;
 using Fragsurf.Shared.Player;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Packets;
