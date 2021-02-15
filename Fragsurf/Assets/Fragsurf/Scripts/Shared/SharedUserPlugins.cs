@@ -36,7 +36,6 @@ namespace Fragsurf.Shared
             Game.EntityManager.OnEntityUpdated += OnEntityUpdated;
             Game.EntityManager.OnHumanTrigger += OnHumanTrigger;
             Game.GameLoader.GameLoaded += OnGameLoaded;
-            Game.GameLoader.GameUnloaded += OnGameUnloaded;
             Game.PlayerManager.OnPlayerPacketReceived += OnPlayerPacketReceived;
         }
 
@@ -53,7 +52,6 @@ namespace Fragsurf.Shared
             Game.EntityManager.OnEntityUpdated -= OnEntityUpdated;
             Game.EntityManager.OnHumanTrigger -= OnHumanTrigger;
             Game.GameLoader.GameLoaded -= OnGameLoaded;
-            Game.GameLoader.GameUnloaded -= OnGameUnloaded;
             Game.PlayerManager.OnPlayerPacketReceived -= OnPlayerPacketReceived;
         }
 
@@ -80,6 +78,13 @@ namespace Fragsurf.Shared
 
         protected override void _Destroy()
         {
+            // todo: needs testing.  this use to be in OnMapEvent event
+            _inMap = false;
+            UnloadPlugins(PluginSpace.InGame);
+            //
+
+            InvokeEventSubscriptions("OnGameUnloaded");
+
             UnloadLoaders();
         }
 
@@ -198,16 +203,6 @@ namespace Fragsurf.Shared
             }
 
             InvokeEventSubscriptions("OnGameLoaded");
-        }
-
-        private void OnGameUnloaded()
-        {
-            // todo: needs testing.  this use to be in OnMapEvent event
-            _inMap = false;
-            UnloadPlugins(PluginSpace.InGame);
-            //
-
-            InvokeEventSubscriptions("OnGameUnloaded");
         }
 
         private void OnEntityAdded(NetEntity entity)

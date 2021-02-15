@@ -23,6 +23,7 @@ namespace Fragsurf.Shared
 
         [Header("Game")]
         public SceneReference MainMenu;
+        public GamemodeData[] DefaultGamemodes;
 
         [Header("Effects")]
         public GameObject BloodSplash;

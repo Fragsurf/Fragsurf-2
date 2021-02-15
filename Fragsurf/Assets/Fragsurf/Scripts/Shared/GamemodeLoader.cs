@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Fragsurf.Shared
@@ -38,15 +40,21 @@ namespace Fragsurf.Shared
             return LoadGamemode(resource);
         }
 
-        protected override void OnGameUnloaded()
-        {
-            Gamemode?.Unload(Game);
-        }
-
         [ConCommand("gamemode.refreshconfigs")]
         private void RefreshConfigs(string[] args)
         {
             Gamemode?.LoadConfig();
+        }
+
+        public static async Task<List<GamemodeData>> QueryAll()
+        {
+            var result = new List<GamemodeData>();
+
+            await Task.Delay(100);
+
+            result.AddRange(GameData.Instance.DefaultGamemodes);
+
+            return result;
         }
 
     }

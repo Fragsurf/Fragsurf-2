@@ -10,11 +10,16 @@ namespace Fragsurf
         private static Camera _camera;
         public static Camera Camera => GetCamera();
 
+        private void Awake()
+        {
+            _camera = GetComponent<Camera>();
+        }
+
         private static Camera GetCamera()
         {
             if (!_camera)
             {
-                _camera = GameObject.Instantiate(Resources.Load<GameObject>("GameCamera")).GetComponent<Camera>();
+                GameObject.Instantiate(Resources.Load<GameObject>("GameCamera"));
             }
             return _camera;
         }

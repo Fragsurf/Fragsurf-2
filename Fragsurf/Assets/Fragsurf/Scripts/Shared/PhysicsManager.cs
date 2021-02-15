@@ -8,7 +8,7 @@ namespace Fragsurf.Shared
         [ConVar("game.physx", "Simulates PhysX", ConVarFlags.Replicator)]
         public bool PhysX { get; set; } = true;
 
-        protected override void OnGameLoaded()
+        protected override void _Initialize()
         {
             Physics.autoSyncTransforms = false;
             Physics.autoSimulation = false;

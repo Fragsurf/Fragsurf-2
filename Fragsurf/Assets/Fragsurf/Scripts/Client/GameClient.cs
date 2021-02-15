@@ -1,5 +1,8 @@
 using Fragsurf.Client.Interpolation;
+using Fragsurf.Maps;
 using Fragsurf.Shared;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Fragsurf.Client
 {
@@ -21,16 +24,40 @@ namespace Fragsurf.Client
             // I feel like I put this here on purpose for absolutely no reason other than I could
             // but idk.  I like it so it stays
             UserSettings.Instance.useGUILayout = UserSettings.Instance.useGUILayout;
+
+            GameObject.DontDestroyOnLoad(gameObject);
+
+            UserSettings.Instance.Load();
         }
 
-        protected override void OnDestroy()
+        private bool _quitting;
+        private void OnApplicationQuit()
         {
+            _quitting = true;
+
             if (UserSettings.Instance)
             {
                 UserSettings.Instance.Save();
             }
+        }
 
+        protected override void OnDestroy()
+        {
             base.OnDestroy();
+
+            if (!_quitting)
+            {
+                if(Map.Current != null)
+                {
+                    Map.UnloadAsync();
+                }
+
+                var server = FSGameLoop.GetGameInstance(true);
+                if (server)
+                {
+                    server.Destroy();
+                }
+            }
         }
 
     }

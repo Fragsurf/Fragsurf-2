@@ -1,6 +1,4 @@
-using Fragsurf.Actors;
 using Fragsurf.Shared;
-using Fragsurf.Shared.Entity;
 using Fragsurf.UI;
 using System.Linq;
 
@@ -20,8 +18,12 @@ namespace Fragsurf.Client
             }
         }
 
-        protected override void OnGameUnloaded()
+        protected override void _Destroy()
         {
+            if (!UGuiManager.Instance)
+            {
+                return;
+            }
             var settingsModal = UGuiManager.Instance.Find<Modal_Settings>();
             if (settingsModal)
             {

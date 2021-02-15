@@ -9,7 +9,6 @@ namespace Fragsurf.Shared
     {
         protected override void _Hook()
         {
-            //MapLoader.Instance.OnMapEvent += OnMapEvent;
             Game.PlayerManager.OnPlayerPacketReceived += OnPlayerPacketReceived;
             Game.PlayerManager.OnPlayerConnected += OnPlayerConnected;
             Game.PlayerManager.OnPlayerApprovedToJoin += OnPlayerApprovedToJoin;
@@ -27,17 +26,10 @@ namespace Fragsurf.Shared
             Game.EntityManager.OnHumanTrigger += OnHumanTrigger;
             Game.GameLoader.PreGameLoaded += OnPreGameLoaded;
             Game.GameLoader.GameLoaded += OnGameLoaded;
-            Game.GameLoader.PreGameUnloaded += OnPreGameUnloaded;
-            Game.GameLoader.GameUnloaded += OnGameUnloaded;
         }
 
         protected override void _Unhook()
         {
-            //if(MapLoader.Instance != null)
-            //{
-            //    MapLoader.Instance.OnMapEvent -= OnMapEvent;
-            //}
-
             Game.PlayerManager.OnPlayerPacketReceived -= OnPlayerPacketReceived;
             Game.PlayerManager.OnPlayerConnected -= OnPlayerConnected;
             Game.PlayerManager.OnPlayerApprovedToJoin -= OnPlayerApprovedToJoin;
@@ -55,15 +47,10 @@ namespace Fragsurf.Shared
             Game.EntityManager.OnHumanTrigger -= OnHumanTrigger;
             Game.GameLoader.PreGameLoaded -= OnPreGameLoaded;
             Game.GameLoader.GameLoaded -= OnGameLoaded;
-            Game.GameLoader.PreGameUnloaded -= OnPreGameUnloaded;
-            Game.GameLoader.GameUnloaded -= OnGameUnloaded;
         }
 
-        //protected virtual void OnMapEvent(IFragsurfMap map, MapEventType eventType, bool hasNextMap) { }
         protected virtual void OnGameLoaded() { }
         protected virtual void OnPreGameLoaded() { }
-        protected virtual void OnGameUnloaded() { }
-        protected virtual void OnPreGameUnloaded() { }
         protected virtual void OnEntityAdded(NetEntity entity) { }
         protected virtual void OnEntityDestroyed(NetEntity entity) { }
         protected virtual void OnEntityUpdated(NetEntity entity, int remoteTick, double remoteTime) { }

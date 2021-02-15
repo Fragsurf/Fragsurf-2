@@ -35,7 +35,10 @@ namespace Fragsurf.UI
 
             _saveButton.onClick.AddListener(SaveChanges);
             _cancelButton.onClick.AddListener(ClearChanges);
+        }
 
+        private void Start()
+        {
             CreatePages();
         }
 
@@ -130,6 +133,7 @@ namespace Fragsurf.UI
                 DevConsole.ExecuteLine(kvp.Value.Data.Command);
             }
             ClearChanges();
+            //UserSettings.Instance.Save();
         }
 
         private void ClearChanges()

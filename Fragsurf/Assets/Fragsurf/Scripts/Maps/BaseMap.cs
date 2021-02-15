@@ -8,7 +8,6 @@ namespace Fragsurf.Maps
     {
 
         public string Name;
-        public string Identifier;
         public string Author;
         public Texture2D Cover;
 

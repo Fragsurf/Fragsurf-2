@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Fragsurf.Maps
 {
@@ -9,13 +9,36 @@ namespace Fragsurf.Maps
     {
         protected override async Task<MapLoadState> _LoadAsync()
         {
-            await Task.Delay(1);
-            return MapLoadState.Loaded;
+            try
+            {
+                var ao = SceneManager.LoadSceneAsync(Name, LoadSceneMode.Single);
+                while (!ao.isDone)
+                {
+                    await Task.Delay(50);
+                }
+                return MapLoadState.Loaded;
+            }
+            catch(Exception e)
+            {
+                Debug.LogError("Failed to load SceneMap: " + Name + "\n" + e.Message);
+            }
+            return MapLoadState.Failed;
         }
 
         protected override async Task _UnloadAsync()
         {
-            await Task.Delay(1);
+            try
+            {
+                var ao = SceneManager.UnloadSceneAsync(Name, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+                while (!ao.isDone)
+                {
+                    await Task.Delay(50);
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.LogError("Failed to unloaded SceneMap: " + Name + "\n" + e.Message);
+            }
         }
     }
 }

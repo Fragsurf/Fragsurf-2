@@ -26,7 +26,7 @@ namespace Fragsurf.Shared.LagComp
             DevConsole.RegisterVariable("net.testlag", "", () => _break, v => _break = v, this, ConVarFlags.Cheat);
         }
 
-        protected override void OnPreGameUnloaded()
+        protected override void _Destroy()
         {
             _paused = true;
             foreach (var gs in _gameStates)

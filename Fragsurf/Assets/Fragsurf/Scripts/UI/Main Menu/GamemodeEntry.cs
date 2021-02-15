@@ -9,6 +9,7 @@ namespace Fragsurf.UI
     {
         public string Name;
         public Action OnSelect;
+        public bool Selected;
     }
     public class GamemodeEntry : EntryElement<GamemodeEntryData>
     {
@@ -16,17 +17,25 @@ namespace Fragsurf.UI
         [SerializeField]
         private TMP_Text _name;
         [SerializeField]
-        private Button _button; 
+        private Button _button;
+
+        private static GamemodeEntry _activeTab;
 
         public override void LoadData(GamemodeEntryData data)
         {
             _name.text = data.Name;
-            if (_button)
+            _button.onClick.AddListener(() =>
             {
-                _button.onClick.AddListener(() =>
+                if (_activeTab)
                 {
-                    data.OnSelect?.Invoke();
-                });
+                    _activeTab._button.interactable = true;
+                }
+                _button.interactable = false;
+                data.OnSelect?.Invoke();
+            });
+            if (data.Selected)
+            {
+                _button.interactable = false;
             }
         }
 

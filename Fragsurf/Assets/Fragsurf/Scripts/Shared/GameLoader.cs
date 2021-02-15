@@ -42,8 +42,6 @@ namespace Fragsurf.Shared
     {
         public event Action PreGameLoaded;
         public event Action GameLoaded;
-        public event Action PreGameUnloaded;
-        public event Action GameUnloaded;
 
         public bool Loading;
         public string LoadingHint;
@@ -110,50 +108,26 @@ namespace Fragsurf.Shared
 
             if(status == ClientSocketStatus.Disconnected)
             {
-                if (reason == DenyReason.MapChange.ToString())
-                {
-                    BeginRetry();
-                }
+                Game.Destroy();
+                SceneManager.LoadScene(GameData.Instance.MainMenu.ScenePath);
             }
-        }
-
-        private bool _retrying;
-        private async void BeginRetry()
-        {
-            if (_retrying)
-            {
-                return;
-            }
-            _retrying = true;
-            var attempts = 8;
-            var delay = 1500;
-            while (attempts > 0 && _retrying)
-            {
-                attempts--;
-                await JoinGameAsync(_lastAddress, _lastPort, _lastPassword);
-                await Task.Delay(delay);
-            }
-            _retrying = false;
         }
 
         public void Cancel()
         {
             _cancelled = true;
-            _retrying = false;
             try
             {
                 _cts?.Cancel();
                 _cts?.Dispose();
             }
-            catch { }
+            catch(Exception e) { Debug.LogError(e.Message); }
         }
 
         protected override void _Destroy()
         {
             PreGameLoaded = null;
             GameLoaded = null;
-            PreGameUnloaded = null;
-            GameUnloaded = null;
             State = GameLoaderState.None;
         }
 
@@ -183,10 +157,6 @@ namespace Fragsurf.Shared
             if (result != GameLoadResult.Success)
             {
                 return result;
-            }
-            else
-            {
-                _retrying = false;
             }
 
             State = GameLoaderState.Playing;
@@ -292,6 +262,7 @@ namespace Fragsurf.Shared
 
             var obj = new GameObject("[Server]");
             var server = obj.AddComponent<GameServer>();
+            GameObject.DontDestroyOnLoad(obj);
             server.IsLocalServer = true;
 
             if (!string.IsNullOrEmpty(name))
@@ -310,7 +281,7 @@ namespace Fragsurf.Shared
                 server.Destroy();
                 if (!Game.IsHost)
                 {
-                    SceneManager.LoadScene(GameData.Instance.MainMenu.ScenePath);
+                    Game.Destroy();
                     UGuiManager.Instance.Popup("Couldn't load that map, something went wrong.");
                 }
                 Loading = false;
@@ -346,8 +317,6 @@ namespace Fragsurf.Shared
 
         private async Task<GameLoadResult> _CreateGameAsync(string mapName, string gamemode)
         {
-            DevConsole.SetVariable("game.mode", gamemode, true, true);
-
             State = GameLoaderState.ChangingMap;
 
             LoadingHint = "Loading map: " + mapName;

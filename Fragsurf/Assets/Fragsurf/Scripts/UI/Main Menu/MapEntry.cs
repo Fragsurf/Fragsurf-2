@@ -1,3 +1,4 @@
+using Fragsurf.Maps;
 using System;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace Fragsurf.UI
     {
         public string Name;
         public Action OnClick;
+        public BaseMap Map;
+        public bool Selected;
     }
     public class MapEntry : EntryElement<MapEntryData>
     {
@@ -18,15 +21,26 @@ namespace Fragsurf.UI
         [SerializeField]
         private Button _button;
 
+        public BaseMap Map { get; private set; }
+
+        private static MapEntry _selectedTab;
+
         public override void LoadData(MapEntryData data)
         {
+            Map = data.Map;
             _name.text = data.Name;
-            if (_button)
+            _button.onClick.AddListener(() =>
             {
-                _button.onClick.AddListener(() =>
+                if (_selectedTab)
                 {
-                    data.OnClick?.Invoke();
-                });
+                    _selectedTab._button.interactable = true;
+                }
+                _button.interactable = false;
+                data.OnClick?.Invoke();
+            });
+            if (data.Selected)
+            {
+                _button.interactable = false;
             }
         }
 

@@ -20,11 +20,6 @@ namespace Fragsurf.Client
             Load();
         }
 
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-        }
-
         protected override void OnApplicationQuit()
         {
             Save();

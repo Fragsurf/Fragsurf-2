@@ -4,20 +4,29 @@ using Fragsurf.Shared;
 using Lidgren.Network;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Fragsurf
 {
-    [RequireComponent(typeof(GameClient))]
     public class PlayTest : MonoBehaviour
     {
 
         public Vector3 SpawnPoint;
 
+        private void Awake()
+        {
+            if (FSGameLoop.GetGameInstance(true)
+                || FSGameLoop.GetGameInstance(false))
+            {
+                enabled = false;
+                return;
+            }
+            SceneManager.LoadScene("Startup", LoadSceneMode.Additive);
+        }
+
         private async void Start()
         {
-            GameObject.DontDestroyOnLoad(gameObject);
-
-            var client = GetComponent<GameClient>();
+            var client = gameObject.AddComponent<GameClient>();
             var serverResult = await client.GameLoader.CreateServerAsync("LoadActiveScene", "Playtest", "Testing my map!", RandomString(8));
             if(serverResult == GameLoadResult.Success)
             {

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 namespace Fragsurf.UI
 {
@@ -130,7 +129,7 @@ namespace Fragsurf.UI
 
         private void DisableInput()
         {
-            CanvasManager.DisableEventSystem();
+            UGuiManager.DisableEventSystem();
             ConsoleBinds.Blocked = true;
             ClientInput.Blockers.Add(this);
 
@@ -142,7 +141,7 @@ namespace Fragsurf.UI
 
         private void EnableInput()
         {
-            CanvasManager.EnableEventSystem();
+            UGuiManager.EnableEventSystem();
             ConsoleBinds.Blocked = false;
             ClientInput.Blockers.Remove(this);
 

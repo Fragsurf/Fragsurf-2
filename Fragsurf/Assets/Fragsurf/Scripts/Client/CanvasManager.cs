@@ -9,9 +9,8 @@ namespace Fragsurf.Client
     public class CanvasManager : FSSharedScript
     {
 
-        private Canvas _uiCanvas;
-        private EventSystem _uiEventSystem;
-        private const string _modalPathPrefix = "UI/Modals/";
+        //private Canvas _uiCanvas;
+        //private const string _modalPathPrefix = "UI/Modals/";
 
         public static readonly string[] DefaultModals = new string[]
         {
@@ -25,53 +24,33 @@ namespace Fragsurf.Client
 
         protected override void _Start()
         {
-            var container = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("UICanvas"));
-            _uiCanvas = container.GetComponentInChildren<Canvas>();
-            _uiEventSystem = container.GetComponentInChildren<EventSystem>();
+            //var container = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("UICanvas"));
+            //GameObject.DontDestroyOnLoad(container);
+            //_uiCanvas = container.GetComponentInChildren<Canvas>();
+            //_uiEventSystem = container.GetComponentInChildren<EventSystem>();
 
-            foreach (var modal in DefaultModals)
-            {
-                SpawnModal(modal);
-            }
+            //foreach (var modal in DefaultModals)
+            //{
+            //    SpawnModal(modal);
+            //}
         }
 
-        private void SpawnModal(string modalPrefabName)
+        protected override void OnGameLoaded()
         {
-            var resourcePath = _modalPathPrefix + modalPrefabName;
-            var resource = Resources.Load<GameObject>(resourcePath);
-            if (!resource)
-            {
-                Debug.LogError("Modal doesn't exist at path: " + resourcePath);
-                return;
-            }
-            GameObject.Instantiate<GameObject>(resource, _uiCanvas.transform);
+            UGuiManager.Instance.CloseModal<Modal_MainMenu>();
         }
 
-        public static void EnableEventSystem()
-        {
-            var game = FSGameLoop.GetGameInstance(false);
-            if (game)
-            {
-                var cm = game.Get<CanvasManager>();
-                if (cm && cm._uiEventSystem)
-                {
-                    cm._uiEventSystem.enabled = true;
-                }
-            }
-        }
-
-        public static void DisableEventSystem()
-        {
-            var game = FSGameLoop.GetGameInstance(false);
-            if (game)
-            {
-                var cm = game.Get<CanvasManager>();
-                if (cm && cm._uiEventSystem)
-                {
-                    cm._uiEventSystem.enabled = false;
-                }
-            }
-        }
+        //private void SpawnModal(string modalPrefabName)
+        //{
+            //var resourcePath = _modalPathPrefix + modalPrefabName;
+            //var resource = Resources.Load<GameObject>(resourcePath);
+            //if (!resource)
+            //{
+            //    Debug.LogError("Modal doesn't exist at path: " + resourcePath);
+            //    return;
+            //}
+            //GameObject.Instantiate<GameObject>(resource, _uiCanvas.transform);
+        //}
 
     }
 }

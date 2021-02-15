@@ -2,11 +2,17 @@ using UnityEngine;
 using System.Collections.Generic;
 using Fragsurf.Utility;
 using System;
+using UnityEngine.EventSystems;
 
 namespace Fragsurf.UI
 {
     public class UGuiManager : SingletonComponent<UGuiManager>
     {
+
+        [SerializeField]
+        private EventSystem _eventSystem;
+        [SerializeField]
+        private Canvas _mainCanvas;
 
         private Dictionary<string, UGuiModal> _modals = new Dictionary<string, UGuiModal>(StringComparer.OrdinalIgnoreCase);
         private List<UGuiModal> _escapeStack = new List<UGuiModal>();
@@ -191,6 +197,22 @@ namespace Fragsurf.UI
         public void Popup(string message)
         {
             Debug.LogError("Popup not implemented:" + message);
+        }
+
+        public static void EnableEventSystem()
+        {
+            if(Instance && Instance._eventSystem)
+            {
+                Instance._eventSystem.enabled = true;
+            }
+        }
+
+        public static void DisableEventSystem()
+        {
+            if (Instance && Instance._eventSystem)
+            {
+                Instance._eventSystem.enabled = false;
+            }
         }
 
     }

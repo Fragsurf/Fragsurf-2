@@ -279,8 +279,10 @@ namespace Fragsurf
                 return;
             }
 
-            foreach (var entry in _entries[cmdName])
+            for(int i = _entries[cmdName].Count - 1; i >= 0; i--)
             {
+                var entry = _entries[cmdName][i];
+
                 if (IsLocked(entry.Flags) && !bypassLock)
                 {
                     continue;

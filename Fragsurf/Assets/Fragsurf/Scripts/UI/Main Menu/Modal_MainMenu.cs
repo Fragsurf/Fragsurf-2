@@ -22,6 +22,20 @@ namespace Fragsurf.UI
             UGuiManager.Instance.OpenModal(name);
         }
 
+        public void DisconnectFromGame()
+        {
+            var dialog = UGuiManager.Instance.Find<Modal_Dialog>();
+            if (!dialog)
+            {
+                DevConsole.ExecuteLine("net.disconnect");
+                return;
+            }
+            dialog.Confirmation("Disconnect from server", "Are you sure you want to leave this game?", () =>
+            {
+                DevConsole.ExecuteLine("net.disconnect");
+            });
+        }
+
         public void OpenUrl(string url)
         {
             var dialog = UGuiManager.Instance.Find<Modal_Dialog>();

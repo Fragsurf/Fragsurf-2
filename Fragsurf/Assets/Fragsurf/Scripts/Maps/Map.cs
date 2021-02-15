@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Fragsurf.Utility;
 using Fragsurf.Actors;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Fragsurf.Maps
 {
@@ -14,6 +16,11 @@ namespace Fragsurf.Maps
         [ConVar("map.default", "")]
         public string DefaultMap { get; set; } = "surf_fst_skyworld";
 
+        private static List<IMapProvider> _providers = new List<IMapProvider>()
+        {
+            new SceneMapProvider()
+        };
+
         private void Awake()
         {
             TimeStep.Instance.OnTick.AddListener(OnTick);
@@ -22,6 +29,28 @@ namespace Fragsurf.Maps
         private void OnTick(float a, float b)
         {
             Current?.Tick();
+        }
+
+        public static async Task<BaseMap> Query(string mapName)
+        {
+            return (await QueryAll()).FirstOrDefault(x => x.Name.Equals(mapName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public static async Task<List<BaseMap>> QueryAll(string prefix = null)
+        {
+            var result = new List<BaseMap>();
+
+            foreach(var provider in _providers)
+            {
+                result.AddRange(await provider.GetMapsAsync());
+            }
+
+            if(!string.IsNullOrEmpty(prefix))
+            {
+                result.RemoveAll(x => x.Name == null || !x.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return result;
         }
 
         public static Task<MapLoadState> LoadAsync(BaseMap map)
@@ -76,8 +105,12 @@ namespace Fragsurf.Maps
             {
                 return await LoadAsync(new PlayTestMap() { Name = "Playtest" });
             }
-            // todo: mapName to BaseMap
-            return MapLoadState.Failed;
+            var map = await Query(mapName);
+            if(map == null)
+            {
+                return MapLoadState.Failed;
+            }
+            return await LoadAsync(map);
         }
 
         private async Task _UnloadAsync()

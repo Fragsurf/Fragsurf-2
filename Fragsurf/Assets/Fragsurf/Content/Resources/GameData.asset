@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: GameData
   m_EditorClassIdentifier: 
   MainMenu:
-    sceneAsset: {fileID: 0}
-    scenePath: 
+    sceneAsset: {fileID: 102900000, guid: 912cfa9f4efa4ff409572e96142e9633, type: 3}
+    scenePath: Assets/Fragsurf/Content/Scenes/Main Menu.unity
+  DefaultGamemodes:
+  - {fileID: 11400000, guid: 25a4f849322545e40a0b6a7f99407729, type: 2}
   BloodSplash: {fileID: 0}
   WaterSplash: {fileID: 0}
   FootstepSplash: {fileID: 0}
   DefaultImpactEffect: {fileID: 0}
   ImpactEffects: []
   Equippables: []
-  Footstep: 
-  FallDamage: 
-  DeathSound: 
+  Footstep: {fileID: 0}
+  FallDamage: {fileID: 0}
+  DeathSound: {fileID: 0}

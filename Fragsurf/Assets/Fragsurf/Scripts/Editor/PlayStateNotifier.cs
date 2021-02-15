@@ -69,7 +69,7 @@ public static class PlayStateNotifier
             }
             if (SteamClient.IsValid)
             {
-                if(UserSettings.Instance != null)
+                if (UserSettings.Instance)
                 {
                     UserSettings.Instance.Save();
                 }
