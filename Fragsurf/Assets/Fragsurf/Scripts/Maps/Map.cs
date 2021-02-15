@@ -9,7 +9,7 @@ namespace Fragsurf.Maps
     public class Map : SingletonComponent<Map>
     {
 
-        public BaseMap Current { get; private set; }
+        public static BaseMap Current { get; private set; }
 
         [ConVar("map.default", "")]
         public string DefaultMap { get; set; } = "surf_fst_skyworld";
@@ -24,7 +24,36 @@ namespace Fragsurf.Maps
             Current?.Tick();
         }
 
-        public async Task<MapLoadState> LoadAsync(BaseMap map)
+        public static Task<MapLoadState> LoadAsync(BaseMap map)
+        {
+            return Instance._LoadAsync(map);
+        }
+
+        public static Task<MapLoadState> LoadAsync(string mapName)
+        {
+            return Instance._LoadAsync(mapName);
+        }
+
+        public static async Task UnloadAsync()
+        {
+            await Instance._UnloadAsync();
+        }
+
+        public static void GetSpawnPoint(out Vector3 position, out Vector3 angles, int teamNumber = 255)
+        {
+            position = Vector3.zero;
+            angles = Vector3.zero;
+
+            var sps = GameObject.FindObjectsOfType<FSMSpawnPoint>();
+            if (sps.Length > 0)
+            {
+                var rnd = sps[UnityEngine.Random.Range(0, sps.Length)];
+                position = rnd.transform.position;
+                angles = rnd.transform.eulerAngles;
+            }
+        }
+
+        private async Task<MapLoadState> _LoadAsync(BaseMap map)
         {
             if (Current != null)
             {
@@ -41,7 +70,7 @@ namespace Fragsurf.Maps
             return result;
         }
 
-        public async Task<MapLoadState> LoadAsync(string mapName)
+        private async Task<MapLoadState> _LoadAsync(string mapName)
         {
             if (mapName == "LoadActiveScene")
             {
@@ -51,7 +80,7 @@ namespace Fragsurf.Maps
             return MapLoadState.Failed;
         }
 
-        public async Task UnloadAsync()
+        private async Task _UnloadAsync()
         {
             if(Current == null)
             {
@@ -64,20 +93,6 @@ namespace Fragsurf.Maps
 
             Resources.UnloadUnusedAssets();
             GC.Collect(2, GCCollectionMode.Forced);
-        }
-
-        public void GetSpawnPoint(out Vector3 position, out Vector3 angles, int teamNumber = 255)
-        {
-            position = Vector3.zero;
-            angles = Vector3.zero;
-
-            var sps = GameObject.FindObjectsOfType<FSMSpawnPoint>();
-            if (sps.Length > 0)
-            {
-                var rnd = sps[UnityEngine.Random.Range(0, sps.Length)];
-                position = rnd.transform.position;
-                angles = rnd.transform.eulerAngles;
-            }
         }
 
     }

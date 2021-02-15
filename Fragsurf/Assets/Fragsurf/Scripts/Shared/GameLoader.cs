@@ -243,9 +243,9 @@ namespace Fragsurf.Shared
             if (_cancelled) { return GameLoadResult.Cancelled; }
 
             // with a local server the map should already be loaded, so let's check first
-            if (Map.Instance.Current == null || Map.Instance.Current.Name != mapChange.MapName)
+            if (Map.Current == null || Map.Current.Name != mapChange.MapName)
             {
-                var mapLoadResult = await Map.Instance.LoadAsync(mapChange.MapName);
+                var mapLoadResult = await Map.LoadAsync(mapChange.MapName);
                 if (mapLoadResult != MapLoadState.Loaded)
                 {
                     return GameLoadResult.FailedToLoadMap;
@@ -382,9 +382,9 @@ namespace Fragsurf.Shared
                 }
             }
 
-            if (Map.Instance.Current == null || Map.Instance.Current.Name != mapName)
+            if (Map.Current == null || Map.Current.Name != mapName)
             {
-                var mapLoadResult = await Map.Instance.LoadAsync(mapName);
+                var mapLoadResult = await Map.LoadAsync(mapName);
                 if (mapLoadResult != MapLoadState.Loaded)
                 {
                     return GameLoadResult.FailedToLoadMap;

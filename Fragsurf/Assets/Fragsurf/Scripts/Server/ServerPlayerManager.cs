@@ -112,7 +112,7 @@ namespace Fragsurf.Server
         private void SendMapChange(ServerPlayer player)
         {
             var mapChange = PacketUtility.TakePacket<MapChange>();
-            mapChange.MapName = Map.Instance.Current.Name;
+            mapChange.MapName = Map.Current.Name;
             mapChange.Gamemode = Game.GamemodeLoader.Gamemode.Data.Name;
             mapChange.ClientIndex = player.ClientIndex;
             Game.GetFSComponent<SocketManager>().SendPacketBrute(player, mapChange);

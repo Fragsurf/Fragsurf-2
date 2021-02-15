@@ -38,7 +38,7 @@ namespace Fragsurf.Gamemodes.Playtest
                 return;
             }
 
-            Map.Instance.GetSpawnPoint(out Vector3 spawnPos, out Vector3 spawnAngles);
+            Map.GetSpawnPoint(out Vector3 spawnPos, out Vector3 spawnAngles);
 
             var tp = GameObject.FindObjectOfType<PlayTest>();
             if (tp && tp.SpawnPoint != Vector3.zero)
