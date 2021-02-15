@@ -13,7 +13,10 @@ namespace Fragsurf.Client
         {
             DontDestroyOnLoad(gameObject);
 
-            SceneManager.LoadScene(GameData.Instance.MainMenu.ScenePath);
+            if (!GameObject.FindObjectOfType<PlayTest>())
+            {
+                SceneManager.LoadScene(GameData.Instance.MainMenu.ScenePath);
+            }
         }
 
     }

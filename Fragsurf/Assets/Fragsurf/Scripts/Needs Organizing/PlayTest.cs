@@ -22,6 +22,7 @@ namespace Fragsurf
                 return;
             }
             SceneManager.LoadScene("Startup", LoadSceneMode.Additive);
+            GameObject.Destroy(FindObjectOfType<StartupScript>());
         }
 
         private async void Start()
