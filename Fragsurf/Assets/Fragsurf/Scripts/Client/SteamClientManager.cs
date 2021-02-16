@@ -33,11 +33,10 @@ namespace Fragsurf.Client
             //    UnityEngine.Debug.Log($"{str}");
             //};
 
-            //SteamNetworkingUtils.DebugLevel = NetDebugOutput.Everything;
+           //SteamNetworkingUtils.DebugLevel = NetDebugOutput.Everything;
             //SteamNetworkingUtils.OnDebugOutput += (e1, e2) =>
             //{
             //    UnityEngine.Debug.Log(e1 + ":" + e2);
-            //    _test += e1 + "::" + e2 + "\n";
             //};
 
             //Steamworks.Dispatch.OnDebugCallback = (type, str, server) =>
@@ -74,7 +73,10 @@ namespace Fragsurf.Client
 
         private void Update()
         {
-            SteamClient.RunCallbacks();
+            if (SteamClient.IsValid)
+            {
+                SteamClient.RunCallbacks();
+            }
         }
 
         protected override void OnDestroy()
