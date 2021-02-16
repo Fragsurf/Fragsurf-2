@@ -10,6 +10,7 @@ namespace Fragsurf.Maps
         public string Name;
         public string Author;
         public Texture2D Cover;
+        public string FilePath;
 
         private FSMActor[] _actors;
 
@@ -32,12 +33,18 @@ namespace Fragsurf.Maps
 
         public void Tick()
         {
-            foreach(var actor in _actors)
+            for (int i = _actors.Length - 1; i >= 0; i--)
             {
-                if (actor.isActiveAndEnabled)
+                if (!_actors[i])
                 {
-                    actor.Tick();
+                    _actors.RemoveAt(i);
+                    continue;
                 }
+                if (!_actors[i].isActiveAndEnabled)
+                {
+                    continue;
+                }
+                _actors[i].Tick();
             }
             _Tick();
         }

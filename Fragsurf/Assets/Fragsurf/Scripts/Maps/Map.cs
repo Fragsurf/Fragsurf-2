@@ -18,7 +18,8 @@ namespace Fragsurf.Maps
 
         private static List<IMapProvider> _providers = new List<IMapProvider>()
         {
-            new SceneMapProvider()
+            new SceneMapProvider(),
+            new BSPMapProvider()
         };
 
         private void Awake()

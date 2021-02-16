@@ -1,12 +1,6 @@
-using Fragsurf.BSP;
-using Fragsurf.Client;
 using Fragsurf.Actors;
-using Fragsurf.Movement;
-using Fragsurf.Server;
 using Fragsurf.Shared.Entity;
-using Fragsurf.Utility;
 using SourceUtils.ValveBsp.Entities;
-using UnityEngine;
 
 namespace Fragsurf.BSP
 {
