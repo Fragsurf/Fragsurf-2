@@ -11,6 +11,7 @@ namespace Fragsurf.UI
         public abstract void LoadData(T data);
 
         private List<GameObject> _children;
+        protected EntryElement<T> _parent;
 
         public List<GameObject> Children => _children;
 
@@ -38,6 +39,7 @@ namespace Fragsurf.UI
             }
 
             var clone = GameObject.Instantiate(gameObject, transform.parent).GetComponent<EntryElement<T>>();
+            clone._parent = this;
             _children.Add(clone.gameObject);
             clone.gameObject.SetActive(true);
             clone.LoadData(data);

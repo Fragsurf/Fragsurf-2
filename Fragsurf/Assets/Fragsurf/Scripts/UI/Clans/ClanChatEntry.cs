@@ -23,11 +23,31 @@ namespace Fragsurf.UI
         [SerializeField]
         private TMP_Text _message;
 
+        private static ClanChatEntry _lastEntry;
+        private static SteamId _lastMessageId;
+
+        public new void Clear()
+        {
+            _lastEntry = null;
+            _lastMessageId = 0;
+            base.Clear();
+        }
+
         public override void LoadData(ClanChatEntryData data)
         {
-            _name.text = data.Friend.Name;
-            _clan.text = data.Clan.Name;
+            if (_lastMessageId == data.Friend.Id)
+            {
+                _lastEntry._message.text += "\n" + data.Message;
+                _parent.Remove(this);
+                gameObject.SetActive(false);
+                return;
+            }
+
+            _name.text = !string.IsNullOrEmpty(data.Friend.Name) ? data.Friend.Name : "Unknown";
+            _clan.text = !string.IsNullOrEmpty(data.Friend.Name) ? data.Clan.Name : "Unknown";
             _message.text = data.Message;
+            _lastMessageId = data.Friend.Id;
+            _lastEntry = this;
         }
 
     }

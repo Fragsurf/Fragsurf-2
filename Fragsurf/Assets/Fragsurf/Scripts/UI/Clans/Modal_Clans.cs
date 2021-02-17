@@ -1,5 +1,6 @@
 using Steamworks;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -53,20 +54,12 @@ namespace Fragsurf.UI
             SteamFriends.OnClanChatJoin -= SteamFriends_OnClanChatJoin;
             SteamFriends.OnClanChatLeave -= SteamFriends_OnClanChatLeave;
 
-            if (SteamClient.IsValid)
+            if (SteamClient.IsValid && _activeClan.Id != 0)
             {
-                SteamFriends.LeaveClanChatRoom(_clanChatId);
+                SteamFriends.LeaveClanChatRoom(_activeClan.Id);
             }
         }
 
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                RefreshMemberList();
-            }
-        }
         private void OnMessageSubmit(string message)
         {
             _messageInput.text = string.Empty;
@@ -86,7 +79,8 @@ namespace Fragsurf.UI
             {
                 return;
             }
-            foreach(var clan in SteamFriends.GetClans())
+            _clanEntryTemplate.Clear();
+            foreach (var clan in SteamFriends.GetClans())
             {
                 var data = new ClanEntryData()
                 {
@@ -97,12 +91,14 @@ namespace Fragsurf.UI
             }
         }
 
-        private void RefreshMemberList()
+        private async void RefreshMemberList()
         {
             if (!SteamClient.IsValid)
             {
                 return;
             }
+            _clanMemberEntry.Clear();
+            await Task.Delay(500);
             _clanMemberEntry.Clear();
             foreach (var member in SteamFriends.GetClanChatMembers(_activeClan.Id))
             {
@@ -116,15 +112,19 @@ namespace Fragsurf.UI
 
         private async void SwitchToClan(Clan clan)
         {
-            //SteamFriends.LeaveClanChatRoom(_clanChatId);
-
-            _clanChatId = default;
-
             if (!SteamClient.IsValid)
             {
                 return;
             }
 
+            _clanChatId = default;
+
+            if(_clanChatId != 0 && _activeClan.Id != 0)
+            {
+                SteamFriends.LeaveClanChatRoom(_activeClan.Id);
+            }
+            
+            await Task.Delay(100);
             var joinResult = await SteamFriends.JoinClanChatRoom(clan.Id);
             if (!joinResult.Success)
             {
@@ -137,13 +137,40 @@ namespace Fragsurf.UI
 
             RefreshMemberList();
 
-            SteamFriends.SendClanChatRoomMessage(_activeClan.Id, $"<color=yellow>I have joined {clan.Name}</color>");
+            SteamFriends.SendClanChatRoomMessage(_activeClan.Id, "__history__");
         }
 
-        private void SteamFriends_OnClanChatMessage(SteamId clanChatId, Friend friend, string msgType, string message)
+        private void SteamFriends_OnClanChatMessage(SteamId clanChatId, Friend friend, int messageId, string msgType, string message)
         {
             if (clanChatId != _clanChatId)
             {
+                return;
+            }
+
+            if (message == "__history__")
+            {
+                if(friend.Id != SteamClient.SteamId)
+                {
+                    return;
+                }
+                _clanChatEntryTemplate.Clear();
+                var startIdx = Mathf.Max(messageId - 100, 0);
+                var endIdx = messageId - 1;
+                for(int i = startIdx; i <= endIdx; i++)
+                {
+                    if(!SteamFriends.GetClanChatMessage(clanChatId, i, out Friend hChatter, out string hMsgType, out string hMessage)
+                        || hMessage == "__history__")
+                    {
+                        continue;
+                    }
+                    _clanChatEntryTemplate.Append(new ClanChatEntryData()
+                    {
+                        Clan = _activeClan,
+                        Friend = hChatter,
+                        MessageType = hMsgType,
+                        Message = hMessage
+                    });
+                }
                 return;
             }
 
