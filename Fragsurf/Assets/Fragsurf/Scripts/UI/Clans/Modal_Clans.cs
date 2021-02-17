@@ -30,7 +30,7 @@ namespace Fragsurf.UI
 
             SteamFriends.OnClanChatMessage += SteamFriends_OnClanChatMessage;
             SteamFriends.OnClanChatJoin += SteamFriends_OnClanChatJoin;
-            SteamFriends.OnClanChatLeave += SteamFriends_OnClanChatLeave; ;
+            SteamFriends.OnClanChatLeave += SteamFriends_OnClanChatLeave;
 
             _messageInput.onSubmit.AddListener(OnMessageSubmit);
         }
@@ -50,8 +50,23 @@ namespace Fragsurf.UI
             base.OnDestroy();
 
             SteamFriends.OnClanChatMessage -= SteamFriends_OnClanChatMessage;
+            SteamFriends.OnClanChatJoin -= SteamFriends_OnClanChatJoin;
+            SteamFriends.OnClanChatLeave -= SteamFriends_OnClanChatLeave;
+
+            if (SteamClient.IsValid)
+            {
+                SteamFriends.LeaveClanChatRoom(_clanChatId);
+            }
         }
 
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                RefreshMemberList();
+            }
+        }
         private void OnMessageSubmit(string message)
         {
             _messageInput.text = string.Empty;
@@ -63,8 +78,6 @@ namespace Fragsurf.UI
             }
 
             SteamFriends.SendClanChatRoomMessage(_clanChatId, message);
-
-            Debug.Log("Send to: " + _clanChatId);
         }
 
         private void RefreshClanList()
@@ -91,7 +104,7 @@ namespace Fragsurf.UI
                 return;
             }
             _clanMemberEntry.Clear();
-            foreach (var member in _activeClan.GetChatMembers())
+            foreach (var member in SteamFriends.GetClanChatMembers(_activeClan.Id))
             {
                 _clanMemberEntry.Append(new ClanMemberEntryData()
                 {
@@ -103,7 +116,7 @@ namespace Fragsurf.UI
 
         private async void SwitchToClan(Clan clan)
         {
-            SteamFriends.LeaveClanChatRoom(_clanChatId);
+            //SteamFriends.LeaveClanChatRoom(_clanChatId);
 
             _clanChatId = default;
 
@@ -124,7 +137,7 @@ namespace Fragsurf.UI
 
             RefreshMemberList();
 
-            SteamFriends.SendClanChatRoomMessage(_clanChatId, $"<color=yellow>I have joined {clan.Name}</color>");
+            SteamFriends.SendClanChatRoomMessage(_activeClan.Id, $"<color=yellow>I have joined {clan.Name}</color>");
         }
 
         private void SteamFriends_OnClanChatMessage(SteamId clanChatId, Friend friend, string msgType, string message)
