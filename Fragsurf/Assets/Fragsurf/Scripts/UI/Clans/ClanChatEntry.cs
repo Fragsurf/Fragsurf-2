@@ -1,6 +1,4 @@
 using Steamworks;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -46,8 +44,16 @@ namespace Fragsurf.UI
             _name.text = !string.IsNullOrEmpty(data.Friend.Name) ? data.Friend.Name : "Unknown";
             _clan.text = !string.IsNullOrEmpty(data.Friend.Name) ? data.Clan.Name : "Unknown";
             _message.text = data.Message;
+            _message.richText = false;
             _lastMessageId = data.Friend.Id;
             _lastEntry = this;
+
+            var avatar = GetComponentInChildren<SteamAvatar>();
+            if (avatar)
+            {
+                avatar.SteamId = data.Friend.Id;
+                avatar.Fetch();
+            }
         }
 
     }

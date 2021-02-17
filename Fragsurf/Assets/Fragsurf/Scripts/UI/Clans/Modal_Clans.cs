@@ -1,4 +1,6 @@
 using Steamworks;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using TMPro;
@@ -58,6 +60,8 @@ namespace Fragsurf.UI
             {
                 SteamFriends.LeaveClanChatRoom(_activeClan.Id);
             }
+
+            StopLoadingHistory();
         }
 
         private void OnMessageSubmit(string message)
@@ -117,6 +121,7 @@ namespace Fragsurf.UI
                 return;
             }
 
+            _pendingChats.Clear();
             _clanChatId = default;
 
             if(_clanChatId != 0 && _activeClan.Id != 0)
@@ -138,6 +143,9 @@ namespace Fragsurf.UI
             RefreshMemberList();
 
             SteamFriends.SendClanChatRoomMessage(_activeClan.Id, "__history__");
+
+            _messageInput.text = string.Empty;
+            _messageInput.ActivateInputField();
         }
 
         private void SteamFriends_OnClanChatMessage(SteamId clanChatId, Friend friend, int messageId, string msgType, string message)
@@ -156,31 +164,68 @@ namespace Fragsurf.UI
                 _clanChatEntryTemplate.Clear();
                 var startIdx = Mathf.Max(messageId - 100, 0);
                 var endIdx = messageId - 1;
-                for(int i = startIdx; i <= endIdx; i++)
-                {
-                    if(!SteamFriends.GetClanChatMessage(clanChatId, i, out Friend hChatter, out string hMsgType, out string hMessage)
-                        || hMessage == "__history__")
-                    {
-                        continue;
-                    }
-                    _clanChatEntryTemplate.Append(new ClanChatEntryData()
-                    {
-                        Clan = _activeClan,
-                        Friend = hChatter,
-                        MessageType = hMsgType,
-                        Message = hMessage
-                    });
-                }
+                StopLoadingHistory();
+                _chatHistoryCoroutine = StartCoroutine(LoadChatHistory(startIdx, endIdx, clanChatId));
                 return;
             }
 
-            _clanChatEntryTemplate.Append(new ClanChatEntryData()
+            var data = new ClanChatEntryData()
             {
                 Clan = _activeClan,
                 Friend = friend,
                 Message = message,
                 MessageType = msgType
-            });
+            };
+
+            if (_loadingHistory)
+            {
+                _pendingChats.Add(data);
+            }
+            else
+            {
+                _clanChatEntryTemplate.Append(data);
+            }
+        }
+
+        private List<ClanChatEntryData> _pendingChats = new List<ClanChatEntryData>();
+        private Coroutine _chatHistoryCoroutine;
+        private bool _loadingHistory;
+        private IEnumerator LoadChatHistory(int startIndex, int endIndex, SteamId clanChatId)
+        {
+            _loadingHistory = true;
+            for (int i = startIndex; i <= endIndex; i++)
+            {
+                if (!SteamFriends.GetClanChatMessage(clanChatId, i, out Friend hChatter, out string hMsgType, out string hMessage)
+                    || hMessage == "__history__")
+                {
+                    continue;
+                }
+                yield return new WaitForEndOfFrame();
+                _clanChatEntryTemplate.Append(new ClanChatEntryData()
+                {
+                    Clan = _activeClan,
+                    Friend = hChatter,
+                    MessageType = hMsgType,
+                    Message = hMessage
+                });
+            }
+            _loadingHistory = false;
+
+            foreach(var chat in _pendingChats)
+            {
+                _clanChatEntryTemplate.Append(chat);
+            }
+            _pendingChats.Clear();
+        }
+
+        private void StopLoadingHistory()
+        {
+            if(_chatHistoryCoroutine != null)
+            {
+                StopCoroutine(_chatHistoryCoroutine);
+                _chatHistoryCoroutine = null;
+            }
+            _loadingHistory = false;
         }
 
     }
