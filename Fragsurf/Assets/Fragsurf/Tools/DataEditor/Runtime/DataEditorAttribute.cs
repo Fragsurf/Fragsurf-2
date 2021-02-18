@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Fyrvall.DataEditor
+namespace Fragsurf.DataEditor
 {
-    public class BonaDataEditorAttribute : Attribute
+    public class DataEditorAttribute : Attribute
     {
         public string DisplayName = string.Empty;
     }

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Fyrvall.DataEditor
+namespace Fragsurf.DataEditor
 {
     public static class CollectionExtensions
     {

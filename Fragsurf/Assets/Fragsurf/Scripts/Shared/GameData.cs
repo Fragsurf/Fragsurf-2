@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Fragsurf.Maps;
+using Fragsurf.DataEditor;
 
 namespace Fragsurf.Shared
 {
+    [DataEditor]
     public class GameData : ScriptableObject
     {
 
