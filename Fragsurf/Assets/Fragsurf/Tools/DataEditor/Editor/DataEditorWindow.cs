@@ -365,7 +365,7 @@ namespace Fragsurf.DataEditor
                                 selectedEditor.DrawDefaultInspector();
                                 //changed = changed || selectedEditor.DrawDefaultInspector();
                             }
-                            DrawUILine(Color.gray);
+                            //DrawUILine(Color.gray);
                             EditorGUILayout.Space();
                         }
                     }
