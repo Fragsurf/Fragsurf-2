@@ -1,7 +1,7 @@
 using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -10,6 +10,11 @@ namespace Fragsurf.UI
 {
     public class Modal_Clans : UGuiModal
     {
+
+        [ConVar("clans.channels", "", ConVarFlags.UserSetting)]
+        public string Channels { get; set; } = string.Empty;
+        [ConVar("clans.default", "", ConVarFlags.UserSetting)]
+        public ulong DefaultChannel { get; set; }
 
         [SerializeField]
         private TMP_InputField _messageInput;
@@ -77,21 +82,39 @@ namespace Fragsurf.UI
             SteamFriends.SendClanChatRoomMessage(_clanChatId, message);
         }
 
-        private void RefreshClanList()
+        public void RefreshClanList()
         {
             if (!SteamClient.IsValid)
             {
                 return;
             }
+
             _clanEntryTemplate.Clear();
-            foreach (var clan in SteamFriends.GetClans())
+
+            var clans = SteamFriends.GetClans().Where(x => IsClanAdded(x)).ToList();
+            if(clans.Count() == 0)
             {
-                var data = new ClanEntryData()
+                // poo
+                return;
+            }
+
+            var selectedId = clans.FindIndex(x => x.Id == DefaultChannel) != -1 
+                ? DefaultChannel 
+                : (ulong)clans[0].Id;
+
+            foreach (var clan in clans)
+            {
+                var selected = clan.Id == selectedId;
+                if (selected)
+                {
+                    SwitchToClan(clan);
+                }
+                _clanEntryTemplate.Append(new ClanEntryData()
                 {
                     Clan = clan,
-                    OnClick = () => SwitchToClan(clan)
-                };
-                _clanEntryTemplate.Append(data);
+                    OnClick = () => SwitchToClan(clan),
+                    Selected = selected
+                });
             }
         }
 
@@ -121,6 +144,7 @@ namespace Fragsurf.UI
                 return;
             }
 
+            DefaultChannel = clan.Id;
             _pendingChats.Clear();
             _clanChatId = default;
 
@@ -162,10 +186,8 @@ namespace Fragsurf.UI
                     return;
                 }
                 _clanChatEntryTemplate.Clear();
-                var startIdx = Mathf.Max(messageId - 100, 0);
-                var endIdx = messageId - 1;
                 StopLoadingHistory();
-                _chatHistoryCoroutine = StartCoroutine(LoadChatHistory(startIdx, endIdx, clanChatId));
+                _chatHistoryCoroutine = StartCoroutine(LoadChatHistory(messageId, clanChatId));
                 return;
             }
 
@@ -190,25 +212,49 @@ namespace Fragsurf.UI
         private List<ClanChatEntryData> _pendingChats = new List<ClanChatEntryData>();
         private Coroutine _chatHistoryCoroutine;
         private bool _loadingHistory;
-        private IEnumerator LoadChatHistory(int startIndex, int endIndex, SteamId clanChatId)
+        private IEnumerator LoadChatHistory(int startId, SteamId clanChatId)
         {
             _loadingHistory = true;
-            for (int i = startIndex; i <= endIndex; i++)
+
+            const int chunksize = 5;
+            const int historyNeeded = 100;
+
+            var ids = new List<ClanChatEntryData>();
+            var idx = 0;
+
+            while(true)
             {
-                if (!SteamFriends.GetClanChatMessage(clanChatId, i, out Friend hChatter, out string hMsgType, out string hMessage)
-                    || hMessage == "__history__")
+                idx++;
+                if(idx > startId || ids.Count >= historyNeeded)
+                {
+                    break;
+                }
+                var msgId = startId - idx;
+                if (!SteamFriends.GetClanChatMessage(clanChatId, msgId, out Friend friend, out string msgType, out string msg)
+                    || msg == "__history__")
                 {
                     continue;
                 }
-                yield return new WaitForEndOfFrame();
-                _clanChatEntryTemplate.Append(new ClanChatEntryData()
+                ids.Add(new ClanChatEntryData()
                 {
                     Clan = _activeClan,
-                    Friend = hChatter,
-                    MessageType = hMsgType,
-                    Message = hMessage
+                    Friend = friend,
+                    Message = msg,
+                    MessageType = msgType
                 });
             }
+
+            ids.Reverse();
+
+            foreach(var chunk in SplitList(ids, chunksize))
+            {
+                foreach(var chatData in chunk)
+                {
+                    _clanChatEntryTemplate.Append(chatData);
+                }
+                yield return 0;
+            }
+
             _loadingHistory = false;
 
             foreach(var chat in _pendingChats)
@@ -216,6 +262,14 @@ namespace Fragsurf.UI
                 _clanChatEntryTemplate.Append(chat);
             }
             _pendingChats.Clear();
+        }
+
+        public static IEnumerable<List<T>> SplitList<T>(List<T> locations, int nSize = 30)
+        {
+            for (int i = 0; i < locations.Count; i += nSize)
+            {
+                yield return locations.GetRange(i, Mathf.Min(nSize, locations.Count - i));
+            }
         }
 
         private void StopLoadingHistory()
@@ -226,6 +280,42 @@ namespace Fragsurf.UI
                 _chatHistoryCoroutine = null;
             }
             _loadingHistory = false;
+        }
+
+        public bool IsClanAdded(Clan clan)
+        {
+            if (string.IsNullOrWhiteSpace(Channels))
+            {
+                return false;
+            }
+            return Channels.Contains(clan.Id.ToString());
+        }
+
+        public void AddClan(Clan clan)
+        {
+            if (IsClanAdded(clan))
+            {
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(Channels))
+            {
+                Channels = string.Empty;
+            }
+            Channels += clan.Id + ",";
+        }
+
+        public void RemoveClan(Clan clan)
+        {
+            if (!IsClanAdded(clan))
+            {
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(Channels))
+            {
+                Channels = string.Empty;
+                return;
+            }
+            Channels = Channels.Replace(clan.Id.ToString() + ",", string.Empty);
         }
 
     }

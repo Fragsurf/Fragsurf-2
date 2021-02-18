@@ -72,7 +72,12 @@ namespace Fragsurf
                 var val = (Color)Convert.ChangeType(_getter.Invoke(), typeof(Color));
                 return "#" + ColorUtility.ToHtmlStringRGBA(val);
             }
-            return _getter.Invoke().ToString();
+            var result = _getter.Invoke();
+            if(result == null)
+            {
+                return string.Empty;
+            }
+            return result.ToString();
         }
 
         public T FromString(string input)

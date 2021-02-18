@@ -1,7 +1,5 @@
 using Steamworks;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +10,7 @@ namespace Fragsurf.UI
     {
         public Clan Clan;
         public Action OnClick;
+        public bool Selected;
     }
 
     public class ClanEntry : EntryElement<ClanEntryData>
@@ -37,6 +36,16 @@ namespace Fragsurf.UI
                 _button.interactable = false;
                 data.OnClick?.Invoke();
             });
+
+            if (data.Selected)
+            {
+                _button.interactable = false;
+                if (_activeTab)
+                {
+                    _activeTab._button.interactable = true;
+                }
+                _activeTab = this;
+            }
         }
 
     }

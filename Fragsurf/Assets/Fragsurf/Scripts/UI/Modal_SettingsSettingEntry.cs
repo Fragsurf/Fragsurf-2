@@ -131,6 +131,9 @@ namespace Fragsurf.UI
                 case TypeCode.Int32:
                 case TypeCode.Int64:
                 case TypeCode.Int16:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
                     return _integerElement;
                 case TypeCode.Single:
                 case TypeCode.Double:
