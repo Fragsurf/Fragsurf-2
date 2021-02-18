@@ -145,6 +145,10 @@ namespace Fragsurf.Shared
 
         public void WriteConfig()
         {
+            if(_config == null || _config.SectionCount == 0)
+            {
+                return;
+            }
             var path = GetConfigPath();
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             _config.SaveToFile(path);
