@@ -11,9 +11,9 @@ namespace Fragsurf.UI
     public class Modal_Clans : UGuiModal
     {
 
-        [ConVar("clans.channels", "", ConVarFlags.UserSetting)]
+        [ConVar("clans.channels", "", ConVarFlags.UserSetting | ConVarFlags.UserSettingHidden)]
         public string Channels { get; set; } = string.Empty;
-        [ConVar("clans.default", "", ConVarFlags.UserSetting)]
+        [ConVar("clans.default", "", ConVarFlags.UserSetting | ConVarFlags.UserSettingHidden)]
         public ulong DefaultChannel { get; set; }
 
         [SerializeField]

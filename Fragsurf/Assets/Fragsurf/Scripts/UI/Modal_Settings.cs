@@ -54,7 +54,7 @@ namespace Fragsurf.UI
 
         private void CreatePages()
         {
-            var userSettings = DevConsole.GetVariablesWithFlags(ConVarFlags.UserSetting);
+            var userSettings = DevConsole.GetVariablesWithFlags(ConVarFlags.UserSetting, ConVarFlags.UserSettingHidden);
             var userSettingCategories = new List<string>();
 
             foreach (var cmd in userSettings)

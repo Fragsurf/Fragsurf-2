@@ -169,7 +169,7 @@ namespace Fragsurf
             return _entries[name][0].Flags.HasFlag(flags);
         }
 
-        public static List<string> GetVariablesWithFlags(ConVarFlags flags)
+        public static List<string> GetVariablesWithFlags(ConVarFlags flags, ConVarFlags exclude = ConVarFlags.None)
         {
             var result = new List<string>();
             foreach(var kvp in _entries)
@@ -179,6 +179,10 @@ namespace Fragsurf
                     if(entry.Flags.HasFlag(flags)
                         && entry.GetType().GetGenericTypeDefinition() == typeof(DevConsoleVariable<>))
                     {
+                        if(exclude != ConVarFlags.None && entry.Flags.HasFlag(exclude))
+                        {
+                            continue;
+                        }
                         result.Add(entry.Name);
                     }
                 }
