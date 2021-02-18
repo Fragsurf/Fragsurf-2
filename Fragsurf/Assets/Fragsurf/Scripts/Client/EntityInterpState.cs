@@ -1,7 +1,7 @@
 ﻿using Fragsurf.Shared;
 using Fragsurf.Utility;
 
-namespace Fragsurf.Client.Interpolation
+namespace Fragsurf.Client
 {
     public class EntityInterpState
     {

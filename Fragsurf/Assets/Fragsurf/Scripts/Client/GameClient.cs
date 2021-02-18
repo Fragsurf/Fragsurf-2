@@ -1,5 +1,4 @@
-using Fragsurf.Client.Interpolation;
-using Fragsurf.Maps;
+﻿using Fragsurf.Maps;
 using Fragsurf.Shared;
 using UnityEngine;
 using UnityEngine.SceneManagement;

@@ -3,7 +3,7 @@ using UnityEngine;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 
-namespace Fragsurf.Client.Interpolation
+namespace Fragsurf.Client
 {
     public class EntityInterpolator : FSClientScript
     {
