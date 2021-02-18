@@ -1,4 +1,4 @@
-using ModTool;
+﻿using ModTool;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +19,7 @@ public class TestMod : MonoBehaviour
         {
             obj.scenes[0].Load();
         };
-        obj.Load();
+	    obj.Load();
     }
 
     // Update is called once per frame
