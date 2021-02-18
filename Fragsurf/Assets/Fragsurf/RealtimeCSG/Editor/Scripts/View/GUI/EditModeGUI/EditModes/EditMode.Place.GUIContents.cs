@@ -48,8 +48,8 @@ namespace RealtimeCSG
 																			  "is set to 'Center'.");
 
 		static readonly GUIContent		PivotCenterContent		= new GUIContent("Pivot Center");
-		static readonly GUIContent		RotationCenterContent	= new GUIContent("Rotation Center");
-		static readonly GUIContent		MoveOffsetContent		= new GUIContent("Move Offset");
+		static readonly GUIContent		RotationCenterContent	= new GUIContent("Rotate By");
+		static readonly GUIContent		MoveOffsetContent		= new GUIContent("Move By");
 							
 		static readonly GUILayoutOption[]	MaxWidth150			= new GUILayoutOption[] { GUILayout.Width(80) };
 

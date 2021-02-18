@@ -288,6 +288,7 @@ namespace RealtimeCSG
             }
         }
 
+        static public bool DefaultMoveLocally = true;
         static public Vector3 DefaultMoveOffset = Vector3.zero;
         static public Vector3 DefaultRotateOffset = Vector3.zero;
 
