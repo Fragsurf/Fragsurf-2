@@ -1,8 +1,10 @@
+using Fragsurf.DataEditor;
 using System;
 using UnityEngine;
 
 namespace Fragsurf.Shared
 {
+    [DataEditor]
     [CreateAssetMenu(fileName = "Revolver Equippable", menuName = "Fragsurf/Revolver Equippable", order = 2)]
     public class RevolverEquippableData : GunEquippableData
     {

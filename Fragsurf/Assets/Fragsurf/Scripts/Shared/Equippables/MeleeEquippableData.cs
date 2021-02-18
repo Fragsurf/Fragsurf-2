@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Fragsurf.Shared
 {
+    [DataEditor.DataEditor]
     [CreateAssetMenu(fileName = "Melee Equippable", menuName = "Fragsurf/Melee Equippable", order = 2)]
     public class MeleeEquippableData : BaseEquippableData
     {

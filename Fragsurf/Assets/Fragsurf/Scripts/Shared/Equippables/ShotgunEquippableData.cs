@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Fragsurf.Shared
 {
+    [DataEditor.DataEditor]
     [CreateAssetMenu(fileName = "Shotgun Equippable", menuName = "Fragsurf/Shotgun Equippable", order = 2)]
     public class ShotgunEquippableData : GunEquippableData
     {
