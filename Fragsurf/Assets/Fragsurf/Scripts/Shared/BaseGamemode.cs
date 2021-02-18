@@ -32,7 +32,6 @@ namespace Fragsurf.Shared
             }
 
             _game = game;
-            Directory.CreateDirectory(GetDataDirectory());
             _Load(game);
 
             InjectComponents();
