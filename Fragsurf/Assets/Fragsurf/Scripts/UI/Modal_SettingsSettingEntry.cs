@@ -47,6 +47,11 @@ namespace Fragsurf.UI
         private string _originalValue;
         private SettingElement _settingElement;
 
+        protected override bool ContainsSearch(string input)
+        {
+            return (_label.text + _description.text).IndexOf(input, StringComparison.OrdinalIgnoreCase) != -1;
+        }
+
         public override void LoadData(string settingName)
         {
             SettingName = settingName;

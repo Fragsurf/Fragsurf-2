@@ -58,6 +58,11 @@ namespace Fragsurf.UI
             }
         }
 
+        protected override bool ContainsSearch(string input)
+        {
+            return _name.text.IndexOf(input, StringComparison.OrdinalIgnoreCase) != -1;
+        }
+
     }
 }
 
