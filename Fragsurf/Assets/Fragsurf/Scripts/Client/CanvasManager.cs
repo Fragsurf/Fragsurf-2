@@ -20,6 +20,7 @@ namespace Fragsurf.Client
             Modal_ColorPicker.Identifier,
             Modal_Dialog.Identifier,
             Modal_Perf.Identifier,
+            "Browser"
         };
 
         protected override void _Start()
