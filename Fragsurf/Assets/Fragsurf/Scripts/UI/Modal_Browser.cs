@@ -100,6 +100,11 @@ namespace Fragsurf.UI
 
         private void Update()
         {
+            if(!IsOpen || !SteamClient.IsValid)
+            {
+                return;
+            }
+
             Vector3[] corners = new Vector3[4];
             _browserImage.GetComponent<RectTransform>().GetWorldCorners(corners);
             var sz = corners[2] - corners[0];
@@ -205,7 +210,6 @@ namespace Fragsurf.UI
 
         private void SteamHTMLSurface_OnFinishedLoading(Browser browser, string url, string arg3) 
         {
-            Debug.Log("Loaded: " + url);
             if (browser.Handle != _browser.Handle)
             {
                 return;

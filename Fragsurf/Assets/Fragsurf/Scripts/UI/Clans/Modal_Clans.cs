@@ -25,6 +25,9 @@ namespace Fragsurf.UI
         private SteamId _clanChatId;
         private Clan _activeClan;
 
+        public Clan ActiveClan => _activeClan;
+        public SteamId ActiveClanChatId => _clanChatId;
+
         private void Start()
         {
             _clanChatEntryTemplate = gameObject.GetComponentInChildren<ClanChatEntry>();
@@ -187,7 +190,8 @@ namespace Fragsurf.UI
                 }
                 _clanChatEntryTemplate.Clear();
                 StopLoadingHistory();
-                _chatHistoryCoroutine = StartCoroutine(LoadChatHistory(messageId, clanChatId));
+                //_chatHistoryCoroutine = StartCoroutine(LoadChatHistory(messageId, clanChatId));
+                LoadChatHistory(messageId, clanChatId);
                 return;
             }
 
@@ -212,7 +216,7 @@ namespace Fragsurf.UI
         private List<ClanChatEntryData> _pendingChats = new List<ClanChatEntryData>();
         private Coroutine _chatHistoryCoroutine;
         private bool _loadingHistory;
-        private IEnumerator LoadChatHistory(int startId, SteamId clanChatId)
+        private void LoadChatHistory(int startId, SteamId clanChatId)
         {
             _loadingHistory = true;
 
@@ -252,7 +256,7 @@ namespace Fragsurf.UI
                 {
                     _clanChatEntryTemplate.Append(chatData);
                 }
-                yield return 0;
+                //yield return 0;
             }
 
             _loadingHistory = false;

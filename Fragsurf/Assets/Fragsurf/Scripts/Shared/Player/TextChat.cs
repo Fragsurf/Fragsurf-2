@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Fragsurf.Shared.Packets;
-using Fragsurf.Client;
 
 namespace Fragsurf.Shared.Player
 {
     public class TextChat : FSSharedScript
     {
-        public event Action<ChatMessage, string, string, bool> OnMessageReceived;
+        public event Action<ChatMessage> OnMessageReceived;
 
         public static string ServerName = "[Server]";
         public char CommandChar = '/';
@@ -59,18 +58,26 @@ namespace Fragsurf.Shared.Player
                     }
                 }
 
-                OnMessageReceived?.Invoke(chatMessage, chatMessage.Name, chatMessage.Message, chatMessage.ClientIndex == -1);
+                OnMessageReceived?.Invoke(chatMessage);
             }
         }
 
         protected override void OnPlayerIntroduced(IPlayer player)
         {
-            OnMessageReceived?.Invoke(null, ServerName, "Player " + player.DisplayName + " has joined the game", false);
+            OnMessageReceived?.Invoke(new ChatMessage()
+            {
+                Message = $"Player {player.DisplayName} has joined the game.",
+                Name = ServerName
+            });
         }
 
         protected override void OnPlayerDisconnected(IPlayer player)
         {
-            OnMessageReceived?.Invoke(null, ServerName, "Player " + player.DisplayName + " has disconnected", false);
+            OnMessageReceived?.Invoke(new ChatMessage()
+            {
+                Message = $"Player {player.DisplayName} has disconnected.",
+                Name = ServerName
+            });
         }
 
         public void MessagePlayer(IPlayer player, string message)
@@ -94,7 +101,11 @@ namespace Fragsurf.Shared.Player
 
         public void PrintChat(string name, string message)
         {
-            OnMessageReceived?.Invoke(null, name, message, true);
+            OnMessageReceived?.Invoke(new ChatMessage()
+            {
+                Message = message,
+                Name = name
+            });
         }
 
         private void ParseCommand(IPlayer player, string message)
