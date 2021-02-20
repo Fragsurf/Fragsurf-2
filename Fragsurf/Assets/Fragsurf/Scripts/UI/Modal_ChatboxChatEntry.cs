@@ -30,15 +30,17 @@ namespace Fragsurf.UI
         public override void LoadData(Modal_ChatboxChatEntryData data)
         {
             var name = $"{data.PlayerName} |";
+            var msg = data.Message;
 
             if (!string.IsNullOrEmpty(data.ClanTag))
             {
                 name = $"<color=yellow>[{data.ClanTag}]</color> {name}";
+                msg = $"<i>{msg}</i>";
             }
 
             _originalFadeDuration = _fadeDuration;
             _name.text = name;
-            _message.text = data.Message;
+            _message.text = msg;
             _chatbox.OnOpened.AddListener(OnChatboxOpened);
             _chatbox.OnClosed.AddListener(OnChatboxClosed);
         }

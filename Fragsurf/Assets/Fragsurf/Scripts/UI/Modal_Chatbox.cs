@@ -23,6 +23,10 @@ namespace Fragsurf.UI
         private GameObject[] _hideOnClose;
         [SerializeField]
         private ScrollRect _scrollRect;
+        [SerializeField]
+        private Toggle _enableClanChatToggle;
+        [SerializeField]
+        private GameObject _clanChatHint;
 
         private TextChat _textChat;
         private Modal_ChatboxChatEntry _chatTemplate;
@@ -33,6 +37,8 @@ namespace Fragsurf.UI
             _chatTemplate = gameObject.GetComponentInChildren<Modal_ChatboxChatEntry>();
             _chatTemplate.gameObject.SetActive(false);
             _input.onSubmit.AddListener(OnSubmit);
+            _enableClanChatToggle.onValueChanged.AddListener(ToggleClanChat);
+            ToggleClanChat(false);
             SetSendToClan(false);
             HookTextChat();
 
@@ -48,12 +54,12 @@ namespace Fragsurf.UI
 
         private void SteamFriends_OnClanChatMessage(SteamId clanChatId, Friend friend, int msgId, string msgType, string msg)
         {
-            if (!UGuiManager.Instance)
+            if (!UGuiManager.Instance || !_enableClanChatToggle.isOn || msg == "__history__")
             {
                 return;
             }
             var clans = UGuiManager.Instance.Find<Modal_Clans>();
-            if (!clans || clanChatId != clans.ActiveClanChatId || msg == "__history__")
+            if (!clans || clanChatId != clans.ActiveClanChatId)
             {
                 return;
             }
@@ -98,16 +104,26 @@ namespace Fragsurf.UI
                 HookTextChat();
             }
 
-            if(IsOpen && Input.GetKeyDown(KeyCode.Tab))
+            if(IsOpen && Input.GetKeyDown(KeyCode.Tab) && _enableClanChatToggle.isOn)
             {
                 SetSendToClan(!_sendToClan);
             }
         }
 
+        private void ToggleClanChat(bool value)
+        {
+            if (!value)
+            {
+                SetSendToClan(false);
+            }
+            _clanChatHint.SetActive(value);
+            StartCoroutine(AfterOpen());
+        }
+
         private void SetSendToClan(bool sendToClan)
         {
             _sendToClan = sendToClan;
-            _targetChannel.text = sendToClan ? "Clan" : "Game";
+            _targetChannel.text = sendToClan ? "[Clan]" : "[Game]";
             _targetChannel.transform.parent.gameObject.RebuildLayout();
         }
 
