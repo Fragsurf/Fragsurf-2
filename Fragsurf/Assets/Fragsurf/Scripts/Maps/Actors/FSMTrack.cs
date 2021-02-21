@@ -1,6 +1,5 @@
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
-using HighlightPlus;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -120,45 +119,13 @@ namespace Fragsurf.Actors
         public string TrackName => _trackName;
         public FSMTrackType TrackType => _trackType;
 
+        public FSMTrackLinear LinearData => _linearData;
+        public FSMTrackStage StageData => _stageData;
+        public FSMTrackBonus BonusData => _bonusData;
+
         private void OnDestroy()
         {
             _runDatas.Clear();
-        }
-
-        private void Highlight(HighlightProfile profile, params FSMTrigger[] triggers)
-        {
-            if(profile == null || triggers == null || triggers.Length == 0)
-            {
-                Debug.LogError("Failed to highlight triggers");
-                return;
-            }
-            var renderers = new List<Renderer>();
-            foreach(var t in triggers)
-            {
-                if(t.TryGetComponent(out Renderer r))
-                {
-                    renderers.Add(r);
-                }
-            }
-            if(renderers.Count == 0)
-            {
-                return;
-            }
-            var st = gameObject.AddComponent<HighlightEffect>();
-            st.ProfileLoad(profile);
-            st.ignoreObjectVisibility = true;
-            st.SetTargets(transform, renderers.ToArray());
-            st.highlighted = true;
-        }
-
-        private void HighlightLinear()
-        {
-            var startProfile = Resources.Load<HighlightProfile>("Misc/Start Zone Highlight");
-            var endProfile = Resources.Load<HighlightProfile>("Misc/End Zone Highlight");
-            var cpProfile = Resources.Load<HighlightProfile>("Misc/Checkpoint Zone Highlight");
-            Highlight(startProfile, _linearData.StartTrigger);
-            Highlight(endProfile, _linearData.EndTrigger);
-            Highlight(cpProfile, _linearData.Checkpoints);
         }
 
         private void Start()
@@ -181,7 +148,6 @@ namespace Fragsurf.Actors
                             EnterLinearCheckpoint(cp, ent);
                         });
                     }
-                    HighlightLinear();
                     break;
                 case FSMTrackType.Bonus:
                     if (!_bonusData.IsValid())
