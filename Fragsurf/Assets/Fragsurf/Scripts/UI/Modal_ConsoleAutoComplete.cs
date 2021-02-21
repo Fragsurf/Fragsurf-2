@@ -71,7 +71,7 @@ namespace Fragsurf.UI
 
         private IEnumerator MoveToEndOfInput()
         {
-            yield return new WaitForEndOfFrame();
+            yield return 0;
             _input.MoveToEndOfLine(false, false);
         }
 

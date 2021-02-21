@@ -1,7 +1,6 @@
 using Fragsurf.DataEditor;
+using Fragsurf.UI;
 using Fragsurf.Utility;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fragsurf.Shared
@@ -16,6 +15,8 @@ namespace Fragsurf.Shared
 
         [ClassExtends(typeof(BaseGamemode))]
         public ClassTypeReference GamemodeType;
+
+        public GameObject[] InstantiateOnLoad;
 
     }
 }

@@ -17,6 +17,7 @@ MonoBehaviour:
     scenePath: Assets/Fragsurf/Content/Scenes/Main Menu.unity
   DefaultGamemodes:
   - {fileID: 11400000, guid: 25a4f849322545e40a0b6a7f99407729, type: 2}
+  - {fileID: 11400000, guid: 245d9bbacf27c614badced207381308b, type: 2}
   BloodSplash: {fileID: 0}
   WaterSplash: {fileID: 0}
   FootstepSplash: {fileID: 0}

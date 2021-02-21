@@ -83,6 +83,7 @@ namespace Fragsurf.Shared
             AddFSComponent<FrameInterpolator>();
             AddFSComponent<VoiceChat>();
             AddFSComponent<TextChat>();
+            AddFSComponent<ChatCommands>();
             AddFSComponent<SettingReplicator>();
             AddFSComponent<FileTransfer>();
             AddFSComponent<SharedUserPlugins>();

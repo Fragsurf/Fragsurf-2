@@ -26,6 +26,12 @@ namespace Fragsurf.Shared
             Game.EntityManager.OnHumanTrigger += OnHumanTrigger;
             Game.GameLoader.PreGameLoaded += OnPreGameLoaded;
             Game.GameLoader.GameLoaded += OnGameLoaded;
+
+            var chatCmds = Game.Get<ChatCommands>();
+            if (chatCmds)
+            {
+                chatCmds.Register(this);
+            }
         }
 
         protected override void _Unhook()
@@ -47,6 +53,12 @@ namespace Fragsurf.Shared
             Game.EntityManager.OnHumanTrigger -= OnHumanTrigger;
             Game.GameLoader.PreGameLoaded -= OnPreGameLoaded;
             Game.GameLoader.GameLoaded -= OnGameLoaded;
+
+            var chatCmds = Game.Get<ChatCommands>();
+            if (chatCmds)
+            {
+                chatCmds.UnRegister(this);
+            }
         }
 
         protected virtual void OnGameLoaded() { }

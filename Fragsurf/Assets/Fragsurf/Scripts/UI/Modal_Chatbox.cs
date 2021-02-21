@@ -7,6 +7,7 @@ using System.Collections;
 using Fragsurf.Utility;
 using UnityEngine.UI;
 using Steamworks;
+using System.Linq;
 
 namespace Fragsurf.UI
 {
@@ -30,13 +31,17 @@ namespace Fragsurf.UI
 
         private TextChat _textChat;
         private Modal_ChatboxChatEntry _chatTemplate;
+        private Modal_ChatboxAutoCompleteEntry _autoCompleteTemplate;
         private bool _sendToClan;
 
         private void Start()
         {
             _chatTemplate = gameObject.GetComponentInChildren<Modal_ChatboxChatEntry>();
             _chatTemplate.gameObject.SetActive(false);
+            _autoCompleteTemplate = gameObject.GetComponentInChildren<Modal_ChatboxAutoCompleteEntry>();
+            _autoCompleteTemplate.gameObject.SetActive(false);
             _input.onSubmit.AddListener(OnSubmit);
+            _input.onValueChanged.AddListener(OnInputChanged);
             _enableClanChatToggle.onValueChanged.AddListener(ToggleClanChat);
             ToggleClanChat(false);
             SetSendToClan(false);
@@ -50,6 +55,44 @@ namespace Fragsurf.UI
             base.OnDestroy();
 
             SteamFriends.OnClanChatMessage -= SteamFriends_OnClanChatMessage;
+        }
+
+        private void OnInputChanged(string value)
+        {
+            _autoCompleteTemplate.Clear();
+
+            var cl = FSGameLoop.GetGameInstance(false);
+            var commands = cl.Get<ChatCommands>().FindCommandsStartingWith(value);
+
+            if (string.IsNullOrWhiteSpace(value)
+                || value[0] != '/'
+                || commands.Count == 0)
+            {
+                return;
+            }
+
+            foreach(var cmd in commands)
+            {
+                var firstCommand = cmd.Attribute.Commands.First();
+                _autoCompleteTemplate.Append(new Modal_ChatboxAutoCompleteEntryData()
+                {
+                    Command = firstCommand,
+                    Description = cmd.Attribute.Description,
+                    OnClick = () => 
+                    {
+                        _input.text = $"/{firstCommand} ";
+                        StartCoroutine(MoveToEndOfInput());
+                    }
+                });
+            }
+        }
+
+        private IEnumerator MoveToEndOfInput()
+        {
+            yield return 0;
+            _input.ActivateInputField();
+            yield return 0;
+            _input.MoveToEndOfLine(false, false);
         }
 
         private void SteamFriends_OnClanChatMessage(SteamId clanChatId, Friend friend, int msgId, string msgType, string msg)

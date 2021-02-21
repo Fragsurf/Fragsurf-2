@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -31,12 +32,19 @@ namespace Fragsurf.Shared
 
         public bool LoadGamemode(string gamemodeName = null)
         {
-            var resource = Resources.Load<GamemodeData>(gamemodeName);
+            var resource = GameData.Instance.DefaultGamemodes
+                .FirstOrDefault(x => x.Name.Equals(gamemodeName, StringComparison.OrdinalIgnoreCase));
+
             if (!resource)
             {
-                Debug.LogError("Missing gamemode data: " + gamemodeName);
-                return false;
+                resource = Resources.Load<GamemodeData>(gamemodeName);
+                if (!resource)
+                {
+                    Debug.LogError("Missing gamemode data: " + gamemodeName);
+                    return false;
+                }
             }
+
             return LoadGamemode(resource);
         }
 

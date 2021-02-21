@@ -111,7 +111,7 @@ namespace Fragsurf.Shared.Player
         private void ParseCommand(IPlayer player, string message)
         {
             var args = DevConsole.ParseArguments(message.Remove(0, 1), ' ', '"').ToArray();
-            Game.PlayerManager.RaiseChatCommand(player, args);
+            Game.PlayerManager.RaiseChatCommand(player, args); 
         }
 
         private ChatMessage GetChatPacket(string message)

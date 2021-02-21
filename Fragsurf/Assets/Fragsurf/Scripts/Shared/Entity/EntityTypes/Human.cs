@@ -1,4 +1,5 @@
 using Fragsurf.Actors;
+using Fragsurf.Maps;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
 using System.Collections.Generic;
@@ -85,6 +86,15 @@ namespace Fragsurf.Shared.Entity
             MovementController?.ProcessInput(cmd);
             MovementController?.RunCommand(cmd.Fields, prediction);
             EntityGameObject.SendMessage("OnHumanRunCommand");
+        }
+
+        public void Spawn(int teamNumber = 0)
+        {
+            Map.GetSpawnPoint(out Vector3 pos, out Vector3 angles, teamNumber);
+            Origin = pos;
+            Angles = angles;
+            Velocity = Vector3.zero;
+            BaseVelocity = Vector3.zero;
         }
 
         private void OnKilled()

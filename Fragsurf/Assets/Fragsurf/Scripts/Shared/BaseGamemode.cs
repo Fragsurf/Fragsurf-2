@@ -127,7 +127,7 @@ namespace Fragsurf.Shared
             {
                 return (T)Activator.CreateInstance(typeToInstantiate);
             }
-            catch { return default; }
+            catch(Exception e) { Debug.LogError(e.Message); return default; }
         }
 
         public string GetDataDirectory()
@@ -186,5 +186,6 @@ namespace Fragsurf.Shared
         {
         }
     }
+
 }
 
