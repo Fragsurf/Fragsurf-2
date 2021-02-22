@@ -112,15 +112,6 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _previousYaw = human.Angles.y;
         }
 
-        public override byte[] Serialize()
-        {
-            return null;
-        }
-
-        public override void Deserialize(byte[] data)
-        {
-        }
-
     }
 }
 
