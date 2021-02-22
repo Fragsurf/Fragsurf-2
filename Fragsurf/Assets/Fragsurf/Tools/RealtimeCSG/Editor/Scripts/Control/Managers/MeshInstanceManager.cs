@@ -946,6 +946,7 @@ namespace InternalRealtimeCSG
             var lightmapGenerationTime = EditorApplication.timeSinceStartup;
             MeshUtility.Optimize(instance.SharedMesh);
             Unwrapping.GenerateSecondaryUVSet(instance.SharedMesh, param);
+            //xatlas.Unwrap(instance.SharedMesh, param);
             lightmapGenerationTime = EditorApplication.timeSinceStartup - lightmapGenerationTime;
 
             Debug.Log(//"\tMesh optimizing in " + (optimizeTime * 1000) + " ms\n"+
