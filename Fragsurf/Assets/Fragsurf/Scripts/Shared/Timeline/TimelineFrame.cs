@@ -12,6 +12,10 @@ namespace Fragsurf.Shared
         public float Time;
         public int Jumps;
         public int Strafes;
+        public int GoodSync;
+        public int GoodSyncVel;
+        public int TotalSync;
+        public int FinalSync;
 
         public string FormattedTime() => TimeSpan.FromSeconds(Time).ToString(@"mm\:ss\:fff");
     }

@@ -18,7 +18,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private TMP_Text _trackName;
 
         private string _notStartedText = "Timer not started";
-        private string _format = "<color=green>{time}</color>\n<color=yellow>{speed} u/s</color>\n{jumps} jumps\n{strafes} strafes";
+        private string _format = "<color=green>{time}</color>\n<color=yellow>{speed} u/s</color>\n{jumps} jumps\n{strafes} strafes ({sync}%)";
 
         private void Update()
         {
@@ -64,7 +64,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             var txt = _format.Replace("{time}", frame.FormattedTime())
                 .Replace("{speed}", frame.Velocity.ToString())
                 .Replace("{jumps}", frame.Jumps.ToString())
-                .Replace("{strafes}", frame.Strafes.ToString());
+                .Replace("{strafes}", frame.Strafes.ToString())
+                .Replace("{sync}", frame.FinalSync.ToString());
 
             _centerHud.text = txt;            
         }

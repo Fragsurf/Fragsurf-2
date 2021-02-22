@@ -25,8 +25,11 @@ namespace Fragsurf.Shared
         public int StartTick { get; private set; }
         public TimelineFrame CurrentFrame { get; private set; }
 
+        private float _previousYaw;
+
         public void Reset()
         {
+            _previousYaw = 0f;
             Checkpoints.Clear();
             Frames.Clear();
             CurrentFrame = default;
@@ -50,14 +53,28 @@ namespace Fragsurf.Shared
 
             Frames.Add(CurrentFrame);
 
-            var jumps = CurrentFrame.Jumps;
-            var strafes = CurrentFrame.Strafes;
+            var vel = Human.Velocity;
+            vel.y = 0;
+            var newFrame = CurrentFrame;
+            newFrame.Tick++;
+            newFrame.Position = Human.Origin;
+            newFrame.Angles = Human.Angles;
+            newFrame.Time = CurrentFrame.Time + Time.fixedDeltaTime;
+            newFrame.Velocity = (int)(vel.magnitude / SurfController.HammerScale);
 
-            if(Human.MovementController is DefaultMovementController move)
+            CalculateSync(ref newFrame);
+            CheckJumpsAndStrafes(ref newFrame);
+
+            CurrentFrame = newFrame;
+        }
+
+        private void CheckJumpsAndStrafes(ref TimelineFrame frame)
+        {
+            if (Human.MovementController is DefaultMovementController move)
             {
                 if (move.MoveData.JustJumped)
                 {
-                    jumps++;
+                    frame.Jumps++;
                 }
 
                 var nb = move.MoveData.Buttons;
@@ -66,23 +83,60 @@ namespace Fragsurf.Shared
                 if ((nb.HasFlag(InputActions.MoveLeft) && !ob.HasFlag(InputActions.MoveLeft))
                     || (nb.HasFlag(InputActions.MoveRight) && !ob.HasFlag(InputActions.MoveRight)))
                 {
-                    strafes++;
+                    frame.Strafes++;
+                }
+            }
+        }
+
+        private void CalculateSync(ref TimelineFrame frame)
+        {
+            if(!(Human.MovementController is DefaultMovementController move))
+            {
+                return;
+            }
+
+            var nb = move.MoveData.Buttons;
+
+            if (move.GroundObject == null)
+            {
+                var angleDiff = move.MoveData.ViewAngles.y - _previousYaw;
+                if (angleDiff > 180)
+                    angleDiff -= 360;
+                else if (angleDiff < -180)
+                    angleDiff += 360;
+
+                // Add to good sync if client buttons match up
+                if (angleDiff < 0)
+                {
+                    frame.TotalSync++;
+                    if (nb.HasFlag(InputActions.MoveLeft) && !nb.HasFlag(InputActions.MoveRight))
+                    {
+                        frame.GoodSync++;
+                    }
+                    if (move.MoveData.Velocity.z < 0)
+                    {
+                        frame.GoodSyncVel++;
+                    }
+                }
+                else if (angleDiff > 0)
+                {
+                    frame.TotalSync++;
+                    if (nb.HasFlag(InputActions.MoveRight) && !nb.HasFlag(InputActions.MoveLeft))
+                    {
+                        frame.GoodSync++;
+                    }
+                    if (move.MoveData.Velocity.z > 0)
+                    {
+                        frame.GoodSyncVel++;
+                    }
                 }
             }
 
-            var vel = Human.Velocity;
-            vel.y = 0;
+            frame.FinalSync = frame.TotalSync != 0
+                ? (int)(((float)frame.GoodSync / frame.TotalSync) * 100f)
+                : 100;
 
-            CurrentFrame = new TimelineFrame()
-            {
-                Tick = CurrentFrame.Tick + 1,
-                Angles = Human.Angles,
-                Position = Human.Origin,
-                Time = CurrentFrame.Time + Time.fixedDeltaTime,
-                Strafes = strafes,
-                Jumps = jumps,
-                Velocity = (int)(vel.magnitude / SurfController.HammerScale)
-            };
+            _previousYaw = Human.Angles.y;
         }
 
     }
