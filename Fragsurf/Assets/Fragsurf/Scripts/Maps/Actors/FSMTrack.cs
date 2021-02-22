@@ -23,8 +23,7 @@ namespace Fragsurf.Actors
 
         public bool IsValid()
         {
-            if(!StartTrigger
-                || !EndTrigger)
+            if(!StartTrigger || !EndTrigger)
             {
                 Debug.LogError("Track is invalid, missing a trigger!");
                 return false;
@@ -81,22 +80,30 @@ namespace Fragsurf.Actors
     public class FSMTrack : FSMActor
     {
 
-        public UnityEvent<Human, int, FSTimelineFrame> OnStage = new UnityEvent<Human, int, FSTimelineFrame>();
-        public UnityEvent<Human, int, FSTimelineFrame> OnCheckpoint = new UnityEvent<Human, int, FSTimelineFrame>();
-        public UnityEvent<Human, FSTimelineFrame> OnFinish = new UnityEvent<Human, FSTimelineFrame>();
-        public UnityEvent<Human> OnStart = new UnityEvent<Human>();
+        public UnityEvent<Human, int, RunData> OnStage = new UnityEvent<Human, int, RunData>();
+        public UnityEvent<Human, int, RunData> OnCheckpoint = new UnityEvent<Human, int, RunData>();
+        public UnityEvent<Human, RunData> OnFinish = new UnityEvent<Human, RunData>();
+        public UnityEvent<Human, RunData> OnStart = new UnityEvent<Human, RunData>();
 
-        private class RunData
+        public class RunData
         {
-            public Human Human;
-            public FSTimelineTrack Track;
+
+            public RunData(Human human, FSMTrack track)
+            {
+                FSMTrack = track;
+                Human = human;
+            }
+
+            public readonly FSMTrack FSMTrack;
+            public readonly Human Human;
+            public FSTimelineTrack TimelineTrack;
             public int Checkpoint = -1;
             public int Stage;
 
             public void Reset()
             {
                 Checkpoint = -1;
-                Track.Reset();
+                TimelineTrack.Reset();
             }
         }
 
@@ -138,6 +145,7 @@ namespace Fragsurf.Actors
                         Debug.LogError("Track is invalid: " + TrackName, gameObject);
                         return;
                     }
+                    _linearData.StartTrigger.OnTriggerEnter.AddListener(EnterStartZone);
                     _linearData.StartTrigger.OnTriggerExit.AddListener(ExitStartZone);
                     _linearData.EndTrigger.OnTriggerEnter.AddListener(EnterEndZone);
                     for(int i = 0; i < _linearData.Checkpoints.Length; i++)
@@ -155,6 +163,7 @@ namespace Fragsurf.Actors
                         Debug.LogError("Track is invalid: " + TrackName, gameObject);
                         return;
                     }
+                    _bonusData.StartTrigger.OnTriggerEnter.AddListener(EnterStartZone);
                     _bonusData.StartTrigger.OnTriggerEnter.AddListener(ExitStartZone);
                     _bonusData.EndTrigger.OnTriggerEnter.AddListener(EnterEndZone);
                     break;
@@ -182,6 +191,7 @@ namespace Fragsurf.Actors
                             }
                         });
                     }
+                    _stageData.Stages[0].StartTrigger.OnTriggerEnter.AddListener(EnterStartZone);
                     _stageData.Stages[0].StartTrigger.OnTriggerExit.AddListener(ExitStartZone);
                     _stageData.Stages[_stageData.Stages.Length - 1].EndTrigger.OnTriggerEnter.AddListener(EnterEndZone);
                     break;
@@ -239,6 +249,20 @@ namespace Fragsurf.Actors
             return false;
         }
 
+        private void EnterStartZone(NetEntity ent)
+        {
+            if (!(ent is Human hu))
+            {
+                return;
+            }
+
+            if (TryGetRunData(hu, out RunData runData))
+            {
+                runData.Reset();
+                runData.TimelineTrack.Live = false;
+            }
+        }
+
         private void ExitStartZone(NetEntity ent)
         {
             if (!(ent is Human hu))
@@ -250,41 +274,40 @@ namespace Fragsurf.Actors
 
             if(!TryGetRunData(hu, out RunData runData))
             {
-                runData = new RunData()
+                runData = new RunData(hu, this)
                 {
                     Checkpoint = -1,
-                    Human = hu,
-                    Track = tl.CreateTrack(hu)
+                    TimelineTrack = tl.CreateTrack(hu)
                 };
                 _runDatas.Add(runData);
             }
             runData.Reset();
-            OnStart?.Invoke(hu);
+            OnStart?.Invoke(hu, runData);
         }
 
         private void EnterLinearCheckpoint(int idx, NetEntity ent)
         {
             if(!(ent is Human hu)
                 || !TryGetRunData(hu, out RunData runData)
-                || !runData.Track.Live)
+                || !runData.TimelineTrack.Live)
             {
                 return;
             }
             runData.Checkpoint = idx;
-            var frame = runData.Track.Checkpoint();
-            OnCheckpoint?.Invoke(hu, idx, frame);
+            var frame = runData.TimelineTrack.Checkpoint();
+            OnCheckpoint?.Invoke(hu, idx, runData);
         }
 
         private void EnterEndZone(NetEntity ent)
         {
             if (!(ent is Human hu)
                 || !TryGetRunData(hu, out RunData runData)
-                || !runData.Track.Live)
+                || !runData.TimelineTrack.Live)
             {
                 return;
             }
 
-            runData.Track.Stop();
+            runData.TimelineTrack.Stop();
 
             if(_trackType == FSMTrackType.Linear
                 && _linearData.Checkpoints.Length > 0
@@ -302,7 +325,7 @@ namespace Fragsurf.Actors
                 return;
             }
 
-            OnFinish?.Invoke(hu, runData.Track.CurrentFrame);
+            OnFinish?.Invoke(hu, runData);
         }
 
         private void Staged_ExitStart(int stage, Human hu)
@@ -312,11 +335,10 @@ namespace Fragsurf.Actors
             if (!TryGetStagedRunData(hu, stage, out RunData rd))
             {
                 var tl = hu.Game.Get<FSTimeline>();
-                rd = new RunData()
+                rd = new RunData(hu, this)
                 {
-                    Human = hu,
                     Stage = stage,
-                    Track = tl.CreateTrack(hu)
+                    TimelineTrack = tl.CreateTrack(hu)
                 };
                 _stageRunDatas.Add(rd);
             }
@@ -326,7 +348,7 @@ namespace Fragsurf.Actors
         private void Staged_EnterEnd(int stage, Human hu)
         {
             if (!TryGetStagedRunData(hu, stage, out RunData rd)
-                || !rd.Track.Live)
+                || !rd.TimelineTrack.Live)
             {
                 return;
             }
@@ -336,8 +358,8 @@ namespace Fragsurf.Actors
                 linearRunData.Checkpoint = stage;
             }
 
-            rd.Track.Stop();
-            OnStage?.Invoke(hu, stage, rd.Track.CurrentFrame);
+            rd.TimelineTrack.Stop();
+            OnStage?.Invoke(hu, stage, rd);
             _stageRunDatas.Remove(rd);
         }
 

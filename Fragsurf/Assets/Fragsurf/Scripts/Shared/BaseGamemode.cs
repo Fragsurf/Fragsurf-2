@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using SharpConfig;
 using UnityEngine;
 using System.Reflection;
+using Fragsurf.UI;
+using UnityEngine.UI;
 
 namespace Fragsurf.Shared
 {
@@ -15,7 +17,6 @@ namespace Fragsurf.Shared
 
         private Configuration _config;
         private FSGameLoop _game;
-        private GameObject _resource;
         private List<FSComponent> _addedComponents = new List<FSComponent>();
 
         public GamemodeData Data { get; set; }
@@ -43,10 +44,9 @@ namespace Fragsurf.Shared
 
             if (!game.IsHost)
             {
-                var resource = Resources.Load<GameObject>(Data.Name);
-                if (resource != null)
+                foreach(var obj in Data.InstantiateOnLoad)
                 {
-                    _resource = GameObject.Instantiate(resource, game.ObjectContainer.transform);
+                    GameObject.Instantiate(obj);
                 }
             }
         }
@@ -54,11 +54,6 @@ namespace Fragsurf.Shared
         public void Unload(FSGameLoop game)
         {
             _Unload(game);
-
-            if (_resource)
-            {
-                GameObject.Destroy(_resource);
-            }
 
             // unhook then destroy, to make sure we don't lose references
             foreach (var fs in _addedComponents)

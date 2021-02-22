@@ -18,6 +18,7 @@ namespace Fragsurf.UI
         private List<UGuiModal> _escapeStack = new List<UGuiModal>();
 
         public bool EscapeEnabled = true;
+        public Canvas Canvas => _mainCanvas;
 
         private void Awake()
         {

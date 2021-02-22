@@ -16,4 +16,5 @@ MonoBehaviour:
   Identifier: bhop
   GamemodeType:
     _classRef: Fragsurf.Gamemodes.Bunnyhop.Bunnyhop, Assembly-CSharp
-  InstantiateOnLoad: []
+  InstantiateOnLoad:
+  - {fileID: 2193102522733786373, guid: e63a0d73a6c50b04986c6c97a4b9ef02, type: 3}

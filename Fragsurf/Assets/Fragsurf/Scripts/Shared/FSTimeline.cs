@@ -1,6 +1,7 @@
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,7 +110,7 @@ namespace Fragsurf.Shared
                 Time = CurrentFrame.Time + Time.fixedDeltaTime,
                 Strafes = 0,
                 Jumps = 0,
-                Velocity = (int)(vel.magnitude * SurfController.HammerScale)
+                Velocity = (int)(vel.magnitude / SurfController.HammerScale)
             };
         }
 
@@ -124,6 +125,8 @@ namespace Fragsurf.Shared
         public float Time;
         public int Jumps;
         public int Strafes;
+
+        public string FormattedTime() => TimeSpan.FromSeconds(Time).ToString(@"mm\:ss\:fff");
     }
 
 }
