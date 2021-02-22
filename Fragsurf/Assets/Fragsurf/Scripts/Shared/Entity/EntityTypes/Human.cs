@@ -1,8 +1,6 @@
-using Fragsurf.Actors;
 using Fragsurf.Maps;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fragsurf.Shared.Entity
@@ -20,6 +18,7 @@ namespace Fragsurf.Shared.Entity
         public Human(FSGameLoop game) 
             : base(game)
         {
+            _autoTickTimeline = false;
         }
 
         public static Human Local { get; set; }
@@ -86,6 +85,11 @@ namespace Fragsurf.Shared.Entity
             MovementController?.ProcessInput(cmd);
             MovementController?.RunCommand(cmd.Fields, prediction);
             EntityGameObject.SendMessage("OnHumanRunCommand");
+
+            if(prediction || Game.IsHost)
+            {
+                Timeline?.Tick(this);
+            }
         }
 
         public void Spawn(int teamNumber = 0)

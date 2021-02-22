@@ -1,9 +1,10 @@
+using Fragsurf.Shared.Entity;
 using System;
 using UnityEngine;
 
-namespace Fragsurf.Shared
+namespace Fragsurf.Gamemodes.Bunnyhop
 {
-    public struct TimelineFrame
+    public struct BunnyhopTimelineFrame
     {
         public int Tick;
         public Vector3 Position;
@@ -20,3 +21,4 @@ namespace Fragsurf.Shared
         public string FormattedTime() => TimeSpan.FromSeconds(Time).ToString(@"mm\:ss\:fff");
     }
 }
+

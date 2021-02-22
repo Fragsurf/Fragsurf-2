@@ -1,76 +1,49 @@
+using Fragsurf.Actors;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Fragsurf.Shared
+namespace Fragsurf.Gamemodes.Bunnyhop
 {
-    public class Timeline
+    public class BunnyhopTimeline : GenericEntityTimeline<BunnyhopTimelineFrame>
     {
 
-        public Timeline(Human hu)
-        {
-            Recording = true;
-            Human = hu;
-            StartTick = hu.Game.CurrentTick;
-        }
-
-        public readonly Human Human;
-        public List<TimelineFrame> Frames = new List<TimelineFrame>();
-        public List<int> Checkpoints = new List<int>();
-
-        public bool Recording { get; set; }
-        public int StartTick { get; private set; }
-        public TimelineFrame CurrentFrame { get; private set; }
+        public readonly FSMTrack Track;
+        public int Checkpoint = 1;
+        public int Stage = 1;
+        public bool RunIsLive = true;
 
         private float _previousYaw;
 
-        public void Reset()
+        public BunnyhopTimelineFrame CurrentFrame => Frames.Count > 0 ? Frames[Frames.Count - 1] : default;
+
+        public BunnyhopTimeline(FSMTrack track)
         {
-            _previousYaw = 0f;
-            Checkpoints.Clear();
-            Frames.Clear();
-            CurrentFrame = default;
-            StartTick = Human.Game.CurrentTick;
-            Recording = true;
+            Track = track;
         }
 
-        public TimelineFrame Checkpoint()
+        protected override BunnyhopTimelineFrame GetFrame(NetEntity ent)
         {
-            var idx = Mathf.Max(Frames.Count - 1, 0);
-            Checkpoints.Add(idx);
-            return Frames[idx];
-        }
-
-        public void RunCommand()
-        {
-            if (!Recording)
-            {
-                return;
-            }
-
-            Frames.Add(CurrentFrame);
-
-            var vel = Human.Velocity;
+            var frame = CurrentFrame;
+            var hu = ent as Human;
+            var vel = hu.Velocity;
             vel.y = 0;
-            var newFrame = CurrentFrame;
-            newFrame.Tick++;
-            newFrame.Position = Human.Origin;
-            newFrame.Angles = Human.Angles;
-            newFrame.Time = CurrentFrame.Time + Time.fixedDeltaTime;
-            newFrame.Velocity = (int)(vel.magnitude / SurfController.HammerScale);
+            frame.Tick++;
+            frame.Position = ent.Origin;
+            frame.Angles = ent.Angles;
+            frame.Time += Time.fixedDeltaTime;
+            frame.Velocity = (int)(vel.magnitude / SurfController.HammerScale);
 
-            CalculateSync(ref newFrame);
-            CheckJumpsAndStrafes(ref newFrame);
+            CalculateSync(hu, ref frame);
+            CheckJumpsAndStrafes(hu, ref frame);
 
-            CurrentFrame = newFrame;
+            return frame;
         }
 
-        private void CheckJumpsAndStrafes(ref TimelineFrame frame)
+        private void CheckJumpsAndStrafes(Human human, ref BunnyhopTimelineFrame frame)
         {
-            if (Human.MovementController is DefaultMovementController move)
+            if (human.MovementController is DefaultMovementController move)
             {
                 if (move.MoveData.JustJumped)
                 {
@@ -88,9 +61,9 @@ namespace Fragsurf.Shared
             }
         }
 
-        private void CalculateSync(ref TimelineFrame frame)
+        private void CalculateSync(Human human, ref BunnyhopTimelineFrame frame)
         {
-            if(!(Human.MovementController is DefaultMovementController move))
+            if (!(human.MovementController is DefaultMovementController move))
             {
                 return;
             }
@@ -136,8 +109,18 @@ namespace Fragsurf.Shared
                 ? (int)(((float)frame.GoodSync / frame.TotalSync) * 100f)
                 : 100;
 
-            _previousYaw = Human.Angles.y;
+            _previousYaw = human.Angles.y;
+        }
+
+        public override byte[] Serialize()
+        {
+            return null;
+        }
+
+        public override void Deserialize(byte[] data)
+        {
         }
 
     }
 }
+
