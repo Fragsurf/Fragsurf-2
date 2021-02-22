@@ -5,6 +5,7 @@ using UnityEditor;
 using RealtimeCSG.Components;
 using InternalRealtimeCSG;
 using DTCommandPalette;
+using RealtimeCSG;
 
 public class LightmapShortcut
 {
@@ -49,6 +50,8 @@ public class LightmapShortcut
 
     private static void StartLightmapping(LightingSettings settings)
     {
+        Lightmapping.Clear();
+        Lightmapping.ClearLightingDataAsset();
         GenerateLightmapUVs();
         Lightmapping.lightingSettings = settings;
         if (Lightmapping.BakeAsync())
@@ -83,10 +86,7 @@ public class LightmapShortcut
 
     private static void GenerateLightmapUVs()
     {
-        foreach(var m in GameObject.FindObjectsOfType<CSGModel>())
-        {
-            MeshInstanceManager.GenerateLightmapUVsForModel(m);
-        }
+        CSGModelManager.BuildLightmapUvs(true);
     }
 
 }
