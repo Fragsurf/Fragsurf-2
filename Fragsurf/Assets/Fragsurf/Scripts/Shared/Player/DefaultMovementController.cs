@@ -33,7 +33,7 @@ namespace Fragsurf.Shared.Player
 
         public override void ExecuteMovement(UserCmd.CmdFields cmd)
         {
-            var oldBtns = MoveData.Buttons;
+            MoveData.OldButtons = MoveData.Buttons;
 
             Right = Quaternion.Euler(cmd.Angles) * Vector3.right;
             Forward = Quaternion.Euler(new Vector3(0, cmd.Angles.y, 0)) * Vector3.forward;
@@ -69,8 +69,6 @@ namespace Fragsurf.Shared.Player
             }
 
             _surfController.CalculateMovement(this, Human.Game.GameMovement.Config, Time.fixedDeltaTime);
-
-            MoveData.OldButtons = MoveData.Buttons;
 
             if (Human.Game.IsHost || Human.Local == Human)
             {

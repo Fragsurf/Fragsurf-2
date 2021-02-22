@@ -1,5 +1,6 @@
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
+using Fragsurf.Shared.Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,6 +50,26 @@ namespace Fragsurf.Shared
 
             Frames.Add(CurrentFrame);
 
+            var jumps = CurrentFrame.Jumps;
+            var strafes = CurrentFrame.Strafes;
+
+            if(Human.MovementController is DefaultMovementController move)
+            {
+                if (move.MoveData.JustJumped)
+                {
+                    jumps++;
+                }
+
+                var nb = move.MoveData.Buttons;
+                var ob = move.MoveData.OldButtons;
+
+                if ((nb.HasFlag(InputActions.MoveLeft) && !ob.HasFlag(InputActions.MoveLeft))
+                    || (nb.HasFlag(InputActions.MoveRight) && !ob.HasFlag(InputActions.MoveRight)))
+                {
+                    strafes++;
+                }
+            }
+
             var vel = Human.Velocity;
             vel.y = 0;
 
@@ -58,8 +79,8 @@ namespace Fragsurf.Shared
                 Angles = Human.Angles,
                 Position = Human.Origin,
                 Time = CurrentFrame.Time + Time.fixedDeltaTime,
-                Strafes = 0,
-                Jumps = 0,
+                Strafes = strafes,
+                Jumps = jumps,
                 Velocity = (int)(vel.magnitude / SurfController.HammerScale)
             };
         }
