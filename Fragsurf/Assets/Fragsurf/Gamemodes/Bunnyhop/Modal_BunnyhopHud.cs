@@ -1,6 +1,7 @@
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.UI;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,14 +61,16 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return;
             }
 
+            // todo: check garbage allocations here
             var frame = runState.Timeline.CurrentFrame;
-            var txt = _format.Replace("{time}", frame.FormattedTime())
+            var sb = new StringBuilder(_format);
+            sb.Replace("{time}", frame.FormattedTime())
                 .Replace("{speed}", frame.Velocity.ToString())
                 .Replace("{jumps}", frame.Jumps.ToString())
                 .Replace("{strafes}", frame.Strafes.ToString())
                 .Replace("{sync}", frame.FinalSync.ToString());
 
-            _centerHud.text = txt;            
+            _centerHud.text = sb.ToString();            
         }
 
     }
