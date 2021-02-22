@@ -19,7 +19,8 @@ namespace Fragsurf.Shared.Entity
 
         protected Vector3 _origin;
         protected Vector3 _angles;
-        protected bool _autoTickTimeline = true;
+        protected bool _autoRecordTimeline = true;
+        protected bool _autoReplayTimeline = true;
         private EntityGameObject _entityGameObject;
         private bool _firstTick = true;
 
@@ -128,10 +129,7 @@ namespace Fragsurf.Shared.Entity
                 EntityGameObject.OnTick?.Invoke();
             }
 
-            if (_autoTickTimeline)
-            {
-                Timeline?.Tick(this);
-            }
+            Tick_Timeline();
             
             _Tick();
         }

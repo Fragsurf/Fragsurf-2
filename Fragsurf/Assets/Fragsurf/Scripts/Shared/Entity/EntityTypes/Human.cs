@@ -18,7 +18,7 @@ namespace Fragsurf.Shared.Entity
         public Human(FSGameLoop game) 
             : base(game)
         {
-            _autoTickTimeline = false;
+            _autoRecordTimeline = false;
         }
 
         public static Human Local { get; set; }
@@ -86,9 +86,9 @@ namespace Fragsurf.Shared.Entity
             MovementController?.RunCommand(cmd.Fields, prediction);
             EntityGameObject.SendMessage("OnHumanRunCommand");
 
-            if(prediction || Game.IsHost)
+            if(TimelineMode == TimelineModes.Record && (prediction || Game.IsHost))
             {
-                Timeline?.Tick(this);
+                Timeline?.RecordTick(this);
             }
         }
 

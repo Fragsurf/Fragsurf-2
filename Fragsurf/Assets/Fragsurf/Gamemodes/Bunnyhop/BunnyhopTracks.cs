@@ -39,6 +39,16 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
 
             (hu.Timeline as BunnyhopTimeline).RunIsLive = false;
+
+            var data = hu.Timeline.Serialize();
+            var recreated = EntityTimeline.Deserialize<BunnyhopTimeline>(data);
+
+            if (Game.IsHost)
+            {
+                var dummy = new Human(Game);
+                Game.EntityManager.AddEntity(dummy);
+                dummy.Replay(recreated);
+            }
         }
 
         private void Track_OnStage(FSMTrack track, Human hu, int stage)

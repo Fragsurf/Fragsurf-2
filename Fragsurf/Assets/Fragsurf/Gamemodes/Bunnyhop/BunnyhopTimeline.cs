@@ -2,21 +2,29 @@ using Fragsurf.Actors;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
+using MessagePack;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
 {
+    [MessagePackObject]
     public class BunnyhopTimeline : GenericEntityTimeline<BunnyhopTimelineFrame>
     {
 
+        [IgnoreMember]
         public readonly FSMTrack Track;
+        [IgnoreMember]
         public int Checkpoint = 1;
+        [IgnoreMember]
         public int Stage = 1;
+        [IgnoreMember]
         public bool RunIsLive = true;
 
+        [IgnoreMember]
         private float _previousYaw;
 
-        public BunnyhopTimelineFrame CurrentFrame => Frames.Count > 0 ? Frames[Frames.Count - 1] : default;
+        public BunnyhopTimeline() { }
 
         public BunnyhopTimeline(FSMTrack track)
         {
@@ -25,7 +33,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         protected override BunnyhopTimelineFrame GetFrame(NetEntity ent)
         {
-            var frame = CurrentFrame;
+            var frame = LastFrame;
             var hu = ent as Human;
             var vel = hu.Velocity;
             vel.y = 0;
@@ -110,6 +118,12 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 : 100;
 
             _previousYaw = human.Angles.y;
+        }
+
+        protected override void ApplyFrame(NetEntity ent, BunnyhopTimelineFrame frame)
+        {
+            ent.Origin = frame.Position;
+            ent.Angles = frame.Angles;
         }
 
     }

@@ -98,11 +98,13 @@ namespace Fragsurf.Actors
             public readonly Human Human;
             public int Checkpoint = -1;
             public int Stage;
+            public bool Live = true;
 
             public void Reset()
             {
                 Checkpoint = -1;
                 Stage = 0;
+                Live = true;
             }
 
         }
@@ -293,7 +295,8 @@ namespace Fragsurf.Actors
         private void EnterEndZone(NetEntity ent)
         {
             if (!(ent is Human hu)
-                || !TryGetRunData(hu, out RunData runData))
+                || !TryGetRunData(hu, out RunData runData)
+                || !runData.Live)
             {
                 return;
             }
@@ -313,6 +316,8 @@ namespace Fragsurf.Actors
                 Debug.LogError("Missed a stage...");
                 return;
             }
+
+            runData.Live = false;
 
             OnFinish?.Invoke(hu);
         }
