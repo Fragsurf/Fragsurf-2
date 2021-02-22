@@ -32,24 +32,22 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return;
             }
 
-            var rd = cl.Get<BunnyhopTracks>().GetRunData(Human.Local);
-
-            if(rd != null)
+            if(cl.Get<BunnyhopTracks>().TryGetRunState(Human.Local, out BunnyhopTracks.RunState runState))
             {
-                switch (rd.FSMTrack.TrackType)
+                switch (runState.Track.TrackType)
                 {
                     case Actors.FSMTrackType.Linear:
-                        _trackName.text = $"CP #{rd.Checkpoint + 1}";
+                        _trackName.text = $"CP #{runState.Checkpoint}";
                         break;
                     case Actors.FSMTrackType.Bonus:
-                        _trackName.text = $"Bonus {rd.FSMTrack.TrackName}";
+                        _trackName.text = $"Bonus {runState.Track.TrackName}";
                         break;
                     case Actors.FSMTrackType.Staged:
-                        _trackName.text = $"Stage {rd.Stage + 1}";
+                        _trackName.text = $"Stage {runState.Stage}";
                         break;
                 }
 
-                if (!rd.TimelineTrack.Live)
+                if (!runState.Live)
                 {
                     _centerHud.text = _notStartedText;
                     return;
@@ -62,7 +60,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return;
             }
 
-            var frame = rd.TimelineTrack.CurrentFrame;
+            var frame = runState.Timeline.CurrentFrame;
             var txt = _format.Replace("{time}", frame.FormattedTime())
                 .Replace("{speed}", frame.Velocity.ToString())
                 .Replace("{jumps}", frame.Jumps.ToString())

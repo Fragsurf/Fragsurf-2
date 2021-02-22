@@ -12,16 +12,30 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     public class BunnyhopTracks : FSSharedScript
     {
 
-        private Dictionary<Human, FSMTrack.RunData> _activeRunData = new Dictionary<Human, FSMTrack.RunData>();
+        public class RunState
+        {
+            public FSMTrack Track;
+            public Timeline Timeline;
+            public bool Live;
+            public int Checkpoint = 1;
+            public int Stage = 1;
+        }
+
+        private Dictionary<Human, RunState> _runStates = new Dictionary<Human, RunState>();
+
+        public bool TryGetRunState(Human hu, out RunState runState)
+        {
+            return _runStates.TryGetValue(hu, out runState);   
+        }
 
         protected override void _Initialize()
         {
             foreach(var track in GameObject.FindObjectsOfType<FSMTrack>())
             {
-                track.OnStart.AddListener(Track_OnStart);
-                track.OnFinish.AddListener(Track_OnFinish);
-                track.OnStage.AddListener(Track_OnStage);
-                track.OnCheckpoint.AddListener(Track_OnCheckpoint);
+                track.OnStart.AddListener((x, y) => { if (x.Game == Game) Track_OnStart(track, x, y); });
+                track.OnFinish.AddListener((x, y) => { if (x.Game == Game) Track_OnFinish(track, x, y); });
+                track.OnStage.AddListener((x, y, z) => { if (x.Game == Game) Track_OnStage(track, x, y, z); });
+                track.OnCheckpoint.AddListener((x, y, z) => { if (x.Game == Game) Track_OnCheckpoint(track, x, y, z); });
 
                 if (!Game.IsHost)
                 {
@@ -30,46 +44,52 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
-        public FSMTrack.RunData GetRunData(Human hu)
+        private void Track_OnStart(FSMTrack track, Human hu, Timeline timeline)
         {
-            return _activeRunData.ContainsKey(hu) ? _activeRunData[hu] : null;
-        }
-
-        private void Track_OnStart(Human hu, FSMTrack.RunData runData)
-        {
-            // TODO: this should never happen so an event system is needed soon to tuck away this conditional
-            // hooking directly into MonoBehaviour events isn't the way to go.
-            if (hu.Game != Game) 
+            if (!_runStates.ContainsKey(hu))
             {
-                return;
+                _runStates[hu] = new RunState();
             }
-            _activeRunData[hu] = runData;
+            _runStates[hu].Track = track;
+            _runStates[hu].Timeline = timeline;
+            _runStates[hu].Checkpoint = 1;
+            _runStates[hu].Stage = 1;
+            _runStates[hu].Live = true;
         }
 
-        private void Track_OnFinish(Human hu, FSMTrack.RunData track)
+        private void Track_OnFinish(FSMTrack track, Human hu, Timeline timeline)
         {
             if (hu.Game != Game)
             {
                 return;
+            }
+
+            _runStates[hu].Live = false;
+
+            if (!Game.IsHost)
+            {
+                Game.Get<Timelines>().Replay(timeline);
             }
             Debug.Log("Track finished");
         }
 
-        private void Track_OnStage(Human hu, int stage, FSMTrack.RunData track)
+        private void Track_OnStage(FSMTrack track, Human hu, int stage, Timeline timeline)
         {
             if (hu.Game != Game)
             {
                 return;
             }
+            _runStates[hu].Stage = stage;
             Debug.Log("Stage finished: " + stage);
         }
 
-        private void Track_OnCheckpoint(Human hu, int checkpoint, FSMTrack.RunData track)
+        private void Track_OnCheckpoint(FSMTrack track, Human hu, int checkpoint, Timeline timeline)
         {
             if (hu.Game != Game)
             {
                 return;
             }
+            _runStates[hu].Checkpoint = checkpoint;
             Debug.Log("Checkpoint finished: " + checkpoint);
         }
 
