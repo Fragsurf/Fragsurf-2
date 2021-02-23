@@ -83,7 +83,6 @@ namespace Fragsurf.Shared.Entity
         {
             if(Frames.Count == 0)
             {
-                UnityEngine.Debug.Log("Cunt");
                 return;
             }
 
