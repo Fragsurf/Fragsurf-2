@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Fragsurf.Maps
 {
@@ -15,7 +16,8 @@ namespace Fragsurf.Maps
             var sceneCount = SceneManager.sceneCountInBuildSettings;
             for (int i = 0; i < sceneCount; i++)
             {
-                var sceneName = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
+                var scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+                var sceneName = Path.GetFileNameWithoutExtension(scenePath);
                 if(sceneName.IndexOf('_') == -1)
                 {
                     continue;

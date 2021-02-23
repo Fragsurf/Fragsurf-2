@@ -28,6 +28,7 @@ namespace Fragsurf
         public static string LogsPath => Path.Combine(RootPath, "Logs");
         public static string PluginsPath => Path.Combine(RuntimePath, "Plugins");
         public static string PluginsTempPath => Path.Combine(TempPath, "Plugins");
+        public static string SavePath => Path.Combine(Application.persistentDataPath, "Saves");
 
     }
 

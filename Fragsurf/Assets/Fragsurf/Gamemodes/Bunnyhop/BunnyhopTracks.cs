@@ -1,7 +1,10 @@
 using Fragsurf.Actors;
+using Fragsurf.Maps;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Utility;
+using Steamworks;
+using System.IO;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
@@ -9,6 +12,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     [Inject(InjectRealm.Shared, typeof(Bunnyhop))]
     public class BunnyhopTracks : FSSharedScript
     {
+
+        private BaseLeaderboardSystem _leaderboardSystem = new SteamworksLeaderboardSystem();
 
         protected override void _Initialize()
         {
@@ -26,32 +31,58 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
-        private void Track_OnStart(FSMTrack track, Human hu)
+        private async void Track_OnStart(FSMTrack track, Human hu)
         {
             hu.Record(new BunnyhopTimeline(track));
+
+            var id = new LeaderboardIdentifier()
+            {
+                Map = Map.Current.Name,
+                Number = 0,
+                Style = 0,
+                TrackName = track.TrackName,
+                TrackType = track.TrackType
+            };
+
+            var data = await _leaderboardSystem.DownloadReplayAsync(id, 1);
+            if(data != null)
+            {
+                var dummy = new Human(Game);
+                Game.EntityManager.AddEntity(dummy);
+                dummy.Replay(EntityTimeline.Deserialize<BunnyhopTimeline>(data));
+            }
         }
 
-        private void Track_OnFinish(FSMTrack track, Human hu)
+        private async void Track_OnFinish(FSMTrack track, Human hu)
         {
             if (hu.Game != Game)
             {
                 return;
             }
 
-            (hu.Timeline as BunnyhopTimeline).RunIsLive = false;
+            var bhopTimeline = hu.Timeline as BunnyhopTimeline;
+            bhopTimeline.RunIsLive = false;
 
             var data = hu.Timeline.Serialize();
-            var recreated = EntityTimeline.Deserialize<BunnyhopTimeline>(data);
-
-            //var compressed = Compress(data);
-            //Debug.Log("original: " + data.Length + ", compressed: " + compressed.Length);
-            
 
             if (Game.IsHost)
             {
                 var dummy = new Human(Game);
                 Game.EntityManager.AddEntity(dummy);
-                dummy.Replay(recreated);
+                dummy.Replay(EntityTimeline.Deserialize<BunnyhopTimeline>(data));
+
+                var id = new LeaderboardIdentifier()
+                {
+                    Map = Map.Current.Name,
+                    Number = 0,
+                    Style = 0,
+                    TrackName = track.TrackName,
+                    TrackType = track.TrackType
+                };
+                var userId = SteamClient.SteamId;
+                var frame = bhopTimeline.CurrentFrame;
+                var response = await _leaderboardSystem.SubmitRunAsync(id, frame, data);
+                Debug.Log(response.NewRank + ":" + response.Success + ":" + response.Improved);
             }
         }
 

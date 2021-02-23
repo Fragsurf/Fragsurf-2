@@ -115,7 +115,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             frame.FinalSync = frame.TotalSync != 0
                 ? (int)(((float)frame.GoodSync / frame.TotalSync) * 100f)
-                : 100;
+                : (byte)100;
 
             _previousYaw = human.Angles.y;
         }

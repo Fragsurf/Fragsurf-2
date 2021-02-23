@@ -12,6 +12,13 @@ namespace Fragsurf.Maps
         public Texture2D Cover;
         public string FilePath;
 
+        private string _uniqueId;
+        public string UniqueId
+        {
+            get { return !string.IsNullOrEmpty(_uniqueId) ? _uniqueId : Name; }
+            set { _uniqueId = value; }
+        }
+
         private FSMActor[] _actors;
 
         public async Task<MapLoadState> LoadAsync()
