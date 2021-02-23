@@ -303,6 +303,10 @@ namespace Fragsurf
 
         private static bool IsLocked(ConVarFlags flags)
         {
+            if (flags.HasFlag(ConVarFlags.UserSetting))
+            {
+                return false;
+            }
             return (_lockedFlags & flags) != ConVarFlags.None;
         }
 

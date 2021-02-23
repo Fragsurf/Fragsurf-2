@@ -3,7 +3,6 @@ using Fragsurf.Maps;
 using Fragsurf.Movement;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
-using Fragsurf.Utility;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
@@ -22,11 +21,6 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 track.OnFinish.AddListener((x) => { if (x.Game == Game) Track_OnFinish(track, x); });
                 track.OnStage.AddListener((x, y) => { if (x.Game == Game) Track_OnStage(track, x, y); });
                 track.OnCheckpoint.AddListener((x, y) => { if (x.Game == Game) Track_OnCheckpoint(track, x, y); });
-
-                if (!Game.IsHost)
-                {
-                    OutlineTrack(track);
-                }
             }
         }
 
@@ -64,40 +58,6 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private void Track_OnCheckpoint(FSMTrack track, Human hu, int checkpoint)
         {
             (hu.Timeline as BunnyhopTimeline).Checkpoint = checkpoint + 1;
-        }
-
-        private void OutlineTrack(FSMTrack track)
-        {
-            switch (track.TrackType)
-            {
-                case FSMTrackType.Linear:
-                    OutlineTrigger(track.LinearData.StartTrigger, Color.green);
-                    OutlineTrigger(track.LinearData.EndTrigger, Color.red);
-                    foreach(var cp in track.LinearData.Checkpoints)
-                    {
-                        OutlineTrigger(cp, Color.yellow);
-                    }
-                    break;
-                case FSMTrackType.Staged:
-                    foreach (var stage in track.StageData.Stages)
-                    {
-                        OutlineTrigger(stage.StartTrigger, Color.green);
-                        OutlineTrigger(stage.EndTrigger, Color.red);
-                    }
-                    break;
-                case FSMTrackType.Bonus:
-                    OutlineTrigger(track.BonusData.StartTrigger, Color.green);
-                    OutlineTrigger(track.BonusData.EndTrigger, Color.red);
-                    break;
-            }
-        }
-
-        private void OutlineTrigger(FSMTrigger trigger, Color color)
-        {
-            foreach(var mf in trigger.GetComponentsInChildren<MeshFilter>())
-            {
-                LineHelper.GenerateOutline(mf, color, 2f);
-            }
         }
 
         private LeaderboardIdentifier GetLeaderboardId(FSMTrack track, int number = 0)
