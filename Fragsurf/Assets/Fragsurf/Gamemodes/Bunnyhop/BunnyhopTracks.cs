@@ -43,6 +43,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             var data = hu.Timeline.Serialize();
             var recreated = EntityTimeline.Deserialize<BunnyhopTimeline>(data);
 
+            //var compressed = Compress(data);
+            //Debug.Log("original: " + data.Length + ", compressed: " + compressed.Length);
+            
+
             if (Game.IsHost)
             {
                 var dummy = new Human(Game);

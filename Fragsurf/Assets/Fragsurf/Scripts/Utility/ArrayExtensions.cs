@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.IO.Compression;
 using System.Runtime.InteropServices;
 
 public static class ArrayExtensions
@@ -45,4 +47,42 @@ public static class ArrayExtensions
         }
         return stuff;
     }
+
+    private const int COMPRESSION_BUFFER_SIZE = 64 * 1024;
+
+    public static byte[] Compress(this byte[] inputData)
+    {
+        if (inputData == null)
+            throw new ArgumentNullException("inputData must be non-null");
+
+        using (var compressIntoMs = new MemoryStream())
+        {
+            using (var gzs = new BufferedStream(new GZipStream(compressIntoMs,
+             CompressionMode.Compress), COMPRESSION_BUFFER_SIZE))
+            {
+                gzs.Write(inputData, 0, inputData.Length);
+            }
+            return compressIntoMs.ToArray();
+        }
+    }
+
+    public static byte[] Decompress(this byte[] inputData)
+    {
+        if (inputData == null)
+            throw new ArgumentNullException("inputData must be non-null");
+
+        using (var compressedMs = new MemoryStream(inputData))
+        {
+            using (var decompressedMs = new MemoryStream())
+            {
+                using (var gzs = new BufferedStream(new GZipStream(compressedMs,
+                 CompressionMode.Decompress), COMPRESSION_BUFFER_SIZE))
+                {
+                    gzs.CopyTo(decompressedMs);
+                }
+                return decompressedMs.ToArray();
+            }
+        }
+    }
+
 }
