@@ -30,8 +30,6 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public int GoodSyncVel;
         [IgnoreMember]
         public int TotalSync;
-
-        public string FormattedTime() => TimeSpan.FromSeconds(Time).ToString(@"mm\:ss\:fff");
     }
 }
 

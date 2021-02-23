@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Fragsurf.Actors;
+using Fragsurf.Maps;
 using Fragsurf.Movement;
 using UnityEngine;
 
@@ -25,6 +27,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             return response;
         }
 
+        public abstract Task<IEnumerable<LeaderboardEntry>> Query(LeaderboardIdentifier ldbId, int offset, int count);
         public abstract Task<byte[]> DownloadReplayAsync(LeaderboardIdentifier ldbId, int rank);
         protected abstract Task<bool> _SaveReplay(LeaderboardIdentifier ldbId, string filePath);
         protected abstract Task<SubmitResponse> _SubmitRun(LeaderboardIdentifier ldbId, BunnyhopTimelineFrame frame, byte[] replay);
@@ -125,6 +128,18 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "_");
         }
 
+        public static LeaderboardIdentifier GetLeaderboardId(string map, FSMTrack track, MoveStyle moveStyle, int number = 0)
+        {
+            return new LeaderboardIdentifier()
+            {
+                Map = map,
+                Number = number,
+                Style = moveStyle,
+                TrackName = track.TrackName,
+                TrackType = track.TrackType
+            };
+        }
+
     }
 
     public class LeaderboardIdentifier
@@ -145,5 +160,16 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public float Takeover;
         public bool Improved;
     }
+
+    public class LeaderboardEntry
+    {
+        public string UserName;
+        public ulong UserId;
+        public int TimeMilliseconds;
+        public int Rank;
+        public int Jumps;
+        public int Strafes;
+    }
+
 }
 

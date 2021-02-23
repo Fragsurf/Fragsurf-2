@@ -53,7 +53,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             // todo: check garbage allocations here
             var frame = bhopTimeline.CurrentFrame;
             var sb = new StringBuilder(_format);
-            sb.Replace("{time}", frame.FormattedTime())
+            sb.Replace("{time}", Bunnyhop.FormatTime(frame.Time))
                 .Replace("{speed}", frame.Velocity.ToString())
                 .Replace("{jumps}", frame.Jumps.ToString())
                 .Replace("{strafes}", frame.Strafes.ToString())

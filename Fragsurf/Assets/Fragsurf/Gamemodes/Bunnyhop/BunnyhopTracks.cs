@@ -3,6 +3,7 @@ using Fragsurf.Maps;
 using Fragsurf.Movement;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
+using Fragsurf.UI;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
@@ -11,7 +12,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     public class BunnyhopTracks : FSSharedScript
     {
 
-        private BaseLeaderboardSystem _leaderboardSystem = new SteamworksLeaderboardSystem();
+        public BaseLeaderboardSystem LeaderboardSystem { get; } = new SteamworksLeaderboardSystem();
 
         protected override void _Initialize()
         {
@@ -37,8 +38,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
             {
                 var data = hu.Timeline.Serialize();
-                var id = GetLeaderboardId(track);
-                await _leaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
+                var id = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
+                await LeaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
             }
         }
 
@@ -50,8 +51,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
             {
                 var data = hu.Timeline.Serialize();
-                var id = GetLeaderboardId(track, stage);
-                await _leaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
+                var id = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW, stage);
+                await LeaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
             }
         }
 
@@ -60,16 +61,18 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             (hu.Timeline as BunnyhopTimeline).Checkpoint = checkpoint + 1;
         }
 
-        private LeaderboardIdentifier GetLeaderboardId(FSMTrack track, int number = 0)
+        [ChatCommand("Open the Ranks modal", "ranks", "top", "leaderboard", "ldb")]
+        public void OpenRanks()
         {
-            return new LeaderboardIdentifier()
+            if (Game.IsHost)
             {
-                Map = Map.Current.Name,
-                Number = number,
-                Style = MoveStyle.FW,
-                TrackName = track.TrackName,
-                TrackType = track.TrackType
-            };
+                return;
+            }
+            var modal = UGuiManager.Instance.Find<Modal_BunnyhopRanks>();
+            if (modal)
+            {
+                modal.Open();
+            }
         }
 
     }

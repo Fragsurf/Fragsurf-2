@@ -1,4 +1,5 @@
 using Fragsurf.Shared;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,16 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         }
         protected override void _Unload(FSGameLoop game)
         {
+        }
+
+        public static string FormatTime(int milliseconds)
+        {
+            return FormatTime(milliseconds / 1000f);
+        }
+
+        public static string FormatTime(float time)
+        {
+            return TimeSpan.FromSeconds(time).ToString(@"mm\:ss\:fff");
         }
 
     }

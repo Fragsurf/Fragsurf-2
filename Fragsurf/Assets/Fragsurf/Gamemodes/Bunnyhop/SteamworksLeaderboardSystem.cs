@@ -2,6 +2,7 @@ using Steamworks;
 using Steamworks.Data;
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -9,6 +10,33 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 {
     public class SteamworksLeaderboardSystem : BaseLeaderboardSystem
     {
+
+        public override async Task<IEnumerable<LeaderboardEntry>> Query(LeaderboardIdentifier ldbId, int offset, int count)
+        {
+            var result = new List<LeaderboardEntry>();
+            var ldbName = GetLeaderboardName(ldbId);
+            var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
+            if (!ldb.HasValue)
+            {
+                return result;
+            }
+
+            var scores = await ldb.Value.GetScoresAsync(count, offset);
+            foreach(var score in scores)
+            {
+                result.Add(new LeaderboardEntry()
+                {
+                    UserId = score.User.Id,
+                    Rank = score.GlobalRank,
+                    TimeMilliseconds = score.Score,
+                    UserName = score.User.Name,
+                    Jumps = 0,
+                    Strafes = 0
+                });
+            }
+
+            return result;
+        }
 
         public override async Task<byte[]> DownloadReplayAsync(LeaderboardIdentifier ldbId, int rank)
         {
