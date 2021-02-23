@@ -1,10 +1,9 @@
 using Fragsurf.Actors;
 using Fragsurf.Maps;
+using Fragsurf.Movement;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Utility;
-using Steamworks;
-using System.IO;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
@@ -31,78 +30,39 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
-        private async void Track_OnStart(FSMTrack track, Human hu)
+        private void Track_OnStart(FSMTrack track, Human hu)
         {
             hu.Record(new BunnyhopTimeline(track));
-
-            var id = new LeaderboardIdentifier()
-            {
-                Map = Map.Current.Name,
-                Number = 0,
-                Style = 0,
-                TrackName = track.TrackName,
-                TrackType = track.TrackType
-            };
-
-            var data = await _leaderboardSystem.DownloadReplayAsync(id, 1);
-            if(data != null)
-            {
-                var dummy = new Human(Game);
-                Game.EntityManager.AddEntity(dummy);
-                dummy.Replay(EntityTimeline.Deserialize<BunnyhopTimeline>(data));
-            }
         }
 
         private async void Track_OnFinish(FSMTrack track, Human hu)
         {
-            if (hu.Game != Game)
-            {
-                return;
-            }
-
             var bhopTimeline = hu.Timeline as BunnyhopTimeline;
             bhopTimeline.RunIsLive = false;
 
-            var data = hu.Timeline.Serialize();
-
-            if (Game.IsHost)
+            if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
             {
-                var dummy = new Human(Game);
-                Game.EntityManager.AddEntity(dummy);
-                dummy.Replay(EntityTimeline.Deserialize<BunnyhopTimeline>(data));
-
-                var id = new LeaderboardIdentifier()
-                {
-                    Map = Map.Current.Name,
-                    Number = 0,
-                    Style = 0,
-                    TrackName = track.TrackName,
-                    TrackType = track.TrackType
-                };
-                var userId = SteamClient.SteamId;
-                var frame = bhopTimeline.CurrentFrame;
-                var response = await _leaderboardSystem.SubmitRunAsync(id, frame, data);
-                Debug.Log(response.NewRank + ":" + response.Success + ":" + response.Improved);
+                var data = hu.Timeline.Serialize();
+                var id = GetLeaderboardId(track);
+                await _leaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
             }
         }
 
-        private void Track_OnStage(FSMTrack track, Human hu, int stage)
+        private async void Track_OnStage(FSMTrack track, Human hu, int stage)
         {
-            if (hu.Game != Game)
-            {
-                return;
-            }
+            var bhopTimeline = hu.Timeline as BunnyhopTimeline;
+            bhopTimeline.Stage = stage;
 
-            (hu.Timeline as BunnyhopTimeline).Stage = stage;
+            if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
+            {
+                var data = hu.Timeline.Serialize();
+                var id = GetLeaderboardId(track, stage);
+                await _leaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
+            }
         }
 
         private void Track_OnCheckpoint(FSMTrack track, Human hu, int checkpoint)
         {
-            if (hu.Game != Game)
-            {
-                return;
-            }
-
             (hu.Timeline as BunnyhopTimeline).Checkpoint = checkpoint + 1;
         }
 
@@ -138,6 +98,18 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             {
                 LineHelper.GenerateOutline(mf, color, 2f);
             }
+        }
+
+        private LeaderboardIdentifier GetLeaderboardId(FSMTrack track, int number = 0)
+        {
+            return new LeaderboardIdentifier()
+            {
+                Map = Map.Current.Name,
+                Number = number,
+                Style = MoveStyle.FW,
+                TrackName = track.TrackName,
+                TrackType = track.TrackType
+            };
         }
 
     }
