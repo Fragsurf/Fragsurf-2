@@ -1,3 +1,4 @@
+using Fragsurf.Client;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
@@ -23,6 +24,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             if (!Game.IsHost)
             {
+                Game.Get<SpectateController>().Spectate(Human.Local);
                 return;
             }
 
