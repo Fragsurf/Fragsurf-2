@@ -157,6 +157,7 @@ namespace Fragsurf.Client
             var processPlayerInput = Game.Live
                 && Human.Local != null
                 && Human.Local.MovementController != null
+                && Human.Local.IsFirstPerson
                 && !Blocked;
 
             if (processPlayerInput)

@@ -43,6 +43,7 @@ namespace Fragsurf.Shared.Entity
         {
             EntityGameObject = new GameObject("Human").AddComponent<HumanGameObject>();
             MovementController = new DefaultMovementController(this);
+            CameraController = new FirstPersonCameraController(this);
         }
 
         protected override void _Delete()
@@ -67,7 +68,6 @@ namespace Fragsurf.Shared.Entity
         protected override void _Update()
         {
             MovementController?.Update();
-            CameraController?.Update();
             AnimationController?.Update();
         }
 
@@ -114,10 +114,6 @@ namespace Fragsurf.Shared.Entity
             {
                 Local = this;
                 _hasAuthorityNextTick = true;
-                if (!Game.IsHost)
-                {
-                    CameraController = new FirstPersonCameraController(this, GameCamera.Camera);
-                }
             }
             var player = Game.PlayerManager.FindPlayer(value);
             if(player != null)

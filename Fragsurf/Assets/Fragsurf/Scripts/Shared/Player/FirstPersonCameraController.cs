@@ -12,8 +12,8 @@ namespace Fragsurf.Shared.Player
 
         protected override bool HideViewer => true;
 
-        public FirstPersonCameraController(NetEntity viewer, Camera camera)
-            : base(viewer, camera)
+        public FirstPersonCameraController(NetEntity viewer)
+            : base(viewer)
         {
 
         }
@@ -22,15 +22,14 @@ namespace Fragsurf.Shared.Player
         {
             if(Viewer == null || Camera == null)
             {
-                Debug.Log(Viewer + ":" + Camera);
                 return;
             }
 
             var targetOrigin = Viewer.EntityGameObject 
-                ? Viewer.EntityGameObject.transform.position
+                ? Viewer.EntityGameObject.Position
                 : Viewer.Origin;
             var targetAngles = Viewer.EntityGameObject
-                ? Viewer.EntityGameObject.transform.eulerAngles
+                ? Viewer.EntityGameObject.Rotation
                 : Viewer.Angles;
 
             _targetEyeOffset = Vector3.zero;

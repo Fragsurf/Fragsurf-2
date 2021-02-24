@@ -1,4 +1,5 @@
 using Fragsurf.Shared;
+using Fragsurf.Shared.Entity;
 using Fragsurf.Utility;
 using UnityEngine;
 

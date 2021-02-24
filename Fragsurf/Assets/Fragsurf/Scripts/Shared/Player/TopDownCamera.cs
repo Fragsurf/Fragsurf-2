@@ -6,8 +6,8 @@ namespace Fragsurf.Shared.Player
     public class TopDownCamera : CameraController
     {
 
-        public TopDownCamera(NetEntity viewer, Camera camera)
-            : base(viewer, camera)
+        public TopDownCamera(NetEntity viewer)
+            : base(viewer)
         {
 
         }
@@ -18,7 +18,6 @@ namespace Fragsurf.Shared.Player
         {
             if (Viewer == null || Camera == null)
             {
-                Debug.Log(Viewer + ":" + Camera);
                 return;
             }
 

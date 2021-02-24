@@ -1,4 +1,5 @@
 using Fragsurf.Actors;
+using Fragsurf.Client;
 using Fragsurf.Maps;
 using Fragsurf.Movement;
 using Fragsurf.Shared;
@@ -123,6 +124,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             cl.EntityManager.AddEntity(ent);
             ent.InterpolationMode = InterpolationMode.Frame;
             ent.Replay(tl);
+
+            cl.Get<SpectateController>().Spectate(ent);
         }
 
     }

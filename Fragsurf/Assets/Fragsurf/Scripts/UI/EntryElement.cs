@@ -13,7 +13,7 @@ namespace Fragsurf.UI
         public abstract void LoadData(T data);
         protected virtual bool ContainsSearch(string input) { return true; }
 
-        private List<GameObject> _children;
+        private List<GameObject> _children = new List<GameObject>();
         private bool _searchIsHooked;
         protected EntryElement<T> _parent;
 
@@ -54,11 +54,6 @@ namespace Fragsurf.UI
 
         private EntryElement<T> SpawnEntry(T data)
         {
-            if (_children == null)
-            {
-                _children = new List<GameObject>();
-            }
-
             var clone = GameObject.Instantiate(gameObject, transform.parent).GetComponent<EntryElement<T>>();
             clone._parent = this;
             clone.SearchField = null;

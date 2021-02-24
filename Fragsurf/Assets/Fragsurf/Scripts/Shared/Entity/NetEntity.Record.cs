@@ -69,7 +69,7 @@ namespace Fragsurf.Shared.Entity
         public List<T> Frames = new List<T>();
 
         [IgnoreMember]
-        public T CurrentFrame => _frameIndex <= Frames.Count && _frameIndex > 0 ? Frames[_frameIndex] : default;
+        public T CurrentFrame => _frameIndex < Frames.Count && _frameIndex > 0 ? Frames[_frameIndex] : default;
         [IgnoreMember]
         public T LastFrame => Frames.Count > 0 ? Frames[Frames.Count - 1] : default;
         [IgnoreMember]

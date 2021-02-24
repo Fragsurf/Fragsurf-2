@@ -1,3 +1,5 @@
+using Fragsurf.Client;
+using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.UI;
 using System.Text;
@@ -24,25 +26,36 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             LayoutRebuilder.MarkLayoutForRebuild(_centerHud.transform.parent as RectTransform);
 
-            if (Human.Local == null || !(Human.Local.Timeline is BunnyhopTimeline bhopTimeline))
+            var cl = FSGameLoop.GetGameInstance(false);
+            var target = cl.Get<SpectateController>().TargetHuman;
+
+            if (target == null || !(target.Timeline is BunnyhopTimeline bhopTimeline))
             {
                 _centerHud.text = _notStartedText;
                 _trackName.text = string.Empty;
                 return;
             }
 
-            switch (bhopTimeline.Track.TrackType)
+            if (bhopTimeline.Track)
             {
-                case Actors.FSMTrackType.Linear:
-                    _trackName.text = $"CP #{bhopTimeline.Checkpoint}";
-                    break;
-                case Actors.FSMTrackType.Bonus:
-                    _trackName.text = $"Bonus {bhopTimeline.Track.TrackName}";
-                    break;
-                case Actors.FSMTrackType.Staged:
-                    _trackName.text = $"Stage {bhopTimeline.Stage}";
-                    break;
+                switch (bhopTimeline.Track.TrackType)
+                {
+                    case Actors.FSMTrackType.Linear:
+                        _trackName.text = $"CP #{bhopTimeline.Checkpoint}";
+                        break;
+                    case Actors.FSMTrackType.Bonus:
+                        _trackName.text = $"Bonus {bhopTimeline.Track.TrackName}";
+                        break;
+                    case Actors.FSMTrackType.Staged:
+                        _trackName.text = $"Stage {bhopTimeline.Stage}";
+                        break;
+                }
             }
+            else
+            {
+                _trackName.text = string.Empty;
+            }
+
 
             if (!bhopTimeline.RunIsLive || bhopTimeline.Frames.Count == 0)
             {
