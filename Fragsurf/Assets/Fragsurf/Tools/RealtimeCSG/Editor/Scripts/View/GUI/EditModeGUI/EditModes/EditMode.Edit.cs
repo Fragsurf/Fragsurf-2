@@ -2169,12 +2169,16 @@ namespace RealtimeCSG
                     case EventType.MouseDown:
                         {
                             if (!sceneRect.Contains(Event.current.mousePosition))
+                            {
                                 break;
+                            }
 
-                            if (GUIUtility.hotControl != 0 ||
-                                Event.current.button != 0 ||
-                                (SelectionUtility.CurrentModifiers & EventModifiers.Alt) == EventModifiers.Alt)
+                            if (GUIUtility.hotControl != 0 
+                                || Event.current.button != 0 
+                                || (SelectionUtility.CurrentModifiers & EventModifiers.Alt) == EventModifiers.Alt)
+                            {
                                 break;
+                            }
 
                             if (SelectionUtility.CurrentModifiers == EventModifiers.Shift)
                             {

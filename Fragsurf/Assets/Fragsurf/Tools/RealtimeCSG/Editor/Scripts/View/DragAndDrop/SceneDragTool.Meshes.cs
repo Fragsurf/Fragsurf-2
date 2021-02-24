@@ -336,7 +336,10 @@ namespace RealtimeCSG
 						continue;
 
 					if (sceneview.camera.pixelRect.Contains(Event.current.mousePosition))
+                    {
 						sceneview.Focus();
+					}
+						
 				}
 				visualDragGameObject = null;
 			}
