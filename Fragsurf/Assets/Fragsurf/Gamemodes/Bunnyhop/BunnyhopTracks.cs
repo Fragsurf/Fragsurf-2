@@ -61,6 +61,26 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             (hu.Timeline as BunnyhopTimeline).Checkpoint = checkpoint + 1;
         }
 
+        [ChatCommand("Open the Replay Tools modal", "replaytools")]
+        public void OpenReplayTools()
+        {
+            if (Game.IsHost)
+            {
+                return;
+            }
+            UGuiManager.Instance.ToggleModal<Modal_ReplayTools>();
+        }
+
+        [ChatCommand("Open the Replay List modal", "replays")]
+        public void OpenReplays()
+        {
+            if (Game.IsHost)
+            {
+                return;
+            }
+            UGuiManager.Instance.ToggleModal<Modal_ReplayList>();
+        }
+
         [ChatCommand("Open the Ranks modal", "ranks", "top", "leaderboard", "ldb")]
         public void OpenRanks()
         {
@@ -68,11 +88,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             {
                 return;
             }
-            var modal = UGuiManager.Instance.Find<Modal_BunnyhopRanks>();
-            if (modal)
-            {
-                modal.Open();
-            }
+            UGuiManager.Instance.ToggleModal<Modal_BunnyhopRanks>();
         }
 
     }

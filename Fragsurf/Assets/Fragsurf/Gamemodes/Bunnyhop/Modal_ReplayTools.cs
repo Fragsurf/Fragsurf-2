@@ -19,6 +19,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [SerializeField]
         private Button _spawn;
         [SerializeField]
+        private Button _replayList;
+        [SerializeField]
         private Slider _timeline;
         [SerializeField]
         private Toggle _drawPath;
@@ -69,6 +71,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                     return;
                 }
                 target.Timeline.Paused = !target.Timeline.Paused;
+            });
+
+            _replayList.onClick.AddListener(() =>
+            {
+                UGuiManager.Instance.ToggleModal<Modal_ReplayList>();
             });
 
             _timeline.onValueChanged.AddListener((v) =>
