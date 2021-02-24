@@ -122,6 +122,17 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
+        public void ClampVelocity(int xzMax, int yMax)
+        {
+            var maxY = yMax * .0254f;
+            var maxXZ = xzMax * .0254f;
+            var vel = Velocity;
+            var xz = new Vector3(vel.x, 0, vel.z);
+            xz = Vector3.ClampMagnitude(xz, maxXZ);
+            xz.y = Mathf.Clamp(vel.y, -maxY, maxY);
+            Velocity = xz;
+        }
+
     }
 }
 

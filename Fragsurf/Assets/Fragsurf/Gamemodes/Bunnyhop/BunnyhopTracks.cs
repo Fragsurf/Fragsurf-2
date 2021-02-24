@@ -27,6 +27,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private void Track_OnStart(FSMTrack track, Human hu)
         {
+            hu.ClampVelocity(290, Game.GameMovement.JumpPower);   
             hu.Record(new BunnyhopTimeline(track));
         }
 
