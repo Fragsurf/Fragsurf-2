@@ -107,26 +107,21 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private async void SpawnBot(LeaderboardIdentifier ldbId, int rank)
         {
             var cl = FSGameLoop.GetGameInstance(false);
-            if (!cl)
-            {
-                return;
-            }
-
             var data = await cl.Get<BunnyhopTracks>().LeaderboardSystem.DownloadReplayAsync(ldbId, rank);
-            if(data == null || data.Length == 0)
+            if(data == null)
             {
                 return;
             }
 
-            var sv = FSGameLoop.GetGameInstance(true);
-            if (!sv)
-            {
-                return;
-            }
-
-            var ent = new Human(sv);
-            sv.EntityManager.AddEntity(ent);
             var tl = EntityTimeline.Deserialize<BunnyhopTimeline>(data);
+            if(tl == null)
+            {
+                return;
+            }
+
+            var ent = new Human(cl);
+            cl.EntityManager.AddEntity(ent);
+            ent.InterpolationMode = InterpolationMode.Frame;
             ent.Replay(tl);
         }
 

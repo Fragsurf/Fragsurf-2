@@ -56,7 +56,7 @@ namespace Fragsurf.Shared.Entity
                 }
             }
         }
-        public InterpolationMode InterpolationMode { get; protected set; }
+        public InterpolationMode InterpolationMode { get; set; }
         public bool DisableLagCompensation { get; set; }
 
         [NetProperty(true)]

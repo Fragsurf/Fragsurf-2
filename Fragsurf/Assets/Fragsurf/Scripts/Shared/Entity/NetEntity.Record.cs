@@ -1,5 +1,7 @@
 using MessagePack;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Fragsurf.Shared.Entity
 {
@@ -110,7 +112,15 @@ namespace Fragsurf.Shared.Entity
         public static T Deserialize<T>(byte[] data)
             where T : EntityTimeline
         {
-            return MessagePackSerializer.Deserialize(typeof(T), data) as T;
+            try
+            {
+                return MessagePackSerializer.Deserialize(typeof(T), data) as T;
+            }
+            catch(Exception e)
+            {
+                Debug.LogError(e.Message);
+                return null;
+            }
         }
 
         public virtual byte[] Serialize()
