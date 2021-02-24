@@ -102,11 +102,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             _speed.onValueChanged.AddListener((v) =>
             {
-                if(!float.TryParse(v, out float speed))
+                if ((FSGameLoop.GetGameInstance(false).Get<SpectateController>().TargetHuman is ReplayHuman target)
+                    && float.TryParse(v, out float speed)
+                    && (target.Timeline is BunnyhopTimeline bhop)
+                    && target.TimelineMode == NetEntity.TimelineModes.Replay)
                 {
-                    return;
+                    target.PlaybackSpeed = speed;
                 }
-
             });
         }
 
@@ -120,7 +122,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
             _timeline.SetValueWithoutNotify(bhop.GetReplayPosition());
             _pauseText.text = target.Timeline.Paused ? "Play" : "Pause";
-            
+
+            if (!_speed.isFocused)
+            {
+                _speed.SetTextWithoutNotify(target.PlaybackSpeed.ToString());
+            }
         }
 
     }

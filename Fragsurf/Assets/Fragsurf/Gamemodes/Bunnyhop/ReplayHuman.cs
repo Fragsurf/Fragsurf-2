@@ -32,10 +32,12 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
+        public float PlaybackSpeed = 1f;
+
         public ReplayHuman(FSGameLoop game)
             : base(game)
         {
-            InterpolationMode = InterpolationMode.Frame;
+            _autoReplayTimeline = false;
         }
 
         protected override void _Start()
@@ -43,6 +45,27 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             base._Start();
             
             InterpolationMode = InterpolationMode.Frame;
+        }
+
+        private float _accumulator;
+        private float _elapsedTime;
+        protected override void _Update()
+        {
+            base._Update();
+
+            var playbackSpeed = Mathf.Clamp(PlaybackSpeed, .25f, 5);
+            var fixedDeltaTime = Game.FixedDeltaTime / playbackSpeed;
+            var newTime = Time.realtimeSinceStartup;
+            var frameTime = Mathf.Min(newTime - _elapsedTime, fixedDeltaTime);
+
+            _elapsedTime = newTime;
+            _accumulator += frameTime;
+
+            while (_accumulator >= fixedDeltaTime)
+            {
+                _accumulator -= fixedDeltaTime;
+                Timeline?.ReplayTick();
+            }
         }
 
         protected override void _Delete()
