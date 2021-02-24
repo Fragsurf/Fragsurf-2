@@ -120,12 +120,15 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return;
             }
 
-            var ent = new Human(cl);
+            var ent = new ReplayHuman(cl);
             cl.EntityManager.AddEntity(ent);
             ent.InterpolationMode = InterpolationMode.Frame;
+            ent.DisplayName = "Replay";
             ent.Replay(tl);
 
             cl.Get<SpectateController>().Spectate(ent);
+
+            UGuiManager.Instance.OpenModal<Modal_ReplayTools>();
         }
 
     }

@@ -5,6 +5,7 @@ using Fragsurf.Shared.Player;
 using MessagePack;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
 {
@@ -31,15 +32,29 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             Track = track;
         }
 
-        protected override BunnyhopTimelineFrame GetFrame(NetEntity ent)
+        public float GetReplayPosition()
+        {
+            return (float)_frameIndex / Frames.Count;
+        }
+
+        public void SetReplayPosition(float v)
+        {
+            _frameIndex = (int)Mathf.Lerp(0, Frames.Count, v);
+            if(_frameIndex > 0 && _frameIndex < Frames.Count)
+            {
+                ApplyFrame(Frames[_frameIndex]);
+            }
+        }
+
+        protected override BunnyhopTimelineFrame GetFrame()
         {
             var frame = LastFrame;
-            var hu = ent as Human;
+            var hu = Entity as Human;
             var vel = hu.Velocity;
             vel.y = 0;
             frame.Tick++;
-            frame.Position = ent.Origin;
-            frame.Angles = ent.Angles;
+            frame.Position = Entity.Origin;
+            frame.Angles = Entity.Angles;
             frame.Time += Time.fixedDeltaTime;
             frame.Velocity = (int)(vel.magnitude / SurfController.HammerScale);
 
@@ -120,10 +135,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _previousYaw = human.Angles.y;
         }
 
-        protected override void ApplyFrame(NetEntity ent, BunnyhopTimelineFrame frame)
+        protected override void ApplyFrame(BunnyhopTimelineFrame frame)
         {
-            ent.Origin = frame.Position;
-            ent.Angles = frame.Angles;
+            Entity.Origin = frame.Position;
+            Entity.Angles = frame.Angles;
         }
 
     }

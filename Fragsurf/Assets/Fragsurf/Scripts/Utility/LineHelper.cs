@@ -8,6 +8,27 @@ namespace Fragsurf.Utility
     public class LineHelper
     {
 
+        public static GameObject GeneratePath(Vector3[] points, Color color, float widthMultiplier = 1f)
+        {
+            var result = new GameObject("[Generated Outline]");
+
+            var lr = result.AddComponent<LineRenderer>();
+            lr.useWorldSpace = true;
+            lr.positionCount = points.Length;
+            lr.SetPositions(points);
+            lr.alignment = LineAlignment.View;
+            lr.receiveShadows = false;
+            lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            lr.material = GameObject.Instantiate<Material>(Resources.Load<Material>("Materials/Simple Line"));
+            lr.startColor = color;
+            lr.endColor = color;
+            lr.widthMultiplier = widthMultiplier;
+            lr.startWidth = .02f;
+            lr.endWidth = .02f;
+
+            return result;
+        }
+
         public static GameObject GenerateOutline(MeshFilter mf, Color color, float widthMultiplier = 1f)
         {
             var outline = mf.gameObject.GetComponentInChildren<LineHelperOutline>();

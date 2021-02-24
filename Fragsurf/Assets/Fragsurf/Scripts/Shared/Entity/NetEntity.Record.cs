@@ -22,12 +22,14 @@ namespace Fragsurf.Shared.Entity
             where T : EntityTimeline
         {
             Timeline = timeline;
+            Timeline.Entity = this;
             TimelineMode = TimelineModes.Record;
         }
 
         public void Replay(EntityTimeline timeline)
         {
             Timeline = timeline;
+            Timeline.Entity = this;
             TimelineMode = TimelineModes.Replay;
         }
 
@@ -51,12 +53,12 @@ namespace Fragsurf.Shared.Entity
         {
             if (TimelineMode == TimelineModes.Record && _autoRecordTimeline)
             {
-                Timeline?.RecordTick(this);
+                Timeline?.RecordTick();
             }
 
             if (TimelineMode == TimelineModes.Replay && _autoReplayTimeline)
             {
-                Timeline?.ReplayTick(this);
+                Timeline?.ReplayTick();
             }
         }
 
@@ -75,15 +77,20 @@ namespace Fragsurf.Shared.Entity
         [IgnoreMember]
         protected int _frameIndex;
 
-        public override void RecordTick(NetEntity ent) 
+        public override void RecordTick() 
         {
-            Frames.Add(GetFrame(ent));
+            if (Paused)
+            {
+                return;
+            }
+
+            Frames.Add(GetFrame());
             _frameIndex = Frames.Count - 1;
         }
 
-        public override void ReplayTick(NetEntity ent)
+        public override void ReplayTick()
         {
-            if(Frames.Count == 0)
+            if(Frames.Count == 0 || Paused)
             {
                 return;
             }
@@ -93,21 +100,26 @@ namespace Fragsurf.Shared.Entity
                 _frameIndex = 0;
             }
 
-            ApplyFrame(ent, Frames[_frameIndex]);
+            ApplyFrame(Frames[_frameIndex]);
 
             _frameIndex++;
         }
 
-        protected abstract T GetFrame(NetEntity ent);
-        protected abstract void ApplyFrame(NetEntity ent, T frame);
+        protected abstract T GetFrame();
+        protected abstract void ApplyFrame(T frame);
 
     }
 
     public abstract class EntityTimeline
     {
 
-        public abstract void RecordTick(NetEntity ent);
-        public abstract void ReplayTick(NetEntity ent);
+        [IgnoreMember]
+        public bool Paused;
+        [IgnoreMember]
+        public NetEntity Entity;
+
+        public abstract void RecordTick();
+        public abstract void ReplayTick();
 
         public static T Deserialize<T>(byte[] data)
             where T : EntityTimeline

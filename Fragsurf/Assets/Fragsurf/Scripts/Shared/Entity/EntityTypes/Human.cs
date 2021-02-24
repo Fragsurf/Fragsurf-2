@@ -84,7 +84,7 @@ namespace Fragsurf.Shared.Entity
 
             if(TimelineMode == TimelineModes.Record && (prediction || Game.IsHost))
             {
-                Timeline?.RecordTick(this);
+                Timeline?.RecordTick();
             }
         }
 

@@ -193,7 +193,7 @@ namespace Fragsurf.Shared.Entity
         {
             if (EntityTypeIdMap == null)
             {
-                EntityTypeIdMap = BuildEntityTypeIdMap();
+                RebuildEntityTypeIds();
             }
             foreach (var kvp in EntityTypeIdMap)
             {
@@ -209,7 +209,7 @@ namespace Fragsurf.Shared.Entity
         {
             if (EntityTypeIdMap == null)
             {
-                EntityTypeIdMap = BuildEntityTypeIdMap();
+                RebuildEntityTypeIds();
             }
             if (!EntityTypeIdMap.ContainsKey(typeId))
             {
@@ -218,16 +218,15 @@ namespace Fragsurf.Shared.Entity
             return Activator.CreateInstance(EntityTypeIdMap[typeId], args: game) as NetEntity;
         }
 
-        private static Dictionary<byte, Type> BuildEntityTypeIdMap()
+        public static void RebuildEntityTypeIds()
         {
-            var result = new Dictionary<byte, Type>();
+            EntityTypeIdMap = new Dictionary<byte, Type>();
             byte index = 0;
             foreach (var t in ReflectionExtensions.GetTypesOf<NetEntity>())
             {
-                result.Add(index, t);
+                EntityTypeIdMap.Add(index, t);
                 index++;
             }
-            return result;
         }
 
     }
