@@ -141,56 +141,6 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             return true;
         }
 
-        public async Task<SubmitResponse> Submit(LeaderboardIdentifier ldb, ulong userId, BunnyhopTimelineFrame frame, byte[] data)
-        {
-            var ldbName = GetLeaderboardName(ldb);
-            var leaderboard = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
-
-            var filePath = Path.Combine(Structure.SavePath, ldbName + ".replay");
-
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-            File.WriteAllBytes(filePath, data);
-            Debug.Log(data + ":" + data.Length);
-            var ugc = await SteamRemoteStorage.FileShare(filePath);
-            if (!ugc.HasValue)
-            {
-                Debug.LogError("UGC Failed");
-            }
-            else
-            {
-                Debug.Log("Attaching!@: " + ugc.Value);
-                var attachr = await leaderboard.Value.AttachUgc(ugc.Value);
-                Debug.Log(attachr);
-            }
-
-            return new SubmitResponse();
-
-
-        }
-
-        public async Task<byte[]> Test(LeaderboardIdentifier ldb)
-        {
-            foreach(var file in SteamRemoteStorage.Files)
-            {
-                Debug.Log(file + ":" +  SteamRemoteStorage.FileSize(file));
-            }
-            return new byte[0];
-            //var ldbName = GetLeaderboardName(ldb);
-            //var leaderboard = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
-
-            //if (!leaderboard.HasValue)
-            //{
-            //    Debug.Log("Fucker");
-            //    return null;
-            //}
-
-            //var scores = await leaderboard.Value.GetScoresAsync(10);
-            //return await SteamRemoteStorage.UGCDownload(scores[0].Ugc.FileId);
-        }
-
         private string GetLeaderboardName(LeaderboardIdentifier ldb)
         {
             var result = string.Join("-", ldb.Map, ldb.TrackType, ldb.TrackName);
