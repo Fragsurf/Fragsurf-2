@@ -123,7 +123,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             var ent = new ReplayHuman(cl);
             cl.EntityManager.AddEntity(ent);
             ent.InterpolationMode = InterpolationMode.Frame;
-            ent.DisplayName = "Replay";
+            ent.DisplayName = $"{ldbId.TrackName} - {ldbId.TrackType} [{ldbId.Style}]";
             ent.Replay(tl);
 
             cl.Get<SpectateController>().Spectate(ent);
