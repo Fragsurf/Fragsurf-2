@@ -120,8 +120,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 Close();
                 return;
             }
+
             _timeline.SetValueWithoutNotify(bhop.GetReplayPosition());
             _pauseText.text = target.Timeline.Paused ? "Play" : "Pause";
+            _drawPath.SetIsOnWithoutNotify(target.DrawPath);
 
             if (!_speed.isFocused)
             {

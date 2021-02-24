@@ -14,6 +14,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         public bool DrawPath
         {
+            get => _lineObject != null;
             set
             {
                 if (_lineObject)
