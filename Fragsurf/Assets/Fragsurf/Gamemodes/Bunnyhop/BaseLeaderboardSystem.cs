@@ -27,6 +27,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             return response;
         }
 
+        public abstract Task<LeaderboardEntry> FindRank(LeaderboardIdentifier ldbId, ulong userId);
+        public abstract Task<IEnumerable<LeaderboardEntry>> QueryFriends(LeaderboardIdentifier ldbId);
         public abstract Task<IEnumerable<LeaderboardEntry>> Query(LeaderboardIdentifier ldbId, int offset, int count);
         public abstract Task<byte[]> DownloadReplayAsync(LeaderboardIdentifier ldbId, int rank);
         protected abstract Task<bool> _SaveReplay(LeaderboardIdentifier ldbId, string filePath);

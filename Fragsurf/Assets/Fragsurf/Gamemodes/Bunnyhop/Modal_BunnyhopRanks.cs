@@ -6,7 +6,6 @@ using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.UI;
 using Steamworks;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,20 +26,35 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private Modal_BunnyhopRanksTrackEntry _trackTemplate;
         private FSMTrack _selectedTrack;
 
+        private BaseLeaderboardSystem LeaderboardSystem => FSGameLoop.GetGameInstance(false).Get<BunnyhopTracks>().LeaderboardSystem;
+
         private void Start()
         {
-            _myRank.onClick.AddListener(() => {
-
+            _myRank.onClick.AddListener(() => 
+            {
+                if (!_selectedTrack)
+                {
+                    return;
+                }
+                LoadRanksAroundMe(_selectedTrack, 10, 50);
             });
 
             _top100.onClick.AddListener(() =>
             {
-
+                if (!_selectedTrack)
+                {
+                    return;
+                }
+                LoadRanks(_selectedTrack, 1, 100);
             });
 
             _friends.onClick.AddListener(() =>
             {
-
+                if (!_selectedTrack)
+                {
+                    return;
+                }
+                LoadFriendsRanks(_selectedTrack);
             });
 
             _rankTemplate = GameObject.FindObjectOfType<Modal_BunnyhopRanksRankEntry>();
@@ -62,34 +76,56 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                     Track = fsmtrack,
                     OnClick = () =>
                     {
-                        LoadRanks(fsmtrack);
+                        LoadRanks(fsmtrack, 1, 100);
                     },
                     Selected = firstTrack
                 });
                 if (firstTrack)
                 {
-                    LoadRanks(fsmtrack);
+                    LoadRanks(fsmtrack, 1, 100);
                     firstTrack = false;
                 }
             }
         }
 
-        private async void LoadRanks(FSMTrack track)
+        private async void LoadRanksAroundMe(FSMTrack track, int offset, int count)
         {
-            if (!SteamClient.IsValid)
+            offset = Mathf.Clamp(offset, 5, 15);
+            count = Mathf.Clamp(count, 1, 100);
+
+            var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
+            var myRank = await LeaderboardSystem.FindRank(ldbId, SteamClient.SteamId);
+
+            if(myRank == null)
             {
                 return;
             }
 
-            var cl = FSGameLoop.GetGameInstance(false);
-            if (!cl)
-            {
-                return;
-            }
+            offset = Mathf.Max(1, myRank.Rank - offset);
+            var entries = await LeaderboardSystem.Query(ldbId, offset, count);
+            AddEntries(ldbId, entries);
+        }
 
-            var id = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
-            var entries = await cl.Get<BunnyhopTracks>().LeaderboardSystem.Query(id, 1, 100);
+        private async void LoadFriendsRanks(FSMTrack track)
+        {
             _selectedTrack = track;
+            var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
+            var entries = await LeaderboardSystem.QueryFriends(ldbId);
+            AddEntries(ldbId, entries);
+        }
+
+        private async void LoadRanks(FSMTrack track, int offset, int count)
+        {
+            _selectedTrack = track;
+            offset = Mathf.Max(offset, 1);
+            count = Mathf.Clamp(count, 1, 100);
+            var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
+            var entries = await LeaderboardSystem.Query(ldbId, offset, count);
+            AddEntries(ldbId, entries);
+        }
+
+        private void AddEntries(LeaderboardIdentifier ldbId, IEnumerable<LeaderboardEntry> entries)
+        {
             _rankTemplate.Clear();
 
             foreach (var entry in entries)
@@ -100,7 +136,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 {
                     Entry = entry,
                     OnClickProfile = () => SteamFriends.OpenUserOverlay(userid, "steamid"),
-                    OnClickReplay = () => SpawnBot(id, rank)
+                    OnClickReplay = () => SpawnBot(ldbId, rank)
                 });
             }
         }

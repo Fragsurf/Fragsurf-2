@@ -11,6 +11,62 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     public class SteamworksLeaderboardSystem : BaseLeaderboardSystem
     {
 
+        public override async Task<LeaderboardEntry> FindRank(LeaderboardIdentifier ldbId, ulong userId)
+        {
+            var ldbName = GetLeaderboardName(ldbId);
+            var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
+            if (!ldb.HasValue)
+            {
+                return null;
+            }
+
+            var entries = await ldb.Value.GetScoresForUsersAsync(new SteamId[] { userId });
+            if(entries == null || entries.Length == 0)
+            {
+                return null;
+            }
+
+            var score = entries[0];
+
+            return new LeaderboardEntry()
+            {
+                UserId = score.User.Id,
+                Rank = score.GlobalRank,
+                TimeMilliseconds = score.Score,
+                UserName = score.User.Name,
+                Jumps = 0,
+                Strafes = 0
+            };
+        }
+
+        public override async Task<IEnumerable<LeaderboardEntry>> QueryFriends(LeaderboardIdentifier ldbId)
+        {
+            var result = new List<LeaderboardEntry>();
+
+            var ldbName = GetLeaderboardName(ldbId);
+            var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
+            if (!ldb.HasValue)
+            {
+                return result;
+            }
+
+            var scores = await ldb.Value.GetScoresFromFriendsAsync();
+            foreach(var score in scores)
+            {
+                result.Add(new LeaderboardEntry()
+                {
+                    UserId = score.User.Id,
+                    Rank = score.GlobalRank,
+                    TimeMilliseconds = score.Score,
+                    UserName = score.User.Name,
+                    Jumps = 0,
+                    Strafes = 0
+                });
+            }
+
+            return result;
+        }
+
         public override async Task<IEnumerable<LeaderboardEntry>> Query(LeaderboardIdentifier ldbId, int offset, int count)
         {
             var result = new List<LeaderboardEntry>();
