@@ -22,6 +22,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [SerializeField]
         private Button _profileButton;
 
+        protected override bool ContainsSearch(string input)
+        {
+            return _text.text.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) != -1;
+        }
+
         public override void LoadData(Modal_BunnyhopRanksRankEntryData data)
         {
 
