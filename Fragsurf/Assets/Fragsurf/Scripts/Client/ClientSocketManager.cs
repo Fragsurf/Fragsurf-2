@@ -233,7 +233,7 @@ namespace Fragsurf.Client
             {
                 _socket = null;
 
-                if(GameServer.Instance == null)
+                if(GameServer.Instance != null)
                 {
                     UGuiManager.Instance.Popup("Disconnected from host: " + reason);
                 }
