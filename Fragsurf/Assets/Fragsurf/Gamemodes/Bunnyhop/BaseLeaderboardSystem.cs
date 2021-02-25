@@ -158,8 +158,9 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public bool Success;
         public int OldRank;
         public int NewRank;
-        public float Improvement;
-        public float Takeover;
+        public int Improvement;
+        public int Takeover;
+        public int TimeMilliseconds;
         public bool Improved;
     }
 

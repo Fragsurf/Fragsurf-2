@@ -5,6 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using System.Linq;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
 {
@@ -127,7 +128,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             var response = new SubmitResponse()
             {
-                Success = false
+                Success = false,
+                TimeMilliseconds = (int)(frame.Time * 1000)
             };
 
             if (!SteamClient.IsValid)
@@ -135,6 +137,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return response;
             }
 
+            var myRank = await FindRank(ldbId, SteamClient.SteamId);
             var ldbName = GetLeaderboardName(ldbId);
             var leaderboard = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
 
@@ -156,10 +159,24 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
 
             response.Success = true;
-            response.Improvement = 0f;
+            response.Improvement = myRank != null ? update.Value.Score - myRank.TimeMilliseconds : 0;
             response.NewRank = update.Value.NewGlobalRank;
             response.OldRank = update.Value.OldGlobalRank;
             response.Improved = update.Value.Changed;
+            response.TimeMilliseconds = update.Value.Score;
+
+            if(response.NewRank == 1)
+            {
+                var prevWr = await Query(ldbId, 2, 1);
+                if(prevWr != null && prevWr.Count() == 1)
+                {
+                    response.Takeover = update.Value.Score - prevWr.First().TimeMilliseconds;
+                }
+                else
+                {
+                    response.Takeover = response.Improvement;
+                }
+            }
 
             return response;
         }

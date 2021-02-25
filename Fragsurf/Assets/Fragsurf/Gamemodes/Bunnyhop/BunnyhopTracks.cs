@@ -40,7 +40,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             {
                 var data = hu.Timeline.Serialize();
                 var id = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
-                await LeaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
+                var runResult = await LeaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
+                AnnounceRun(track, hu, runResult, bhopTimeline.CurrentFrame);
             }
         }
 
@@ -53,7 +54,43 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             {
                 var data = hu.Timeline.Serialize();
                 var id = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW, stage);
-                await LeaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
+                var runResult = await LeaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
+                AnnounceRun(track, hu, runResult, bhopTimeline.CurrentFrame);
+            }
+        }
+
+        private void AnnounceRun(FSMTrack track, Human hu, SubmitResponse result, BunnyhopTimelineFrame frame)
+        {
+            var player = Game.PlayerManager.FindPlayer(hu.OwnerId);
+
+            if (!result.Success || player == null)
+            {
+                return;
+            }
+
+            var timeStr = Bunnyhop.FormatTime(result.TimeMilliseconds);
+
+            if (result.Improved)
+            {
+                var msg = $"Finished {track.TrackName}/{track.TrackType} in <color=green>{timeStr}</color>s, {frame.Jumps} jumps @ rank <color=#34ebcc>#{result.NewRank}</color>!";
+                Game.TextChat.MessageAll(msg);
+
+                if (result.NewRank < result.OldRank)
+                {
+                    var improveStr = Bunnyhop.FormatTime(result.Improvement);
+                    msg = $"Improvement of <color=green>{improveStr}</color>s";
+                    Game.TextChat.MessageAll(msg);
+                }
+
+                if (result.NewRank == 1)
+                {
+                    var takeoverStr = Bunnyhop.FormatTime(result.Takeover);
+                    Game.TextChat.MessageAll($"<color=#f04dff><b>**NEW WORLD RECORD!**</b></color>   <color=#ff4d4d>-{takeoverStr}</color>s");
+                }
+            }
+            else
+            {
+                Game.TextChat.MessageAll($"Finished {track.TrackName}/{track.TrackType} in {timeStr}s");
             }
         }
 
