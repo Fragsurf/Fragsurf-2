@@ -65,6 +65,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             LoadTracks();
         }
 
+        private void Update()
+        {
+            _friends.interactable = !_loading;
+            _top100.interactable = !_loading;
+            _myRank.interactable = !_loading;
+        }
+
         private void LoadTracks()
         {
             _trackTemplate.Clear();
@@ -88,40 +95,75 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
+        private bool _loading;
+
         private async void LoadRanksAroundMe(FSMTrack track, int offset, int count)
         {
+            _loading = true;
+            _selectedTrack = track;
+            _rankTemplate.Clear();
+
             offset = Mathf.Clamp(offset, 5, 15);
             count = Mathf.Clamp(count, 1, 100);
 
-            var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
-            var myRank = await LeaderboardSystem.FindRank(ldbId, SteamClient.SteamId);
-
-            if(myRank == null)
+            try
             {
-                return;
-            }
+                var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
+                var myRank = await LeaderboardSystem.FindRank(ldbId, SteamClient.SteamId);
 
-            offset = Mathf.Max(1, myRank.Rank - offset);
-            var entries = await LeaderboardSystem.Query(ldbId, offset, count);
-            AddEntries(ldbId, entries);
+                if (myRank == null)
+                {
+                    _loading = false;
+                    return;
+                }
+
+                offset = Mathf.Max(1, myRank.Rank - offset);
+                var entries = await LeaderboardSystem.Query(ldbId, offset, count);
+                AddEntries(ldbId, entries);
+            }
+            finally
+            {
+                _loading = false;
+            }
         }
 
         private async void LoadFriendsRanks(FSMTrack track)
         {
+            _loading = true;
+            _rankTemplate.Clear();
             _selectedTrack = track;
+
             var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
-            var entries = await LeaderboardSystem.QueryFriends(ldbId);
-            AddEntries(ldbId, entries);
+
+            try
+            {
+                var entries = await LeaderboardSystem.QueryFriends(ldbId);
+                AddEntries(ldbId, entries);
+            }
+            finally
+            {
+                _loading = false;
+            }
         }
 
         private async void LoadRanks(FSMTrack track, int offset, int count)
         {
+            _loading = true;
             _selectedTrack = track;
-            offset = Mathf.Max(offset, 1);
-            count = Mathf.Clamp(count, 1, 100);
-            var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
-            var entries = await LeaderboardSystem.Query(ldbId, offset, count);
-            AddEntries(ldbId, entries);
+            _rankTemplate.Clear();
+
+            try
+            {
+                offset = Mathf.Max(offset, 1);
+                count = Mathf.Clamp(count, 1, 100);
+                var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
+                var entries = await LeaderboardSystem.Query(ldbId, offset, count);
+                AddEntries(ldbId, entries);
+            }
+            finally
+            {
+                _loading = false;
+            }
         }
 
         private void AddEntries(LeaderboardIdentifier ldbId, IEnumerable<LeaderboardEntry> entries)

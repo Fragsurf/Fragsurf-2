@@ -14,6 +14,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         public override async Task<LeaderboardEntry> FindRank(LeaderboardIdentifier ldbId, ulong userId)
         {
+            if (!SteamClient.IsValid)
+            {
+                return null;
+            }
+
             var ldbName = GetLeaderboardName(ldbId);
             var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
             if (!ldb.HasValue)
@@ -56,6 +61,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             var result = new List<LeaderboardEntry>();
 
+            if (!SteamClient.IsValid)
+            {
+                return result;
+            }
+
             var ldbName = GetLeaderboardName(ldbId);
             var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
             if (!ldb.HasValue)
@@ -79,6 +89,12 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public override async Task<IEnumerable<LeaderboardEntry>> Query(LeaderboardIdentifier ldbId, int offset, int count)
         {
             var result = new List<LeaderboardEntry>();
+
+            if (!SteamClient.IsValid)
+            {
+                return result;
+            }
+
             var ldbName = GetLeaderboardName(ldbId);
             var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
             if (!ldb.HasValue)
@@ -101,6 +117,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         public override async Task<byte[]> DownloadReplayAsync(LeaderboardIdentifier ldbId, int rank)
         {
+            if (!SteamClient.IsValid)
+            {
+                return null;
+            }
+
             var ldbName = GetLeaderboardName(ldbId);
             var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
             if (!ldb.HasValue)
@@ -183,6 +204,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         protected override async Task<bool> _SaveReplay(LeaderboardIdentifier ldbId, string filePath)
         {
+            if (!SteamClient.IsValid)
+            {
+                return false;
+            }
+
             byte[] data;
 
             try
