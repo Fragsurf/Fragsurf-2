@@ -16,7 +16,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             var response = await _SubmitRun(ldbId, frame, replay);
 
-            if(response.Improved || !File.Exists(ReplayFilePath(ldbId)))
+            if (response.Improved || !File.Exists(ReplayFilePath(ldbId)))
             {
                 if(SaveReplay(ldbId, replay, out string filePath))
                 {

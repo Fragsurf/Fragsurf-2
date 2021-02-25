@@ -26,16 +26,28 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return null;
             }
 
-            var score = entries[0];
+            return SteamEntryToEntry(entries[0]);
+        }
+
+        private LeaderboardEntry SteamEntryToEntry(Steamworks.Data.LeaderboardEntry steamentry)
+        {
+            var jumps = 0;
+            var strafes = 0;
+
+            if (steamentry.Details != null && steamentry.Details.Length >= 2)
+            {
+                jumps = steamentry.Details[0];
+                strafes = steamentry.Details[1];
+            }
 
             return new LeaderboardEntry()
             {
-                UserId = score.User.Id,
-                Rank = score.GlobalRank,
-                TimeMilliseconds = score.Score,
-                UserName = score.User.Name,
-                Jumps = 0,
-                Strafes = 0
+                UserId = steamentry.User.Id,
+                Rank = steamentry.GlobalRank,
+                TimeMilliseconds = steamentry.Score,
+                UserName = steamentry.User.Name,
+                Jumps = jumps,
+                Strafes = strafes
             };
         }
 
@@ -51,17 +63,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
 
             var scores = await ldb.Value.GetScoresFromFriendsAsync();
-            foreach(var score in scores)
+
+            if(scores != null)
             {
-                result.Add(new LeaderboardEntry()
+                foreach (var score in scores)
                 {
-                    UserId = score.User.Id,
-                    Rank = score.GlobalRank,
-                    TimeMilliseconds = score.Score,
-                    UserName = score.User.Name,
-                    Jumps = 0,
-                    Strafes = 0
-                });
+                    result.Add(SteamEntryToEntry(score));
+                }
             }
 
             return result;
@@ -78,17 +86,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
 
             var scores = await ldb.Value.GetScoresAsync(count, offset);
-            foreach(var score in scores)
+
+            if(scores != null)
             {
-                result.Add(new LeaderboardEntry()
+                foreach (var score in scores)
                 {
-                    UserId = score.User.Id,
-                    Rank = score.GlobalRank,
-                    TimeMilliseconds = score.Score,
-                    UserName = score.User.Name,
-                    Jumps = 0,
-                    Strafes = 0
-                });
+                    result.Add(SteamEntryToEntry(score));
+                }
             }
 
             return result;
@@ -139,9 +143,14 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return response;
             }
 
-            var update = await leaderboard.Value.SubmitScoreAsync((int)(frame.Time * 1000));
+            var details = new int[]
+            {
+                frame.Jumps,
+                frame.Strafes
+            };
+            var update = await leaderboard.Value.SubmitScoreAsync((int)(frame.Time * 1000), details);
 
-            if (!update.HasValue)
+            if (!update.HasValue || !update.Value.Success)
             {
                 return response;
             }
