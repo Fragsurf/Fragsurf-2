@@ -12,6 +12,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     public class Modal_BunnyhopRanksTrackEntryData
     {
         public FSMTrack Track;
+        public int Number;
         public Action OnClick;
         public bool Selected;
     }
@@ -27,7 +28,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         public override void LoadData(Modal_BunnyhopRanksTrackEntryData data)
         {
-            var name = data.Track.IsMainTrack ? $"[Main] {data.Track.TrackName}" : data.Track.TrackName;
+            var stage = data.Number == 0 ? string.Empty : $" S{data.Number}";
+            var name = data.Track.IsMainTrack ? $"[Main{stage}] {data.Track.TrackName}" : data.Track.TrackName;
             _name.text = $"{name} - {data.Track.TrackType}";
             _button.onClick.AddListener(() =>
             {
@@ -42,6 +44,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             if (data.Selected)
             {
                 _button.interactable = false;
+                _activeTab = this;
             }
         }
     }

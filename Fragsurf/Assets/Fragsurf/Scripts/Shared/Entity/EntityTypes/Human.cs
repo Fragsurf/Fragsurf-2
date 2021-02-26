@@ -82,7 +82,7 @@ namespace Fragsurf.Shared.Entity
             MovementController?.RunCommand(cmd.Fields, prediction);
             EntityGameObject.SendMessage("OnHumanRunCommand");
 
-            if(TimelineMode == TimelineModes.Record && (prediction || Game.IsHost))
+            if(Timeline != null && Timeline.Mode == TimelineMode.Record && (prediction || Game.IsHost))
             {
                 Timeline?.RecordTick();
             }

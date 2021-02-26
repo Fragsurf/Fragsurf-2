@@ -14,7 +14,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     {
 
         [IgnoreMember]
-        public readonly FSMTrack Track;
+        public FSMTrack Track { get; private set; }
         [IgnoreMember]
         public int Checkpoint = 1;
         [IgnoreMember]
@@ -25,6 +25,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [IgnoreMember]
         private float _previousYaw;
 
+        private Dictionary<int, int> _segments = new Dictionary<int, int>();
+
         public BunnyhopTimeline() { }
 
         public BunnyhopTimeline(FSMTrack track)
@@ -32,9 +34,63 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             Track = track;
         }
 
+        public void Reset(FSMTrack track)
+        {
+            Track = track;
+            RunIsLive = true;
+            Checkpoint = 1;
+            Stage = 1;
+            _previousYaw = 0;
+            _segments.Clear();
+            Frames.Clear();
+        }
+
         public float GetReplayPosition()
         {
             return (float)_frameIndex / Frames.Count;
+        }
+
+        public void SetSegment(int cp)
+        {
+            _segments[cp] = Mathf.Max(LastFrame.Tick, 1);
+        }
+
+        public bool GetSegment(int cp, out BunnyhopTimelineFrame finalFrame, out byte[] replayData)
+        {
+            finalFrame = default;
+            replayData = null;
+
+            if (!_segments.ContainsKey(cp))
+            {
+                return false;
+            }
+
+            var f1 = Frames.FindIndex(x => x.Tick == _segments[cp]);
+            var f2 = _segments.ContainsKey(cp + 1) ? Frames.FindIndex(x => x.Tick == _segments[cp + 1]) : Frames.Count - 1;
+
+            if(f1 == -1 
+                || f2 == -1
+                || f1 >= Frames.Count
+                || f2 >= Frames.Count)
+            {
+                return false;
+            }
+
+            var startFrame = Frames[f1];
+            var endFrame = Frames[f2];
+            finalFrame = endFrame.Subtract(startFrame);
+
+            var frameList = new List<BunnyhopTimelineFrame>(finalFrame.Tick);
+            for(int i = f1; i < f2; i++) 
+            {
+                frameList.Add(Frames[i]);
+            }
+
+            var tl = new BunnyhopTimeline();
+            tl.Frames = frameList;
+            replayData = tl.Serialize();
+
+            return true;
         }
 
         public void SetReplayPosition(float v)

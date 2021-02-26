@@ -25,6 +25,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private Modal_BunnyhopRanksRankEntry _rankTemplate;
         private Modal_BunnyhopRanksTrackEntry _trackTemplate;
         private FSMTrack _selectedTrack;
+        private int _selectedNumber;
+        private bool _loading;
 
         private BaseLeaderboardSystem LeaderboardSystem => FSGameLoop.GetGameInstance(false).Get<BunnyhopTracks>().LeaderboardSystem;
 
@@ -36,7 +38,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 {
                     return;
                 }
-                LoadRanksAroundMe(_selectedTrack, 10, 50);
+                LoadRanksAroundMe(_selectedTrack, 10, 50, _selectedNumber);
             });
 
             _top100.onClick.AddListener(() =>
@@ -45,7 +47,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 {
                     return;
                 }
-                LoadRanks(_selectedTrack, 1, 100);
+                LoadRanks(_selectedTrack, 1, 100, _selectedNumber);
             });
 
             _friends.onClick.AddListener(() =>
@@ -54,7 +56,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 {
                     return;
                 }
-                LoadFriendsRanks(_selectedTrack);
+                LoadFriendsRanks(_selectedTrack, _selectedNumber);
             });
 
             _rankTemplate = GameObject.FindObjectOfType<Modal_BunnyhopRanksRankEntry>();
@@ -87,6 +89,26 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                     },
                     Selected = firstTrack
                 });
+
+                if(fsmtrack.TrackType == FSMTrackType.Staged)
+                {
+                    var stageIdx = 1;
+                    foreach(var stage in fsmtrack.StageData.Stages)
+                    {
+                        var idx = stageIdx;
+                        _trackTemplate.Append(new Modal_BunnyhopRanksTrackEntryData()
+                        {
+                            Track = fsmtrack,
+                            Number = stageIdx,
+                            OnClick = () =>
+                            {
+                                LoadRanks(fsmtrack, 1, 100, idx);
+                            }
+                        });
+                        stageIdx++;
+                    }
+                }
+
                 if (firstTrack)
                 {
                     LoadRanks(fsmtrack, 1, 100);
@@ -95,12 +117,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
-        private bool _loading;
-
-        private async void LoadRanksAroundMe(FSMTrack track, int offset, int count)
+        private async void LoadRanksAroundMe(FSMTrack track, int offset, int count, int number = 0)
         {
             _loading = true;
             _selectedTrack = track;
+            _selectedNumber = number;
             _rankTemplate.Clear();
 
             offset = Mathf.Clamp(offset, 5, 15);
@@ -108,7 +129,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             try
             {
-                var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
+                var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW, number);
                 var myRank = await LeaderboardSystem.FindRank(ldbId, SteamClient.SteamId);
 
                 if (myRank == null)
@@ -127,13 +148,14 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
-        private async void LoadFriendsRanks(FSMTrack track)
+        private async void LoadFriendsRanks(FSMTrack track, int number = 0)
         {
             _loading = true;
             _rankTemplate.Clear();
             _selectedTrack = track;
+            _selectedNumber = number;
 
-            var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
+            var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW, number);
 
             try
             {
@@ -146,17 +168,18 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
-        private async void LoadRanks(FSMTrack track, int offset, int count)
+        private async void LoadRanks(FSMTrack track, int offset, int count, int number = 0)
         {
             _loading = true;
             _selectedTrack = track;
+            _selectedNumber = number;
             _rankTemplate.Clear();
 
             try
             {
                 offset = Mathf.Max(offset, 1);
                 count = Mathf.Clamp(count, 1, 100);
-                var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
+                var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW, number);
                 var entries = await LeaderboardSystem.Query(ldbId, offset, count);
                 AddEntries(ldbId, entries);
             }

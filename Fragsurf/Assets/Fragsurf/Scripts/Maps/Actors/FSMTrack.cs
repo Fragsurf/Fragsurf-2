@@ -84,6 +84,7 @@ namespace Fragsurf.Actors
         public UnityEvent<Human, int> OnCheckpoint = new UnityEvent<Human, int>();
         public UnityEvent<Human> OnFinish = new UnityEvent<Human>();
         public UnityEvent<Human> OnStart = new UnityEvent<Human>();
+        public UnityEvent<Human, int> OnStartStage = new UnityEvent<Human, int>();
 
         private class RunData
         {
@@ -175,27 +176,29 @@ namespace Fragsurf.Actors
                         Debug.LogError("Track is invalid: " + TrackName, gameObject);
                         return;
                     }
-                    for(int i = 0; i < _stageData.Stages.Length; i++)
+
+                    _stageData.Stages[0].StartTrigger.OnTriggerEnter.AddListener(EnterStartZone);
+                    _stageData.Stages[0].StartTrigger.OnTriggerExit.AddListener(ExitStartZone);
+                    _stageData.Stages[_stageData.Stages.Length - 1].EndTrigger.OnTriggerEnter.AddListener(EnterEndZone);
+
+                    for (int i = 0; i < _stageData.Stages.Length; i++)
                     {
-                        var stage = i;
+                        var idx = i + 1;
                         _stageData.Stages[i].StartTrigger.OnTriggerExit.AddListener((ent) =>
                         {
                             if (ent is Human hu)
                             {
-                                Staged_ExitStart(stage, hu);
+                                Staged_ExitStart(idx, hu);
                             }
                         });
                         _stageData.Stages[i].EndTrigger.OnTriggerEnter.AddListener((ent) =>
                         {
                             if (ent is Human hu)
                             {
-                                Staged_EnterEnd(stage, hu);
+                                Staged_EnterEnd(idx, hu);
                             }
                         });
                     }
-                    _stageData.Stages[0].StartTrigger.OnTriggerEnter.AddListener(EnterStartZone);
-                    _stageData.Stages[0].StartTrigger.OnTriggerExit.AddListener(ExitStartZone);
-                    _stageData.Stages[_stageData.Stages.Length - 1].EndTrigger.OnTriggerEnter.AddListener(EnterEndZone);
                     break;
             }
 
@@ -328,10 +331,14 @@ namespace Fragsurf.Actors
 
             if (!TryGetStagedRunData(hu, stage, out RunData rd))
             {
-                rd = new RunData(hu, this) { Stage = stage };
+                rd = new RunData(hu, this);
                 _stageRunDatas.Add(rd);
             }
+
             rd.Reset();
+            rd.Stage = stage;
+
+            OnStartStage?.Invoke(hu, stage);
         }
 
         private void Staged_EnterEnd(int stage, Human hu)
@@ -343,7 +350,7 @@ namespace Fragsurf.Actors
 
             if(TryGetRunData(hu, out RunData linearRunData))
             {
-                linearRunData.Checkpoint = stage;
+                linearRunData.Stage = stage;
             }
 
             OnStage?.Invoke(hu, stage);

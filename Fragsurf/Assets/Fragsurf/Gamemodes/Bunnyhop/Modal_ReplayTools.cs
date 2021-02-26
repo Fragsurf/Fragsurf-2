@@ -82,8 +82,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             {
                 var target = FSGameLoop.GetGameInstance(false).Get<SpectateController>().TargetHuman;
                 if(target != null 
-                    && (target.Timeline is BunnyhopTimeline bhop)
-                    && target.TimelineMode == NetEntity.TimelineModes.Replay)
+                    && target.Timeline is BunnyhopTimeline bhop
+                    && bhop.Mode == TimelineMode.Replay)
                 {
                     bhop.Paused = true;
                     bhop.SetReplayPosition(v);
@@ -104,8 +104,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             {
                 if ((FSGameLoop.GetGameInstance(false).Get<SpectateController>().TargetHuman is ReplayHuman target)
                     && float.TryParse(v, out float speed)
-                    && (target.Timeline is BunnyhopTimeline bhop)
-                    && target.TimelineMode == NetEntity.TimelineModes.Replay)
+                    && target.Timeline is BunnyhopTimeline bhop
+                    && bhop.Mode == TimelineMode.Replay)
                 {
                     target.PlaybackSpeed = speed;
                 }

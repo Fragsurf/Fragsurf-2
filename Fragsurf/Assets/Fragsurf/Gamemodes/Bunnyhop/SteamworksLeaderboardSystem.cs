@@ -20,7 +20,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
 
             var ldbName = GetLeaderboardName(ldbId);
-            var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
+            var ldb = await SteamUserStats.FindLeaderboardAsync(ldbName);
             if (!ldb.HasValue)
             {
                 return null;
@@ -67,7 +67,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
 
             var ldbName = GetLeaderboardName(ldbId);
-            var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
+            var ldb = await SteamUserStats.FindLeaderboardAsync(ldbName);
             if (!ldb.HasValue)
             {
                 return result;
@@ -96,7 +96,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
 
             var ldbName = GetLeaderboardName(ldbId);
-            var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
+            var ldb = await SteamUserStats.FindLeaderboardAsync(ldbName);
             if (!ldb.HasValue)
             {
                 return result;
@@ -123,7 +123,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
 
             var ldbName = GetLeaderboardName(ldbId);
-            var ldb = await SteamUserStats.FindOrCreateLeaderboardAsync(ldbName, LeaderboardSort.Ascending, LeaderboardDisplay.TimeMilliSeconds);
+            var ldb = await SteamUserStats.FindLeaderboardAsync(ldbName);
             if (!ldb.HasValue)
             {
                 return null;

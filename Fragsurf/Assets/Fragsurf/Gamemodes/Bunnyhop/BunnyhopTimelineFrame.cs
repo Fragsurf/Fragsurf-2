@@ -30,6 +30,17 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public int GoodSyncVel;
         [IgnoreMember]
         public int TotalSync;
+
+        public BunnyhopTimelineFrame Subtract(BunnyhopTimelineFrame other)
+        {
+            var fr = this;
+            fr.Tick = Tick - other.Tick;
+            fr.Time = Time - other.Time;
+            fr.Jumps = Jumps - other.Jumps;
+            fr.Strafes = Strafes - other.Strafes;
+            return fr;
+        }
+
     }
 }
 

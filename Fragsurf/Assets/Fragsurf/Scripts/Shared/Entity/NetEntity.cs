@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Fragsurf.Movement;
 using Fragsurf.Utility;
-using Fragsurf.Actors;
 
 namespace Fragsurf.Shared.Entity
 {
@@ -19,8 +17,6 @@ namespace Fragsurf.Shared.Entity
 
         protected Vector3 _origin;
         protected Vector3 _angles;
-        protected bool _autoRecordTimeline = true;
-        protected bool _autoReplayTimeline = true;
         private EntityGameObject _entityGameObject;
         private bool _firstTick = true;
 

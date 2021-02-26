@@ -8,60 +8,49 @@ namespace Fragsurf.Shared.Entity
     public partial class NetEntity
     {
 
-        public enum TimelineModes
-        {
-            None,
-            Record,
-            Replay
-        }
+        protected bool _autoRecordTimeline = true;
+        protected bool _autoReplayTimeline = true;
 
-        public TimelineModes TimelineMode { get; private set; }
-        public EntityTimeline Timeline { get; private set; }
+        public EntityTimeline Timeline;
 
-        public void Record<T>(T timeline)
-            where T : EntityTimeline
+        public void Record(EntityTimeline timeline)
         {
             Timeline = timeline;
-            Timeline.Entity = this;
-            TimelineMode = TimelineModes.Record;
+            timeline.Mode = TimelineMode.Record;
+            timeline.Entity = this;
         }
 
         public void Replay(EntityTimeline timeline)
         {
             Timeline = timeline;
-            Timeline.Entity = this;
-            TimelineMode = TimelineModes.Replay;
-        }
-
-        public void StopReplay()
-        {
-            if(TimelineMode == TimelineModes.Replay)
-            {
-                Timeline = null;
-            }
-        }
-
-        public void StopRecording()
-        {
-            if(TimelineMode == TimelineModes.Record)
-            {
-                Timeline = null;
-            }
+            timeline.Mode = TimelineMode.Replay;
+            timeline.Entity = this;
         }
 
         private void Tick_Timeline()
         {
-            if (TimelineMode == TimelineModes.Record && _autoRecordTimeline)
+            if(Timeline == null)
             {
-                Timeline?.RecordTick();
+                return;
             }
 
-            if (TimelineMode == TimelineModes.Replay && _autoReplayTimeline)
+            if(_autoRecordTimeline && Timeline.Mode == TimelineMode.Record)
             {
-                Timeline?.ReplayTick();
+                Timeline.RecordTick();
+            }
+            else if(_autoReplayTimeline && Timeline.Mode == TimelineMode.Replay)
+            {
+                Timeline.ReplayTick();
             }
         }
 
+    }
+
+    public enum TimelineMode
+    {
+        None,
+        Record,
+        Replay
     }
 
     public abstract class GenericEntityTimeline<T> : EntityTimeline
@@ -113,6 +102,8 @@ namespace Fragsurf.Shared.Entity
     public abstract class EntityTimeline
     {
 
+        [IgnoreMember]
+        public TimelineMode Mode;
         [IgnoreMember]
         public bool Paused;
         [IgnoreMember]
