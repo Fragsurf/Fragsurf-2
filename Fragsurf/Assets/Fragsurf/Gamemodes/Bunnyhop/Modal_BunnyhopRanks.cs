@@ -26,7 +26,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private Modal_BunnyhopRanksTrackEntry _trackTemplate;
         private FSMTrack _selectedTrack;
         private int _selectedNumber;
-        private bool _loading;
+        private bool _loadingRanks;
+        private bool _loadingReplay;
 
         private BaseLeaderboardSystem LeaderboardSystem => FSGameLoop.GetGameInstance(false).Get<BunnyhopTracks>().LeaderboardSystem;
 
@@ -69,9 +70,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private void Update()
         {
-            _friends.interactable = !_loading;
-            _top100.interactable = !_loading;
-            _myRank.interactable = !_loading;
+            var btnsDisabled = AreButtonsDisabled();
+            _friends.interactable = !btnsDisabled;
+            _top100.interactable = !btnsDisabled;
+            _myRank.interactable = !btnsDisabled;
         }
 
         private void LoadTracks()
@@ -119,7 +121,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private async void LoadRanksAroundMe(FSMTrack track, int offset, int count, int number = 0)
         {
-            _loading = true;
+            _loadingRanks = true;
             _selectedTrack = track;
             _selectedNumber = number;
             _rankTemplate.Clear();
@@ -134,7 +136,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
                 if (myRank == null)
                 {
-                    _loading = false;
+                    _loadingRanks = false;
                     return;
                 }
 
@@ -144,13 +146,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
             finally
             {
-                _loading = false;
+                _loadingRanks = false;
             }
         }
 
         private async void LoadFriendsRanks(FSMTrack track, int number = 0)
         {
-            _loading = true;
+            _loadingRanks = true;
             _rankTemplate.Clear();
             _selectedTrack = track;
             _selectedNumber = number;
@@ -164,13 +166,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
             finally
             {
-                _loading = false;
+                _loadingRanks = false;
             }
         }
 
         private async void LoadRanks(FSMTrack track, int offset, int count, int number = 0)
         {
-            _loading = true;
+            _loadingRanks = true;
             _selectedTrack = track;
             _selectedNumber = number;
             _rankTemplate.Clear();
@@ -185,7 +187,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
             finally
             {
-                _loading = false;
+                _loadingRanks = false;
             }
         }
 
@@ -201,35 +203,50 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 {
                     Entry = entry,
                     OnClickProfile = () => SteamFriends.OpenUserOverlay(userid, "steamid"),
-                    OnClickReplay = () => SpawnBot(ldbId, rank)
+                    OnClickReplay = () => SpawnBot(ldbId, rank),
+                    DisableButtons = AreButtonsDisabled
                 });
             }
         }
 
+        private bool AreButtonsDisabled()
+        {
+            return _loadingRanks || _loadingReplay;
+        }
+
         private async void SpawnBot(LeaderboardIdentifier ldbId, int rank)
         {
-            var cl = FSGameLoop.GetGameInstance(false);
-            var data = await cl.Get<BunnyhopTracks>().LeaderboardSystem.DownloadReplayAsync(ldbId, rank);
-            if(data == null)
+            _loadingReplay = true;
+
+            try // lazy me
             {
-                return;
-            }
+                var cl = FSGameLoop.GetGameInstance(false);
+                var data = await cl.Get<BunnyhopTracks>().LeaderboardSystem.DownloadReplayAsync(ldbId, rank);
+                if (data == null)
+                {
+                    return;
+                }
 
-            var tl = EntityTimeline.Deserialize<BunnyhopTimeline>(data);
-            if(tl == null)
+                var tl = EntityTimeline.Deserialize<BunnyhopTimeline>(data);
+                if (tl == null)
+                {
+                    return;
+                }
+
+                var ent = new ReplayHuman(cl);
+                cl.EntityManager.AddEntity(ent);
+                ent.InterpolationMode = InterpolationMode.Frame;
+                ent.DisplayName = $"{ldbId.TrackName} - {ldbId.TrackType} [{ldbId.Style}]";
+                ent.Replay(tl);
+
+                cl.Get<SpectateController>().Spectate(ent);
+
+                UGuiManager.Instance.OpenModal<Modal_ReplayTools>();
+            }
+            finally
             {
-                return;
+                _loadingReplay = false;
             }
-
-            var ent = new ReplayHuman(cl);
-            cl.EntityManager.AddEntity(ent);
-            ent.InterpolationMode = InterpolationMode.Frame;
-            ent.DisplayName = $"{ldbId.TrackName} - {ldbId.TrackType} [{ldbId.Style}]";
-            ent.Replay(tl);
-
-            cl.Get<SpectateController>().Spectate(ent);
-
-            UGuiManager.Instance.OpenModal<Modal_ReplayTools>();
         }
 
     }

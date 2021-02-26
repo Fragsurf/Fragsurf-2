@@ -11,6 +11,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public LeaderboardEntry Entry;
         public Action OnClickReplay;
         public Action OnClickProfile;
+        public Func<bool> DisableButtons;
     }
     public class Modal_BunnyhopRanksRankEntry : EntryElement<Modal_BunnyhopRanksRankEntryData>
     {
@@ -21,6 +22,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private Button _replayButton;
         [SerializeField]
         private Button _profileButton;
+
+        private Func<bool> _disableButtons;
 
         protected override bool ContainsSearch(string input)
         {
@@ -40,8 +43,17 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             {
                 data.OnClickProfile?.Invoke();
             });
-
+            _disableButtons = data.DisableButtons;
         }
+
+        private void Update()
+        {
+            if(_disableButtons != null)
+            {
+                _replayButton.interactable = !_disableButtons();
+            }
+        }
+
     }
 }
 
