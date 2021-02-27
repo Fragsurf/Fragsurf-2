@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.IO;
 
 namespace RealtimeCSG.Importers.Vmf
 {
@@ -25,7 +26,7 @@ namespace RealtimeCSG.Importers.Vmf
                 var importer = new VmfImporter();
                 var world = importer.Import(vmfPath);
 
-                var obj = new GameObject("[VMF]");
+                var obj = new GameObject(Path.GetFileName(vmfPath));
                 var model = OperationsUtility.CreateModelInstanceInScene(obj.transform);
 
                 for (int i = 0; i < world.Solids.Count; i++)
