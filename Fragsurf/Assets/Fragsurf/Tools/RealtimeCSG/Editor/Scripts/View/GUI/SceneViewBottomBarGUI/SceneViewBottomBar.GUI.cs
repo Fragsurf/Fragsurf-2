@@ -5,6 +5,7 @@ using InternalRealtimeCSG;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using RealtimeCSG.Importers.Vmf;
 
 namespace RealtimeCSG
 {
@@ -686,7 +687,25 @@ namespace RealtimeCSG
 			}
 			#endregion
 
+			#region VMF Link button
 
+			currentRect.width = 27;
+			currentRect.y = 0;
+			currentRect.height = layoutHeight - currentRect.y;
+			currentRect.y += barSize.y;
+			layoutX -= currentRect.width;
+			currentRect.x = layoutX;
+			if (GUI.Button(currentRect, CSG_GUIStyleUtility.Skin.vmfIcon, EditorStyles.toolbarButton))
+			{
+				string path = EditorUtility.OpenFilePanel("Load a VMF", "", "vmf");
+				if (path.Length != 0)
+				{
+					VmfWorldConverter.Import(path);
+				}
+			}
+			TooltipUtility.SetToolTip(vmfTooltip, currentRect);
+
+			#endregion
 
 
 

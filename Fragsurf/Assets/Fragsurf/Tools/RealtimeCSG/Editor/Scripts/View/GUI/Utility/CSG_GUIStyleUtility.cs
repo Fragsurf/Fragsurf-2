@@ -29,6 +29,7 @@ namespace RealtimeCSG
 		public GUIContent[] clipNamesOn			= new GUIContent[CSG_GUIStyleUtility.clipTypeCount];
 
 		public GUIContent rebuildIcon;
+		public GUIContent vmfIcon;
 
 		public GUIContent gridIcon;
 		public GUIContent gridIconOn;
@@ -280,6 +281,7 @@ namespace RealtimeCSG
 		//const string snappingOnTooltip	= "Turn automatic snap to grid on/off | Shift-T";
 
 		static GUIContent proRebuildIcon        = IconContent("icon_pro_rebuild");
+		static GUIContent proVmfIcon			= IconContent("icon_pro_vmf");
 		static GUIContent proGridIcon           = IconContent("icon_pro_grid");
 		static GUIContent proGridIconOn         = IconContent("icon_pro_grid_on");
 		static GUIContent proGridSnapIcon       = IconContent("icon_pro_gridsnap");
@@ -290,6 +292,7 @@ namespace RealtimeCSG
         static GUIContent proNoSnapIconOn       = IconContent("icon_pro_nosnap_on");
 
         static GUIContent personalRebuildIcon    = IconContent("icon_pers_rebuild");
+		static GUIContent personalVmfIcon		 = IconContent("icon_pers_vmf");
 		static GUIContent personalGridIcon       = IconContent("icon_pers_grid");
 		static GUIContent personalGridIconOn     = IconContent("icon_pers_grid_on");
 		static GUIContent personalGridSnapIcon   = IconContent("icon_pers_gridsnap");
@@ -540,6 +543,7 @@ namespace RealtimeCSG
 			}
 
 			pro_skin.rebuildIcon    = proRebuildIcon;
+			pro_skin.vmfIcon		= proVmfIcon;
 			pro_skin.gridIcon       = proGridIcon;
 			pro_skin.gridIconOn     = proGridIconOn;
 			pro_skin.gridSnapIcon   = proGridSnapIcon;
@@ -555,7 +559,8 @@ namespace RealtimeCSG
             //pro_skin.snappingIcon.tooltip	= snappingTooltip;
             //pro_skin.snappingIconOn.tooltip	= snappingOnTooltip;
 
-            personal_skin.rebuildIcon    = personalRebuildIcon;
+            personal_skin.rebuildIcon    = personalRebuildIcon; 
+			personal_skin.vmfIcon		 = personalVmfIcon;
 			personal_skin.gridIcon       = personalGridIcon;
 			personal_skin.gridIconOn     = personalGridIconOn;
 			personal_skin.gridSnapIcon   = personalGridSnapIcon;
