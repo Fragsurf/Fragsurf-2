@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Text;
 using TMPro;
 using UnityEngine;
 
@@ -25,24 +26,20 @@ namespace Fragsurf.UI
         private float _fadeDuration = .1f;
 
         private float _originalFadeDuration;
+        private StringBuilder _sb = new StringBuilder();
+        private const string _sbFormat = "{0}<color=orange>{1} |</color> {2}";
 
         protected override bool AutoRebuildLayout => false;
 
         public override void LoadData(Modal_ChatboxChatEntryData data)
         {
-            var name = $"<color=orange>{data.PlayerName} |</color>";
-            var msg = data.Message;
-
-            if (!string.IsNullOrEmpty(data.ClanTag))
-            {
-                name = $"<color=yellow>[{data.ClanTag}]</color> {name}";
-                msg = $"<i>{msg}</i>";
-            }
-
+            _sb.AppendFormat(_sbFormat, !string.IsNullOrEmpty(data.ClanTag) ? data.ClanTag : string.Empty, data.PlayerName, data.Message);
             _originalFadeDuration = _fadeDuration;
-            _message.text = $"{name} {msg}";
+            _message.text = _sb.ToString();
             _chatbox.OnOpened.AddListener(OnChatboxOpened);
             _chatbox.OnClosed.AddListener(OnChatboxClosed);
+
+            _sb.Clear();
 
             StartCoroutine(SetSize());
         }
