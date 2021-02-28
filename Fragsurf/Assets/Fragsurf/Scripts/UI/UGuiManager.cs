@@ -112,6 +112,12 @@ namespace Fragsurf.UI
             }
         }
 
+        [ConCommand("-modal", "", ConVarFlags.Silent)]
+        public void HoldCloseModal(string modalName)
+        {
+            CloseModal(modalName);
+        }
+
         [ConCommand("modal.close", "Closes a modal", ConVarFlags.Silent)]
         public void CloseModal(string modalName)
         {
@@ -120,6 +126,12 @@ namespace Fragsurf.UI
             {
                 modal.Close();
             }
+        }
+
+        [ConCommand("+modal", "", ConVarFlags.Silent)]
+        public void HoldOpenModal(string modalName)
+        {
+            OpenModal(modalName);
         }
 
         [ConCommand("modal.open", "Opens a modal", ConVarFlags.Silent)]
