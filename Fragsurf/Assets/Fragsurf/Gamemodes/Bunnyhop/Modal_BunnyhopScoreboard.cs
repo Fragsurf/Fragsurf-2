@@ -31,6 +31,16 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _replaysButton.onClick.AddListener(() => UGuiManager.Instance.ToggleModal<Modal_ReplayList>());
             _replayToolsButton.onClick.AddListener(() => UGuiManager.Instance.ToggleModal<Modal_ReplayTools>());
             _ranksButton.onClick.AddListener(() => UGuiManager.Instance.ToggleModal<Modal_BunnyhopRanks>());
+
+            SpectateController.ScoreboardUpdateNotification += SpectateController_ScoreboardUpdateNotification;
+        }
+
+        private void SpectateController_ScoreboardUpdateNotification()
+        {
+            if (IsOpen)
+            {
+                RefreshPlayerList();
+            }
         }
 
         protected override void OnOpen()
@@ -45,14 +55,25 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             {
                 return;
             }
+
+            var specController = cl.Get<SpectateController>();
+
             _playerTemplate.Clear();
             _specTemplate.Clear();
             foreach (var player in cl.PlayerManager.Players)
             {
-                _playerTemplate.Append(new PlayerEntryData()
+                var plData = new PlayerEntryData()
                 {
                     Player = player
-                });
+                };
+                if (!specController.IsSpectating(player.ClientIndex))
+                {
+                    _playerTemplate.Append(plData);
+                }
+                else
+                {
+                    _specTemplate.Append(plData);
+                }
             }
         }
 

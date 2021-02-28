@@ -1341,6 +1341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EntryLimit: 100
   SearchField: {fileID: 0}
+  _name: {fileID: 6305205442285052383}
 --- !u!1 &6305205440674480475
 GameObject:
   m_ObjectHideFlags: 0
