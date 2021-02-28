@@ -25,7 +25,12 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             LayoutRebuilder.MarkLayoutForRebuild(_centerHud.transform.parent as RectTransform);
 
             var cl = FSGameLoop.GetGameInstance(false);
-            var target = cl.Get<SpectateController>().TargetHuman;
+            if(!cl || !cl.TryGet(out SpectateController spec))
+            {
+                return;
+            }
+
+            var target = spec.TargetHuman;
 
             if (target == null || !(target.Timeline is BunnyhopTimeline bhopTimeline))
             {

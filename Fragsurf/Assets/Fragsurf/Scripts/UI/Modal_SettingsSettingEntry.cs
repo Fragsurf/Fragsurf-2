@@ -36,6 +36,8 @@ namespace Fragsurf.UI
         [SerializeField]
         private SettingBind _bindElement;
         [SerializeField]
+        private SettingModalBind _modalBindElement;
+        [SerializeField]
         private SettingColor _colorElement;
         [SerializeField]
         private TMP_Text _label;
@@ -112,6 +114,10 @@ namespace Fragsurf.UI
             if (settingName.StartsWith("bind/"))
             {
                 return _bindElement;
+            }
+            if (settingName.StartsWith("modal/"))
+            {
+                return _modalBindElement;
             }
 
             var type = DevConsole.GetVariableType(settingName);

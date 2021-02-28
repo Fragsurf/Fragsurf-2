@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Fragsurf.Utility;
 using System;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 namespace Fragsurf.UI
 {
@@ -19,6 +20,8 @@ namespace Fragsurf.UI
 
         public bool EscapeEnabled = true;
         public Canvas Canvas => _mainCanvas;
+
+        public List<UGuiModal> GetModals() => _modals.Values.ToList();
 
         private void Awake()
         {

@@ -18,7 +18,9 @@ namespace Fragsurf.Shared
         private Configuration _config;
         private FSGameLoop _game;
         private List<FSComponent> _addedComponents = new List<FSComponent>();
+        private List<GameObject> _objectsInstantiated = new List<GameObject>();
 
+        public List<UGuiModal> Modals { get; } = new List<UGuiModal>();
         public GamemodeData Data { get; set; }
 
         public void Load(GamemodeData data, FSGameLoop game)
@@ -46,13 +48,21 @@ namespace Fragsurf.Shared
             {
                 foreach(var obj in Data.InstantiateOnLoad)
                 {
-                    GameObject.Instantiate(obj);
+                    var clone = GameObject.Instantiate(obj);
+                    _objectsInstantiated.Add(clone);
+                    Modals.AddRange(clone.GetComponentsInChildren<UGuiModal>(true));
                 }
             }
         }
 
         public void Unload(FSGameLoop game)
         {
+            Modals.Clear();
+            foreach(var obj in _objectsInstantiated)
+            {
+                GameObject.Destroy(obj);
+            }
+
             _Unload(game);
 
             // unhook then destroy, to make sure we don't lose references

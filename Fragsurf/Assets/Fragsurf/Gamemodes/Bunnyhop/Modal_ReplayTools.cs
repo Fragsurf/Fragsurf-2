@@ -114,8 +114,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private void Update()
         {
-            if (!(FSGameLoop.GetGameInstance(false).Get<SpectateController>().TargetHuman is ReplayHuman target)
-                || !(target.Timeline is BunnyhopTimeline bhop))
+            var cl = FSGameLoop.GetGameInstance(false);
+            if(!cl 
+                || !cl.TryGet(out SpectateController spec)
+                || !(spec.TargetHuman is ReplayHuman target)
+                || !(spec.TargetHuman.Timeline is BunnyhopTimeline bhop))
             {
                 Close();
                 return;

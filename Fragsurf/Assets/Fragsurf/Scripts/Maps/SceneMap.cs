@@ -27,18 +27,19 @@ namespace Fragsurf.Maps
 
         protected override async Task _UnloadAsync()
         {
-            try
-            {
-                var ao = SceneManager.UnloadSceneAsync(Name, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
-                while (!ao.isDone)
-                {
-                    await Task.Delay(50);
-                }
-            }
-            catch(Exception e)
-            {
-                Debug.LogError("Failed to unloaded SceneMap: " + Name + "\n" + e.Message);
-            }
+            SceneManager.UnloadScene(Name);
+            //try
+            //{
+                //var ao = SceneManager.UnloadSceneAsync(Name, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+                //while (!ao.isDone)
+                //{
+                //    await Task.Delay(50);
+                //}
+            //}
+            //catch(Exception e)
+            //{
+            //    Debug.LogError("Failed to unloaded SceneMap: " + Name + "\n" + e.Message);
+            //}
         }
     }
 }

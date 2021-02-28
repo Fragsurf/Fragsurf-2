@@ -35,6 +35,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             SpectateController.ScoreboardUpdateNotification += SpectateController_ScoreboardUpdateNotification;
         }
 
+        protected override void OnDestroy()
+        {
+            SpectateController.ScoreboardUpdateNotification -= SpectateController_ScoreboardUpdateNotification;
+
+            base.OnDestroy();
+        }
+
         private void SpectateController_ScoreboardUpdateNotification()
         {
             if (IsOpen)

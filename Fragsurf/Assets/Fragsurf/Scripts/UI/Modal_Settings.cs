@@ -83,12 +83,17 @@ namespace Fragsurf.UI
             {
                 bindSettings.Add("bind/controls/+input " + action);
             }
-            foreach (var defaultModal in CanvasManager.DefaultModals)
+
+            CreatePage("controls", bindSettings);
+
+            var bindModals = new List<string>();
+
+            foreach(var modal in UGuiManager.Instance.GetModals())
             {
-                bindSettings.Add("bind/ui/modal.toggle " + defaultModal);
+                bindModals.Add($"modal/{modal.Name}");
             }
 
-            CreatePage("binds", bindSettings);
+            CreatePage("modals", bindModals);
         }
 
         private Dictionary<string, Tuple<Modal_SettingsPageEntry, Modal_SettingsCategoryEntry>> _pages

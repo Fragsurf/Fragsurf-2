@@ -40,7 +40,12 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private void Update()
         {
             var count = 0;
-            foreach (var ent in FSGameLoop.GetGameInstance(false).EntityManager.Entities)
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (!cl || !cl.EntityManager)
+            {
+                return;
+            }
+            foreach (var ent in cl.EntityManager.Entities)
             {
                 if (!(ent is ReplayHuman rep))
                 {

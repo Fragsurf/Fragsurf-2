@@ -1,6 +1,8 @@
 using Fragsurf.Shared;
 using Fragsurf.UI;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Fragsurf.Client
 {
@@ -15,6 +17,13 @@ namespace Fragsurf.Client
             {
                 settingsModal.CreatePage("server", DevConsole.GetVariablesWithFlags(ConVarFlags.Replicator).Distinct().ToList());
                 settingsModal.CreatePage("gamemode", DevConsole.GetVariablesWithFlags(ConVarFlags.Gamemode).Distinct().ToList());
+
+                var modalNames = new List<string>();
+                foreach (var m in Game.GamemodeLoader.Gamemode.Modals)
+                {
+                    modalNames.Add("modal/" + m.Name);
+                }
+                settingsModal.CreatePage("gamemode modals", modalNames);
             }
         }
 
@@ -29,6 +38,7 @@ namespace Fragsurf.Client
             {
                 settingsModal.RemovePage("server");
                 settingsModal.RemovePage("gamemode");
+                settingsModal.RemovePage("gamemode modals");
             }
         }
 

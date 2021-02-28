@@ -303,6 +303,13 @@ namespace Fragsurf.Shared
             return GetFSComponent<T>(allowCache);
         }
 
+        public bool TryGet<T>(out T result)
+            where T : FSComponent
+        {
+            result = Get<T>();
+            return result != null;
+        }
+
         public void RemoveFSComponent(FSComponent fsc)
         {
             var type = fsc.GetType();
