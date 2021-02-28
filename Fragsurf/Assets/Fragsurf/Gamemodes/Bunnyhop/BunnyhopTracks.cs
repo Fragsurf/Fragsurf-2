@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Fragsurf.Actors;
 using Fragsurf.Maps;
 using Fragsurf.Movement;
@@ -88,10 +89,17 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
             {
-                var data = hu.Timeline.Serialize();
+                var tlCopy = new BunnyhopTimeline()
+                {
+                    Frames = new List<BunnyhopTimelineFrame>(bhopTimeline.Frames),
+                    Entity = hu,
+                    Checkpoint = bhopTimeline.Checkpoint,
+                    Stage = bhopTimeline.Stage,
+                    Track = bhopTimeline.Track
+                };
                 var id = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW);
-                var runResult = await LeaderboardSystem.SubmitRunAsync(id, bhopTimeline.CurrentFrame, data);
-                AnnounceRun(track, hu, runResult, bhopTimeline.CurrentFrame);
+                var runResult = await LeaderboardSystem.SubmitRunAsync(id, bhopTimeline.LastFrame, tlCopy);
+                AnnounceRun(track, hu, runResult, tlCopy.LastFrame);
             }
         }
 
@@ -106,10 +114,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             if(!Game.IsHost
                 && hu.OwnerId == Game.ClientIndex
-                && bhopTimeline.GetSegment(stage, out BunnyhopTimelineFrame frame, out byte[] data))
+                && bhopTimeline.GetSegment(stage, out BunnyhopTimelineFrame frame, out BunnyhopTimeline newTimeline))
             {
                 var id = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW, stage);
-                var runResult = await LeaderboardSystem.SubmitRunAsync(id, frame, data);
+                var runResult = await LeaderboardSystem.SubmitRunAsync(id, frame, newTimeline);
                 AnnounceRun(track, hu, runResult, frame, stage);
             }
         }

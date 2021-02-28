@@ -230,18 +230,10 @@ namespace Fragsurf.UI
                 ClanTag = clanTag
             });
 
-            StartCoroutine(AfterMessage());
-
             if (_chatMessageSrc)
             {
                 _chatMessageSrc.Play();
             }
-        }
-
-        private IEnumerator AfterMessage()
-        {
-            yield return 0;
-            _chatTemplate.transform.parent.gameObject.RebuildLayout();
         }
 
     }

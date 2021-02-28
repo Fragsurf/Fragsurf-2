@@ -12,15 +12,24 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     public abstract class BaseLeaderboardSystem 
     {
 
-        public async Task<SubmitResponse> SubmitRunAsync(LeaderboardIdentifier ldbId, BunnyhopTimelineFrame frame, byte[] replay)
+        public async Task<SubmitResponse> SubmitRunAsync(LeaderboardIdentifier ldbId, BunnyhopTimelineFrame frame, BunnyhopTimeline timeline)
         {
-            var response = await _SubmitRun(ldbId, frame, replay);
+            var response = await _SubmitRun(ldbId, frame);
 
             if (response.Improved || !File.Exists(ReplayFilePath(ldbId)))
             {
-                if(SaveReplay(ldbId, replay, out string filePath))
+                try
                 {
-                    await _SaveReplay(ldbId, filePath);
+                    var data = await timeline.SerializeAsync();
+                    data = data.Compress();
+                    if (SaveReplay(ldbId, data, out _))
+                    {
+                        await _SaveReplay(ldbId, data);
+                    }
+                }
+                catch(Exception e)
+                {
+                    Debug.LogError(e.Message);
                 }
             }
 
@@ -31,19 +40,19 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public abstract Task<IEnumerable<LeaderboardEntry>> QueryFriends(LeaderboardIdentifier ldbId);
         public abstract Task<IEnumerable<LeaderboardEntry>> Query(LeaderboardIdentifier ldbId, int offset, int count);
         public abstract Task<byte[]> DownloadReplayAsync(LeaderboardIdentifier ldbId, int rank);
-        protected abstract Task<bool> _SaveReplay(LeaderboardIdentifier ldbId, string filePath);
-        protected abstract Task<SubmitResponse> _SubmitRun(LeaderboardIdentifier ldbId, BunnyhopTimelineFrame frame, byte[] replay);
+        protected abstract Task<bool> _SaveReplay(LeaderboardIdentifier ldbId, byte[] data);
+        protected abstract Task<SubmitResponse> _SubmitRun(LeaderboardIdentifier ldbId, BunnyhopTimelineFrame frame);
 
         /// <summary>
         /// Load the replay data in original, uncompressed format
         /// </summary>
         /// <param name="ldbId"></param>
-        /// <param name="data"></param>
+        /// <param name="uncompressedData"></param>
         /// <returns></returns>
-        public bool TryLoadReplay(LeaderboardIdentifier ldbId, out byte[] data)
+        public bool TryLoadReplay(LeaderboardIdentifier ldbId, out byte[] uncompressedData)
         {
             var path = ReplayFilePath(ldbId);
-            data = null;
+            uncompressedData = null;
 
             if (!File.Exists(path))
             {
@@ -52,7 +61,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             try
             {
-                data = File.ReadAllBytes(path).Decompress();
+                uncompressedData = File.ReadAllBytes(path).Decompress();
             }
             catch(Exception e)
             {
@@ -69,7 +78,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         /// <param name="ldbId"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public bool SaveReplay(LeaderboardIdentifier ldbId, byte[] data, out string filePath)
+        public bool SaveReplay(LeaderboardIdentifier ldbId, byte[] uncompressedData, out string filePath)
         {
             filePath = ReplayFilePath(ldbId);
             var dir = Path.GetDirectoryName(filePath);
@@ -81,7 +90,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 {
                     File.Delete(filePath);
                 }
-                File.WriteAllBytes(filePath, data.Compress());
+                File.WriteAllBytes(filePath, uncompressedData.Compress());
                 DevConsole.WriteLine("Replay saved: " + filePath);
                 return true;
             }

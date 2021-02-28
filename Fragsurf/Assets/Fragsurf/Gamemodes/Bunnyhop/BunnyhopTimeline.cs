@@ -28,16 +28,6 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         public BunnyhopTimeline() { }
 
-        public void Reset()
-        {
-            RunIsLive = true;
-            Checkpoint = 1;
-            Stage = 1;
-            _previousYaw = 0;
-            _segments.Clear();
-            Frames.Clear();
-        }
-
         public float GetReplayPosition()
         {
             return (float)_frameIndex / Frames.Count;
@@ -48,10 +38,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _segments[cp] = Mathf.Max(LastFrame.Tick, 1);
         }
 
-        public bool GetSegment(int cp, out BunnyhopTimelineFrame finalFrame, out byte[] replayData)
+        public bool GetSegment(int cp, out BunnyhopTimelineFrame finalFrame, out BunnyhopTimeline newTimeline)
         {
             finalFrame = default;
-            replayData = null;
+            newTimeline = null;
 
             if (!_segments.ContainsKey(cp))
             {
@@ -79,9 +69,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 frameList.Add(Frames[i]);
             }
 
-            var tl = new BunnyhopTimeline();
-            tl.Frames = frameList;
-            replayData = tl.Serialize();
+            newTimeline = new BunnyhopTimeline();
+            newTimeline.Frames = frameList;
 
             return true;
         }

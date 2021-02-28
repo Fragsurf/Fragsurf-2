@@ -145,7 +145,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             return result.Decompress();
         }
 
-        protected override async Task<SubmitResponse> _SubmitRun(LeaderboardIdentifier ldbId, BunnyhopTimelineFrame frame, byte[] replay)
+        protected override async Task<SubmitResponse> _SubmitRun(LeaderboardIdentifier ldbId, BunnyhopTimelineFrame frame)
         {
             var response = new SubmitResponse()
             {
@@ -202,22 +202,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             return response;
         }
 
-        protected override async Task<bool> _SaveReplay(LeaderboardIdentifier ldbId, string filePath)
+        protected override async Task<bool> _SaveReplay(LeaderboardIdentifier ldbId, byte[] data)
         {
             if (!SteamClient.IsValid)
             {
-                return false;
-            }
-
-            byte[] data;
-
-            try
-            {
-                data = File.ReadAllBytes(filePath);
-            }
-            catch(Exception e)
-            {
-                Debug.LogError(e.Message);
                 return false;
             }
 

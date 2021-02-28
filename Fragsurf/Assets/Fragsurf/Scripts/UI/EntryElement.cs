@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Fragsurf.UI
 {
@@ -18,6 +19,8 @@ namespace Fragsurf.UI
         protected EntryElement<T> _parent;
 
         public List<GameObject> Children => _children;
+
+        protected virtual bool AutoRebuildLayout => true;
 
         private void DoSearch(string input)
         {
@@ -49,7 +52,10 @@ namespace Fragsurf.UI
             }
             _children.Clear();
 
-            transform.parent.gameObject.RebuildLayout();
+            if (AutoRebuildLayout)
+            {
+                transform.parent.gameObject.RebuildLayout();
+            }
         }
 
         private EntryElement<T> SpawnEntry(T data)
@@ -60,13 +66,6 @@ namespace Fragsurf.UI
             _children.Add(clone.gameObject);
             clone.gameObject.SetActive(true);
             clone.LoadData(data);
-            transform.parent.gameObject.RebuildLayout();
-
-            if(_children.Count > EntryLimit)
-            {
-                GameObject.Destroy(_children[0]);
-                _children.RemoveAt(0);
-            }
 
             if (SearchField && !_searchIsHooked)
             {
@@ -79,15 +78,34 @@ namespace Fragsurf.UI
 
         public EntryElement<T> Prepend(T data)
         {
+            if (_children.Count > EntryLimit)
+            {
+                GameObject.Destroy(_children[_children.Count - 1]);
+                _children.RemoveAt(_children.Count - 1);
+            }
             var entry = SpawnEntry(data);
             entry.transform.SetAsFirstSibling();
+            if (AutoRebuildLayout)
+            {
+                transform.parent.gameObject.RebuildLayout();
+            }
             return entry;
         }
 
         public EntryElement<T> Append(T data)
         {
+            if (_children.Count > EntryLimit)
+            {
+                GameObject.Destroy(_children[0]);
+                _children.RemoveAt(0);
+            }
+
             var entry = SpawnEntry(data);
             entry.transform.SetAsLastSibling();
+            if (AutoRebuildLayout)
+            {
+                transform.parent.gameObject.RebuildLayout();
+            }
             return entry;
         }
 

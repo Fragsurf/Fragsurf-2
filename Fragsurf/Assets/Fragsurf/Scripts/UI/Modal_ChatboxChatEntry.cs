@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -15,8 +16,6 @@ namespace Fragsurf.UI
         [SerializeField]
         private Modal_Chatbox _chatbox;
         [SerializeField]
-        private TMP_Text _name;
-        [SerializeField]
         private TMP_Text _message;
         [SerializeField]
         private CanvasGroup _canvasGroup;
@@ -27,9 +26,11 @@ namespace Fragsurf.UI
 
         private float _originalFadeDuration;
 
+        protected override bool AutoRebuildLayout => false;
+
         public override void LoadData(Modal_ChatboxChatEntryData data)
         {
-            var name = $"{data.PlayerName} |";
+            var name = $"<color=orange>{data.PlayerName} |</color>";
             var msg = data.Message;
 
             if (!string.IsNullOrEmpty(data.ClanTag))
@@ -39,10 +40,17 @@ namespace Fragsurf.UI
             }
 
             _originalFadeDuration = _fadeDuration;
-            _name.text = name;
-            _message.text = msg;
+            _message.text = $"{name} {msg}";
             _chatbox.OnOpened.AddListener(OnChatboxOpened);
             _chatbox.OnClosed.AddListener(OnChatboxClosed);
+
+            StartCoroutine(SetSize());
+        }
+
+        private IEnumerator SetSize()
+        {
+            yield return 0; 
+            GetComponent<RectTransform>().sizeDelta = _message.textBounds.size;
         }
 
         private void Update()
@@ -57,6 +65,7 @@ namespace Fragsurf.UI
                 if(_fadeDuration <= 0)
                 {
                     _canvasGroup.alpha = 0;
+                    gameObject.SetActive(false);
                     return;
                 }
                 _fadeDuration -= Time.deltaTime;
@@ -79,11 +88,13 @@ namespace Fragsurf.UI
         private void OnChatboxOpened()
         {
             _canvasGroup.alpha = 1;
+            gameObject.SetActive(true);
         }
 
         private void OnChatboxClosed()
         {
             _canvasGroup.alpha = _fadeDuration > 0 ? _fadeDuration / _originalFadeDuration : 0f;
+            gameObject.SetActive(_fadeDuration > 0);
         }
 
     }

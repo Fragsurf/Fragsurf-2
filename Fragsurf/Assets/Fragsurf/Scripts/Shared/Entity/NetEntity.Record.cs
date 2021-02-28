@@ -1,6 +1,8 @@
 using MessagePack;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Fragsurf.Shared.Entity
@@ -129,6 +131,13 @@ namespace Fragsurf.Shared.Entity
         public virtual byte[] Serialize()
         {
             return MessagePackSerializer.Serialize(GetType(), this);
+        }
+
+        public virtual async Task<byte[]> SerializeAsync()
+        {
+            using var ms = new MemoryStream();
+            await MessagePackSerializer.SerializeAsync(GetType(), ms, this);
+            return ms.ToArray();
         }
 
     }
