@@ -104,7 +104,9 @@ namespace Fragsurf.Shared.Player
             OnMessageReceived?.Invoke(new ChatMessage()
             {
                 Message = message,
-                Name = name
+                Name = name,
+                Scope = ChatScope.Global,
+                ClientIndex = Game.ClientIndex
             });
         }
 

@@ -4,7 +4,6 @@ using Fragsurf.Movement;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.UI;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
@@ -29,8 +28,28 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private void Track_OnStart(FSMTrack track, Human hu)
         {
+            var bhopTimeline = new BunnyhopTimeline() { Track = track };
+
             hu.ClampVelocity(290, Game.GameMovement.JumpPower);
-            hu.Record(new BunnyhopTimeline());
+            hu.Record(bhopTimeline);
+
+            bhopTimeline.RecordTick();
+
+            if (!Game.IsHost && hu.OwnerId == Game.ClientIndex && track.TrackType != FSMTrackType.Staged)
+            {
+                var frame = bhopTimeline.LastFrame;
+                var name = track.TrackName;
+                if(track.TrackType == FSMTrackType.Bonus)
+                {
+                    name = "Bonus";
+                }
+                else if (track.IsMainTrack)
+                {
+                    name = "Main";
+                }
+                var msg = $"<color=green>{name}</color> started, <color=yellow>{frame.Velocity}</color> u/s";
+                Game.TextChat.PrintChat("[Timer]", msg);
+            }
         }
 
         private void Track_OnStartStage(FSMTrack track, Human hu, int stage)
@@ -42,6 +61,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             hu.ClampVelocity(290, Game.GameMovement.JumpPower);
             bhopTimeline.SetSegment(stage);
+
+            if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
+            {
+                var frame = bhopTimeline.LastFrame;
+                var msg = $"<color=green>Stage {stage}</color> started, <color=yellow>{frame.Velocity}</color> u/s";
+                Game.TextChat.PrintChat("[Timer]", msg);
+            }
         }
 
         private async void Track_OnFinish(FSMTrack track, Human hu)

@@ -28,6 +28,8 @@ namespace Fragsurf.UI
         private Toggle _enableClanChatToggle;
         [SerializeField]
         private GameObject _clanChatHint;
+        [SerializeField]
+        private AudioSource _chatMessageSrc;
 
         private TextChat _textChat;
         private Modal_ChatboxChatEntry _chatTemplate;
@@ -183,12 +185,16 @@ namespace Fragsurf.UI
 
         private void TextChat_OnMessageReceived(ChatMessage chatPacket)
         {
-            var pl = FSGameLoop.GetGameInstance(false).PlayerManager.FindPlayer(chatPacket.ClientIndex);
-            if(pl == null)
+            var name = chatPacket.Name;
+            if (string.IsNullOrWhiteSpace(name))
             {
-                return;
+                var pl = FSGameLoop.GetGameInstance(false).PlayerManager.FindPlayer(chatPacket.ClientIndex);
+                if (pl != null)
+                {
+                    name = pl.DisplayName;
+                }
             }
-            ReceiveMessage(pl.DisplayName, chatPacket.Message);
+            ReceiveMessage(name, chatPacket.Message);
         }
 
         private void OnSubmit(string value)
@@ -225,6 +231,11 @@ namespace Fragsurf.UI
             });
 
             StartCoroutine(AfterMessage());
+
+            if (_chatMessageSrc)
+            {
+                _chatMessageSrc.Play();
+            }
         }
 
         private IEnumerator AfterMessage()

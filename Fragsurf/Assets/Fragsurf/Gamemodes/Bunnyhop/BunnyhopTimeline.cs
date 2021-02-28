@@ -5,7 +5,6 @@ using Fragsurf.Shared.Player;
 using MessagePack;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
 {
@@ -14,7 +13,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     {
 
         [IgnoreMember]
-        public FSMTrack Track { get; private set; }
+        public FSMTrack Track;
         [IgnoreMember]
         public int Checkpoint = 1;
         [IgnoreMember]
@@ -29,14 +28,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         public BunnyhopTimeline() { }
 
-        public BunnyhopTimeline(FSMTrack track)
+        public void Reset()
         {
-            Track = track;
-        }
-
-        public void Reset(FSMTrack track)
-        {
-            Track = track;
             RunIsLive = true;
             Checkpoint = 1;
             Stage = 1;

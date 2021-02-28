@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Fragsurf.UI
 {
@@ -15,10 +16,12 @@ namespace Fragsurf.UI
         [SerializeField]
         private AudioClip _exit;
 
+        private Button _btn;
         private AudioSource _src;
 
         private void Start()
         {
+            _btn = GetComponent<Button>();
             _src = GetComponent<AudioSource>();
             _src.spatialize = false;
             _src.spatialBlend = 0;
@@ -28,7 +31,7 @@ namespace Fragsurf.UI
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
-            if (!_hover)
+            if (!_hover || (_btn && !_btn.interactable))
             {
                 return;
             }
@@ -38,7 +41,7 @@ namespace Fragsurf.UI
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
-            if (!_exit)
+            if (!_exit || (_btn && !_btn.interactable))
             {
                 return;
             }
@@ -48,7 +51,7 @@ namespace Fragsurf.UI
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (!_click)
+            if (!_click || (_btn && !_btn.interactable))
             {
                 return;
             }
