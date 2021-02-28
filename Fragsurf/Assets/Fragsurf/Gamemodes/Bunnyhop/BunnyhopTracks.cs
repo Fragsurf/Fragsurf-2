@@ -18,6 +18,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             foreach(var track in GameObject.FindObjectsOfType<FSMTrack>())
             {
+                // the x.Game == Game conditional is important because we're tying into MonoBehaviours which exist in shared space.
                 track.OnStart.AddListener((x) => { if (x.Game == Game) Track_OnStart(track, x); });
                 track.OnFinish.AddListener((x) => { if (x.Game == Game) Track_OnFinish(track, x); });
                 track.OnStage.AddListener((x, y) => { if (x.Game == Game) Track_OnStage(track, x, y); });
