@@ -31,7 +31,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             var bhopTimeline = new BunnyhopTimeline() { Track = track };
 
-            hu.ClampVelocity(290, Game.GameMovement.JumpPower);
+            if(hu.HammerVelocity() > 290)
+            {
+                hu.ClampVelocity(280, Game.GameMovement.JumpPower);
+            }
             hu.Record(bhopTimeline);
 
             bhopTimeline.RecordTick();
@@ -60,7 +63,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return;
             }
 
-            hu.ClampVelocity(290, Game.GameMovement.JumpPower);
+            if (hu.HammerVelocity() > 290)
+            {
+                hu.ClampVelocity(280, Game.GameMovement.JumpPower);
+            }
             bhopTimeline.SetSegment(stage);
 
             if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
