@@ -1,9 +1,9 @@
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 
-namespace Fragsurf.Client
+namespace Fragsurf.Shared
 {
-    [Inject(InjectRealm.Client)]
+    [Inject(InjectRealm.Shared)]
     public class SpectateController : FSSharedScript
     {
 
