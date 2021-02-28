@@ -18,7 +18,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private TMP_Text _centerHud;
 
         private string _notStartedText = "Timer not started";
-        private string _format = "<color=green>{time}</color> ({tick})\n<color=yellow>{speed} u/s</color>\n{jumps} jumps\n{strafes} strafes ({sync}%)";
+        private string _format = "<color=green>{time}</color>\n<color=yellow>{speed} u/s</color>\n{jumps} jumps\n{strafes} strafes ({sync}%)";
 
         private void Update()
         {

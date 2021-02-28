@@ -122,6 +122,16 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
+        public int HammerVelocity(bool horizontalOnly = true)
+        {
+            var vel = Velocity;
+            if (horizontalOnly)
+            {
+                vel.y = 0;
+            }
+            return (int)(vel.magnitude / .0254f);
+        }
+
         public void ClampVelocity(int xzMax, int yMax)
         {
             var maxY = yMax * .0254f;
