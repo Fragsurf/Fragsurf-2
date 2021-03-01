@@ -6,6 +6,7 @@ Author: Daniel Cornelius
 
 * * * * * * * * * * * * * * * * * * * * * */
 
+using SurfaceConfigurator;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -20,6 +21,8 @@ namespace Chisel.Editors
         public readonly string   materialName;
         public readonly string[] labels;
         public readonly int      id;
+        public SurfaceConfig surfaceConfig;
+        public SurfaceDatabase surfaceDb;
 
         public float lastClickTime;
         public  Texture2D Preview => m_Preview;
@@ -49,12 +52,9 @@ namespace Chisel.Editors
             m_Preview = ChiselMaterialBrowserUtilities.GetAssetPreviewFromGUID( guid );
         }
 
-        public ChiselMaterialBrowserTile( string instID )
+        public ChiselMaterialBrowserTile( Material m, string instID )
         {
-            path = AssetDatabase.GUIDToAssetPath( instID );
-
-            Material m = AssetDatabase.LoadAssetAtPath<Material>( path );
-
+            path = AssetDatabase.GUIDToAssetPath(instID);
             id           = m.GetInstanceID();
             guid         = instID;
             labels       = AssetDatabase.GetLabels( m );

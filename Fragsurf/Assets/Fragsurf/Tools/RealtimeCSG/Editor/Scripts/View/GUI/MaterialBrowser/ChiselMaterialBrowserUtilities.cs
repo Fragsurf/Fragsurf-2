@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using RealtimeCSG.Components;
+using SurfaceConfigurator;
 using UnityEditor;
 using UnityEngine;
 
@@ -72,6 +73,16 @@ namespace Chisel.Editors
             return val;
         }
 
+        private static SurfaceDatabase CreateSurfaceDatabase()
+        {
+            SurfaceDatabase asset = ScriptableObject.CreateInstance<SurfaceDatabase>();
+
+            AssetDatabase.CreateAsset(asset, "Assets/Surface Database.asset");
+            AssetDatabase.SaveAssets();
+
+            return asset as SurfaceDatabase;
+        }
+
 
         // gets all materials and the labels on them in the project, compares them against a filter,
         // and then adds them to the list of materials to be used in this window
@@ -83,8 +94,10 @@ namespace Chisel.Editors
                                          string                              searchLabel = "",
                                          string                              searchText  = "" )
         {
-            if( usingLabel && searchLabel == string.Empty )
-                Debug.LogError( $"usingLabel set to true, but no search term was given. This may give undesired results." );
+            if( usingLabel && searchLabel == string.Empty)
+            {
+                Debug.LogError($"usingLabel set to true, but no search term was given. This may give undesired results.");
+            }
 
             materials.ForEach( e =>
             {
@@ -99,12 +112,19 @@ namespace Chisel.Editors
 
             string[] guids = AssetDatabase.FindAssets( $"t:Material {search}" );
 
+            var dbs = FindAssetsByType<SurfaceDatabase>();
+            var db = dbs.Count > 0 ? dbs[0] : CreateSurfaceDatabase();
+
             // assemble preview tiles
             foreach( string id in guids )
             {
-                ChiselMaterialBrowserTile browserTile = new ChiselMaterialBrowserTile( id ); //, ref cache );
+                var path = AssetDatabase.GUIDToAssetPath(id);
+                var m = AssetDatabase.LoadAssetAtPath<Material>(path);
+                var browserTile = new ChiselMaterialBrowserTile(m, id); //, ref cache );
+                browserTile.surfaceConfig = db.FindOrCreateSurfaceConfig(m);
+                browserTile.surfaceDb = db;
 
-                if( labels != null )
+                if ( labels != null )
                 {
                     // add any used labels we arent currently storing
                     foreach( string label in browserTile.labels )
@@ -122,7 +142,7 @@ namespace Chisel.Editors
                 }
             }
 
-            AssetPreview.SetPreviewTextureCacheSize( materials.Count + 1 );
+            AssetPreview.SetPreviewTextureCacheSize( materials.Count + 2 );
 
             models = Object.FindObjectsOfType<CSGModel>().ToList();
 
@@ -146,22 +166,33 @@ namespace Chisel.Editors
                     continue;
                 }
 
-                MeshRenderer[] renderMeshes = m.generatedMeshes.GetComponentsInChildren<MeshRenderer>();
+                var renderMeshes = m.generatedMeshes.GetComponentsInChildren<MeshRenderer>();
 
-                if( renderMeshes.Length > 0 )
-                    foreach( MeshRenderer mesh in renderMeshes )
+                if(renderMeshes.Length == 0)
+                {
+                    return;
+                }
+
+                var dbs = FindAssetsByType<SurfaceDatabase>();
+                var db = dbs.Count > 0 ? dbs[0] : CreateSurfaceDatabase();
+
+                foreach ( MeshRenderer mesh in renderMeshes )
+                {
+                    foreach( Material mat in mesh.sharedMaterials )
                     {
-                        foreach( Material mat in mesh.sharedMaterials )
+                        if(mat == null
+                            || (!mat.name.Contains(searchText)
+                            && !MaterialContainsLabel(searchLabel, mat)))
                         {
-                            if( mat != null )
-                                if( mat.name.Contains( searchText ) || MaterialContainsLabel( searchLabel, mat ) )
-                                {
-                                    AssetDatabase.TryGetGUIDAndLocalFileIdentifier( mat, out string guid, out long id );
-
-                                    tiles.Add( new ChiselMaterialBrowserTile( guid ) );
-                                }
+                            continue;
                         }
+                        AssetDatabase.TryGetGUIDAndLocalFileIdentifier( mat, out string guid, out long id );
+                        var tile = new ChiselMaterialBrowserTile(mat, guid);
+                        tile.surfaceConfig = db.FindOrCreateSurfaceConfig(mat);
+                        tile.surfaceDb = db;
+                        tiles.Add(tile);
                     }
+                }
             }
         }
 
@@ -176,6 +207,22 @@ namespace Chisel.Editors
                 }
 
             return false;
+        }
+
+        public static List<T> FindAssetsByType<T>() where T : UnityEngine.Object
+        {
+            List<T> assets = new List<T>();
+            string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)));
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+                T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+                if (asset != null)
+                {
+                    assets.Add(asset);
+                }
+            }
+            return assets;
         }
 
         public static void SelectMaterialInScene( string name )
