@@ -1415,3 +1415,7 @@ MonoBehaviour:
     SurfaceType: 4
   - Material: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
     SurfaceType: 4
+  - Material: {fileID: 2100000, guid: e92d7c6438739524b9324ed8288f6571, type: 2}
+    SurfaceType: 0
+  - Material: {fileID: 2100000, guid: 84cf057dc1e5ff6419f3eab96bd5d624, type: 2}
+    SurfaceType: 0

@@ -205,6 +205,7 @@ namespace Fragsurf.Shared.Player
             }
         }
 
+        private static Collider[] _footstepTest = new Collider[32];
         private void PlayFootstepSound(float vol)
         {
             if(GroundObject == null
@@ -214,32 +215,55 @@ namespace Fragsurf.Shared.Player
                 return;
             }
 
-            if (Physics.Raycast(MoveData.Origin + Vector3.up * .1f, Vector3.down, out RaycastHit hit, .2f, 1 << Layers.Fidelity))
+            var hits = Physics.OverlapBoxNonAlloc(MoveData.Origin + new Vector3(0, .25f, 0), new Vector3(Collider.size.x / 2.1f, 0.28f, Collider.size.z / 2.1f), _footstepTest, Quaternion.identity, 1 << Layers.Fidelity, QueryTriggerInteraction.Ignore);
+
+            if(hits == 0)
             {
-                if (!hit.collider.TryGetComponent(out SurfaceTypeIdentifier surfId))
-                {
-                    return;
-                }
-
-                var cfg = GameData.Instance.Surfaces != null 
-                    ? GameData.Instance.Surfaces.GetSurfaceTypeConfig(surfId.SurfaceType) 
-                    : null;
-
-                if(cfg == null)
-                {
-                    return;
-                }
-
-                var audioClip = cfg.GetFootstepSound();
-                if(audioClip == null)
-                {
-                    return;
-                }
-
-                vol = Mathf.Clamp(vol, 0f, 1f);
-
-                Human.HumanGameObject.FeetAudioSource.PlayOneShot(audioClip, vol);
+                return;
             }
+
+            SurfaceTypeIdentifier bestHit = null;
+            // prioritize water because we don't want to play concrete sound when walking in thin pool
+            // todo: maybe blend footstep sounds i.e. 50% water 50% concrete
+            for(int i = 0; i < hits; i++)
+            {
+                if(!_footstepTest[i].TryGetComponent(out SurfaceTypeIdentifier surfId))
+                {
+                    continue;
+                }
+                if(bestHit == null || surfId.SurfaceType == SurfaceType.Water)
+                {
+                    bestHit = surfId;
+                    if(surfId.SurfaceType == SurfaceType.Water)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (!bestHit)
+            {
+                return;
+            }
+
+            var cfg = GameData.Instance.Surfaces != null
+                ? GameData.Instance.Surfaces.GetSurfaceTypeConfig(bestHit.SurfaceType)
+                : null;
+
+            if (cfg == null)
+            {
+                return;
+            }
+
+            var audioClip = cfg.GetFootstepSound();
+            if (audioClip == null)
+            {
+                return;
+            }
+
+            vol = Mathf.Clamp(vol, 0f, 1f);
+
+            Human.HumanGameObject.FeetAudioSource.PlayOneShot(audioClip, vol);
         }
 
     }

@@ -23,7 +23,7 @@ namespace Fragsurf.Shared
                 Game.DefaultConfig.ExecutePostLoad();
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.LogError($"Failed to load {data.Name}: {e.Message}");
             }

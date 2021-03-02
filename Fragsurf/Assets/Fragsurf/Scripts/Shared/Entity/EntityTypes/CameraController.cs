@@ -20,7 +20,7 @@ namespace Fragsurf.Shared.Entity
         public void Activate(Camera camera)
         {
             Camera = camera;
-            Camera.cullingMask = LayerMask.GetMask("Default", "Ragdoll") | (1 << Viewer.Game.ScopeLayer);
+            Camera.cullingMask = LayerMask.GetMask("Default", "Ragdoll", "Water") | (1 << Viewer.Game.ScopeLayer);
             Camera.enabled = true;
 
             if (HideViewer && Viewer.EntityGameObject)
