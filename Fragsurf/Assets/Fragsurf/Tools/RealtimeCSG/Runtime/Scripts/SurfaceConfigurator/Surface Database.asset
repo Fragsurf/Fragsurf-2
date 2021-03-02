@@ -12,10 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92d356d17bda07644b083e38de3d27fe, type: 3}
   m_Name: Surface Database
   m_EditorClassIdentifier: 
-  SurfaceTypeConfigs:
-  - SurfaceType: 0
-    ImpactEffect: {fileID: 0}
-    FootstepSound: {fileID: 0}
   SurfaceConfigs:
   - Material: {fileID: 2100000, guid: 22882887e17667a4f9f3f45f093c8b59, type: 2}
     SurfaceType: 4
@@ -1222,23 +1218,23 @@ MonoBehaviour:
   - Material: {fileID: 2100000, guid: cc6754502fb456f4f8af1e88aeb8562e, type: 2}
     SurfaceType: 4
   - Material: {fileID: 2100000, guid: cef26859e883e184db991708b1338325, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: fcc87a4c9a84f884e8de7daac4b31342, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 789f24444db34d140a3b887ed3c1bf4d, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: f017a209b61c3ea46be6fdb40ce1b3f5, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: af9426b8cf6a8114796d75af7cea980d, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: a0b7501e3e125244a8d4afa8e2a82067, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 891d619a33b67154d84693c8e63fc70d, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 4539a8407fb88b446b266389208287c3, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: a42cea3b48929034bae1acac359c1047, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: b2f74edcff684dd41a090fb3b0074b6c, type: 2}
     SurfaceType: 6
   - Material: {fileID: 2100000, guid: 3c3e675a67cce2648bf80018202e336f, type: 2}
@@ -1246,7 +1242,7 @@ MonoBehaviour:
   - Material: {fileID: 2100000, guid: 4ece000311090284786b1b255709a60a, type: 2}
     SurfaceType: 6
   - Material: {fileID: 2100000, guid: fdff62d354342ac438b70a89db6ebe82, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 4d5905aaed3ee5447bfe57c21993d615, type: 2}
     SurfaceType: 6
   - Material: {fileID: 2100000, guid: d1674aaba53dc7f4b8ab6066d698d353, type: 2}
@@ -1254,27 +1250,27 @@ MonoBehaviour:
   - Material: {fileID: 2100000, guid: 5f2a2aad6ddd4ae4081d26c2997fab6e, type: 2}
     SurfaceType: 6
   - Material: {fileID: 2100000, guid: d98ccce2be4f02f42bb9990a994c997a, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 49a51a05a51038545b426f760e207d10, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: d6e96c2d77ee58f44bfa4664f17c4b70, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 33f9d2eb855caab4484fdc32c3f4f662, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 5a266a3450cce534c887d8c5721a5560, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: ca26345d25e92e74985c545a7d85e35d, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 1bf5b037a6c77d24c9b490ea328ead11, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: cb26f282655f7c94fa7fd06138c4ecb2, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 0d315b2286c23c443b90b785485d46ed, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 85578912ca2ea404f8171a9c5c1636ba, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 64470534afd78b34eb021833969357c7, type: 2}
-    SurfaceType: 4
+    SurfaceType: 6
   - Material: {fileID: 2100000, guid: 5c4caf70318dc9e4788f76a810433ec0, type: 2}
     SurfaceType: 6
   - Material: {fileID: 2100000, guid: c340437d173c51242ab8143141da627e, type: 2}

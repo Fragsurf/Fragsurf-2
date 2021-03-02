@@ -31,19 +31,21 @@ namespace Fragsurf.Misc
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_timer <= 0 && other.gameObject.layer == _waterLayer)
-            {
-                _timer = 1f;
-                var cl = FSGameLoop.GetGameInstance(false);
-                if (!cl)
-                {
-                    return;
-                }
-                var point = other.ClosestPointOnBounds(transform.position);
-                var effect = cl.Pool.Get(GameData.Instance.WaterSplash, 1.5f);
-                effect.transform.position = point;
-                effect.transform.forward = Vector3.up;
-            }
+            throw new System.NotImplementedException();
+
+            //if (_timer <= 0 && other.gameObject.layer == _waterLayer)
+            //{
+            //    _timer = 1f;
+            //    var cl = FSGameLoop.GetGameInstance(false);
+            //    if (!cl)
+            //    {
+            //        return;
+            //    }
+            //    var point = other.ClosestPointOnBounds(transform.position);
+            //    var effect = cl.Pool.Get(GameData.Instance.WaterSplash, 1.5f);
+            //    effect.transform.position = point;
+            //    effect.transform.forward = Vector3.up;
+            //}
         }
 
     }

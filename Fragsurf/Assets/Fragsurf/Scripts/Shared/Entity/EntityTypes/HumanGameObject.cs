@@ -1,4 +1,3 @@
-using Fragsurf.Client;
 using Fragsurf.Shared.Player;
 using Fragsurf.Utility;
 using UnityEngine;
@@ -7,6 +6,8 @@ namespace Fragsurf.Shared.Entity
 {
     public class HumanGameObject : EntityGameObject
     {
+
+        [Header("Body")]
 
         [SerializeField]
         private GameObject _viewBody;
@@ -23,9 +24,12 @@ namespace Fragsurf.Shared.Entity
         [SerializeField]
         private float _eyeOffset = 1.5f;
 
-        private bool _ragdolled;
+        [Header("Audio")]
 
-        public bool Ragdolled { get; set; } // todo :implement ragdolling
+        [SerializeField]
+        private AudioClip _deathSound;
+
+        public bool Ragdolled { get; private set; } // todo :implement ragdolling
         public GameObject Ragdoll { get; set; }
         public GameObject ViewBody => _viewBody;
         public Transform FeetAttachment => _feetAttachment;
@@ -33,6 +37,9 @@ namespace Fragsurf.Shared.Entity
         public Transform HandAttachment => _handAttachment;
         public BoxCollider BoundsCollider => _boundsCollider;
         public Vector3 EyeOffset => new Vector3(0, _eyeOffset, 0);
+        public AudioSource FeetAudioSource { get; private set; }
+        public AudioSource HandAudioSource { get; private set; }
+        public AudioSource HeadAudioSource { get; private set; }
 
         public override Vector3 Rotation
         {
@@ -65,6 +72,21 @@ namespace Fragsurf.Shared.Entity
             }
 
             rb.isKinematic = true;
+
+            if (_feetAttachment)
+            {
+                FeetAudioSource = _feetAttachment.GetComponentInChildren<AudioSource>();
+            }
+
+            if (_headAttachment)
+            {
+                HeadAudioSource = _headAttachment.GetComponentInChildren<AudioSource>();
+            }
+
+            if (_handAttachment)
+            {
+                HandAudioSource = _handAttachment.GetComponentInChildren<AudioSource>();
+            }
 
             base.Awake();
         }
@@ -115,10 +137,9 @@ namespace Fragsurf.Shared.Entity
             {
                 SetVisible(false);
 
-                if (AudioSource
-                    && GameData.Instance.DeathSound)
+                if (HeadAudioSource && _deathSound)
                 {
-                    AudioSource.PlayOneShot(GameData.Instance.DeathSound, 1.0f);
+                    HeadAudioSource.PlayOneShot(_deathSound, Random.Range(0.75f, 1f));
                 }
 
                 var killer = Entity.Game.EntityManager.FindEntity(dmgInfo.AttackerEntityId);
@@ -143,13 +164,13 @@ namespace Fragsurf.Shared.Entity
             Ragdoll = Entity.Game.Instantiate(_ragdollPrefab);
             CopyTransformToRagdoll(transform, Ragdoll.transform);
             Ragdoll.GetComponent<RagdollBehaviour>().Ragdoll(force, point, torque);
-            _ragdolled = true;
+            Ragdolled = true;
         }
 
         private void DestroyRagdoll()
         {
             GameObject.Destroy(Ragdoll);
-            _ragdolled = false;
+            Ragdolled = false;
         }
 
         private void CopyTransformToRagdoll(Transform reference, Transform ragdoll)

@@ -41,7 +41,25 @@ namespace Fragsurf.Shared.Entity
 
         protected override void _Start()
         {
-            EntityGameObject = new GameObject("Human").AddComponent<HumanGameObject>();
+            if(Game.GamemodeLoader.Gamemode.Data.HumanPrefab != null)
+            {
+                var clone = GameObject.Instantiate(Game.GamemodeLoader.Gamemode.Data.HumanPrefab);
+                if (!clone.TryGetComponent(out HumanGameObject huObj))
+                {
+                    GameObject.Destroy(clone);
+                    Debug.LogError("Human Prefab must contain a complete HumanGameObject component");
+                }
+                else
+                {
+                    EntityGameObject = huObj;
+                }
+            }
+
+            if (!EntityGameObject)
+            {
+                EntityGameObject = new GameObject("Human").AddComponent<HumanGameObject>();
+            }
+
             MovementController = new DefaultMovementController(this);
             CameraController = new FirstPersonCameraController(this);
         }

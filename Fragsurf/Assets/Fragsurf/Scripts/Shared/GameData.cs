@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using Fragsurf.Maps;
 using Fragsurf.DataEditor;
+using SurfaceConfigurator;
 
 namespace Fragsurf.Shared
 {
@@ -17,52 +17,21 @@ namespace Fragsurf.Shared
             {
                 if (_instance == null)
                 {
-                    _instance = GameObject.Instantiate(Resources.Load<GameData>("GameData")) as GameData;
+                    _instance = GameObject.Instantiate(Resources.Load<GameData>("GameData"));
                 }
                 return _instance;
             }
-        } 
+        }
 
-        [Header("Game")]
         public SceneReference MainMenu;
         public GamemodeData[] DefaultGamemodes;
-
-        [Header("Effects")]
-        public GameObject BloodSplash;
-        public GameObject WaterSplash;
-        public GameObject FootstepSplash;
-
-        [Header("Impact Effects")]
-        public GameObject DefaultImpactEffect;
-        public List<SurfaceMaterialImpactEffect> ImpactEffects;
-
-        [Header("Equippables")]
         public BaseEquippableData[] Equippables;
+        public SurfaceTypeDatabase Surfaces;
 
-        [Header("FMOD Audio")]
-        public AudioClip Footstep;
-        public AudioClip FallDamage;
-        public AudioClip DeathSound;
-
-        public GameObject GetImpactEffect(SurfaceMaterialType materialType)
+        public GameObject GetImpactEffect(SurfaceType surfaceType)
         {
-            foreach(var effect in ImpactEffects)
-            {
-                if(effect.MaterialType == materialType)
-                {
-                    return effect.EffectPrefab;
-                }
-            }
-            return DefaultImpactEffect;
+            return null;
         }
 
     }
-
-    [Serializable]
-    public class SurfaceMaterialImpactEffect
-    {
-        public SurfaceMaterialType MaterialType;
-        public GameObject EffectPrefab;
-    }
-
 }

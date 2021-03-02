@@ -14,7 +14,7 @@ public class LightmapShortcut
     [MenuItem("Fragsurf/Lightmap/Bake (Preview)")]
     public static void BuildFast()
     {
-        var settings = Resources.Load<LightingSettings>("Misc/Lightmap Fast");
+        var settings = Resources.Load<LightingSettings>("FSM/Lightmap Fast");
         StartLightmapping(settings);
     }
 
@@ -22,7 +22,7 @@ public class LightmapShortcut
     [MenuItem("Fragsurf/Lightmap/Bake (Normal)")]
     public static void BuildNormal()
     {
-        var settings = Resources.Load<LightingSettings>("Misc/Lightmap Normal");
+        var settings = Resources.Load<LightingSettings>("FSM/Lightmap Normal");
         StartLightmapping(settings);
     }
 

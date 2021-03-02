@@ -17,6 +17,7 @@ namespace Fragsurf.Shared
         public static int Viewmodel;
         public static int Ragdoll;
         public static int Invisible;
+        public static int Fidelity;
 
         static Layers()
         {

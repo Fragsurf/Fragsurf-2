@@ -2,6 +2,7 @@ using Fragsurf.Maps;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Utility;
+using SurfaceConfigurator;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -274,10 +275,10 @@ namespace Fragsurf.Shared.Entity
             var ray = new Ray(hit.point + hit.normal, -hit.normal);
             if (Physics.Raycast(ray, out RaycastHit hit2, hit.normal.magnitude + .01f, LayerMask.GetMask("TransparentFX")))
             {
-                var matType = SurfaceMaterialType.Concrete;
-                if (hit2.collider.TryGetComponent(out SurfaceMaterialIdentifier mi))
+                var matType = SurfaceType.Concrete;
+                if (hit2.collider.TryGetComponent(out SurfaceTypeIdentifier mi))
                 {
-                    matType = mi.MaterialType;
+                    matType = mi.SurfaceType;
                 }
                 var effect = GameData.Instance.GetImpactEffect(matType);
                 if (effect != null)

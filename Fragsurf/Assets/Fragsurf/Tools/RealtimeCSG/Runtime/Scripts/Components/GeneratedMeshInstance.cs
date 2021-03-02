@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 using MeshQuery = RealtimeCSG.Foundation.MeshQuery;
 using GeneratedMeshDescription = RealtimeCSG.Foundation.GeneratedMeshDescription;
 using RealtimeCSG.Foundation;
+using SurfaceConfigurator;
 
 namespace InternalRealtimeCSG
 {

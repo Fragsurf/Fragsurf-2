@@ -18,12 +18,5 @@ MonoBehaviour:
   DefaultGamemodes:
   - {fileID: 11400000, guid: 25a4f849322545e40a0b6a7f99407729, type: 2}
   - {fileID: 11400000, guid: 245d9bbacf27c614badced207381308b, type: 2}
-  BloodSplash: {fileID: 0}
-  WaterSplash: {fileID: 0}
-  FootstepSplash: {fileID: 0}
-  DefaultImpactEffect: {fileID: 0}
-  ImpactEffects: []
   Equippables: []
-  Footstep: {fileID: 0}
-  FallDamage: {fileID: 0}
-  DeathSound: {fileID: 0}
+  Surfaces: {fileID: 11400000, guid: 45b4a7301161d4b4dbaf131b01133929, type: 2}

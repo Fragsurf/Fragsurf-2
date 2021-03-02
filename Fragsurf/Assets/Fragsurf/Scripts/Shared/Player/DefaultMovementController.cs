@@ -2,6 +2,7 @@ using Fragsurf.Actors;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Packets;
+using SurfaceConfigurator;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -80,6 +81,11 @@ namespace Fragsurf.Shared.Player
 
                 DetectTouchingTriggers();
                 TouchTriggers();
+
+                if(Human.Local == Human)
+                {
+                    TickFootstep();
+                }
             }
         }
 
@@ -176,6 +182,64 @@ namespace Fragsurf.Shared.Player
                 _lastTickTriggers.Add(t);
             }
             _touchingTriggers.Clear();
+        }
+
+        private const float _stepDistance = 3.0f;
+        private float _traveled;
+        private float _stepRand;
+        protected void TickFootstep()
+        {
+            _traveled += (MoveData.Origin - MoveData.PreviousOrigin).magnitude;
+            if (_traveled >= _stepDistance + _stepRand)
+            {
+                var spd = Human.HammerVelocity();
+                var maxSpd = Human.Game.GameMovement.MaxSpeed;
+                var vol = Mathf.Lerp(0f, 1f, (float)spd / maxSpd);
+                PlayFootstepSound(vol);
+                _stepRand = Random.Range(0.0f, 0.5f);
+                _traveled = 0.0f;
+            }
+            else if (MoveData.JustGrounded || MoveData.JustJumped)
+            {
+                PlayFootstepSound(Random.Range(.7f, 1f));
+            }
+        }
+
+        private void PlayFootstepSound(float vol)
+        {
+            if(GroundObject == null
+                || Human.HumanGameObject == null
+                || Human.HumanGameObject.FeetAudioSource == null)
+            {
+                return;
+            }
+
+            if (Physics.Raycast(MoveData.Origin + Vector3.up * .1f, Vector3.down, out RaycastHit hit, .2f, 1 << Layers.Fidelity))
+            {
+                if (!hit.collider.TryGetComponent(out SurfaceTypeIdentifier surfId))
+                {
+                    return;
+                }
+
+                var cfg = GameData.Instance.Surfaces != null 
+                    ? GameData.Instance.Surfaces.GetSurfaceTypeConfig(surfId.SurfaceType) 
+                    : null;
+
+                if(cfg == null)
+                {
+                    return;
+                }
+
+                var audioClip = cfg.GetFootstepSound();
+                if(audioClip == null)
+                {
+                    return;
+                }
+
+                vol = Mathf.Clamp(vol, 0f, 1f);
+
+                Human.HumanGameObject.FeetAudioSource.PlayOneShot(audioClip, vol);
+            }
         }
 
     }

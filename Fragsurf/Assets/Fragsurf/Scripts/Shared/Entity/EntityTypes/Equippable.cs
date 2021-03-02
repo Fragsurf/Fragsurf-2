@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using Fragsurf.Maps;
+using SurfaceConfigurator;
 
 namespace Fragsurf.Shared.Entity
 {
@@ -275,7 +276,7 @@ namespace Fragsurf.Shared.Entity
 
                 if (!Game.IsHost)
                 {
-                    var effect = Game.Pool.Get(GameData.Instance.GetImpactEffect(SurfaceMaterialType.Metal), 1f);
+                    var effect = Game.Pool.Get(GameData.Instance.GetImpactEffect(SurfaceType.Metal), 1f);
                     effect.transform.position = dmgInfo.HitPoint;
                     effect.transform.forward = dmgInfo.HitNormal;
                 }

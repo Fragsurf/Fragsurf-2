@@ -19,8 +19,8 @@ namespace Fragsurf.Client
     //        public Vector3 PrevVelocity;
     //    }
 
-    //    private Dictionary<Player, FootstepData> _footstepData
-    //        = new Dictionary<Player, FootstepData>();
+    //    private Dictionary<Human, FootstepData> _footstepData
+    //        = new Dictionary<Human, FootstepData>();
 
     //    private const float footstepTimer = 0.48f;
 
@@ -42,7 +42,7 @@ namespace Fragsurf.Client
 
     //    protected override void OnPlayerRunCommand(IPlayer player)
     //    {
-    //        Player human = null;
+    //        Human human = null;
     //        var data = _footstepData[human];
     //        var justGrounded = human.Movement.MoveData.JustGrounded;
     //        var curVelocity = human.Velocity;

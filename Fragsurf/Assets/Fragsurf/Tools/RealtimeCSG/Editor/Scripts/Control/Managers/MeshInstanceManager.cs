@@ -8,6 +8,8 @@ using RealtimeCSG;
 using RealtimeCSG.Foundation;
 using RealtimeCSG.Components;
 using UnityEditor.SceneManagement;
+using SurfaceConfigurator;
+using Chisel.Editors;
 #if UNITY_2018_3_OR_NEWER
 using UnityEditor.Experimental.SceneManagement;
 #endif
@@ -1090,6 +1092,22 @@ namespace InternalRealtimeCSG
             instance.RenderSurfaceType = GetSurfaceType(instance.MeshDescription, owner.Settings);
             instance.Dirty = instance.Dirty || (oldRenderSurfaceType != instance.RenderSurfaceType);
 
+            if (instance.Dirty)
+            {
+                if(!instance.gameObject.TryGetComponent(out SurfaceTypeIdentifier id))
+                {
+                    id = instance.gameObject.AddComponent<SurfaceTypeIdentifier>();
+                }
+                var dbs = ChiselMaterialBrowserUtilities.FindAssetsByType<SurfaceDatabase>();
+                if (dbs.Count > 0)
+                {
+                    var cfg = dbs[0].FindSurfaceConfig(instance.RenderMaterial);
+                    if(cfg != null)
+                    {
+                        id.SurfaceType = cfg.SurfaceType;
+                    }
+                }
+            }
 
             // Update the transform, if incorrect
             var gameObject = instance.gameObject;

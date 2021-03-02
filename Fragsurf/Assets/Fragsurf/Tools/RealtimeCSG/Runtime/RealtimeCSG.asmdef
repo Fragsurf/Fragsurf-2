@@ -1,7 +1,9 @@
 {
     "name": "RealtimeCSG",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:323adb15021762c438d37aea55e322c3"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
