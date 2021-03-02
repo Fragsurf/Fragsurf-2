@@ -39,6 +39,7 @@ namespace Fragsurf.Movement
         public float ForwardSpeed = 400 * SurfController.HammerScale;
         public float SideSpeed = 400 * SurfController.HammerScale;
         public float WaterDepthToSwim = 0.6f;
+        public float SwimSpeed = 200 * SurfController.HammerScale;
 
     }
 }

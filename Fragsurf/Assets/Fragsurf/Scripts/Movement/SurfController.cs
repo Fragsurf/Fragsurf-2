@@ -217,6 +217,11 @@ namespace Fragsurf.Movement
         {
             GetWishValues(out Vector3 wishVel, out Vector3 wishDir, out float wishSpeed);
 
+            if(_surfer.MoveData.ForwardMove != 0)
+            {
+                wishVel.y = (Quaternion.Euler(_surfer.MoveData.ViewAngles) * Vector3.forward).y * _config.SwimSpeed;
+            }
+
             if (_surfer.MoveData.Buttons.HasFlag(InputActions.Jump))
             {
                 _surfer.MoveData.Velocity.y = 100 * HammerScale;

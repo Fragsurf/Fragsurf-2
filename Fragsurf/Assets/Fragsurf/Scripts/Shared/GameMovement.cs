@@ -100,6 +100,13 @@ namespace Fragsurf.Shared
             set => Config.StopSpeed = ToUnityUnits(value);
         }
 
+        [ConVar("mv.swimspeed", "", ConVarFlags.Replicator)]
+        public int SwimSpeed
+        {
+            get => ToHammerUnits(Config.SwimSpeed);
+            set => Config.SwimSpeed = ToUnityUnits(value);
+        }
+
         private int ToHammerUnits(float input)
         {
             return Mathf.RoundToInt(input / SurfController.HammerScale);
