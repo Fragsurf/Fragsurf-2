@@ -34,7 +34,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
 
             var formattedTime = Bunnyhop.FormatTime(data.Entry.TimeMilliseconds);
-            _text.text = $"<color=yellow>#{data.Entry.Rank}</color> {data.Entry.UserName} | <color=green>{formattedTime}</color>, {data.Entry.Jumps} jumps, {data.Entry.Strafes} strafes";
+            _text.text = $"<color=yellow>#{data.Entry.Rank}</color> {data.Entry.DisplayName} | <color=green>{formattedTime}</color> <size=12><color=orange>{data.Entry.Jumps}</color> jmp, <color=orange>{data.Entry.Strafes}</color> str {data.Entry.GetDate()}</size>";
             _replayButton.onClick.AddListener(() =>
             {
                 data.OnClickReplay?.Invoke();

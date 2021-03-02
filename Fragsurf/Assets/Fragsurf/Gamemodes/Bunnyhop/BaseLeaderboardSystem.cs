@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Fragsurf.Actors;
-using Fragsurf.Maps;
 using Fragsurf.Movement;
 using UnityEngine;
 
@@ -175,12 +175,29 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
     public class LeaderboardEntry
     {
-        public string UserName;
+        public string DisplayName;
         public ulong UserId;
         public int TimeMilliseconds;
         public int Rank;
+        public int UnixTimestamp;
         public int Jumps;
         public int Strafes;
+
+        public DateTime DateTime
+        {
+            get
+            {
+                var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                dtDateTime = dtDateTime.AddSeconds(UnixTimestamp).ToLocalTime();
+                return dtDateTime;
+            }
+        }
+
+        public string GetDate()
+        {
+            return DateTime.ToString("ddd, MMM dd yyyy hh:mm tt");
+        }
+
     }
 
 }

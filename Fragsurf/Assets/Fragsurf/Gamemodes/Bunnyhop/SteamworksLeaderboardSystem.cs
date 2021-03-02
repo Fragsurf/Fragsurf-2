@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
 {
@@ -37,13 +38,15 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private LeaderboardEntry SteamEntryToEntry(Steamworks.Data.LeaderboardEntry steamentry)
         {
+            var timestamp = 0;
             var jumps = 0;
             var strafes = 0;
 
-            if (steamentry.Details != null && steamentry.Details.Length >= 2)
+            if (steamentry.Details != null && steamentry.Details.Length >= 3)
             {
-                jumps = steamentry.Details[0];
-                strafes = steamentry.Details[1];
+                timestamp = steamentry.Details[0];
+                jumps = steamentry.Details[1];
+                strafes = steamentry.Details[2];
             }
 
             return new LeaderboardEntry()
@@ -51,9 +54,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 UserId = steamentry.User.Id,
                 Rank = steamentry.GlobalRank,
                 TimeMilliseconds = steamentry.Score,
-                UserName = steamentry.User.Name,
+                DisplayName = steamentry.User.Name,
                 Jumps = jumps,
-                Strafes = strafes
+                Strafes = strafes,
+                UnixTimestamp = timestamp
             };
         }
 
@@ -167,11 +171,14 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return response;
             }
 
+            var unixTimestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             var details = new int[]
             {
+                unixTimestamp,
                 frame.Jumps,
                 frame.Strafes
             };
+
             var update = await leaderboard.Value.SubmitScoreAsync((int)(frame.Time * 1000), details);
 
             if (!update.HasValue || !update.Value.Success)
