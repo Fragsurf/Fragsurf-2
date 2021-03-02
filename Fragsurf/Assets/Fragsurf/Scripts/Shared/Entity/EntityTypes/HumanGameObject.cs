@@ -41,10 +41,14 @@ namespace Fragsurf.Shared.Entity
         public AudioSource HandAudioSource { get; private set; }
         public AudioSource HeadAudioSource { get; private set; }
 
+        private Vector3 _rot;
         public override Vector3 Rotation
         {
-            get => _viewBody.transform.rotation.eulerAngles;
-            set => _viewBody.transform.rotation = Quaternion.Euler(0, value.y, value.z);
+            get => _rot;
+            set {
+                _rot = value;
+                _viewBody.transform.rotation = Quaternion.Euler(0, value.y, value.z);
+            }
         }
 
         protected override void Awake()
