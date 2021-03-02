@@ -237,7 +237,7 @@ namespace Fragsurf.Movement
                 wishSpeed = _config.MaxSpeed;
             }
 
-            wishSpeed *= 0.8f;
+            wishSpeed *= 0.5f;
 
             // water friction
             var speed = _surfer.MoveData.Velocity.magnitude;
