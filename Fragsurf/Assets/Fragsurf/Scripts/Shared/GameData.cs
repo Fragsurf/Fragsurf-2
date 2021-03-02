@@ -27,6 +27,9 @@ namespace Fragsurf.Shared
         public GamemodeData[] DefaultGamemodes;
         public BaseEquippableData[] Equippables;
         public SurfaceTypeDatabase Surfaces;
+        public AudioClip UnderwaterSound;
+        public AudioClip ExitWaterSound;
+        public AudioClip SwimSound;
 
         public GameObject GetImpactEffect(SurfaceType surfaceType)
         {

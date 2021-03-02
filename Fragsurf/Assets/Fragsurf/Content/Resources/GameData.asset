@@ -20,3 +20,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 245d9bbacf27c614badced207381308b, type: 2}
   Equippables: []
   Surfaces: {fileID: 11400000, guid: 45b4a7301161d4b4dbaf131b01133929, type: 2}
+  UnderwaterSound: {fileID: 8300000, guid: 365d327173e2e5d438e4645686b3ba9c, type: 3}
+  ExitWaterSound: {fileID: 8300000, guid: 982c698bc154450409fab8bef6aeb7b3, type: 3}
+  SwimSound: {fileID: 8300000, guid: 3856290d2cf20ab41b0d8bae55a43065, type: 3}

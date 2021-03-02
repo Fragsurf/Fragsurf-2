@@ -189,6 +189,7 @@ namespace Fragsurf.Shared.Player
         private float _stepRand;
         protected void TickFootstep()
         {
+            _swimSoundTimer -= Time.fixedDeltaTime;
             _traveled += (MoveData.Origin - MoveData.PreviousOrigin).magnitude;
             if (_traveled >= _stepDistance + _stepRand)
             {
@@ -206,12 +207,22 @@ namespace Fragsurf.Shared.Player
         }
 
         private static Collider[] _footstepTest = new Collider[32];
+        private float _swimSoundTimer;
         private void PlayFootstepSound(float vol)
         {
             if(GroundObject == null
                 || Human.HumanGameObject == null
                 || Human.HumanGameObject.FeetAudioSource == null)
             {
+                if (MoveData.InWater 
+                    && MoveData.WaterDepth <= 0.83f
+                    && MoveData.WaterDepth >= 0.5f
+                    && GameData.Instance.SwimSound 
+                    && _swimSoundTimer <= 0)
+                {
+                    _swimSoundTimer = 2f;
+                    Human.HumanGameObject.FeetAudioSource.PlayOneShot(GameData.Instance.SwimSound, vol);
+                }
                 return;
             }
 
