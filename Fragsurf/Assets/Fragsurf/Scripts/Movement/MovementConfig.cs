@@ -13,7 +13,6 @@ namespace Fragsurf.Movement
         public int AirAccel = 1500;
         public float Accelerate = 5f;
         public float Friction = 4f;
-        public float WaterFriction = 2f;
         public float BrakeSpeed = 1f;
         public float StopSpeed = 75 * SurfController.HammerScale;
         public float JumpPower = 7.15f;
@@ -39,7 +38,12 @@ namespace Fragsurf.Movement
         public float ForwardSpeed = 400 * SurfController.HammerScale;
         public float SideSpeed = 400 * SurfController.HammerScale;
         public float WaterDepthToSwim = 0.6f;
-        public float SwimSpeed = 200 * SurfController.HammerScale;
+        public float WaterDepthToJumpOut = 0.8f;
+        public float WaterSwimSpeed = 200 * SurfController.HammerScale;
+        public float WaterSinkSpeed = 60f * SurfController.HammerScale;
+        public float WaterJumpPower = 100f * SurfController.HammerScale;
+        public float WaterJumpOutPower = 200f * SurfController.HammerScale;
+        public float WaterFriction = 2f;
 
     }
 }

@@ -100,11 +100,32 @@ namespace Fragsurf.Shared
             set => Config.StopSpeed = ToUnityUnits(value);
         }
 
-        [ConVar("mv.swimspeed", "", ConVarFlags.Replicator)]
+        [ConVar("mv.waterswimspeed", "", ConVarFlags.Replicator)]
         public int SwimSpeed
         {
-            get => ToHammerUnits(Config.SwimSpeed);
-            set => Config.SwimSpeed = ToUnityUnits(value);
+            get => ToHammerUnits(Config.WaterSwimSpeed);
+            set => Config.WaterSwimSpeed = ToUnityUnits(value);
+        }
+
+        [ConVar("mv.watersinkspeed", "", ConVarFlags.Replicator)]
+        public int SinkSpeed
+        {
+            get => ToHammerUnits(Config.WaterSinkSpeed);
+            set => Config.WaterSinkSpeed = ToUnityUnits(value);
+        }
+
+        [ConVar("mv.waterjumppower", "", ConVarFlags.Replicator)]
+        public int WaterJumpPower
+        {
+            get => ToHammerUnits(Config.WaterJumpPower);
+            set => Config.WaterJumpPower = ToUnityUnits(value);
+        }
+
+        [ConVar("mv.waterjumpoutpower", "", ConVarFlags.Replicator)]
+        public int WaterJumpOutPower
+        {
+            get => ToHammerUnits(Config.WaterJumpOutPower);
+            set => Config.WaterJumpOutPower = ToUnityUnits(value);
         }
 
         private int ToHammerUnits(float input)
@@ -124,6 +145,8 @@ namespace Fragsurf.Shared
 
             DevConsole.RegisterVariable("mv.friction", "", () => Config.Friction, v => Config.Friction = v, this, ConVarFlags.Replicator);
             DevConsole.RegisterVariable("mv.waterfriction", "", () => Config.WaterFriction, v => Config.WaterFriction = v, this, ConVarFlags.Replicator);
+            DevConsole.RegisterVariable("mv.waterdepthtoswim", "", () => Config.WaterDepthToSwim, v => Config.WaterDepthToSwim = v, this, ConVarFlags.Replicator);
+            DevConsole.RegisterVariable("mv.waterdepthtojumpout", "", () => Config.WaterDepthToJumpOut, v => Config.WaterDepthToJumpOut = v, this, ConVarFlags.Replicator);
             DevConsole.RegisterVariable("mv.brakespeed", "", () => Config.BrakeSpeed, v => Config.BrakeSpeed = v, this, ConVarFlags.Replicator);
 
             DevConsole.RegisterVariable("mv.autobhop", "", () => Config.AutoBhop, v => Config.AutoBhop = v, this, ConVarFlags.Replicator);

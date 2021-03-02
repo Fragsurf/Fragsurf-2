@@ -219,17 +219,30 @@ namespace Fragsurf.Movement
 
             if(_surfer.MoveData.ForwardMove != 0)
             {
-                wishVel.y = (Quaternion.Euler(_surfer.MoveData.ViewAngles) * Vector3.forward).y * _config.SwimSpeed;
+                wishVel.y = (Quaternion.Euler(_surfer.MoveData.ViewAngles) * Vector3.forward).y * _config.WaterSwimSpeed;
             }
 
             if (_surfer.MoveData.Buttons.HasFlag(InputActions.Jump))
             {
-                _surfer.MoveData.Velocity.y = 100 * HammerScale;
+                _surfer.MoveData.Velocity.y = _config.WaterJumpPower;
                 wishVel.y += _config.MaxSpeed;
             }
             else
             {
-                wishVel.y -= 60f * HammerScale;
+                wishVel.y -= _config.WaterSinkSpeed;
+            }
+
+            if(_surfer.MoveData.WaterDepth <= _config.WaterDepthToJumpOut
+                && _surfer.MoveData.Buttons.HasFlag(InputActions.Jump))
+            {
+                var extents = _surfer.StandingExtents;
+                extents.y = .1f;
+                extents.x *= 1.1f;
+                extents.z *= 1.1f;
+                if (Physics.CheckBox(_surfer.MoveData.Origin, extents, Quaternion.identity, 1 << 0, QueryTriggerInteraction.Ignore))
+                {
+                    _surfer.MoveData.Velocity.y += _config.WaterJumpOutPower;
+                }
             }
 
             wishDir = wishVel;
