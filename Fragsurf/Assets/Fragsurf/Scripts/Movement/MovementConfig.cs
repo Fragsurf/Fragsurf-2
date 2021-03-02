@@ -13,6 +13,7 @@ namespace Fragsurf.Movement
         public int AirAccel = 1500;
         public float Accelerate = 5f;
         public float Friction = 4f;
+        public float WaterFriction = 2f;
         public float BrakeSpeed = 1f;
         public float StopSpeed = 75 * SurfController.HammerScale;
         public float JumpPower = 7.15f;

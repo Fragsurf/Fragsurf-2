@@ -245,7 +245,7 @@ namespace Fragsurf.Movement
             if (speed > 0)
             {
                 var surfaceFriction = _surfer.MoveData.Buttons.HasFlag(InputActions.Jump) ? 0f : 1f;
-                newspeed = speed - _deltaTime * speed * _config.Friction * surfaceFriction;
+                newspeed = speed - _deltaTime * speed * _config.WaterFriction * surfaceFriction;
                 if (newspeed < 0.1f)
                 {
                     newspeed = 0f;

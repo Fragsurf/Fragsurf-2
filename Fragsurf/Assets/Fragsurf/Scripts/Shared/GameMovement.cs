@@ -116,6 +116,7 @@ namespace Fragsurf.Shared
             SurfPhysics.LadderLayerMask = 1 << Layers.Default;
 
             DevConsole.RegisterVariable("mv.friction", "", () => Config.Friction, v => Config.Friction = v, this, ConVarFlags.Replicator);
+            DevConsole.RegisterVariable("mv.waterfriction", "", () => Config.WaterFriction, v => Config.WaterFriction = v, this, ConVarFlags.Replicator);
             DevConsole.RegisterVariable("mv.brakespeed", "", () => Config.BrakeSpeed, v => Config.BrakeSpeed = v, this, ConVarFlags.Replicator);
 
             DevConsole.RegisterVariable("mv.autobhop", "", () => Config.AutoBhop, v => Config.AutoBhop = v, this, ConVarFlags.Replicator);
