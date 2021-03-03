@@ -173,10 +173,16 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _previousYaw = human.Angles.y;
         }
 
+        Vector3 originLastFrame;
         protected override void ApplyFrame(BunnyhopTimelineFrame frame)
         {
+            originLastFrame = Entity.Origin;
             Entity.Origin = frame.Position;
             Entity.Angles = frame.Angles;
+            if(Entity is Human hu)
+            {
+                hu.Velocity = (Entity.Origin - originLastFrame).normalized * frame.Velocity;
+            }
         }
 
     }

@@ -16,5 +16,5 @@ MonoBehaviour:
   Identifier: pt
   GamemodeType:
     _classRef: Fragsurf.Gamemodes.Playtest.PlaytestGamemode, Assembly-CSharp
-  HumanPrefab: {fileID: 129730354478773994, guid: f1772960eeff92b4fabaaf1f80187e3a, type: 3}
+  HumanPrefab: {fileID: 7776529293873923163, guid: d64aa5b739895ac41b41075f48746df8, type: 3}
   InstantiateOnLoad: []

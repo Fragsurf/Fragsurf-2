@@ -1,0 +1,183 @@
+fileFormatVersion: 2
+guid: 1eb4a6dc73c86ed4083d2650efe980db
+ModelImporter:
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      74: 2680405589414653168
+    second: R_arm_Goal|chestcontrol|chestcontrol|chestcontrol|CINEMA_4D_Main|Layer0.00
+  - first:
+      74: -4038934302361176933
+    second: R_arm_Goal|chestcontrol|chestcontrol|L_arm_Goal|CINEMA_4D_Main|Layer0.001|
+  - first:
+      74: 4054513160133518121
+    second: R_arm_Goal|chestcontrol|chestcontrol|R_arm_Goal|CINEMA_4D_Main|Layer0.001|
+  - first:
+      74: -3532164526308570256
+    second: R_arm_Goal|L_arm_Goal|L_arm_Goal|chestcontrol|CINEMA_4D_Main|Layer0.001|L_
+  - first:
+      74: -8674630306417369489
+    second: R_arm_Goal|L_arm_Goal|L_arm_Goal|L_arm_Goal|CINEMA_4D_Main|Layer0.001|L_ar
+  - first:
+      74: -3855652827451793517
+    second: R_arm_Goal|L_arm_Goal|L_arm_Goal|R_arm_Goal|CINEMA_4D_Main|Layer0.001|L_ar
+  - first:
+      74: 3957103486037235518
+    second: R_arm_Goal|R_arm_Goal|R_arm_Goal|chestcontrol|CINEMA_4D_Main|Layer0.001|R_
+  - first:
+      74: 7068865801377949074
+    second: R_arm_Goal|R_arm_Goal|R_arm_Goal|L_arm_Goal|CINEMA_4D_Main|Layer0.001|R_ar
+  - first:
+      74: 870787572688583744
+    second: R_arm_Goal|R_arm_Goal|R_arm_Goal|R_arm_Goal|CINEMA_4D_Main|Layer0.001|R_ar
+  - first:
+      74: -2686811779131986212
+    second: L_arm_Goal|chestcontrol|chestcontrol|chestcontrol|CINEMA_4D_Main|Layer0.00
+  - first:
+      74: 4723086228882472444
+    second: L_arm_Goal|chestcontrol|chestcontrol|L_arm_Goal|CINEMA_4D_Main|Layer0.001|
+  - first:
+      74: -8054551252376623228
+    second: L_arm_Goal|chestcontrol|chestcontrol|R_arm_Goal|CINEMA_4D_Main|Layer0.001|
+  - first:
+      74: 6393005577056306755
+    second: L_arm_Goal|L_arm_Goal|L_arm_Goal|chestcontrol|CINEMA_4D_Main|Layer0.001|L_
+  - first:
+      74: 78405430078135603
+    second: L_arm_Goal|L_arm_Goal|L_arm_Goal|L_arm_Goal|CINEMA_4D_Main|Layer0.001|L_ar
+  - first:
+      74: 4397883994123923283
+    second: L_arm_Goal|L_arm_Goal|L_arm_Goal|R_arm_Goal|CINEMA_4D_Main|Layer0.001|L_ar
+  - first:
+      74: -6467833324798112531
+    second: L_arm_Goal|R_arm_Goal|R_arm_Goal|chestcontrol|CINEMA_4D_Main|Layer0.001|R_
+  - first:
+      74: -927826916327439136
+    second: L_arm_Goal|R_arm_Goal|R_arm_Goal|L_arm_Goal|CINEMA_4D_Main|Layer0.001|R_ar
+  - first:
+      74: -3211375121301057750
+    second: L_arm_Goal|R_arm_Goal|R_arm_Goal|R_arm_Goal|CINEMA_4D_Main|Layer0.001|R_ar
+  - first:
+      74: -822929183315106170
+    second: chestcontrol|chestcontrol|chestcontrol|chestcontrol|CINEMA_4D_Main|Layer0.00
+  - first:
+      74: 3792425217833250798
+    second: chestcontrol|chestcontrol|chestcontrol|L_arm_Goal|CINEMA_4D_Main|Layer0.001|
+  - first:
+      74: 515262945682703644
+    second: chestcontrol|chestcontrol|chestcontrol|R_arm_Goal|CINEMA_4D_Main|Layer0.001|
+  - first:
+      74: 2439630919351070337
+    second: chestcontrol|L_arm_Goal|L_arm_Goal|chestcontrol|CINEMA_4D_Main|Layer0.001|L_
+  - first:
+      74: 5440222293508352619
+    second: chestcontrol|L_arm_Goal|L_arm_Goal|L_arm_Goal|CINEMA_4D_Main|Layer0.001|L_ar
+  - first:
+      74: 4602267321153664660
+    second: chestcontrol|L_arm_Goal|L_arm_Goal|R_arm_Goal|CINEMA_4D_Main|Layer0.001|L_ar
+  - first:
+      74: -3620443829315290508
+    second: chestcontrol|R_arm_Goal|R_arm_Goal|chestcontrol|CINEMA_4D_Main|Layer0.001|R_
+  - first:
+      74: 5514519546237565530
+    second: chestcontrol|R_arm_Goal|R_arm_Goal|L_arm_Goal|CINEMA_4D_Main|Layer0.001|R_ar
+  - first:
+      74: -608437846286778478
+    second: chestcontrol|R_arm_Goal|R_arm_Goal|R_arm_Goal|CINEMA_4D_Main|Layer0.001|R_ar
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

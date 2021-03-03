@@ -51,6 +51,8 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
+        public Human Human => Entity as Human;
+
         protected override void Awake()
         {
             if (_viewBody == null)
@@ -199,9 +201,54 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
+        private int _groundedCounter;
+        private float _fallingTimer = 1.5f;
+        private Vector3 _desiredMoveBlend;
+        private Vector3 _currentMoveBlend;
+        private Vector3 _moveBlendVelocity;
+
+        protected override void _Update()
+        {
+            base._Update();
+
+            if (!Animator)
+            {
+                return;
+            }
+
+            _desiredMoveBlend = ViewBody.transform.InverseTransformDirection(Human.Velocity);
+            _currentMoveBlend = Vector3.SmoothDamp(_currentMoveBlend, _desiredMoveBlend, ref _moveBlendVelocity, .1f);
+            Animator.SetFloat("sideways", _currentMoveBlend.x);
+            Animator.SetFloat("forward", _currentMoveBlend.z);
+        }
+
         private void OnHumanRunCommand()
         {
+            if (!Animator
+                || !(Human.MovementController is DefaultMovementController move))
+            {
+                return;
+            }
 
+            if (!move.GroundObject)
+            {
+                _groundedCounter = 0;
+                _fallingTimer -= Time.deltaTime;
+            }
+            else
+            {
+                _groundedCounter++;
+                _fallingTimer = 1.5f;
+            }
+
+            if (move.MoveData.JustJumped)
+            {
+                Animator.SetTrigger("jump");
+            }
+
+            Animator.SetBool("grounded", _groundedCounter > 1);
+            Animator.SetBool("falling", _fallingTimer <= 0);
+            Animator.SetBool("crouching", Human.Ducked);
         }
 
     }
