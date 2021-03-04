@@ -18,7 +18,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private TMP_Text _centerHud;
 
         private string _notStartedText = "Timer not started";
-        private string _format = "<color=green>{time}</color>\n<color=yellow>{speed} u/s</color>\n{jumps} jumps\n{strafes} strafes ({sync}%)";
+        private string _format = "{time}\n{speed} u/s\n{jumps} jumps\n{strafes} strafes ({sync}%)";
 
         private void Update()
         {
@@ -34,27 +34,34 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             if (target == null || !(target.Timeline is BunnyhopTimeline bhopTimeline))
             {
-                _centerHud.text = _notStartedText;
+                SetCenterHudText(_notStartedText);
                 return;
             }
 
             if (!bhopTimeline.RunIsLive || bhopTimeline.Frames.Count == 0)
             {
-                _centerHud.text = _notStartedText;
+                SetCenterHudText(_notStartedText);
                 return;
             }
 
             // todo: check garbage allocations here
             var frame = bhopTimeline.CurrentFrame;
             var sb = new StringBuilder(_format);
-            sb.Replace("{time}", Bunnyhop.FormatTime(frame.Time))
-                .Replace("{speed}", frame.Velocity.ToString())
-                .Replace("{jumps}", frame.Jumps.ToString())
-                .Replace("{strafes}", frame.Strafes.ToString())
-                .Replace("{sync}", frame.FinalSync.ToString())
-                .Replace("{tick}", frame.Tick.ToString());
+            var tracks = cl.Get<BunnyhopTracks>();
+            sb.Replace("{time}", $"<color={tracks.TimeColor.HexWithHash()}>{Bunnyhop.FormatTime(frame.Time)}</color>")
+                .Replace("{speed}", $"<color={tracks.SpeedColor.HexWithHash()}>{frame.Velocity}</color>")
+                .Replace("{jumps}", $"<color={tracks.MiscColor.HexWithHash()}>{frame.Jumps}</color>")
+                .Replace("{strafes}", $"<color={tracks.MiscColor.HexWithHash()}>{frame.Strafes}</color>")
+                .Replace("{sync}", $"<color={tracks.MiscColor.HexWithHash()}>{frame.FinalSync}</color>")
+                .Replace("{tick}", $"<color={tracks.MiscColor.HexWithHash()}>{frame.Tick}</color>");
 
-            _centerHud.text = sb.ToString();
+            SetCenterHudText(sb.ToString());
+        }
+
+        private void SetCenterHudText(string text)
+        {
+            var tracks = FSGameLoop.GetGameInstance(false).Get<BunnyhopTracks>();
+            _centerHud.text = $"<color={tracks.MessageColor.HexWithHash()}>{text}</color>";
         }
 
     }

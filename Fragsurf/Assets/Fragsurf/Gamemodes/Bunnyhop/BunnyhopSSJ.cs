@@ -167,6 +167,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
+        private static StringBuilder _sb = new StringBuilder(256);
         private void PrintStats(Human hu, SSJData data)
         {
             var coeffsum = data.RawGain;
@@ -184,10 +185,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             coeffsum = Mathf.Floor(coeffsum * 100f + 0.5f) / 100f;
             efficiency = Mathf.Floor(efficiency * 100f + 0.5f) / 100f;
 
-            var sb = new StringBuilder();
-            var msgText = "white";
-            var msgVar = "green";
-            sb.AppendFormat("<color={0}>Jump: </color><color={1}>{2}</color>", msgText, msgVar, data.Jump);
+            var tracks = Game.Get<BunnyhopTracks>();
+
+            _sb.Clear();
+            _sb.AppendFormat("Jump: <color={0}>{1}</color>", tracks.MiscColor.HexWithHash(), data.Jump);
 
             if((Mode == SSJMode.SixthJump && data.Jump == 6) 
                 || (Mode == SSJMode.EverySixthJump && data.Jump % 6 == 0)
@@ -200,7 +201,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 if (CurrentSpeed)
                 {
                     var curSpd = (int)(velocity / .0254f);
-                    sb.AppendFormat(" <color={0}>| Speed: </color><color={1}>{2}</color>", msgText, msgVar, curSpd);
+                    _sb.AppendFormat(" | Speed: <color={0}>{1}u/s</color>", tracks.SpeedColor.HexWithHash(), curSpd);
                 }
 
                 if(Mode != SSJMode.EveryJump
@@ -209,27 +210,28 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                     if (SpeedDiff)
                     {
                         var spdDiff = (int)((velocity - data.InitialSpeed) / .0254f);
-                        sb.AppendFormat(" <color={0}>| Speed ^: </color><color={1}>{2}</color>", msgText, msgVar, spdDiff);
+                        _sb.AppendFormat(" | Speed ^: <color={0}>{1}u/s</color>", tracks.SpeedColor.HexWithHash(), spdDiff);
                     }
                     if (HeightDiff)
                     {
                         var heightDiff = (int)((hu.Origin.y - data.InitialHeight) / .0254f);
-                        sb.AppendFormat(" <color={0}>| Height ^: </color><color={1}>{2}</color>", msgText, msgVar, heightDiff);
+                        _sb.AppendFormat(" | Height ^: <color={0}>{1}</color>", tracks.MiscColor.HexWithHash(), heightDiff);
                     }
                     if (GainStats)
                     {
-                        sb.AppendFormat(" <color={0}>| Gain: </color><color={1}>{2}</color>%", msgText, msgVar, coeffsum.ToString("0.00"));
+                        _sb.AppendFormat(" | Gain: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), coeffsum.ToString("0.00"));
                     }
                     if (StrafeSync)
                     {
                         var ss = 100f * ((float)data.SyncedTick / data.StrafeTick);
-                        sb.AppendFormat(" <color={0}>| Sync: </color><color={1}>{2}</color>%", msgText, msgVar, ss.ToString("0.00"));
+                        _sb.AppendFormat(" | Sync: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), ss.ToString("0.00"));
                     }
                     if (Efficiency)
                     {
-                        sb.AppendFormat(" <color={0}>| Efficiency: </color><color={1}>{2}</color>%", msgText, msgVar, efficiency.ToString("0.00"));
+                        _sb.AppendFormat(" | Efficiency: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), efficiency.ToString("0.00"));
                     }
-                    Game.Get<TextChat>().PrintChat("[SSJ]", sb.ToString());
+
+                    Game.Get<TextChat>().PrintChat("[SSJ]", $"<color={tracks.MessageColor.HexWithHash()}>{_sb}</color>");
                 }
             }
         }

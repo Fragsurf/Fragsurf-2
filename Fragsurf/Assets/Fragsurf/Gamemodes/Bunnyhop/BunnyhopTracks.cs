@@ -10,9 +10,34 @@ using UnityEngine;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
 {
+    public static class ColorExtensions
+    {
+        private static Dictionary<Color, string> _hexWithHashCache = new Dictionary<Color, string>();
+        public static string HexWithHash(this Color c)
+        {
+            if (!_hexWithHashCache.ContainsKey(c))
+            {
+                _hexWithHashCache[c] = "#" + ColorUtility.ToHtmlStringRGBA(c);
+            }
+            return _hexWithHashCache[c];
+        }
+    }
     [Inject(InjectRealm.Shared, typeof(Bunnyhop))]
     public class BunnyhopTracks : FSSharedScript
     {
+
+        [ConVar("timer.messagecolor", "Color of timer messages", ConVarFlags.UserSetting | ConVarFlags.Gamemode)]
+        public Color MessageColor { get; set; } = Color.white;
+        [ConVar("timer.speedcolor", "Color of speed variables in messages", ConVarFlags.UserSetting | ConVarFlags.Gamemode)]
+        public Color SpeedColor { get; set; } = Color.yellow;
+        [ConVar("timer.timecolor", "Color of time variables in messages", ConVarFlags.UserSetting | ConVarFlags.Gamemode)]
+        public Color TimeColor { get; set; } = Color.green;
+        [ConVar("timer.misccolor", "Color of misc variables in messages (jumps, strafes)", ConVarFlags.UserSetting | ConVarFlags.Gamemode)]
+        public Color MiscColor { get; set; } = new Color32(222, 159, 24, 255);
+        [ConVar("timer.namecolor", "Color of name variables in messages", ConVarFlags.UserSetting | ConVarFlags.Gamemode)]
+        public Color NameColor { get; set; } = Color.cyan;
+        [ConVar("timer.name", "Name of timer messages", ConVarFlags.UserSetting | ConVarFlags.Gamemode)]
+        public string TimerName { get; set; } = "[Timer]";
 
         public BaseLeaderboardSystem LeaderboardSystem { get; } = new SteamworksLeaderboardSystem();
 
@@ -75,8 +100,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 {
                     name = "Main";
                 }
-                var msg = $"<color=green>{name}</color> started, <color=yellow>{frame.Velocity}</color> u/s";
-                Game.TextChat.PrintChat("[Timer]", msg);
+                var msg = $"<color={MessageColor.HexWithHash()}><color={NameColor.HexWithHash()}>{name}</color> started, <color={SpeedColor.HexWithHash()}>{frame.Velocity}u/s</color></color>";
+                Game.TextChat.PrintChat(TimerName, msg);
             }
         }
 
@@ -96,8 +121,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
             {
                 var frame = bhopTimeline.LastFrame;
-                var msg = $"<color=green>Stage {stage}</color> started, <color=yellow>{frame.Velocity}</color> u/s";
-                Game.TextChat.PrintChat("[Timer]", msg);
+                var msg = $"<color={MessageColor.HexWithHash()}><color={MiscColor.HexWithHash()}>Stage {stage}</color> started, <color={SpeedColor.HexWithHash()}>{frame.Velocity} u/s</color></color>";
+                Game.TextChat.PrintChat(TimerName, msg);
             }
         }
 
@@ -172,19 +197,19 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             if (result.Improved)
             {
-                var msg = $"Finished {trackName} in <color=green>{timeStr}</color>s, {frame.Jumps} jumps @ rank <color=#34ebcc>#{result.NewRank}</color>!";
+                var msg = $"<color={MessageColor.HexWithHash()}> Finished <color={NameColor.HexWithHash()}>{trackName}</color> in <color={TimeColor.HexWithHash()}>{timeStr}s</color>, {MiscColor.HexWithHash()}{frame.Jumps} jumps</color> @ rank <color={MiscColor.HexWithHash()}>#{result.NewRank}</color>!</color>";
                 Game.TextChat.MessageAll(msg);
 
                 if (result.NewRank < result.OldRank)
                 {
                     var improveStr = Bunnyhop.FormatTime(result.Improvement);
-                    msg = $"Improvement of <color=green>{improveStr}</color>s";
+                    msg = $"<color={MessageColor.HexWithHash()}>Improvement of <color={TimeColor.HexWithHash()}>{improveStr}s</color></color>";
                     Game.TextChat.MessageAll(msg);
                 }
             }
             else
             {
-                Game.TextChat.MessageAll($"Finished {trackName} in {timeStr}s");
+                Game.TextChat.MessageAll($"<color={MessageColor.HexWithHash()}>Finished <color={NameColor.HexWithHash()}>{trackName}</color> in <color={TimeColor.HexWithHash()}>{timeStr}s</color></color>");
             }
 
             if (result.Improved && result.NewRank == 1)

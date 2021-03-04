@@ -13,7 +13,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private Color _endZoneColor = Color.red;
         private Color _cpZoneColor = Color.yellow;
 
-        [ConVar("bunnyhop.startzonecolor", "Color for start zones", ConVarFlags.Gamemode | ConVarFlags.UserSetting)]
+        [ConVar("timer.startzonecolor", "Color for start zones", ConVarFlags.Gamemode | ConVarFlags.UserSetting)]
         public Color StartZoneColor
         {
             get => _startZoneColor;
@@ -23,7 +23,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 OutlineTracks();
             }
         }
-        [ConVar("bunnyhop.endzonecolor", "Color for end zones", ConVarFlags.Gamemode | ConVarFlags.UserSetting)]
+        [ConVar("timer.endzonecolor", "Color for end zones", ConVarFlags.Gamemode | ConVarFlags.UserSetting)]
         public Color EndZoneColor
         {
             get => _endZoneColor;
@@ -33,7 +33,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 OutlineTracks();
             }
         }
-        [ConVar("bunnyhop.cpzonecolor", "Color for checkpoint zones", ConVarFlags.Gamemode | ConVarFlags.UserSetting)]
+        [ConVar("timer.cpzonecolor", "Color for checkpoint zones", ConVarFlags.Gamemode | ConVarFlags.UserSetting)]
         public Color CpZoneColor
         {
             get => _cpZoneColor;
