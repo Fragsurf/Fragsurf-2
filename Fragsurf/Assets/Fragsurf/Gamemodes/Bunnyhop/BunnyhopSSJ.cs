@@ -219,16 +219,16 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                     }
                     if (GainStats)
                     {
-                        _sb.AppendFormat(" | Gain: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), coeffsum.ToString("0.00"));
+                        _sb.AppendFormat(" | Gain: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), coeffsum.ToString("0"));
                     }
                     if (StrafeSync)
                     {
                         var ss = 100f * ((float)data.SyncedTick / data.StrafeTick);
-                        _sb.AppendFormat(" | Sync: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), ss.ToString("0.00"));
+                        _sb.AppendFormat(" | Sync: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), ss.ToString("0"));
                     }
                     if (Efficiency)
                     {
-                        _sb.AppendFormat(" | Efficiency: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), efficiency.ToString("0.00"));
+                        _sb.AppendFormat(" | Efficiency: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), efficiency.ToString("0"));
                     }
 
                     Game.Get<TextChat>().PrintChat("[SSJ]", $"<color={tracks.MessageColor.HexWithHash()}>{_sb}</color>");
