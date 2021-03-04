@@ -69,7 +69,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 data.TicksOnGround++;
                 if(move.MoveData.Buttons.HasFlag(InputActions.Jump) && data.TicksOnGround == 1)
                 {
-                    if (Game.Get<BunnyhopTracks>().IsInStartZone(hu))
+                    if (bhop.InStartZone)
                     {
                         data.Jump = 0;
                         data.StrafeTick = 0;

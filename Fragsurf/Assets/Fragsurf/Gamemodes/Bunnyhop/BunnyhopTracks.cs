@@ -37,11 +37,6 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
-        public bool IsInStartZone(Human hu)
-        {
-            return hu.Timeline is BunnyhopTimeline tl && tl.InStartZone;
-        }
-
         private void Track_OnEnterStart(FSMTrack track, Human hu)
         {
             var bhopTimeline = new BunnyhopTimeline() { Track = track };
