@@ -25,6 +25,7 @@ namespace Fragsurf.Client
                 }
                 settingsModal.CreatePage("gamemode modals", modalNames);
             }
+            UserSettings.Instance.Load();
         }
 
         protected override void _Destroy()
