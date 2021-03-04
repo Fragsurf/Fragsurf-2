@@ -10,6 +10,9 @@ using UnityEngine;
 
 namespace Fragsurf.Gamemodes.Bunnyhop 
 {
+    /// <summary>
+    /// Credits: https://github.com/neko-pm/ssj/blob/master/scripting/ssj.sp
+    /// </summary>
     [Inject(InjectRealm.Client, typeof(Bunnyhop))]
     public class BunnyhopSSJ : FSSharedScript
     {
