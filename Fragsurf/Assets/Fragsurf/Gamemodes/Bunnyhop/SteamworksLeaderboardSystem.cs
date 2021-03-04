@@ -246,8 +246,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private string GetLeaderboardName(LeaderboardIdentifier ldb)
         {
-            var result = string.Join("-", ldb.Map, ldb.TrackType, ldb.TrackName);
-            if (ldb.Number > 0) result = string.Join("-", result, "n" + ldb.Number);
+            var result = string.Join("--", ldb.Map, ldb.TrackType, ldb.TrackName);
+            if (ldb.Number > 0) result = string.Join("--", result, "n" + ldb.Number);
             return result;
         }
 

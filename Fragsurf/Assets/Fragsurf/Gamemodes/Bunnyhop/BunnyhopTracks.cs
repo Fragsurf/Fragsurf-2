@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using Fragsurf.Actors;
 using Fragsurf.Maps;
 using Fragsurf.Movement;
@@ -17,6 +18,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         protected override void _Initialize()
         {
+            var tl = new BunnyhopTimeline();
+            tl.Frames.Add(new BunnyhopTimelineFrame());
+            tl.SetSegment(1);
+            tl.Serialize();
+            tl.SerializeAsync();
+            File.Exists("C:\\Test\\test.test");
+
             foreach(var track in GameObject.FindObjectsOfType<FSMTrack>())
             {
                 // the x.Game == Game conditional is important because we're tying into MonoBehaviours which exist in shared space.

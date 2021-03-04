@@ -21,10 +21,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 try
                 {
                     var data = await timeline.SerializeAsync();
-                    data = data.Compress();
-                    if (SaveReplay(ldbId, data, out _))
+                    var compressed = await data.CompressAsync();
+                    if(await SaveReplayAsync(ldbId, compressed))
                     {
-                        await _SaveReplay(ldbId, data);
+                        await _SaveReplay(ldbId, compressed);
                     }
                 }
                 catch(Exception e)
@@ -73,14 +73,14 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         }
 
         /// <summary>
-        /// Save the replay data in compressed gzip format
+        /// Saves the replay data to file
         /// </summary>
         /// <param name="ldbId"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public bool SaveReplay(LeaderboardIdentifier ldbId, byte[] uncompressedData, out string filePath)
+        public async Task<bool> SaveReplayAsync(LeaderboardIdentifier ldbId, byte[] data)
         {
-            filePath = ReplayFilePath(ldbId);
+            var filePath = ReplayFilePath(ldbId);
             var dir = Path.GetDirectoryName(filePath);
 
             try
@@ -90,7 +90,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 {
                     File.Delete(filePath);
                 }
-                File.WriteAllBytes(filePath, uncompressedData.Compress());
+                using var fs = new FileStream(filePath, FileMode.OpenOrCreate);
+                fs.SetLength(0);
+                fs.Position = 0;
+                await fs.WriteAsync(data, 0, data.Length);
                 DevConsole.WriteLine("Replay saved: " + filePath);
                 return true;
             }

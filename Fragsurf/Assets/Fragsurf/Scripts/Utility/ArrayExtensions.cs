@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 public static class ArrayExtensions
 {
@@ -61,6 +62,22 @@ public static class ArrayExtensions
              CompressionMode.Compress), COMPRESSION_BUFFER_SIZE))
             {
                 gzs.Write(inputData, 0, inputData.Length);
+            }
+            return compressIntoMs.ToArray();
+        }
+    }
+
+    public static async Task<byte[]> CompressAsync(this byte[] inputData)
+    {
+        if (inputData == null)
+            throw new ArgumentNullException("inputData must be non-null");
+
+        using (var compressIntoMs = new MemoryStream())
+        {
+            using (var gzs = new BufferedStream(new GZipStream(compressIntoMs,
+             CompressionMode.Compress), COMPRESSION_BUFFER_SIZE))
+            {
+                await gzs.WriteAsync(inputData, 0, inputData.Length);
             }
             return compressIntoMs.ToArray();
         }
