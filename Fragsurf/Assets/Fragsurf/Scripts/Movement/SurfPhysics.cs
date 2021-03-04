@@ -114,8 +114,9 @@ namespace Fragsurf.Movement
             }
         }
 
-        public static Vector3 AirAccelerate(Vector3 velocity, Vector3 wishdir, float wishspeed, float accel, float airCap, float deltaTime)
+        public static Vector3 AirAccelerate(Vector3 velocity, Vector3 wishdir, float wishspeed, float accel, float airCap, float deltaTime, out float gainCoefficient)
         {
+            gainCoefficient = 0f;
             var wishSpd = wishspeed;
 
             // Cap speed
@@ -143,6 +144,11 @@ namespace Fragsurf.Movement
             if (accelspeed > addspeed)
             {
                 accelspeed = addspeed;
+            }
+
+            if (currentspeed < airCap)
+            {
+                gainCoefficient = (wishSpd - Mathf.Abs(currentspeed)) / wishSpd;
             }
 
             return accelspeed * wishdir;

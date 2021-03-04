@@ -20,6 +20,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public int Stage = 1;
         [IgnoreMember]
         public bool RunIsLive = true;
+        [IgnoreMember]
+        public bool InStartZone = false;
 
         [IgnoreMember]
         private float _previousYaw;

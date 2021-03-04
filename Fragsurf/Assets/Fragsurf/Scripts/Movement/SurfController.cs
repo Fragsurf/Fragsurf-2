@@ -215,7 +215,7 @@ namespace Fragsurf.Movement
 
         private void WaterMove()
         {
-            GetWishValues(out Vector3 wishVel, out Vector3 wishDir, out float wishSpeed);
+            GetWishValues(_surfer, _config, out Vector3 wishVel, out Vector3 wishDir, out float wishSpeed);
 
             if(_surfer.MoveData.ForwardMove != 0)
             {
@@ -376,7 +376,7 @@ namespace Fragsurf.Movement
 
         private Vector3 GroundInputMovement()
         {
-            GetWishValues(out Vector3 wishVel, out Vector3 wishDir, out float wishSpeed);
+            GetWishValues(_surfer, _config, out Vector3 wishVel, out Vector3 wishDir, out float wishSpeed);
             wishSpeed *= _surfer.MoveData.WalkFactor;
 
             return SurfPhysics.Accelerate(_surfer.MoveData.Velocity, wishDir,
@@ -385,39 +385,39 @@ namespace Fragsurf.Movement
 
         private Vector3 AirInputMovement()
         {
-            GetWishValues(out Vector3 wishVel, out Vector3 wishDir, out float wishSpeed);
+            GetWishValues(_surfer, _config, out Vector3 wishVel, out Vector3 wishDir, out float wishSpeed);
             var aircap = _surfer.MoveData.Surfing
                 ? _config.AirCap * _config.AirCapSurfModifier
                 : _config.AirCap;
 
             var result = SurfPhysics.AirAccelerate(_surfer.MoveData.Velocity, wishDir,
-                wishSpeed, _config.AirAccel, aircap, _deltaTime);
+                wishSpeed, _config.AirAccel, aircap, _deltaTime, out _surfer.MoveData.GainCoefficient);
 
             return result;
         }
 
-        private void GetWishValues(out Vector3 wishVel, out Vector3 wishDir, out float wishSpeed)
+        public static void GetWishValues(ISurfControllable surfer, MovementConfig config, out Vector3 wishVel, out Vector3 wishDir, out float wishSpeed)
         {
-            var forward = _surfer.Forward;
-            var right = _surfer.Right;
+            var forward = surfer.Forward;
+            var right = surfer.Right;
 
             forward.y = 0;
             right.y = 0;
 
-            wishVel = forward * _surfer.MoveData.ForwardMove + right * _surfer.MoveData.SideMove;
+            wishVel = forward * surfer.MoveData.ForwardMove + right * surfer.MoveData.SideMove;
             wishVel.y = 0;
 
             wishSpeed = wishVel.magnitude;
             wishDir = wishVel.normalized;
 
-            if (wishSpeed > _config.MaxSpeed)
+            if (wishSpeed > config.MaxSpeed)
             {
-                wishVel *= _config.MaxSpeed / wishSpeed;
-                wishSpeed = _config.MaxSpeed;
+                wishVel *= config.MaxSpeed / wishSpeed;
+                wishSpeed = config.MaxSpeed;
             }
         }
 
-        private void AngleVectors(Vector3 angles, out Vector3 forward, out Vector3 right, out Vector3 up)
+        public static void AngleVectors(Vector3 angles, out Vector3 forward, out Vector3 right, out Vector3 up)
         {
             var quat = Quaternion.Euler(angles);
             forward = quat * Vector3.forward;

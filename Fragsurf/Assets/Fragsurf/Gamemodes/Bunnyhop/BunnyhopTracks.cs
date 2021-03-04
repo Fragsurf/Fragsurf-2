@@ -33,12 +33,32 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 track.OnStage.AddListener((x, y) => { if (x.Game == Game) Track_OnStage(track, x, y); });
                 track.OnCheckpoint.AddListener((x, y) => { if (x.Game == Game) Track_OnCheckpoint(track, x, y); });
                 track.OnStartStage.AddListener((x, y) => { if (x.Game == Game) Track_OnStartStage(track, x, y); });
+                track.OnEnterStart.AddListener((x) => { if (x.Game == Game) Track_OnEnterStart(track, x); });
             }
+        }
+
+        public bool IsInStartZone(Human hu)
+        {
+            return hu.Timeline is BunnyhopTimeline tl && tl.InStartZone;
+        }
+
+        private void Track_OnEnterStart(FSMTrack track, Human hu)
+        {
+            var bhopTimeline = new BunnyhopTimeline() { Track = track };
+            hu.Timeline = bhopTimeline;
+            bhopTimeline.InStartZone = true;
         }
 
         private void Track_OnStart(FSMTrack track, Human hu)
         {
-            var bhopTimeline = new BunnyhopTimeline() { Track = track };
+            var bhopTimeline = hu.Timeline as BunnyhopTimeline;
+            if(bhopTimeline == null)
+            {
+                Debug.LogError("Timeline is null, didn't enter start?");
+                return;
+            }
+
+            bhopTimeline.InStartZone = false;
 
             if(hu.HammerVelocity() > 290)
             {

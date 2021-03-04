@@ -85,6 +85,7 @@ namespace Fragsurf.Actors
         public UnityEvent<Human> OnFinish = new UnityEvent<Human>();
         public UnityEvent<Human> OnStart = new UnityEvent<Human>();
         public UnityEvent<Human, int> OnStartStage = new UnityEvent<Human, int>();
+        public UnityEvent<Human> OnEnterStart = new UnityEvent<Human>();
 
         private class RunData
         {
@@ -265,6 +266,8 @@ namespace Fragsurf.Actors
             {
                 runData.Reset();
             }
+
+            OnEnterStart?.Invoke(hu);
         }
 
         private void ExitStartZone(NetEntity ent)
