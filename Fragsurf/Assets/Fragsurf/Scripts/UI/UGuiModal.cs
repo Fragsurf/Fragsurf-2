@@ -39,8 +39,7 @@ namespace Fragsurf.UI
             UGuiManager.Instance.Add(this);
             DevConsole.RegisterObject(this);
 
-            _inputFields = GetComponentsInChildren<InputField>();
-            _tmpInputFields = GetComponentsInChildren<TMP_InputField>();
+            GetInputFields();
 
             if (!_modalContainer)
             {
@@ -48,6 +47,12 @@ namespace Fragsurf.UI
             }
 
             StartCoroutine(CloseOnStart());
+        }
+
+        protected void GetInputFields()
+        {
+            _inputFields = GetComponentsInChildren<InputField>(true);
+            _tmpInputFields = GetComponentsInChildren<TMP_InputField>(true);
         }
 
         private IEnumerator CloseOnStart()

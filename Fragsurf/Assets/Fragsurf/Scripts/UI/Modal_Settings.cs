@@ -129,6 +129,8 @@ namespace Fragsurf.UI
             var cat = _categoryTemplate.Append(categoryData) as Modal_SettingsCategoryEntry;
 
             _pages[pageName] = new Tuple<Modal_SettingsPageEntry, Modal_SettingsCategoryEntry>(page, cat);
+
+            GetInputFields();
         }
 
         private void SaveChanges()
