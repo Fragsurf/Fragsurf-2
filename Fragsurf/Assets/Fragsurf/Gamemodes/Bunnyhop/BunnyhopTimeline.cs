@@ -97,15 +97,17 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             frame.Velocity = (int)(vel.magnitude / SurfController.HammerScale);
 
             CalculateSync(hu, ref frame);
-            CheckJumpsAndStrafes(hu, ref frame);
+            CheckButtons(hu, ref frame);
 
             return frame;
         }
 
-        private void CheckJumpsAndStrafes(Human human, ref BunnyhopTimelineFrame frame)
+        private void CheckButtons(Human human, ref BunnyhopTimelineFrame frame)
         {
             if (human.MovementController is DefaultMovementController move)
             {
+                frame.Buttons = (int)move.MoveData.Buttons;
+
                 if (move.MoveData.JustJumped)
                 {
                     frame.Jumps++;

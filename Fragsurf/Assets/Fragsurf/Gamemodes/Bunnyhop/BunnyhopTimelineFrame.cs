@@ -24,6 +24,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public int Strafes;
         [Key(7)]
         public int FinalSync;
+        [Key(8)]
+        public int Buttons;
         [IgnoreMember]
         public int GoodSync;
         [IgnoreMember]
