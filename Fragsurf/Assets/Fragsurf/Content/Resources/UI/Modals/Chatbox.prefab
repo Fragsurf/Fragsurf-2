@@ -287,10 +287,10 @@ RectTransform:
   m_Father: {fileID: 23900375616878222}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 246, y: -12.9}
-  m_SizeDelta: {x: 492, y: 25.8}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 25.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4277109666986577852
 CanvasRenderer:
@@ -2075,8 +2075,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: <color=orange>Crayz | </color>Hello :D
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0ab73696e54d2c747ac03f849f3c11ee, type: 2}
-  m_sharedMaterial: {fileID: -8795465729657404508, guid: 0ab73696e54d2c747ac03f849f3c11ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 446882861ea7579409d69f3fd8684c96, type: 2}
+  m_sharedMaterial: {fileID: -3497587502667531646, guid: 446882861ea7579409d69f3fd8684c96, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
