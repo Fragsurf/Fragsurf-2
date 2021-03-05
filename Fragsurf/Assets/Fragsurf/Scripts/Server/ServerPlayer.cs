@@ -24,7 +24,7 @@ namespace Fragsurf.Server
         public bool Introduced { get; set; }
         public byte Team { get; set; }
         public bool Disconnected { get; set; }
-        public int Latency { get; set; }
+        public int LatencyMs { get; set; }
         public float TimeSinceLastMessage;
         public byte[] TicketData;
         public float TickTimeDiff;

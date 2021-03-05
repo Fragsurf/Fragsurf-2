@@ -167,7 +167,7 @@ namespace Fragsurf.Shared.Player
             if (player == null)
                 return;
 
-            player.Latency = latency;
+            player.LatencyMs = latency;
             OnPlayerLatencyUpdated?.Invoke(player);
         }
 

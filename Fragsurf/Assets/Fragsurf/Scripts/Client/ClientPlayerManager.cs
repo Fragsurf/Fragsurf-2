@@ -45,7 +45,7 @@ namespace Fragsurf.Client
                     Game.PlayerManager.SetPlayerTeam(peer, playerEvent.TeamNumber);
                     break;
                 case PlayerEventType.LatencyUpdated:
-                    peer.Latency = playerEvent.Latency;
+                    peer.LatencyMs = playerEvent.Latency;
                     break;
                 case PlayerEventType.Spectate:
                     if (peer.ClientIndex != Game.ClientIndex)

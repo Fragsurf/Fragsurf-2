@@ -16,7 +16,7 @@ namespace Fragsurf.Client
         public bool Introduced { get; set; }
         public NetEntity Entity { get; set; }
         public byte Team { get; set; }
-        public int Latency { get; set; }
+        public int LatencyMs { get; set; }
         public bool Disconnected { get; set; }
         public bool IsFake => SteamId < 100000;
     }

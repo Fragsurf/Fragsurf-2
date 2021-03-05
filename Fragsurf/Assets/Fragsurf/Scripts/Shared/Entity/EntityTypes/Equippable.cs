@@ -142,8 +142,8 @@ namespace Fragsurf.Shared.Entity
             _itemName = data.Name;
             var obj = Game.NewGameObject();
             var ego = obj.AddComponent(data.ComponentType) as EquippableGameObject;
-            ego.Init(this, data);
             EntityGameObject = ego;
+            ego.Init(this, data);
             SetIsEquipped(_equipped);
         }
 

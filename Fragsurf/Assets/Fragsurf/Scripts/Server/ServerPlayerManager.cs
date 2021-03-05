@@ -96,7 +96,7 @@ namespace Fragsurf.Server
             ev.Sc = SendCategory.Unreliable;
             ev.EventType = PlayerEventType.LatencyUpdated;
             ev.ClientIndex = player.ClientIndex;
-            ev.Latency = player.Latency;
+            ev.Latency = player.LatencyMs;
             Game.GetFSComponent<SocketManager>().BroadcastPacket(ev);
         }
 
@@ -130,7 +130,7 @@ namespace Fragsurf.Server
                     ev.ClientIndex = playerToSend.ClientIndex;
                     ev.DisplayName = playerToSend.DisplayName;
                     ev.TeamNumber = playerToSend.Team;
-                    ev.Latency = playerToSend.Latency;
+                    ev.Latency = playerToSend.LatencyMs;
                     ev.SteamID = playerToSend.SteamId;
 
                     Game.GetFSComponent<SocketManager>().SendPacketBrute(player.ClientIndex, ev);
@@ -157,7 +157,7 @@ namespace Fragsurf.Server
             ev.ClientIndex = player.ClientIndex;
             ev.DisplayName = player.DisplayName;
             ev.TeamNumber = player.Team;
-            ev.Latency = player.Latency;
+            ev.Latency = player.LatencyMs;
             ev.SteamID = player.SteamId;
             Game.GetFSComponent<SocketManager>().BroadcastPacket(ev);
         }

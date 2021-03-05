@@ -10,7 +10,7 @@ namespace Fragsurf.Shared.Player
         string DisplayName { get; set; }
         bool Introduced { get; set; }
         byte Team { get; set; }
-        int Latency { get; set; }
+        int LatencyMs { get; set; }
         bool IsFake { get; }
         bool Disconnected { get; set; }
         NetEntity Entity { get; set; }

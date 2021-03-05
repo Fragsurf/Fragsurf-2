@@ -331,7 +331,7 @@ namespace Fragsurf.Shared.Entity
                 return;
             }
 
-            var latency = Equippable.Game.PlayerManager.FindPlayer(Equippable.Human).Latency;
+            var latency = Equippable.Game.PlayerManager.FindPlayer(Equippable.Human).LatencyMs / 1000f;
             Equippable.Human.DisableLagCompensation = true;
             Equippable.Game.LagCompensator.Rewind(latency);
 
