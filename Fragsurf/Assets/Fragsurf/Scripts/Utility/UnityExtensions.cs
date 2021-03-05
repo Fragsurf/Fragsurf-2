@@ -1,10 +1,21 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Fragsurf.Utility
 {
     public static class UnityExtensions
     {
+
+        private static Dictionary<Color, string> _hashRGBACache = new Dictionary<Color, string>();
+        public static string HashRGBA(this Color c)
+        {
+            if (!_hashRGBACache.ContainsKey(c))
+            {
+                _hashRGBACache[c] = "#" + ColorUtility.ToHtmlStringRGBA(c);
+            }
+            return _hashRGBACache[c];
+        }
 
         // TRANSFORM/GAMEOBJECT
 

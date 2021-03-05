@@ -2,6 +2,7 @@ using Fragsurf.Client;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.UI;
+using Fragsurf.Utility;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -48,12 +49,12 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             var frame = bhopTimeline.CurrentFrame;
             var sb = new StringBuilder(_format);
             var tracks = cl.Get<BunnyhopTracks>();
-            sb.Replace("{time}", $"<color={tracks.TimeColor.HexWithHash()}>{Bunnyhop.FormatTime(frame.Time)}</color>")
-                .Replace("{speed}", $"<color={tracks.SpeedColor.HexWithHash()}>{frame.Velocity}</color>")
-                .Replace("{jumps}", $"<color={tracks.MiscColor.HexWithHash()}>{frame.Jumps}</color>")
-                .Replace("{strafes}", $"<color={tracks.MiscColor.HexWithHash()}>{frame.Strafes}</color>")
-                .Replace("{sync}", $"<color={tracks.MiscColor.HexWithHash()}>{frame.FinalSync}</color>")
-                .Replace("{tick}", $"<color={tracks.MiscColor.HexWithHash()}>{frame.Tick}</color>");
+            sb.Replace("{time}", $"<color={tracks.TimeColor.HashRGBA()}>{Bunnyhop.FormatTime(frame.Time)}</color>")
+                .Replace("{speed}", $"<color={tracks.SpeedColor.HashRGBA()}>{frame.Velocity}</color>")
+                .Replace("{jumps}", $"<color={tracks.MiscColor.HashRGBA()}>{frame.Jumps}</color>")
+                .Replace("{strafes}", $"<color={tracks.MiscColor.HashRGBA()}>{frame.Strafes}</color>")
+                .Replace("{sync}", $"<color={tracks.MiscColor.HashRGBA()}>{frame.FinalSync}</color>")
+                .Replace("{tick}", $"<color={tracks.MiscColor.HashRGBA()}>{frame.Tick}</color>");
 
             SetCenterHudText(sb.ToString());
         }
@@ -61,7 +62,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private void SetCenterHudText(string text)
         {
             var tracks = FSGameLoop.GetGameInstance(false).Get<BunnyhopTracks>();
-            _centerHud.text = $"<color={tracks.MessageColor.HexWithHash()}>{text}</color>";
+            _centerHud.text = $"<color={tracks.MessageColor.HashRGBA()}>{text}</color>";
         }
 
     }

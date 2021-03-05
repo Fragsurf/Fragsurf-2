@@ -6,22 +6,11 @@ using Fragsurf.Movement;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.UI;
+using Fragsurf.Utility;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
 {
-    public static class ColorExtensions
-    {
-        private static Dictionary<Color, string> _hexWithHashCache = new Dictionary<Color, string>();
-        public static string HexWithHash(this Color c)
-        {
-            if (!_hexWithHashCache.ContainsKey(c))
-            {
-                _hexWithHashCache[c] = "#" + ColorUtility.ToHtmlStringRGBA(c);
-            }
-            return _hexWithHashCache[c];
-        }
-    }
     [Inject(InjectRealm.Shared, typeof(Bunnyhop))]
     public class BunnyhopTracks : FSSharedScript
     {
@@ -100,7 +89,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 {
                     name = "Main";
                 }
-                var msg = $"<color={MessageColor.HexWithHash()}><color={NameColor.HexWithHash()}>{name}</color> started, <color={SpeedColor.HexWithHash()}>{frame.Velocity}u/s</color></color>";
+                var msg = $"<color={MessageColor.HashRGBA()}><color={NameColor.HashRGBA()}>{name}</color> started, <color={SpeedColor.HashRGBA()}>{frame.Velocity}u/s</color></color>";
                 Game.TextChat.PrintChat(TimerName, msg);
             }
         }
@@ -121,7 +110,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
             {
                 var frame = bhopTimeline.LastFrame;
-                var msg = $"<color={MessageColor.HexWithHash()}><color={MiscColor.HexWithHash()}>Stage {stage}</color> started, <color={SpeedColor.HexWithHash()}>{frame.Velocity} u/s</color></color>";
+                var msg = $"<color={MessageColor.HashRGBA()}><color={MiscColor.HashRGBA()}>Stage {stage}</color> started, <color={SpeedColor.HashRGBA()}>{frame.Velocity} u/s</color></color>";
                 Game.TextChat.PrintChat(TimerName, msg);
             }
         }
@@ -197,19 +186,19 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             if (result.Improved)
             {
-                var msg = $"<color={MessageColor.HexWithHash()}> Finished <color={NameColor.HexWithHash()}>{trackName}</color> in <color={TimeColor.HexWithHash()}>{timeStr}s</color>, <color={MiscColor.HexWithHash()}{frame.Jumps} jumps</color> @ rank <color={MiscColor.HexWithHash()}>#{result.NewRank}</color>!</color>";
+                var msg = $"<color={MessageColor.HashRGBA()}> Finished <color={NameColor.HashRGBA()}>{trackName}</color> in <color={TimeColor.HashRGBA()}>{timeStr}s</color>, <color={MiscColor.HashRGBA()}{frame.Jumps} jumps</color> @ rank <color={MiscColor.HashRGBA()}>#{result.NewRank}</color>!</color>";
                 Game.TextChat.MessageAll(msg);
 
                 if (result.NewRank < result.OldRank)
                 {
                     var improveStr = Bunnyhop.FormatTime(result.Improvement);
-                    msg = $"<color={MessageColor.HexWithHash()}>Improvement of <color={TimeColor.HexWithHash()}>{improveStr}s</color></color>";
+                    msg = $"<color={MessageColor.HashRGBA()}>Improvement of <color={TimeColor.HashRGBA()}>{improveStr}s</color></color>";
                     Game.TextChat.MessageAll(msg);
                 }
             }
             else
             {
-                Game.TextChat.MessageAll($"<color={MessageColor.HexWithHash()}>Finished <color={NameColor.HexWithHash()}>{trackName}</color> in <color={TimeColor.HexWithHash()}>{timeStr}s</color></color>");
+                Game.TextChat.MessageAll($"<color={MessageColor.HashRGBA()}>Finished <color={NameColor.HashRGBA()}>{trackName}</color> in <color={TimeColor.HashRGBA()}>{timeStr}s</color></color>");
             }
 
             if (result.Improved && result.NewRank == 1)

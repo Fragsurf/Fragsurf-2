@@ -3,6 +3,7 @@ using Fragsurf.Movement;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
+using Fragsurf.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -188,7 +189,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             var tracks = Game.Get<BunnyhopTracks>();
 
             _sb.Clear();
-            _sb.AppendFormat("Jump: <color={0}>{1}</color>", tracks.MiscColor.HexWithHash(), data.Jump);
+            _sb.AppendFormat("Jump: <color={0}>{1}</color>", tracks.MiscColor.HashRGBA(), data.Jump);
 
             if((Mode == SSJMode.SixthJump && data.Jump == 6) 
                 || (Mode == SSJMode.EverySixthJump && data.Jump % 6 == 0)
@@ -201,7 +202,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 if (CurrentSpeed)
                 {
                     var curSpd = (int)(velocity / .0254f);
-                    _sb.AppendFormat(" | Speed: <color={0}>{1}u/s</color>", tracks.SpeedColor.HexWithHash(), curSpd);
+                    _sb.AppendFormat(" | Speed: <color={0}>{1}u/s</color>", tracks.SpeedColor.HashRGBA(), curSpd);
                 }
 
                 if(Mode != SSJMode.EveryJump
@@ -210,28 +211,28 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                     if (SpeedDiff)
                     {
                         var spdDiff = (int)((velocity - data.InitialSpeed) / .0254f);
-                        _sb.AppendFormat(" | Speed ^: <color={0}>{1}u/s</color>", tracks.SpeedColor.HexWithHash(), spdDiff);
+                        _sb.AppendFormat(" | Speed ^: <color={0}>{1}u/s</color>", tracks.SpeedColor.HashRGBA(), spdDiff);
                     }
                     if (HeightDiff)
                     {
                         var heightDiff = (int)((hu.Origin.y - data.InitialHeight) / .0254f);
-                        _sb.AppendFormat(" | Height ^: <color={0}>{1}</color>", tracks.MiscColor.HexWithHash(), heightDiff);
+                        _sb.AppendFormat(" | Height ^: <color={0}>{1}</color>", tracks.MiscColor.HashRGBA(), heightDiff);
                     }
                     if (GainStats)
                     {
-                        _sb.AppendFormat(" | Gain: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), coeffsum.ToString("0"));
+                        _sb.AppendFormat(" | Gain: <color={0}>{1}%</color>", tracks.MiscColor.HashRGBA(), coeffsum.ToString("0"));
                     }
                     if (StrafeSync)
                     {
                         var ss = 100f * ((float)data.SyncedTick / data.StrafeTick);
-                        _sb.AppendFormat(" | Sync: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), ss.ToString("0"));
+                        _sb.AppendFormat(" | Sync: <color={0}>{1}%</color>", tracks.MiscColor.HashRGBA(), ss.ToString("0"));
                     }
                     if (Efficiency)
                     {
-                        _sb.AppendFormat(" | Efficiency: <color={0}>{1}%</color>", tracks.MiscColor.HexWithHash(), efficiency.ToString("0"));
+                        _sb.AppendFormat(" | Efficiency: <color={0}>{1}%</color>", tracks.MiscColor.HashRGBA(), efficiency.ToString("0"));
                     }
 
-                    Game.Get<TextChat>().PrintChat("[SSJ]", $"<color={tracks.MessageColor.HexWithHash()}>{_sb}</color>");
+                    Game.Get<TextChat>().PrintChat("[SSJ]", $"<color={tracks.MessageColor.HashRGBA()}>{_sb}</color>");
                 }
             }
         }
