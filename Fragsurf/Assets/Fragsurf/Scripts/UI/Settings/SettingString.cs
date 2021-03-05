@@ -12,7 +12,7 @@ namespace Fragsurf.UI
         protected override void _Initialize()
         {
             _input.onEndEdit.AddListener(OnEndEdit);
-            _input.contentType = TMP_InputField.ContentType.Alphanumeric;
+            _input.contentType = TMP_InputField.ContentType.Standard;
         }
 
         private void OnEndEdit(string value)
