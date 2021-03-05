@@ -90,7 +90,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 if(move.MoveType != MoveType.Noclip 
                     && move.MoveType != MoveType.Ladder 
                     && move.MoveType != MoveType.None
-                    && !move.MoveData.InWater)
+                    && move.MoveData.WaterDepth < Game.GameMovement.Config.WaterDepthToSwim)
                 {
                     GetStats(bhop, data, hu, move, touchingWall);
                 }

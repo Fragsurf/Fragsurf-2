@@ -197,7 +197,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             if (result.Improved)
             {
-                var msg = $"<color={MessageColor.HexWithHash()}> Finished <color={NameColor.HexWithHash()}>{trackName}</color> in <color={TimeColor.HexWithHash()}>{timeStr}s</color>, {MiscColor.HexWithHash()}{frame.Jumps} jumps</color> @ rank <color={MiscColor.HexWithHash()}>#{result.NewRank}</color>!</color>";
+                var msg = $"<color={MessageColor.HexWithHash()}> Finished <color={NameColor.HexWithHash()}>{trackName}</color> in <color={TimeColor.HexWithHash()}>{timeStr}s</color>, <color={MiscColor.HexWithHash()}{frame.Jumps} jumps</color> @ rank <color={MiscColor.HexWithHash()}>#{result.NewRank}</color>!</color>";
                 Game.TextChat.MessageAll(msg);
 
                 if (result.NewRank < result.OldRank)
