@@ -77,10 +77,52 @@ namespace Fragsurf.Shared.Entity
         {
             base._Tick();
 
-            if(Human == null)
+            if(Human == null && _humanId > 0)
+            {
+                TryFindHuman(_humanId);
+            }
+
+            if(Human == null && EquippableGameObject)
             {
                 Origin = EquippableGameObject.Position;
                 Angles = EquippableGameObject.Rotation;
+            }
+        }
+
+        private void TryFindHuman(int humanId)
+        {
+            // EquippableGameObject needs to exist
+            if (!EquippableGameObject)
+            {
+                return;
+            }
+
+            Human = Game.EntityManager.FindEntity<Human>(humanId);
+            if(Human == null)
+            {
+                return;
+            }
+
+            Human.Equippables.Add(this);
+            if (Human.Equippables.Equipped == null)
+            {
+                Equipped = true;
+            }
+
+            var slot = EquippableGameObject.Data.Slot;
+            for (int i = Human.Equippables.Items.Count - 1; i >= 0; i--)
+            {
+                var item = Human.Equippables.Items[i];
+                if (item != this
+                    && item.EquippableGameObject
+                    && item.EquippableGameObject.Data.Slot == slot)
+                {
+                    if (item.Equipped)
+                    {
+                        Equipped = true;
+                    }
+                    item.Drop();
+                }
             }
         }
 
@@ -98,14 +140,14 @@ namespace Fragsurf.Shared.Entity
                 return;
             }
             _itemName = data.Name;
-            //var dataInstance = GameObject.Instantiate(data);
             var obj = Game.NewGameObject();
-            EntityGameObject = obj.AddComponent(data.ComponentType) as EquippableGameObject;
-            EquippableGameObject.Init(this, data);
+            var ego = obj.AddComponent(data.ComponentType) as EquippableGameObject;
+            ego.Init(this, data);
+            EntityGameObject = ego;
             SetIsEquipped(_equipped);
         }
 
-        private async void SetHumanId(int humanId)
+        private void SetHumanId(int humanId)
         {
             _humanId = humanId;
 
@@ -119,64 +161,7 @@ namespace Fragsurf.Shared.Entity
                 Human = null;
             }
 
-            if(humanId > 0)
-            {
-                int retryCount = 10;
-                while(Human == null && retryCount > 0)
-                {
-                    Human = Game.EntityManager.FindEntity<Human>(_humanId);
-                    if(Human != null)
-                    {
-                        Human.Equippables.Add(this);
-                        if (Human.Equippables.Equipped == null)
-                        {
-                            Equipped = true;
-                        }
-                        break;
-                    }
-                    retryCount--;
-                    await Task.Delay(50);
-                    if (!IsValid())
-                    {
-                        return;
-                    }
-                }
-
-                retryCount = 10;
-                while (EquippableGameObject == null && retryCount > 0)
-                {
-                    retryCount--;
-                    await Task.Delay(50);
-                    if (!IsValid())
-                    {
-                        return;
-                    }
-                }
-
-                if(EquippableGameObject == null)
-                {
-                    throw new System.Exception("EquippableGameObject is still null?");
-                }
-
-                var slot = EquippableGameObject.Data.Slot;
-                for(int i = Human.Equippables.Items.Count - 1; i >= 0; i--)
-                {
-                    var item = Human.Equippables.Items[i];
-                    if(item != this
-                        && item.EquippableGameObject 
-                        && item.EquippableGameObject.Data.Slot == slot)
-                    {
-                        if (item.Equipped)
-                        {
-                            Equipped = true;
-                        }
-                        item.Drop();
-                    }
-                }
-
-                Origin = EquippableGameObject.Position;
-                Angles = EquippableGameObject.Rotation;
-            }
+            TryFindHuman(humanId);
         }
 
         private void SetIsEquipped(bool equipped)
@@ -206,15 +191,12 @@ namespace Fragsurf.Shared.Entity
 
         public void RunCommand(UserCmd.CmdFields userCmd)
         {
-            if (!EquippableGameObject)
+            if (!EquippableGameObject || !_equipped)
             {
                 return;
             }
 
-            if (_equipped)
-            {
-                EquippableGameObject.ProcessRunCommand(userCmd);
-            }
+            EquippableGameObject.ProcessRunCommand(userCmd);
         }
 
         public void Drop()

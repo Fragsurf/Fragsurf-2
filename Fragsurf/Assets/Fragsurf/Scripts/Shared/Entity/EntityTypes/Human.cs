@@ -98,8 +98,13 @@ namespace Fragsurf.Shared.Entity
         {
             MovementController?.ProcessInput(cmd);
             MovementController?.RunCommand(cmd.Fields, prediction);
-            EntityGameObject.SendMessage("OnHumanRunCommand");
+            Equippables?.RunCommand(cmd.Fields);
 
+            if (EntityGameObject)
+            {
+                EntityGameObject.SendMessage("OnHumanRunCommand");
+            }
+            
             if(Timeline != null && Timeline.Mode == TimelineMode.Record && (prediction || Game.IsHost))
             {
                 Timeline?.RecordTick();
@@ -113,6 +118,17 @@ namespace Fragsurf.Shared.Entity
             Angles = angles;
             Velocity = Vector3.zero;
             BaseVelocity = Vector3.zero;
+        }
+
+        public void Give(string itemName)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+            var equippable = Game.EntityManager.SpawnEquippable();
+            equippable.ItemName = itemName;
+            equippable.HumanId = EntityId;
         }
 
         private void OnKilled()

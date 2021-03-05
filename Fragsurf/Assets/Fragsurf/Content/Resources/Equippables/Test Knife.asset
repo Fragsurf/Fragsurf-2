@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6640e5617b01d4e870696280d28a54, type: 3}
+  m_Name: Test Knife
+  m_EditorClassIdentifier: 
+  Name: Test Knife
+  Slot: 1
+  WorldModelPrefab: {fileID: 0}
+  ViewModelPrefab: {fileID: 0}
+  PlayerAnimationLayer: 3
+  EquipSound: {fileID: 0}
+  UnequipSound: {fileID: 0}
+  TimeToEquip: 0.5
+  TimeToUnequip: 0.5
+  SwingAnimations:
+  - Swing
+  CanRepeat: 1
+  TimeToImpact: 0.25
+  TimeToSwing: 0.45
+  BaseDamage: 50
+  HitRange: 2
+  HitRadius: 0.1
+  SwingSound: {fileID: 0}
+  HitFleshSound: {fileID: 0}
+  HitSolidSound: {fileID: 0}

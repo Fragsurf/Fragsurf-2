@@ -28,12 +28,25 @@ namespace Fragsurf.Shared.Entity
             _originalRotation = _animator.transform.localEulerAngles;
         }
 
+        private void OnEnable()
+        {
+            if (GameCamera.Instance)
+            {
+                GameCamera.Instance.Stack(Camera);
+            }
+        }
+
         private void OnDisable()
         {
             _swayPosition = Vector3.zero;
             _kick = Vector3.zero;
             _animator.transform.localPosition = _originalPosition;
             _animator.transform.localEulerAngles = _originalRotation;
+
+            if (GameCamera.Instance)
+            {
+                GameCamera.Instance.Unstack(Camera);
+            }
         }
 
         private void Update()

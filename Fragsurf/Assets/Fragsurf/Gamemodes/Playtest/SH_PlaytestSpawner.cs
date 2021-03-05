@@ -3,6 +3,7 @@ using Fragsurf.Maps;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.Playtest
@@ -53,6 +54,8 @@ namespace Fragsurf.Gamemodes.Playtest
             ent.OwnerId = player.ClientIndex;
             player.Entity = ent;
             Game.EntityManager.AddEntity(ent);
+
+            ent.Give("Test Knife");
         }
 
     }

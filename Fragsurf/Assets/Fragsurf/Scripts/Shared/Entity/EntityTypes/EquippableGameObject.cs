@@ -40,14 +40,26 @@ namespace Fragsurf.Shared.Entity
 
         public override Vector3 Position 
         {
-            get => WorldModel.transform.position; 
-            set => WorldModel.transform.position = value; 
+            get => WorldModel != null ? WorldModel.transform.position : Vector3.zero;
+            set 
+            {
+                if (WorldModel)
+                {
+                    WorldModel.transform.position = value;
+                }
+            } 
         }
 
         public override Vector3 Rotation
         {
-            get => WorldModel.transform.eulerAngles;
-            set => WorldModel.transform.eulerAngles = value;
+            get => WorldModel != null ? WorldModel.transform.eulerAngles : Vector3.zero;
+            set
+            {
+                if (WorldModel)
+                {
+                    WorldModel.transform.eulerAngles = value;
+                }
+            }
         }
 
         public void Init(Equippable entity, BaseEquippableData data)
@@ -55,7 +67,14 @@ namespace Fragsurf.Shared.Entity
             Entity = entity;
             Data = data;
 
-            WorldModel = GameObject.Instantiate<GameObject>(Data.WorldModelPrefab);
+            if (Data.WorldModelPrefab)
+            {
+                WorldModel = GameObject.Instantiate<GameObject>(Data.WorldModelPrefab);
+            }
+            else
+            {
+                WorldModel = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Equippables/MissingWorldModel"));
+            }
             WorldModel.transform.SetParent(transform, true);
             WorldModel.gameObject.SetActive(false);
             WorldModel.transform.SetLayerRecursively(Entity.Game.ScopeLayer);
@@ -73,7 +92,14 @@ namespace Fragsurf.Shared.Entity
             //    rb.isKinematic = true;
             //}
 
-            ViewModel = GameObject.Instantiate<EquippableViewModel>(Data.ViewModelPrefab);
+            if (Data.ViewModelPrefab)
+            {
+                ViewModel = GameObject.Instantiate<EquippableViewModel>(Data.ViewModelPrefab);
+            }
+            else
+            {
+                ViewModel = GameObject.Instantiate<EquippableViewModel>(Resources.Load<EquippableViewModel>("Equippables/MissingViewModel"));
+            }
             ViewModel.transform.SetParent(transform, true);
             ViewModel.gameObject.SetActive(false);
             ViewModel.transform.SetLayerRecursively(Layers.Viewmodel);
@@ -84,7 +110,7 @@ namespace Fragsurf.Shared.Entity
             viewModelCamera.clearFlags = CameraClearFlags.Depth;
             viewModelCamera.depth = 1;
             viewModelCamera.cullingMask = 1 << Layers.Viewmodel;
-            viewModelCamera.tag = "ViewModelCamera";
+            //viewModelCamera.tag = "ViewModelCamera";
 
             CleanRealm();
 

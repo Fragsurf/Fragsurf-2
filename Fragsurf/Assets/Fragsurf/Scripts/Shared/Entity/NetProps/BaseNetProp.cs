@@ -54,6 +54,10 @@ namespace Fragsurf.Shared.Entity
                 var genericType = typeof(UnmanagedNetProp<>).MakeGenericType(propAttr.PropertyType);
                 return Activator.CreateInstance(genericType, instance, propAttr) as BaseNetProp;
             }
+            else if(propAttr.PropertyType == typeof(string))
+            {
+                return new StringNetProp(instance, propAttr);
+            }
             return null;
         }
 
