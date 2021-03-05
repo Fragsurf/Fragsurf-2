@@ -29,7 +29,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             targetImage.fillAmount = fill;
             targetImage.color = fill > 1f 
                 ? Color.red 
-                : (fill > .5f ? Color.green : Color.yellow);
+                : (fill > .65f ? Color.green : Color.yellow);
 
             otherImage.fillAmount = fill <= 0 ? Mathf.Abs(fill) : 0f;
             otherImage.color = Color.red;
