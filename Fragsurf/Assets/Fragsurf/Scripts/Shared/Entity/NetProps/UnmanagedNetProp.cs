@@ -11,6 +11,7 @@ namespace Fragsurf.Shared.Entity
         private readonly Func<T> _get;
         private readonly Action<T> _set;
         private bool _initialized;
+        private static byte[] _buffer = new byte[1024];
 
         public UnmanagedNetProp(IHasNetProps instance, NetPropertyAttributeData data)
             : base(instance, data)
@@ -33,11 +34,16 @@ namespace Fragsurf.Shared.Entity
         public override unsafe void Read(NetBuffer buffer)
         {
             var sz = sizeof(T);
-            var barr = new byte[sz];
-            Buffer.BlockCopy(buffer.Data, buffer.PositionInBytes, barr, 0, sz);
+
+            if(_buffer.Length < sz)
+            {
+                _buffer = new byte[sz];
+            }
+
+            Buffer.BlockCopy(buffer.Data, buffer.PositionInBytes, _buffer, 0, sz);
             buffer.Position += sz * 8;
 
-            T readValue = Serializer.Deserialize<T>(barr);
+            T readValue = Serializer.Deserialize<T>(_buffer);
             if (!readValue.Equals(_lastKnownValue) && CanSet)
             {
                 _set?.Invoke(readValue);
