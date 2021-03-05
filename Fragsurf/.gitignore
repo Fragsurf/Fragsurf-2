@@ -72,5 +72,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 Default Material Pack
-Internal
-Internal.meta
+/[Aa]ssets/Internal/*
+/[Aa]ssets/Internal.meta
