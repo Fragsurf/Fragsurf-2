@@ -156,16 +156,34 @@ namespace Fragsurf.BSP
             {
 				if(!Enum.TryParse(kvp.Value, true, out SurfaceType surfaceType))
                 {
-#if UNITY_EDITOR
-					Debug.Log("Missing surface type: " + kvp.Value);
-#endif
-					surfaceType = SurfaceType.Concrete;
+					surfaceType = UnsupportedSurfaceType(kvp.Value);
                 }
 				kvp.Key.AddComponent<SurfaceTypeIdentifier>().SurfaceType = surfaceType;
             }
 
 			return _rootObject;
 		}
+
+		public SurfaceType UnsupportedSurfaceType(string surf)
+        {
+            switch (surf.ToLower())
+            {
+				case "paper":
+				case "plaster":
+				case "cardboard":
+					return SurfaceType.Carpet;
+				case "rock":
+				case "boulder":
+				case "stone":
+				case "brick":
+					return SurfaceType.Concrete;
+				case "wood_plank":
+					return SurfaceType.Wood;
+				case "metalpanel":
+					return SurfaceType.Metal;
+			}
+			return SurfaceType.Concrete;
+        }
 
 		private GameObject CreateGameObject(string name = null, GameObject parent = null)
 		{
