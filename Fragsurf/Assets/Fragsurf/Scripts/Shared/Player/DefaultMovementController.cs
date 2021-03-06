@@ -227,38 +227,33 @@ namespace Fragsurf.Shared.Player
             }
 
             var hits = Physics.OverlapBoxNonAlloc(MoveData.Origin + new Vector3(0, .25f, 0), new Vector3(Collider.size.x / 2.1f, 0.28f, Collider.size.z / 2.1f), _footstepTest, Quaternion.identity, 1 << Layers.Fidelity, QueryTriggerInteraction.Ignore);
-
-            if(hits == 0)
-            {
-                return;
-            }
-
             SurfaceTypeIdentifier bestHit = null;
-            // prioritize water because we don't want to play concrete sound when walking in thin pool
-            // todo: maybe blend footstep sounds i.e. 50% water 50% concrete
-            for(int i = 0; i < hits; i++)
+
+            if (hits != 0)
             {
-                if(!_footstepTest[i].TryGetComponent(out SurfaceTypeIdentifier surfId))
+                // prioritize water because we don't want to play concrete sound when walking in thin pool
+                // todo: maybe blend footstep sounds i.e. 50% water 50% concrete
+                for (int i = 0; i < hits; i++)
                 {
-                    continue;
-                }
-                if(bestHit == null || surfId.SurfaceType == SurfaceType.Water)
-                {
-                    bestHit = surfId;
-                    if(surfId.SurfaceType == SurfaceType.Water)
+                    if (!_footstepTest[i].TryGetComponent(out SurfaceTypeIdentifier surfId))
                     {
-                        break;
+                        continue;
+                    }
+                    if (bestHit == null || surfId.SurfaceType == SurfaceType.Water)
+                    {
+                        bestHit = surfId;
+                        if (surfId.SurfaceType == SurfaceType.Water)
+                        {
+                            break;
+                        }
                     }
                 }
             }
 
-            if (!bestHit)
-            {
-                return;
-            }
+            var surfaceType = bestHit ? bestHit.SurfaceType : SurfaceType.Concrete;
 
             var cfg = GameData.Instance.Surfaces != null
-                ? GameData.Instance.Surfaces.GetSurfaceTypeConfig(bestHit.SurfaceType)
+                ? GameData.Instance.Surfaces.GetSurfaceTypeConfig(surfaceType)
                 : null;
 
             if (cfg == null)

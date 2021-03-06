@@ -1,5 +1,6 @@
 using Fragsurf.BSP;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace Fragsurf.Maps
 {
     public class BSPMap : BaseMap
     {
+
+        public ulong AppId;
 
         private BspToUnity _bspToUnity;
 
@@ -30,6 +33,7 @@ namespace Fragsurf.Maps
             var loadBsp = GameObject.FindObjectOfType<LoadBSP>();
             loadBsp.MapDirectory = string.Empty;
             loadBsp.Options.FilePath = FilePath;
+            loadBsp.Options.GamesToMount = AppId != 0 ? new List<string>() { AppId.ToString() }.ToArray() : new string[0];
 
             try
             {

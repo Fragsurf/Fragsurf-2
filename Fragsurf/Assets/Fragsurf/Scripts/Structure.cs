@@ -22,6 +22,7 @@ namespace Fragsurf
         public static bool DedicatedServer => LaunchParams.Contains("server") || SceneManager.GetActiveScene().name == "GameServer";
         public static string RootPath => Directory.GetParent(Application.dataPath).ToString();
         public static string RuntimePath => Application.streamingAssetsPath;
+        public static string MapsFolder => Path.Combine(RuntimePath, "Maps");
         public static string TempPath => Path.Combine(Application.streamingAssetsPath, "temp");
         public static string ConfigsPath => Path.Combine(RuntimePath, "Configs");
         public static string GamemodeDataPath => Path.Combine(RuntimePath, "Gamemodes");

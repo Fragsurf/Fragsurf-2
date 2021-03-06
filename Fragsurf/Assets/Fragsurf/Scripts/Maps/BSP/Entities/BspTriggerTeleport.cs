@@ -10,16 +10,14 @@ namespace Fragsurf.BSP
     {
         protected override void OnStartTouch(NetEntity entity)
         {
-            if(!(entity is Human hu)
-                || !(hu.MovementController is ISurfControllable character))
+            if(!(entity is Human hu))
             {
                 return;
             }
             var target = FindBspEntity(Entity.Target);
             if (target != null)
             {
-                character.MoveData.Origin = target.transform.position;
-                //entity.Origin = target.transform.position;
+                entity.Origin = target.transform.position;
             }
         }
     }

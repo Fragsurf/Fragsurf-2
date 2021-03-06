@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using SourceUtils;
+using SurfaceConfigurator;
 
 namespace Fragsurf.BSP
 {
@@ -150,6 +151,13 @@ namespace Fragsurf.BSP
 					Debug.LogError(e);
                 }
 			}
+
+			foreach(var kvp in SurfaceMaterials)
+            {
+				var surfaceType = SurfaceType.Concrete;
+				Enum.TryParse(kvp.Value, true, out surfaceType);
+				kvp.Key.AddComponent<SurfaceTypeIdentifier>().SurfaceType = surfaceType;
+            }
 
 			return _rootObject;
 		}
