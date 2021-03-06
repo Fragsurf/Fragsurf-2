@@ -1,8 +1,10 @@
 using Fragsurf.Client;
+using Fragsurf.Movement;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
 using Fragsurf.UI;
+using Fragsurf.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +16,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     {
 
         private int _tickInterval = 10;
+        private int _realtimeSyncCount = 100;
 
         [ConVar("strafetrainer.enabled", "", ConVarFlags.UserSetting | ConVarFlags.Gamemode)]
         public bool Enabled { get; set; } = true;
@@ -22,6 +25,14 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             get { return _tickInterval; }
             set { _tickInterval = Mathf.Clamp(value, 1, 20); }
+        }
+        [ConVar("strafetrainer.rtsyncbar", "", ConVarFlags.UserSetting | ConVarFlags.Gamemode)]
+        public bool RealtimeSyncBar { get; set; }
+        [ConVar("strafetrainer.rtsynccount", "", ConVarFlags.UserSetting | ConVarFlags.Gamemode)]
+        public int RealtimeSyncCount
+        {
+            get => _realtimeSyncCount;
+            set => _realtimeSyncCount = Mathf.Clamp(value, 1, 100);
         }
 
         private float _lastYaw;
@@ -43,8 +54,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             if (!Enabled
                 || !(player.Entity is Human hu)
                 || !(hu.MovementController is DefaultMovementController move)
-                || move.GroundObject
-                || move.MoveType != Movement.MoveType.Walk)
+                || move.MoveType != MoveType.Walk)
             {
                 if (_modal.IsOpen)
                 {
@@ -68,7 +78,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             var percentage = (int)(move.MoveData.GainCoefficient * 100);
             //var percentage = (int)(Mathf.Abs(yawDiff) / perfectAngle);
 
-            if(_tickCount >= TickInterval)
+            var rtSync = 0;
+            if(RealtimeSyncBar && hu.Timeline is BunnyhopTimeline bhop)
+            {
+                rtSync = bhop.GetRealtimeSync(RealtimeSyncCount);
+            }
+
+            if (_tickCount >= TickInterval)
             {
                 var avgPercent = 0f;
 
@@ -78,7 +94,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                     _percentages[i] = 0;
                 }
 
-                _modal.SetPercent((int)(avgPercent / TickInterval), yawDiff <= 0);
+                _modal.SetPercent((int)(avgPercent / TickInterval), rtSync, yawDiff <= 0);
                 _tickCount = 0;
             }
             else

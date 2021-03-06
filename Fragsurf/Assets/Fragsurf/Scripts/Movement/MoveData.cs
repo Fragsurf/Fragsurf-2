@@ -53,7 +53,6 @@ namespace Fragsurf.Movement
         public Vector3 MomentumModifier;
         public int GroundTest;
         public float GainCoefficient;
-        public bool SyncedTick;
 
         public bool InWater => WaterDepth > 0f;
         public Vector3 AbsVelocity => BaseVelocity + Velocity;

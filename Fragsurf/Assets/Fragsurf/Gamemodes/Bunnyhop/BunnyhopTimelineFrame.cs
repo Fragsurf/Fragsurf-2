@@ -29,8 +29,6 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [IgnoreMember]
         public int GoodSync;
         [IgnoreMember]
-        public int GoodSyncVel;
-        [IgnoreMember]
         public int TotalSync;
 
         public BunnyhopTimelineFrame Subtract(BunnyhopTimelineFrame other)

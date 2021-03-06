@@ -2,6 +2,7 @@ using Fragsurf.Actors;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
+using Fragsurf.Utility;
 using MessagePack;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public bool RunIsLive = true;
         [IgnoreMember]
         public bool InStartZone = false;
+        [IgnoreMember]
+        private CircularBuffer<bool> _realtimeSyncBuffer = new CircularBuffer<bool>(_realtimeSyncSize);
+        [IgnoreMember]
+        private const int _realtimeSyncSize = 100;
 
         [IgnoreMember]
         private float _previousYaw;
@@ -146,27 +151,25 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 // Add to good sync if client buttons match up
                 if (angleDiff < 0)
                 {
+                    var rtsync = false;
                     frame.TotalSync++;
                     if (nb.HasFlag(InputActions.MoveLeft) && !nb.HasFlag(InputActions.MoveRight))
                     {
                         frame.GoodSync++;
+                        rtsync = true;
                     }
-                    if (move.MoveData.Velocity.z < 0)
-                    {
-                        frame.GoodSyncVel++;
-                    }
+                    _realtimeSyncBuffer.PushFront(rtsync);
                 }
                 else if (angleDiff > 0)
                 {
+                    var rtsync = false;
                     frame.TotalSync++;
                     if (nb.HasFlag(InputActions.MoveRight) && !nb.HasFlag(InputActions.MoveLeft))
                     {
                         frame.GoodSync++;
+                        rtsync = true;
                     }
-                    if (move.MoveData.Velocity.z > 0)
-                    {
-                        frame.GoodSyncVel++;
-                    }
+                    _realtimeSyncBuffer.PushFront(rtsync);
                 }
             }
 
@@ -175,6 +178,20 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 : (byte)100;
 
             _previousYaw = human.Angles.y;
+        }
+
+        public int GetRealtimeSync(int count = 100)
+        {
+            count = Mathf.Clamp(count, 0, _realtimeSyncBuffer.Size);
+            var ticksInSync = 0;
+            for(int i = 0; i < count; i++)
+            {
+                if (_realtimeSyncBuffer[i])
+                {
+                    ticksInSync++;
+                }
+            }
+            return (int)((float)ticksInSync / count * 100f);
         }
 
         Vector3 originLastFrame;
