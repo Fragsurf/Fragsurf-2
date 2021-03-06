@@ -54,11 +54,12 @@ namespace Fragsurf.Maps
         {
             _bspToUnity?.Dispose();
             _bspToUnity = null;
-            var ao = SceneManager.UnloadSceneAsync("BSPMap");
-            while (!ao.isDone)
-            {
-                await Task.Delay(100);
-            }
+            SceneManager.UnloadScene("BSPMap");
+            //var ao = SceneManager.UnloadSceneAsync("BSPMap");
+            //while (!ao.isDone)
+            //{
+            //    await Task.Delay(100);
+            //}
         }
     }
 }
