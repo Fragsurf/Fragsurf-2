@@ -20,7 +20,7 @@ Feel free to clone it, play with it, and create issues and pull requests.  Steam
 
 [Forum](https://forum.fragsurf.com)
 
-[Default Material Pack (320mb)](http://fragsurf.com/Default%20Material%20Pack.unitypackage)
+[Default Material Pack](https://github.com/cr4yz/Fragsurf-Default-Materials)
 
 
-The project contains a scene named TestScene with various triggers and meshes, it uses materials from the material pack linked above.  To add it, download the package and import it with Assets -> Import Package -> Custom Package.  The material pack may also be used for mods & maps
+The project contains a scene named TestScene with various triggers and meshes, it uses materials from the material pack linked above.  To add it, download or clone the material pack into a folder under your Unity project's Assets folder, i.e. Assets/Default-Material-Pack.
