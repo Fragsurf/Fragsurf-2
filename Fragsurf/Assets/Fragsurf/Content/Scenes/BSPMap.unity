@@ -181,9 +181,8 @@ MonoBehaviour:
     WithProps: 1
     GamesToMount:
     - 240
-    ShaderMaterials:
-    - ShaderName: LightmappedGeneric
-      Material: {fileID: 2100000, guid: bf763c1e6f3610c47bb505962c72cd01, type: 2}
+    LightmappedGeneric: {fileID: 2100000, guid: bf763c1e6f3610c47bb505962c72cd01, type: 2}
+    LightmappedGenericTransparent: {fileID: 2100000, guid: 46d2dbc15f6db0843b5d497e032b1f75, type: 2}
     WaterMaterial: {fileID: 2100000, guid: 96b28bfc658679f4a91d6a2ae1291eb0, type: 2}
     MissingMaterial: {fileID: 2100000, guid: 1160f2b9eab30814f9be602abd6b89d2, type: 2}
     SkyMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}

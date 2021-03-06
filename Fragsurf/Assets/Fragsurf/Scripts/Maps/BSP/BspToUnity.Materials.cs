@@ -86,12 +86,11 @@ namespace Fragsurf.BSP
 				return Options.WaterMaterial;
             }
 
-			var result = GameObject.Instantiate(Options.GetShaderMaterial(vmtInfo.VmtShader));
-
-			result.mainTexture = LoadTexture(vmtInfo.BaseTex);
-			result.SetFloat("_Smoothness", 0);
-			result.SetFloat("_Metallic", 0f);
-			result.name = vmtInfo.VmtName;
+			var mat = GameObject.Instantiate<Material>(GetMaterialForVmt(vmtInfo));
+			mat.mainTexture = LoadTexture(vmtInfo.BaseTex);
+			mat.SetFloat("_Smoothness", 0);
+			mat.SetFloat("_Metallic", 0f);
+			mat.name = vmtInfo.VmtName;
 
 			if (!string.IsNullOrEmpty(vmtInfo.BumpMap))
 			{
@@ -103,16 +102,16 @@ namespace Fragsurf.BSP
 				//result.SetTexture("_MainTex2", LoadTexture(vmtInfo.BaseTex2));
 			}
 
-			if (vmtInfo.Translucent || vmtInfo.AlphaTest)
-			{
-				//result.shader = Shader.Find("Fragsurf/BSP/Transparent Colored");
-				//var baseColor = result.GetColor("_Color");
-				//baseColor.a = vmtInfo.Alpha;
-				//result.SetColor("_Color", baseColor);
-				//result.SetFloat("_SurfaceType", 1);
-			}
+			return mat;
+		}
 
-			return result;
+		private Material GetMaterialForVmt(VmtInfo vmt)
+        {
+			if (vmt.Translucent || vmt.AlphaTest)
+			{
+				return Options.LightmappedGenericTransparent;
+			}
+			return Options.LightmappedGeneric;
 		}
 
 		private Texture LoadTexture(string textureName)
