@@ -55,7 +55,7 @@ namespace Fragsurf.Gamemodes.Playtest
             player.Entity = ent;
             Game.EntityManager.AddEntity(ent);
 
-            ent.Give("Test Knife");
+            ent.Give("Knife");
         }
 
     }

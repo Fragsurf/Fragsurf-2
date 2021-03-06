@@ -52,7 +52,6 @@ namespace Fragsurf.Shared.Entity
             }
         }
         public StateRandom Random { get; private set; }
-
         public EquippableGameObject EquippableGameObject => EntityGameObject as EquippableGameObject;
         public Human Human { get; private set; }
 
@@ -61,6 +60,7 @@ namespace Fragsurf.Shared.Entity
         protected override void _Start()
         {
             Random = new StateRandom(EntityId);
+            InterpolationMode = InterpolationMode.None;
         }
 
         protected override void _Delete()
@@ -76,6 +76,13 @@ namespace Fragsurf.Shared.Entity
         protected override void _Tick()
         {
             base._Tick();
+
+            if (!Game.IsHost)
+            {
+                InterpolationMode = Human == null
+                    ? InterpolationMode.Network
+                    : InterpolationMode.None;
+            }
 
             if(Human == null && _humanId > 0)
             {
@@ -218,7 +225,11 @@ namespace Fragsurf.Shared.Entity
                 }
             }
 
-            EquippableGameObject.DropOrigin = Human.HumanGameObject.transform.position + Human.HumanGameObject.transform.forward * .25f + Human.HumanGameObject.transform.right * .25f + Vector3.down * .25f;
+            var dropPos = Human.HumanGameObject.HandAttachment 
+                ? Human.HumanGameObject.HandAttachment.position 
+                : Human.HumanGameObject.Position;
+
+            EquippableGameObject.DropOrigin = dropPos + Human.HumanGameObject.transform.forward * .25f + Human.HumanGameObject.transform.right * .25f + Vector3.down * .25f;
             EquippableGameObject.DropAngles = Human.Angles;
             EquippableGameObject.DropForce = Human.Velocity.normalized + Human.HumanGameObject.transform.forward * 1.5f;
             EquippableGameObject.DropTorque = Human.HumanGameObject.transform.forward * 5f;

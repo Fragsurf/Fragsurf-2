@@ -31,7 +31,7 @@ namespace Fragsurf.Misc
 
         private void OnTriggerEnter(Collider other)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
 
             //if (_timer <= 0 && other.gameObject.layer == _waterLayer)
             //{

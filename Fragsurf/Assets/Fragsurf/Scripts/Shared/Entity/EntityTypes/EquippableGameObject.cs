@@ -165,6 +165,7 @@ namespace Fragsurf.Shared.Entity
 
             if (!Entity.Game.IsHost && ViewModel)
             {
+                GameCamera.Instance.Stack(ViewModel.Camera);
                 SetVisibility();
                 ViewModel.PlayAnimation("Equip", 0);
             }
@@ -188,6 +189,7 @@ namespace Fragsurf.Shared.Entity
 
             if (!Entity.Game.IsHost && ViewModel)
             {
+                GameCamera.Instance.Unstack(ViewModel.Camera);
                 SetVisibility();
                 ViewModel.PlayAnimation("Unequip", 0);
             }

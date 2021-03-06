@@ -14,22 +14,28 @@ namespace Fragsurf
 
         public void Stack(Camera cam)
         {
-            var urpData = Camera.GetComponent<UniversalAdditionalCameraData>();
-            if (!urpData || urpData.cameraStack.Contains(cam))
+            var gameCameraURP = Camera.GetComponent<UniversalAdditionalCameraData>();
+            if (!gameCameraURP || gameCameraURP.cameraStack.Contains(cam))
             {
                 return;
             }
-            urpData.cameraStack.Add(cam);
+            var camURP = cam.GetComponent<UniversalAdditionalCameraData>();
+            if (!camURP)
+            {
+                return;
+            }
+            camURP.renderType = CameraRenderType.Overlay;
+            gameCameraURP.cameraStack.Add(cam);
         }
 
         public void Unstack(Camera cam)
         {
-            var urpData = Camera.GetComponent<UniversalAdditionalCameraData>();
-            if (!urpData)
+            var gameCameraURP = Camera.GetComponent<UniversalAdditionalCameraData>();
+            if (!gameCameraURP)
             {
                 return;
             }
-            urpData.cameraStack.Remove(cam);
+            gameCameraURP.cameraStack.Remove(cam);
         }
 
         private void Awake()
