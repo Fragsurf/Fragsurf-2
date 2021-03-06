@@ -26,12 +26,13 @@ namespace Fragsurf.Shared.Entity
                 _initialized = true;
                 return true;
             }
-            return _get() != _lastKnownValue;
+            return !_get().Equals(_lastKnownValue);
         }
 
         public override void Read(NetBuffer buffer)
         {
             _set?.Invoke(buffer.ReadString());
+            StoreValue();
         }
 
         public override void StoreValue()
