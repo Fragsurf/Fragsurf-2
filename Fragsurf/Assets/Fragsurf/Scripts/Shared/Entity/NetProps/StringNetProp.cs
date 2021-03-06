@@ -31,8 +31,13 @@ namespace Fragsurf.Shared.Entity
 
         public override void Read(NetBuffer buffer)
         {
-            _set?.Invoke(buffer.ReadString());
-            StoreValue();
+            var newValue = buffer.ReadString();
+
+            if (!newValue.Equals(_lastKnownValue) && CanSet)
+            {
+                _set?.Invoke(newValue);
+                StoreValue();
+            }
         }
 
         public override void StoreValue()
