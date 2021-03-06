@@ -73,8 +73,6 @@ namespace Fragsurf.BSP
 				var entityComponentType = GetEntityComponentType(e.ClassName);
 				var component = obj.AddComponent(entityComponentType);
 
-				Debug.Log(e.ClassName + ":" + component);
-
 				if (component is BspEntityMonoBehaviour bspEntity)
 				{
 					bspEntity.Entity = e;

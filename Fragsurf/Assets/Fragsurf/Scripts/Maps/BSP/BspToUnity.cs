@@ -154,8 +154,13 @@ namespace Fragsurf.BSP
 
 			foreach(var kvp in SurfaceMaterials)
             {
-				var surfaceType = SurfaceType.Concrete;
-				Enum.TryParse(kvp.Value, true, out surfaceType);
+				if(!Enum.TryParse(kvp.Value, true, out SurfaceType surfaceType))
+                {
+#if UNITY_EDITOR
+					Debug.Log("Missing surface type: " + kvp.Value);
+#endif
+					surfaceType = SurfaceType.Concrete;
+                }
 				kvp.Key.AddComponent<SurfaceTypeIdentifier>().SurfaceType = surfaceType;
             }
 
