@@ -3,6 +3,7 @@ using Fragsurf.Movement;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Utility;
 using SurfaceConfigurator;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -369,30 +370,40 @@ namespace Fragsurf.Shared.Entity
 
         protected bool TraceNearestHit(Ray ray, float radius, float maxDist, out RaycastHit hit)
         {
-            RewindLagCompensator();
-            Equippable.Human.HumanGameObject.SetLayersToIgnore();
-
             hit = default;
-            int hitCount;
+            int hitCount = 0;
 
-            if (radius > 0)
+            // todo: Implement IDisposable to give lag compensator a clean, safe rewind block
+            try
             {
-                hitCount = Entity.Game.Physics.SpherecastAll(ray: ray,
-                    radius: radius,
-                    results: _hitBuffer,
-                    maxDistance: maxDist,
-                    qt: QueryTriggerInteraction.Collide);
-            }
-            else
-            {
-                hitCount = Entity.Game.Physics.RaycastAll(ray: ray,
-                    results: _hitBuffer,
-                    maxDistance: maxDist,
-                    qt: QueryTriggerInteraction.Collide);
-            }
+                RewindLagCompensator();
+                Equippable.Human.HumanGameObject.SetLayersToIgnore();
 
-            Equippable.Human.HumanGameObject.ResetLayers();
-            RestoreLagCompensator();
+                if (radius > 0)
+                {
+                    hitCount = Entity.Game.Physics.SpherecastAll(ray: ray,
+                        radius: radius,
+                        results: _hitBuffer,
+                        maxDistance: maxDist,
+                        qt: QueryTriggerInteraction.Collide);
+                }
+                else
+                {
+                    hitCount = Entity.Game.Physics.RaycastAll(ray: ray,
+                        results: _hitBuffer,
+                        maxDistance: maxDist,
+                        qt: QueryTriggerInteraction.Collide);
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
+            finally
+            {
+                RestoreLagCompensator();
+                Equippable.Human.HumanGameObject.ResetLayers();
+            }
 
             if (hitCount == 0)
             {

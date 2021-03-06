@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Utility;
-using System.Linq;
 
 namespace Fragsurf.Shared.LagComp
 {
@@ -107,7 +106,7 @@ namespace Fragsurf.Shared.LagComp
 
         public void Restore()
         {
-            if (!Enabled || _paused)
+            if (!Enabled || _paused || _activeState == null)
             {
                 return;
             }
