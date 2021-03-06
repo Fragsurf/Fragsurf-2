@@ -2,6 +2,7 @@ using SourceUtils.ValveBsp.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace Fragsurf.BSP
@@ -45,11 +46,14 @@ namespace Fragsurf.BSP
 				GameObject obj = null;
 
 				var model = e.GetRawPropertyValue("model");
-				if(model != null && model[0] == '*')
+				if(!string.IsNullOrEmpty(model) && model[0] == '*')
 				{
 					var modelIndex = int.Parse(model.Replace("*", null));
-					obj = _models[modelIndex];
-					obj.gameObject.SetActive(true);
+					if(modelIndex >= 0 && modelIndex < _models.Count)
+                    {
+						obj = _models[modelIndex];
+						obj.gameObject.SetActive(true);
+					}
 				}
 
 				if (obj == null)
@@ -68,6 +72,9 @@ namespace Fragsurf.BSP
 
 				var entityComponentType = GetEntityComponentType(e.ClassName);
 				var component = obj.AddComponent(entityComponentType);
+
+				Debug.Log(e.ClassName + ":" + component);
+
 				if (component is BspEntityMonoBehaviour bspEntity)
 				{
 					bspEntity.Entity = e;

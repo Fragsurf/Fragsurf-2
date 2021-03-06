@@ -5,7 +5,7 @@ namespace Fragsurf.BSP
 {
 	public class EntityComponentCache
 	{
-		public static Dictionary<string, Type> Registrations = new Dictionary<string, Type>();
+		public static Dictionary<string, Type> Registrations = new Dictionary<string, Type>(StringComparer.InvariantCultureIgnoreCase);
 	}
 
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
