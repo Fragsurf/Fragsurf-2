@@ -139,7 +139,7 @@ namespace Fragsurf.Shared.Entity
         {
             if (Equippable.Human != null)
             {
-                ViewModel.transform.position = Equippable.Human.Origin;
+                ViewModel.transform.position = Equippable.Human.Origin + Equippable.Human.HumanGameObject.EyeOffset;
                 ViewModel.transform.eulerAngles = Equippable.Human.Angles;
 
                 if (_equipped)
