@@ -1,3 +1,5 @@
+using Fragsurf.Client;
+using Fragsurf.Maps;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Utility;
@@ -9,8 +11,28 @@ namespace Fragsurf
     public class GameCamera : SingletonComponent<GameCamera>
     {
 
+        private static GameObject _depthCamera;
         private static Camera _camera;
         public static Camera Camera => GetCamera();
+
+        public void EnableDepthCamera(bool enabled)
+        {
+            var depthCam = Camera.GetComponentInChildren<PreserveCamera>();
+            if (!depthCam)
+            {
+                return;
+            }
+            depthCam.gameObject.SetActive(enabled);
+        }
+
+        private void Update()
+        {
+            var dcEnabled = Map.Current is BSPMap;
+            if(_depthCamera && _depthCamera.activeSelf != dcEnabled)
+            {
+                _depthCamera.SetActive(dcEnabled);
+            }
+        }
 
         public void Stack(Camera cam)
         {
@@ -48,6 +70,11 @@ namespace Fragsurf
             if (!_camera)
             {
                 GameObject.Instantiate(Resources.Load<GameObject>("GameCamera"));
+            }
+            var dc = _camera.GetComponentInChildren<PreserveCamera>(true);
+            if (dc)
+            {
+                _depthCamera = dc.gameObject;
             }
             return _camera;
         }

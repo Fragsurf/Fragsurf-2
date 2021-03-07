@@ -28,6 +28,9 @@ namespace Fragsurf.BSP
 		[Header("Generate Options")]
 		public Material LightmappedGeneric;
 		public Material LightmappedGenericTransparent;
+		public Material VertexLitGeneric;
+		public Material VertexLitGenericTransparent;
+		public Material Unlit;
 		public Material WaterMaterial;
 		public Material MissingMaterial;
 		public Material SkyMaterial;

@@ -1,4 +1,5 @@
 using SourceUtils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -107,6 +108,19 @@ namespace Fragsurf.BSP
 
 		private Material GetMaterialForVmt(VmtInfo vmt)
         {
+			if(vmt == null)
+            {
+				return Options.MissingMaterial;
+            }
+			if (vmt.VmtShader.Equals("Cable", StringComparison.OrdinalIgnoreCase))
+			{
+				return Options.Unlit;
+			}
+			if (vmt.VmtShader.Equals("VertexLitGeneric", StringComparison.OrdinalIgnoreCase) 
+				|| !vmt.Lightmapped)
+            {
+				return vmt.Translucent ? Options.VertexLitGenericTransparent : Options.VertexLitGeneric;
+            }
 			if (vmt.Translucent || vmt.AlphaTest)
 			{
 				return Options.LightmappedGenericTransparent;
@@ -174,6 +188,7 @@ namespace Fragsurf.BSP
 		public float Alpha;
 		public float RefractAmount;
 		public int CompileSky;
+		public int VertexColor;
 		public SourceUtils.Color32 Color;
 		public SourceUtils.Color32 RefractTint;
 
@@ -205,6 +220,7 @@ namespace Fragsurf.BSP
 				Alpha = vmt[VmtShader].ContainsKey("$alpha") ? vmt[VmtShader]["$alpha"] : 1.0f;
 				RefractAmount = vmt[VmtShader].ContainsKey("$refractamount") ? vmt[VmtShader]["$refractamount"] : 0.2f;
 				CompileSky = vmt[VmtShader].ContainsKey("%compilesky") ? vmt[VmtShader]["%compilesky"] : 0;
+				VertexColor = vmt[VmtShader].ContainsKey("$vertexcolor") ? vmt[VmtShader]["$vertexcolor"] : 0;
 				break;
 			}
 		}

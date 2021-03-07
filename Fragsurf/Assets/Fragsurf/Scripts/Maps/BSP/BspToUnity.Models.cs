@@ -87,6 +87,12 @@ namespace Fragsurf.BSP
 			if(vmtInfo != null)
             {
 				CreateSurfacePropIdentifier(obj, vmtInfo.SurfaceProp);
+				if(vmtInfo.SurfaceProp.Equals("water", StringComparison.OrdinalIgnoreCase))
+                {
+					mr.lightmapIndex = -1;
+					mr.receiveShadows = false;
+					mf.mesh.uv2 = new UVector2[0];
+                }
             }
 
 			return obj;
