@@ -47,6 +47,10 @@ public static class DebugDraw
     public static void WorldLabel(string text, Vector3 worldPos, int size = 12, Color colour = default, float zeroDist = 0)
     {
 #if UNITY_EDITOR
+        if(!UnityEditor.SceneView.currentDrawingSceneView || !UnityEditor.SceneView.currentDrawingSceneView.camera)
+        {
+            return;
+        }
         var camPosition = UnityEditor.SceneView.currentDrawingSceneView.camera.transform.position;
         if(zeroDist > 0)
         {
