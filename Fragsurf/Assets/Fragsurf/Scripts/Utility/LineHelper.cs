@@ -8,6 +8,12 @@ namespace Fragsurf.Utility
     public class LineHelper
     {
 
+        public static void DrawLineForOneFrame(Vector3 a, Vector3 b, Color color)
+        {
+            var obj = GeneratePath(new Vector3[] { a, b }, color);
+            obj.GetComponent<LineHelperOutline>().DestroyIn = Mathf.Epsilon;
+        }
+
         public static GameObject GeneratePath(Vector3[] points, Color color, float widthMultiplier = 1f)
         {
             var result = new GameObject("[Generated Outline]");
@@ -25,6 +31,8 @@ namespace Fragsurf.Utility
             lr.widthMultiplier = widthMultiplier;
             lr.startWidth = .02f;
             lr.endWidth = .02f;
+
+            result.AddComponent<LineHelperOutline>();
 
             return result;
         }
@@ -72,7 +80,19 @@ namespace Fragsurf.Utility
 
         public class LineHelperOutline : MonoBehaviour
         {
+            public float DestroyIn;
 
+            private void Update()
+            {
+                if(DestroyIn > 0)
+                {
+                    DestroyIn -= Time.deltaTime;
+                    if(DestroyIn <= 0)
+                    {
+                        GameObject.Destroy(gameObject);
+                    }
+                }
+            }
         }
 
         public struct Edge
