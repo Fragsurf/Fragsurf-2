@@ -85,13 +85,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7776529293738310336}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.008, y: 0.082, z: 0.008}
+  m_LocalRotation: {x: -0.45200443, y: 0.54377574, z: 0.54377556, w: 0.45200452}
+  m_LocalPosition: {x: -0.0058, y: 0.111, z: 0.0241}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8241135396441959207}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 180, z: -79.468994}
 --- !u!1 &7776529293873923163
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +151,7 @@ MonoBehaviour:
   _handAttachment: {fileID: 7776529293738310343}
   _ragdollPrefab: {fileID: 0}
   _eyeOffset: 1.6256
+  _duckedOffset: 0.5
   _deathSound: {fileID: 0}
 --- !u!65 &7776529293873923160
 BoxCollider:
