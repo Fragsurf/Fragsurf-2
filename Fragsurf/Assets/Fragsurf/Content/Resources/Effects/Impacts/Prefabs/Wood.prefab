@@ -4864,6 +4864,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6472749962501614040}
+  - component: {fileID: 1960031628370244067}
   m_Layer: 0
   m_Name: WoodImpact
   m_TagString: Untagged
