@@ -136,8 +136,7 @@ namespace Fragsurf.Shared.Entity
         private void SetItemName(string itemName)
         {
             _itemName = itemName;
-            var data = GameData.Instance.Equippables.FirstOrDefault(x => string.Equals(x.Name, itemName, StringComparison.OrdinalIgnoreCase));
-            if(data == null)
+            if (!GameData.Instance.TryGetEquippable(itemName, out BaseEquippableData data)) 
             {
                 if (Game.IsHost)
                 {

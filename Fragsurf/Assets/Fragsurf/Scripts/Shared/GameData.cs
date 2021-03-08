@@ -3,6 +3,7 @@ using UnityEngine;
 using Fragsurf.Maps;
 using Fragsurf.DataEditor;
 using SurfaceConfigurator;
+using System.Xml;
 
 namespace Fragsurf.Shared
 {
@@ -30,6 +31,24 @@ namespace Fragsurf.Shared
         public AudioClip UnderwaterSound;
         public AudioClip ExitWaterSound;
         public AudioClip SwimSound;
+
+        public bool TryGetEquippable(string name, out BaseEquippableData equippable)
+        {
+            foreach(var eq in Equippables)
+            {
+                if (!eq)
+                {
+                    continue;
+                }
+                if(eq.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    equippable = eq;
+                    return true;
+                }
+            }
+            equippable = null;
+            return false;
+        }
 
         public bool TryGetPhysicsSound(SurfaceType surfaceType, out AudioClip clip)
         {
