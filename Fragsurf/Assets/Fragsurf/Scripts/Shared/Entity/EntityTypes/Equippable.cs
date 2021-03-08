@@ -269,9 +269,12 @@ namespace Fragsurf.Shared.Entity
 
                 if (!Game.IsHost)
                 {
-                    var effect = Game.Pool.Get(GameData.Instance.GetImpactEffect(SurfaceType.Metal), 1f);
-                    effect.transform.position = dmgInfo.HitPoint;
-                    effect.transform.forward = dmgInfo.HitNormal;
+                    if (GameData.Instance.TryGetImpactPrefab(SurfaceType.Metal, out GameObject prefab))
+                    {
+                        var effect = Game.Pool.Get(prefab, 1f);
+                        effect.transform.position = dmgInfo.HitPoint;
+                        effect.transform.forward = dmgInfo.HitNormal;
+                    }
                 }
             }
         }

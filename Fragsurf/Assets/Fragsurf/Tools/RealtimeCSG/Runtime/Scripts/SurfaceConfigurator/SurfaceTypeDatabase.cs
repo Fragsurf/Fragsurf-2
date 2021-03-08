@@ -28,8 +28,9 @@ namespace SurfaceConfigurator
     public class SurfaceTypeConfig
     {
         public SurfaceType SurfaceType;
-        public GameObject[] ImpactEffects;
+        public GameObject[] BulletImpactEffects;
         public AudioClip[] FootstepSounds;
+        public AudioClip[] PhysicsSounds;
 
         public AudioClip GetFootstepSound()
         {
@@ -38,6 +39,15 @@ namespace SurfaceConfigurator
                 return null;
             }
             return FootstepSounds[UnityEngine.Random.Range(0, FootstepSounds.Length)];
+        }
+
+        public AudioClip GetGunDropSound()
+        {
+            if (PhysicsSounds.Length == 0)
+            {
+                return null;
+            }
+            return PhysicsSounds[UnityEngine.Random.Range(0, PhysicsSounds.Length)];
         }
 
     }

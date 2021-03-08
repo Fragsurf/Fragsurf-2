@@ -315,12 +315,11 @@ namespace Fragsurf.Shared.Entity
                 {
                     matType = mi.SurfaceType;
                 }
-                var effect = GameData.Instance.GetImpactEffect(matType);
-                if (effect != null)
+                if(GameData.Instance.TryGetImpactPrefab(matType, out GameObject prefab))
                 {
-                    var decal = Entity.Game.Pool.Get(effect, 10f);
-                    decal.transform.position = hit2.point;
-                    decal.transform.forward = hit2.normal;
+                    var effect = Entity.Game.Pool.Get(prefab, 10f);
+                    effect.transform.position = hit2.point;
+                    effect.transform.forward = hit2.normal;
                 }
             }
         }
@@ -403,7 +402,7 @@ namespace Fragsurf.Shared.Entity
                         qt: QueryTriggerInteraction.Collide);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.LogError(e.Message);
             }
