@@ -1092,7 +1092,7 @@ namespace InternalRealtimeCSG
             instance.RenderSurfaceType = GetSurfaceType(instance.MeshDescription, owner.Settings);
             instance.Dirty = instance.Dirty || (oldRenderSurfaceType != instance.RenderSurfaceType);
 
-            if (instance.Dirty)
+            if (instance.Dirty && instance.RenderSurfaceType == RenderSurfaceType.Normal)
             {
                 if(!instance.gameObject.TryGetComponent(out SurfaceTypeIdentifier id))
                 {

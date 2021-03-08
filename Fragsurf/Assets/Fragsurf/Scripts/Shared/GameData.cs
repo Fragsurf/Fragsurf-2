@@ -33,6 +33,19 @@ namespace Fragsurf.Shared
 
         public GameObject GetImpactEffect(SurfaceType surfaceType)
         {
+            if (!Surfaces)
+            {
+                return null;
+            }
+            foreach(var cfg in Surfaces.SurfaceTypeConfigs)
+            {
+                if(cfg.SurfaceType == surfaceType)
+                {
+                    return cfg.ImpactEffects.Length > 0 
+                        ? cfg.ImpactEffects[UnityEngine.Random.Range(0, cfg.ImpactEffects.Length)] 
+                        : null;
+                }
+            }
             return null;
         }
 

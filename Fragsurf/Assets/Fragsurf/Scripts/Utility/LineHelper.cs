@@ -11,7 +11,7 @@ namespace Fragsurf.Utility
         public static void DrawLineForOneFrame(Vector3 a, Vector3 b, Color color)
         {
             var obj = GeneratePath(new Vector3[] { a, b }, color);
-            obj.GetComponent<LineHelperOutline>().DestroyIn = Mathf.Epsilon;
+            obj.GetComponent<LineHelperComponent>().DestroyIn = Mathf.Epsilon;
         }
 
         public static GameObject GeneratePath(Vector3[] points, Color color, float widthMultiplier = 1f)
@@ -32,15 +32,15 @@ namespace Fragsurf.Utility
             lr.startWidth = .02f;
             lr.endWidth = .02f;
 
-            result.AddComponent<LineHelperOutline>();
+            result.AddComponent<LineHelperComponent>();
 
             return result;
         }
 
         public static GameObject GenerateOutline(MeshFilter mf, Color color, float widthMultiplier = 1f)
         {
-            var outline = mf.gameObject.GetComponentInChildren<LineHelperOutline>();
-            if(outline != null)
+            var outlines = mf.gameObject.GetComponentsInChildren<LineHelperComponent>(true);
+            foreach(var outline in outlines)
             {
                 GameObject.Destroy(outline.gameObject);
             }
@@ -72,27 +72,10 @@ namespace Fragsurf.Utility
             lr.startWidth = .02f;
             lr.endWidth = .02f;
 
-            result.AddComponent<LineHelperOutline>();
+            result.AddComponent<LineHelperComponent>();
             result.transform.SetParent(mf.transform, true);
 
             return result;
-        }
-
-        public class LineHelperOutline : MonoBehaviour
-        {
-            public float DestroyIn;
-
-            private void Update()
-            {
-                if(DestroyIn > 0)
-                {
-                    DestroyIn -= Time.deltaTime;
-                    if(DestroyIn <= 0)
-                    {
-                        GameObject.Destroy(gameObject);
-                    }
-                }
-            }
         }
 
         public struct Edge

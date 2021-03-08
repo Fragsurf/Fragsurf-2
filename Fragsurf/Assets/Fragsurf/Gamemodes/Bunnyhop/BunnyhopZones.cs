@@ -20,7 +20,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             set
             {
                 _startZoneColor = value;
-                OutlineTracks();
+                if (_initted) OutlineTracks();
             }
         }
         [ConVar("timer.endzonecolor", "Color for end zones", ConVarFlags.Gamemode | ConVarFlags.UserSetting)]
@@ -30,7 +30,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             set
             {
                 _endZoneColor = value;
-                OutlineTracks();
+                if (_initted) OutlineTracks();
             }
         }
         [ConVar("timer.cpzonecolor", "Color for checkpoint zones", ConVarFlags.Gamemode | ConVarFlags.UserSetting)]
@@ -40,13 +40,16 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             set
             {
                 _cpZoneColor = value;
-                OutlineTracks();
+                if(_initted) OutlineTracks();
             }
         }
+
+        private bool _initted;
 
         protected override void _Initialize()
         {
             OutlineTracks();
+            _initted = true;
         }
 
         private void OutlineTracks()

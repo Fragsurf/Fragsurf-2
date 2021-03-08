@@ -302,7 +302,7 @@ namespace Fragsurf.Shared.Entity
         protected virtual void ImpactEffect(RaycastHit hit)
         {
             var ray = new Ray(hit.point + hit.normal, -hit.normal);
-            if (Physics.Raycast(ray, out RaycastHit hit2, hit.normal.magnitude + .01f, LayerMask.GetMask("TransparentFX")))
+            if (Physics.Raycast(ray, out RaycastHit hit2, hit.normal.magnitude + .1f, 1 << Layers.Fidelity))
             {
                 var matType = SurfaceType.Concrete;
                 if (hit2.collider.TryGetComponent(out SurfaceTypeIdentifier mi))

@@ -36,8 +36,9 @@ namespace Fragsurf.Shared.Player
 
             if (Viewer is Human player)
             {
-                _targetEyeOffset = player.HumanGameObject.EyeOffset;
-                _targetEyeOffset.y += player.Ducked ? -.5f : 0;
+                _targetEyeOffset = player.Ducked 
+                    ? player.HumanGameObject.DuckedEyeOffset
+                    : player.HumanGameObject.EyeOffset;
                 if (Viewer == Human.Local)
                 {
                     targetAngles = Viewer.Angles;

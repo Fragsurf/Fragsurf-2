@@ -23,6 +23,8 @@ namespace Fragsurf.Shared.Entity
         private GameObject _ragdollPrefab;
         [SerializeField]
         private float _eyeOffset = 1.5f;
+        [SerializeField]
+        private float _duckedOffset = .5f;
 
         [Header("Audio")]
 
@@ -37,6 +39,7 @@ namespace Fragsurf.Shared.Entity
         public Transform HandAttachment => _handAttachment;
         public BoxCollider BoundsCollider => _boundsCollider;
         public Vector3 EyeOffset => new Vector3(0, _eyeOffset, 0);
+        public Vector3 DuckedEyeOffset => new Vector3(0, _eyeOffset - _duckedOffset, 0);
         public AudioSource FeetAudioSource { get; private set; }
         public AudioSource HandAudioSource { get; private set; }
         public AudioSource HeadAudioSource { get; private set; }

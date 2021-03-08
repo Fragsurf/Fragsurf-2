@@ -14,112 +14,128 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SurfaceTypeConfigs:
   - SurfaceType: 1
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 1870241236171668699, guid: 0b626ae43b214d14481e95bbd992edbe, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 74664c2b24a9a8f4095ba4bb8dc08873, type: 3}
     - {fileID: 8300000, guid: 77614f1f902ec454281afcee232cd503, type: 3}
     - {fileID: 8300000, guid: 2f22f958c766fbd4c9931bca3cd28b6b, type: 3}
     - {fileID: 8300000, guid: 8c3c2f7a89bcce248a961b6db364b49f, type: 3}
   - SurfaceType: 2
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 1870241236171668699, guid: 0b626ae43b214d14481e95bbd992edbe, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 66b605fce2b964d409eacd2c60758e25, type: 3}
     - {fileID: 8300000, guid: 7d1f43065fcdddd4db975cbe9920b805, type: 3}
     - {fileID: 8300000, guid: 231514c05ecfcb8428d51f9adaf2d583, type: 3}
     - {fileID: 8300000, guid: 706003c8b1c74a044a18ff1c79d22fcb, type: 3}
   - SurfaceType: 3
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 1213103672126206595, guid: 4e5177e866285f748901d6fb1b146105, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 5f595048db9b73644bf872efd130cd0d, type: 3}
     - {fileID: 8300000, guid: dfcd0104f8bd9f54d8bcb0730abc3cd6, type: 3}
     - {fileID: 8300000, guid: a24bc366cb4bfc04c8c68c8816560338, type: 3}
     - {fileID: 8300000, guid: 5ab0205e24fbfbd44a1e2693dcf1475d, type: 3}
   - SurfaceType: 4
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 1407161024741387463, guid: 1b3188fbdb392ef4197deb35232e37fb, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: ad5bc2175532d604586eee705e144ee4, type: 3}
     - {fileID: 8300000, guid: 97d522e351831b94fb50a30875f15d30, type: 3}
     - {fileID: 8300000, guid: 7c2b7c1512ca2924a94ca1568ba140be, type: 3}
     - {fileID: 8300000, guid: bc1999af47f701d4f97c4b651974ce51, type: 3}
   - SurfaceType: 5
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 1407161024741387463, guid: 1b3188fbdb392ef4197deb35232e37fb, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: e1c719656e908d64bbdd24c3e8c579f2, type: 3}
     - {fileID: 8300000, guid: 0a6037cd4ae526f4bb20529d861d7872, type: 3}
     - {fileID: 8300000, guid: cd6e507666de7a74faab9dbb68f5710d, type: 3}
     - {fileID: 8300000, guid: 51f241d73f86c324bb9a6b00079a2c6b, type: 3}
   - SurfaceType: 6
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 6472749962501309942, guid: 4beaa58189398a14fad2aa47e30295d8, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 516b5f979bf606c4cae4473d136a7feb, type: 3}
     - {fileID: 8300000, guid: 52aa8e1d2ca43b44ebf7ef371b6eb50b, type: 3}
     - {fileID: 8300000, guid: 4baa6b507ae545e44bfc09e2f50efb1e, type: 3}
     - {fileID: 8300000, guid: b0d9261922f00934c86a3026ae578892, type: 3}
   - SurfaceType: 7
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 8036871958576604112, guid: aa2d44feb3ac55a4f932e4a973e73d09, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 7f6a3914ad256924d9771984f687a1ff, type: 3}
     - {fileID: 8300000, guid: 6f03e114366b1a242ba9bbe68dcb85ff, type: 3}
     - {fileID: 8300000, guid: 8942f4656aae9634bb7d8eddf23106aa, type: 3}
     - {fileID: 8300000, guid: 56f46bf801df04d43a454bd956ca8329, type: 3}
   - SurfaceType: 8
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 1213103672126206595, guid: 4e5177e866285f748901d6fb1b146105, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 021e38a8e3127484fb2fa71510621a72, type: 3}
     - {fileID: 8300000, guid: ce2499f7c6dafc94bb8d72f5a284ee52, type: 3}
     - {fileID: 8300000, guid: 2ede0e701ee802240a342b0432281de7, type: 3}
     - {fileID: 8300000, guid: 27fc6bfd21721eb4f8a2fd7a25f311c4, type: 3}
   - SurfaceType: 9
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 1870241236171668699, guid: 0b626ae43b214d14481e95bbd992edbe, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 03cd63f312b0f3a4f9bd762f3cdbac76, type: 3}
     - {fileID: 8300000, guid: cb4369bf35218614b91d055275b0914c, type: 3}
     - {fileID: 8300000, guid: 0158776cea61b394d9e3ccfb7932058c, type: 3}
     - {fileID: 8300000, guid: 2914e47e310df4f47bccfddb11d0ac48, type: 3}
   - SurfaceType: 10
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 8036871958576604112, guid: aa2d44feb3ac55a4f932e4a973e73d09, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: e134da3e6c2142845aac40b5a356093f, type: 3}
     - {fileID: 8300000, guid: c15f624321366cd468844f9340fd0cf3, type: 3}
     - {fileID: 8300000, guid: d42b22bbeae3f854298b9a471b8ea59e, type: 3}
     - {fileID: 8300000, guid: d7abb43a4e055f941ace0904f85d15c2, type: 3}
   - SurfaceType: 11
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 1870241236171668699, guid: 0b626ae43b214d14481e95bbd992edbe, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: f7cdcb2c15ed92a49a762480c0c5d973, type: 3}
     - {fileID: 8300000, guid: fdb404babc16a064b8839ffa26ff6fa6, type: 3}
     - {fileID: 8300000, guid: 08ba912be28887846b8ce6cd8c010633, type: 3}
     - {fileID: 8300000, guid: 5a309d1a06d8e2649b1c47842eb063c5, type: 3}
   - SurfaceType: 12
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 4832360012478719781, guid: 28a34587d97584f49944a4b962ccc0cf, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 28b3eeec16b3fd64f9aa90da3ecae2ff, type: 3}
     - {fileID: 8300000, guid: 2d2efcbe7874049439f5fb32bd369f29, type: 3}
     - {fileID: 8300000, guid: ffc88272905df4448a21a0bf37400d84, type: 3}
     - {fileID: 8300000, guid: 278c3ad5c740c274fbabc55311b7d6d3, type: 3}
   - SurfaceType: 13
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 8946173193281812791, guid: b956dd5a84dbf0a488b8c87ddd94ca50, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 28b3eeec16b3fd64f9aa90da3ecae2ff, type: 3}
     - {fileID: 8300000, guid: 2d2efcbe7874049439f5fb32bd369f29, type: 3}
     - {fileID: 8300000, guid: ffc88272905df4448a21a0bf37400d84, type: 3}
     - {fileID: 8300000, guid: 278c3ad5c740c274fbabc55311b7d6d3, type: 3}
   - SurfaceType: 14
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 1870241236171668699, guid: 0b626ae43b214d14481e95bbd992edbe, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 03cd63f312b0f3a4f9bd762f3cdbac76, type: 3}
     - {fileID: 8300000, guid: cb4369bf35218614b91d055275b0914c, type: 3}
     - {fileID: 8300000, guid: 0158776cea61b394d9e3ccfb7932058c, type: 3}
     - {fileID: 8300000, guid: 2914e47e310df4f47bccfddb11d0ac48, type: 3}
   - SurfaceType: 15
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 1213103672126206595, guid: 4e5177e866285f748901d6fb1b146105, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: d862662cb2918e949a19d87b392bc4ea, type: 3}
     - {fileID: 8300000, guid: a85bb771293e7274aa5a0589454e9255, type: 3}
     - {fileID: 8300000, guid: 7f8197783eb5eca4697443b6017be9d1, type: 3}
     - {fileID: 8300000, guid: 103bf1e72d1be654fba05beb15e46af0, type: 3}
   - SurfaceType: 0
-    ImpactEffects: []
+    ImpactEffects:
+    - {fileID: 7634768499986879330, guid: d2570d70b54047f4bab28496cc2d0423, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: e3ad6d8f04630a3488321bc23f4e5f72, type: 3}
     - {fileID: 8300000, guid: 938e3256984a1084389a260339427adf, type: 3}

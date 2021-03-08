@@ -91,7 +91,9 @@ namespace Fragsurf.Shared.Entity
 
         public Ray GetEyeRay()
         {
-            return new Ray();
+            var direction = (Quaternion.Euler(Angles/* + Viewpunch + Aimpunch*/) * Vector3.forward).normalized;
+            var eyePosition = Origin + (Ducked ? HumanGameObject.DuckedEyeOffset : HumanGameObject.EyeOffset);
+            return new Ray(eyePosition, direction);
         }
 
         public virtual void RunCommand(UserCmd cmd, bool prediction)

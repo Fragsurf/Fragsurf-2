@@ -18,7 +18,10 @@ namespace LightingTools.LightProbesVolumes
         private void OnEnable()
         {
             var boxCollider = GetComponent<BoxCollider>();
-            boxCollider.isTrigger = true;
+            if (boxCollider)
+            {
+                boxCollider.enabled = false;
+            }
         }
 
     }
