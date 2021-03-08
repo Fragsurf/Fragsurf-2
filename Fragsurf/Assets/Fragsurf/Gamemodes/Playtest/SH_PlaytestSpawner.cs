@@ -39,23 +39,42 @@ namespace Fragsurf.Gamemodes.Playtest
                 return;
             }
 
-            Map.GetSpawnPoint(out Vector3 spawnPos, out Vector3 spawnAngles);
+            SpawnPlayer(player);
+            Give(player, "Knife");
+            Give(player, "AK47");
+        }
 
-            var tp = GameObject.FindObjectOfType<PlayTest>();
-            if (tp && tp.SpawnPoint != Vector3.zero)
+        [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]
+        public void Give(IPlayer player, string item)
+        {
+            if (!Game.IsHost || !(player.Entity is Human hu))
             {
-                spawnPos = tp.SpawnPoint;
-                spawnAngles = Vector3.zero;
+                return;
+            }
+            hu.Give(item);
+        }
+
+        [ChatCommand("Teleport to the beginning", "r", "spawn", "restart")]
+        public void SpawnPlayer(IPlayer player)
+        {
+            if (!Game.IsHost)
+            {
+                Game.Get<SpectateController>().Spectate(Human.Local);
+                return;
             }
 
-            var ent = new Human(Game);
-            ent.Origin = spawnPos;
-            ent.Angles = spawnAngles;
-            ent.OwnerId = player.ClientIndex;
-            player.Entity = ent;
-            Game.EntityManager.AddEntity(ent);
+            if (!(player.Entity is Human hu))
+            {
+                if (player.Entity != null)
+                {
+                    player.Entity.Delete();
+                }
+                hu = new Human(Game);
+                Game.EntityManager.AddEntity(hu);
+                hu.OwnerId = player.ClientIndex;
+            }
 
-            ent.Give("Axe");
+            hu.Spawn();
         }
 
     }
