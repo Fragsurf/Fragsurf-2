@@ -52,9 +52,15 @@ namespace Fragsurf.Shared
 
         private PoolTimer PoolOrSpawnObject(GameObject prefab, float duration)
         {
-            foreach(var obj in _available)
+            for(int i = _available.Count - 1; i >= 0; i--)
             {
-                if(obj.Prefab == prefab)
+                var obj = _available[i];
+                if (!obj.Instance)
+                {
+                    _available.RemoveAt(i);
+                    continue;
+                }
+                if (obj.Prefab == prefab)
                 {
                     obj.Duration = duration;
                     _available.Remove(obj);
