@@ -62,7 +62,7 @@ namespace Fragsurf.Shared.Entity
                 EntityGameObject = new GameObject("Human").AddComponent<HumanGameObject>();
             }
 
-            MovementController = new DefaultMovementController(this);
+            MovementController = new CSMovementController(this);
             CameraController = new FirstPersonCameraController(this);
         }
 

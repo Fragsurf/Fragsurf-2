@@ -53,7 +53,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             if (!Enabled
                 || !(player.Entity is Human hu)
-                || !(hu.MovementController is DefaultMovementController move)
+                || !(hu.MovementController is CSMovementController move)
                 || move.MoveType != MoveType.Walk)
             {
                 if (_modal.IsOpen)

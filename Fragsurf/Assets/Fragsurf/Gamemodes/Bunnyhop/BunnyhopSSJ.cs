@@ -46,7 +46,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             if(!(player.Entity is Human hu)
                 || !(hu.Timeline is BunnyhopTimeline bhop)
-                || !(hu.MovementController is DefaultMovementController move))
+                || !(hu.MovementController is CSMovementController move))
             {
                 return;
             }
@@ -118,7 +118,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             return false;
         }
 
-        private void GetStats(BunnyhopTimeline tl, SSJData data, Human hu, DefaultMovementController move, bool touchingWall)
+        private void GetStats(BunnyhopTimeline tl, SSJData data, Human hu, CSMovementController move, bool touchingWall)
         {
             var velocity = hu.Velocity;
             velocity.y = 0;

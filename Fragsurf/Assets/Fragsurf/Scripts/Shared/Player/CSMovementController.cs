@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Fragsurf.Shared.Player
 {
-    public class DefaultMovementController : MovementController, ISurfControllable
+    public class CSMovementController : MovementController, ISurfControllable
     {
 
         //private MovementConfig _moveConfig = new MovementConfig();
@@ -27,7 +27,7 @@ namespace Fragsurf.Shared.Player
         public new GameObject GroundObject { get; set; }
         public override bool MouseControlsRotation => true;
 
-        public DefaultMovementController(Human human) 
+        public CSMovementController(Human human) 
             : base(human)
         {
         }

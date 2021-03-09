@@ -15,7 +15,7 @@ namespace Fragsurf.BSP
         protected override void OnStartTouch(NetEntity entity)
         {
             if (!(entity is Human hu)
-                || !(hu.MovementController is DefaultMovementController move))
+                || !(hu.MovementController is CSMovementController move))
             {
                 return;
             }

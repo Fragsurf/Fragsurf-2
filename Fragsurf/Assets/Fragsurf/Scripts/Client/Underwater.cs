@@ -42,7 +42,7 @@ namespace Fragsurf.Client
                 return;
             }
 
-            if(!(_spec.TargetHuman.MovementController is DefaultMovementController move))
+            if(!(_spec.TargetHuman.MovementController is CSMovementController move))
             {
                 SetUnderwater(false);
                 return;

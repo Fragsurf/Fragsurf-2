@@ -111,7 +111,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private void CheckButtons(Human human, ref BunnyhopTimelineFrame frame)
         {
-            if (human.MovementController is DefaultMovementController move)
+            if (human.MovementController is CSMovementController move)
             {
                 frame.Buttons = (int)move.MoveData.Buttons;
 
@@ -133,7 +133,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private void CalculateSync(Human human, ref BunnyhopTimelineFrame frame)
         {
-            if (!(human.MovementController is DefaultMovementController move))
+            if (!(human.MovementController is CSMovementController move))
             {
                 return;
             }

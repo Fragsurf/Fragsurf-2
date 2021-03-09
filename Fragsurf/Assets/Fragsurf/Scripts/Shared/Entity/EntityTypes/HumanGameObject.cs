@@ -228,7 +228,7 @@ namespace Fragsurf.Shared.Entity
         private void OnHumanRunCommand()
         {
             if (!Animator
-                || !(Human.MovementController is DefaultMovementController move))
+                || !(Human.MovementController is CSMovementController move))
             {
                 return;
             }
