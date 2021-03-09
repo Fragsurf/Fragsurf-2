@@ -34,15 +34,16 @@ namespace Fragsurf.Shared.Player
 
             _targetEyeOffset = Vector3.zero;
 
-            if (Viewer is Human player)
+            if (Viewer is Human human)
             {
-                _targetEyeOffset = player.Ducked 
-                    ? player.HumanGameObject.DuckedEyeOffset
-                    : player.HumanGameObject.EyeOffset;
+                _targetEyeOffset = human.Ducked 
+                    ? human.HumanGameObject.DuckedEyeOffset
+                    : human.HumanGameObject.EyeOffset;
                 if (Viewer == Human.Local)
                 {
                     targetAngles = Viewer.Angles;
                 }
+                targetAngles += human.TotalViewPunch();
             }
 
             _eyeOffset = Vector3.SmoothDamp(_eyeOffset, _targetEyeOffset, ref _offsetVelocity, .07f);

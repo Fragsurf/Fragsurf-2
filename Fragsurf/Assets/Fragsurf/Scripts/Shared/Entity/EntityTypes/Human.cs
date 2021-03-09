@@ -1,6 +1,8 @@
 using Fragsurf.Maps;
+using Fragsurf.Movement;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fragsurf.Shared.Entity
@@ -81,6 +83,8 @@ namespace Fragsurf.Shared.Entity
                 InterpolationMode = InterpolationMode.Frame;
                 HasAuthority = true;
             }
+
+            TickPunches();
         }
 
         protected override void _Update()
@@ -91,7 +95,7 @@ namespace Fragsurf.Shared.Entity
 
         public Ray GetEyeRay()
         {
-            var direction = (Quaternion.Euler(Angles/* + Viewpunch + Aimpunch*/) * Vector3.forward).normalized;
+            var direction = (Quaternion.Euler(Angles + TotalViewPunch() + TotalAimPunch()) * Vector3.forward).normalized;
             var eyePosition = Origin + (Ducked ? HumanGameObject.DuckedEyeOffset : HumanGameObject.EyeOffset);
             return new Ray(eyePosition, direction);
         }
@@ -177,6 +181,81 @@ namespace Fragsurf.Shared.Entity
             xz = Vector3.ClampMagnitude(xz, maxXZ);
             xz.y = Mathf.Clamp(vel.y, -maxY, maxY);
             Velocity = xz;
+        }
+
+        private struct PunchData
+        {
+            public float InTime;
+            public float StartTime;
+            public Vector3 View;
+            public Vector3 Aim;
+            public Vector3 CurView;
+            public Vector3 CurAim;
+        }
+
+        private List<PunchData> _punches = new List<PunchData>(128);
+        public void Punch(Vector3 view, Vector3 aim)
+        {
+            _punches.Add(new PunchData()
+            {
+                StartTime = Game.ElapsedTime,
+                View = view,
+                Aim = aim,
+                CurAim = Vector3.zero,
+                CurView = Vector3.zero
+            });
+        }
+
+        public Vector3 TotalAimPunch()
+        {
+            var result = Vector3.zero;
+            foreach (var p in _punches)
+            {
+                result += p.CurAim;
+            }
+            return result;
+        }
+
+        public Vector3 TotalViewPunch()
+        {
+            var result = Vector3.zero;
+            foreach (var p in _punches)
+            {
+                result += p.CurView;
+            }
+            return result;
+        }
+
+        private void TickPunches()
+        {
+            for (int i = _punches.Count - 1; i >= 0; i--)
+            {
+                if (_punches[i].InTime < 0.05f)
+                {
+                    var pd = _punches[i];
+                    pd.InTime += Time.fixedDeltaTime;
+                    pd.CurView = Vector3.Lerp(Vector3.zero, pd.View, pd.InTime / 0.05f);
+                    pd.CurAim = Vector3.Lerp(Vector3.zero, pd.Aim, pd.InTime / 0.05f);
+                    _punches[i] = pd;
+                }
+                else
+                {
+                    var t = Game.ElapsedTime - _punches[i].StartTime;
+                    var view = _punches[i].View.SmoothStep(Vector3.zero, t);
+                    var aim = _punches[i].Aim.SmoothStep(Vector3.zero, t);
+                    if (view == Vector3.zero && aim == Vector3.zero)
+                    {
+                        _punches.RemoveAt(i);
+                    }
+                    else
+                    {
+                        var rep = _punches[i];
+                        rep.CurAim = aim;
+                        rep.CurView = view;
+                        _punches[i] = rep;
+                    }
+                }
+            }
         }
 
     }
