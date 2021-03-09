@@ -23,6 +23,11 @@ namespace Fragsurf.Misc
 
         private void Start()
         {
+            if (!_audioSrc)
+            {
+                _audioSrc = gameObject.AddComponent<AudioSource>();
+            }
+            _audioSrc.rolloffMode = AudioRolloffMode.Linear;
             _audioSrc.spatialBlend = 1.0f;
             _audioSrc.minDistance = .1f;
             _audioSrc.maxDistance = 3f;
