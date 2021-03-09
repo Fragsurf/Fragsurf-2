@@ -77,7 +77,9 @@ namespace Fragsurf.Shared.Entity
                 _boundsCollider.size = new Vector3(.858f, 1.83f, .858f);
             }
 
-            if(!TryGetComponent(out Rigidbody rb))
+            _boundsCollider.gameObject.tag = "Player";
+
+            if (!TryGetComponent(out Rigidbody rb))
             {
                 rb = gameObject.AddComponent<Rigidbody>();
             }

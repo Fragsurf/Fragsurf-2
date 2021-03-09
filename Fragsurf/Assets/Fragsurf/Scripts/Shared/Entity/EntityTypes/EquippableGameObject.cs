@@ -455,7 +455,8 @@ namespace Fragsurf.Shared.Entity
             for (int i = 0; i < hitCount; i++)
             {
                 if (_hitBuffer[i].distance >= dist
-                    || !Entity.Game.Physics.IsTraceable(_hitBuffer[i].collider))
+                    || !Entity.Game.Physics.IsTraceable(_hitBuffer[i].collider)
+                    || _hitBuffer[i].collider.CompareTag("Player"))
                 {
                     continue;
                 }
