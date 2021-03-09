@@ -123,6 +123,8 @@ namespace Fragsurf.Shared.Entity
 
         protected AudioSource CreateAudioSource(float minDistance, float maxDistance, AnimationCurve customRolloff = null)
         {
+            minDistance = Mathf.Max(minDistance, 0.1f);
+
             if (!_audioSourceContainer)
             {
                 _audioSourceContainer = new GameObject("[Audio Sources]");

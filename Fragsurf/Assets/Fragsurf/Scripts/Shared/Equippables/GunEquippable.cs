@@ -45,7 +45,7 @@ namespace Fragsurf.Shared
 
             _fireSrc = CreateAudioSource(0.5f, GunData.FireMaxDistance, GunData.FireRolloff);
             _tailSrc = CreateAudioSource(0.5f, GunData.FireMaxDistance, GunData.FireRolloff);
-            _follySrc = CreateAudioSource(0, 20f);
+            _follySrc = CreateAudioSource(0f, 20f, GunData.FolleyRolloff);
         }
 
         protected override void OnActionDown(int actionId)
@@ -80,6 +80,10 @@ namespace Fragsurf.Shared
             if (Input.GetKeyDown(KeyCode.T))
             {
                 TryFire();
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                _follySrc.PlayOneShot(GunData.ReloadSound);
             }
         }
 

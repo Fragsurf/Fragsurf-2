@@ -26,6 +26,12 @@ namespace Fragsurf.Shared
             new Keyframe(.13f, .807f, -2.8657f, -2.8657f),
             new Keyframe(1f, 0),
         });
+        public AnimationCurve FolleyRolloff = new AnimationCurve(new Keyframe[]
+        {
+            new Keyframe(0, 1.0f),
+            new Keyframe(0.15f, 0.64f, -2f, -2f),
+            new Keyframe(1, 0f)
+        });
         [Header("Ammo")]
         public int RoundsPerClip = 30;
         public int MaxClips = 3;
