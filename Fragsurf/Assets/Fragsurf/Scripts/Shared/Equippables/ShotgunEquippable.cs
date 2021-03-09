@@ -36,7 +36,7 @@ namespace Fragsurf.Shared
             while (RoundsInClip < ShotgunData.RoundsPerClip
                 && ExtraRounds > 0)
             {
-                PlayClip(ShotgunData.InsertShellSound);
+                AudioSource.PlayClip(ShotgunData.InsertShellSound);
                 ViewModel.PlayAnimation("InsertShell", 0.01f);
                 yield return new WaitForSeconds(.7f);
                 RoundsInClip++;
@@ -51,7 +51,7 @@ namespace Fragsurf.Shared
         {
             yield return new WaitForSeconds(ShotgunData.PumpDelay);
             ViewModel.PlayAnimation("Pump");
-            PlayClip(ShotgunData.PumpSound);
+            AudioSource.PlayClip(ShotgunData.PumpSound);
             yield return new WaitForSeconds(ShotgunData.PumpTime);
         }
 

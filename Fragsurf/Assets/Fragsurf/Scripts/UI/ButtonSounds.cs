@@ -1,3 +1,4 @@
+using Fragsurf.Shared;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,6 +19,7 @@ namespace Fragsurf.UI
 
         private Button _btn;
         private AudioSource _src;
+        private GameAudioSource _gameSrc;
 
         private void Start()
         {
@@ -27,6 +29,11 @@ namespace Fragsurf.UI
             _src.spatialBlend = 0;
             _src.volume = 1f;
             _src.loop = false;
+            if(!TryGetComponent(out _gameSrc))
+            {
+                _gameSrc = gameObject.AddComponent<GameAudioSource>();
+            }
+            _gameSrc.Category = SoundCategory.UI;
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
@@ -36,7 +43,7 @@ namespace Fragsurf.UI
                 return;
             }
             SetPan();
-            _src.PlayOneShot(_hover, Random.Range(0.9f, 1f));
+            _gameSrc.PlayClip(_hover, Random.Range(0.9f, 1f));
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
@@ -46,7 +53,7 @@ namespace Fragsurf.UI
                 return;
             }
             SetPan();
-            _src.PlayOneShot(_exit, Random.Range(0.9f, 1f));
+            _gameSrc.PlayClip(_exit, Random.Range(0.9f, 1f));
         }
 
         public void OnPointerDown(PointerEventData eventData)
@@ -56,7 +63,7 @@ namespace Fragsurf.UI
                 return;
             }
             SetPan();
-            _src.PlayOneShot(_click, Random.Range(0.9f, 1f));
+            _gameSrc.PlayClip(_click, Random.Range(0.9f, 1f));
         }
 
         private void SetPan()

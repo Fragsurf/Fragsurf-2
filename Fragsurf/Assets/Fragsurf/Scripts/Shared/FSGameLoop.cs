@@ -47,6 +47,7 @@ namespace Fragsurf.Shared
         public PlayerManager PlayerManager => Get<PlayerManager>(true);
         public FileTransfer FileTransfer => Get<FileTransfer>(true);
         public GameObjectPool Pool => GetFSComponent<GameObjectPool>(true);
+        public GameAudioManager Audio => GetFSComponent<GameAudioManager>(true);
 
         public int ScopeLayer => IsHost ? Layers.Host : Layers.Client;
         public GameObject ObjectContainer { get; private set; }

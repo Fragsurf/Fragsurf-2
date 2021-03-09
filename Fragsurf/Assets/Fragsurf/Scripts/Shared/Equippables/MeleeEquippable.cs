@@ -71,7 +71,7 @@ namespace Fragsurf.Shared
                 }
 
                 ViewModel.PlayAnimation(swingAnim);
-                PlayClip(MeleeData.SwingSound);
+                AudioSource.PlayClip(MeleeData.SwingSound);
             }
 
             yield return new WaitForSeconds(MeleeData.TimeToImpact);
@@ -88,7 +88,7 @@ namespace Fragsurf.Shared
                 && Entity.Game.EntityManager.TryFindEntity(hb.EntityId, out NetEntity ent)
                 && ent is IDamageable dmg)
             {
-                PlayClip(MeleeData.HitFleshSound);
+                AudioSource.PlayClip(MeleeData.HitFleshSound);
                 dmg.Damage(new DamageInfo()
                 {
                     Amount = MeleeData.BaseDamage,

@@ -1,4 +1,5 @@
 using Fragsurf.Actors;
+using Fragsurf.Utility;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Packets;
@@ -81,12 +82,9 @@ namespace Fragsurf.Shared.Player
 
                 DetectTouchingTriggers();
                 TouchTriggers();
-
-                if(Human.Local == Human)
-                {
-                    TickFootstep();
-                }
             }
+
+            TickFootstep();
         }
 
         private static RaycastHit[] _touchBuffer = new RaycastHit[32];
@@ -210,9 +208,14 @@ namespace Fragsurf.Shared.Player
         private float _swimSoundTimer;
         private void PlayFootstepSound(float vol)
         {
-            if(GroundObject == null
-                || Human.HumanGameObject == null
-                || Human.HumanGameObject.FeetAudioSource == null)
+            if (!Human.HumanGameObject || !Human.HumanGameObject.FeetAudioSource)
+            {
+                return;
+            }
+
+            var feetSrc = Human.HumanGameObject.FeetAudioSource;
+
+            if (!GroundObject)
             {
                 if (MoveData.InWater 
                     && MoveData.WaterDepth <= 0.83f
@@ -221,7 +224,7 @@ namespace Fragsurf.Shared.Player
                     && _swimSoundTimer <= 0)
                 {
                     _swimSoundTimer = 2f;
-                    Human.HumanGameObject.FeetAudioSource.PlayOneShot(GameData.Instance.SwimSound, vol);
+                    feetSrc.PlayClip(GameData.Instance.SwimSound, vol);
                 }
                 return;
             }
@@ -269,7 +272,7 @@ namespace Fragsurf.Shared.Player
 
             vol = Mathf.Clamp(vol, 0f, 1f);
 
-            Human.HumanGameObject.FeetAudioSource.PlayOneShot(audioClip, vol);
+            feetSrc.PlayClip(audioClip, vol, true);
         }
 
     }

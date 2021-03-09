@@ -40,9 +40,9 @@ namespace Fragsurf.Shared.Entity
         public BoxCollider BoundsCollider => _boundsCollider;
         public Vector3 EyeOffset => new Vector3(0, _eyeOffset, 0);
         public Vector3 DuckedEyeOffset => new Vector3(0, _eyeOffset - _duckedOffset, 0);
-        public AudioSource FeetAudioSource { get; private set; }
-        public AudioSource HandAudioSource { get; private set; }
-        public AudioSource HeadAudioSource { get; private set; }
+        public GameAudioSource FeetAudioSource { get; private set; }
+        public GameAudioSource HandAudioSource { get; private set; }
+        public GameAudioSource HeadAudioSource { get; private set; }
 
         private Vector3 _rot;
         public override Vector3 Rotation
@@ -58,6 +58,8 @@ namespace Fragsurf.Shared.Entity
 
         protected override void Awake()
         {
+            base.Awake();
+
             if (_viewBody == null)
             {
                 _viewBody = GameObject.CreatePrimitive(PrimitiveType.Capsule);
@@ -81,23 +83,38 @@ namespace Fragsurf.Shared.Entity
             }
 
             rb.isKinematic = true;
+        }
+
+        protected override void Start()
+        {
+            base.Start();
 
             if (_feetAttachment)
             {
-                FeetAudioSource = _feetAttachment.GetComponentInChildren<AudioSource>();
+                if (!_feetAttachment.TryGetComponent(out GameAudioSource src))
+                {
+                    src = CreateAudioSource(SoundCategory.Player, 0.25f, 20f);
+                }
+                FeetAudioSource = src;
             }
 
             if (_headAttachment)
             {
-                HeadAudioSource = _headAttachment.GetComponentInChildren<AudioSource>();
+                if (!_headAttachment.TryGetComponent(out GameAudioSource src))
+                {
+                    src = CreateAudioSource(SoundCategory.Player, 0.25f, 20f);
+                }
+                HeadAudioSource = src;
             }
 
             if (_handAttachment)
             {
-                HandAudioSource = _handAttachment.GetComponentInChildren<AudioSource>();
+                if (!_handAttachment.TryGetComponent(out GameAudioSource src))
+                {
+                    src = CreateAudioSource(SoundCategory.Player, 0.25f, 20f);
+                }
+                HandAudioSource = src;
             }
-
-            base.Awake();
         }
 
         protected override void OnDestroy()
@@ -146,9 +163,9 @@ namespace Fragsurf.Shared.Entity
             {
                 SetVisible(false);
 
-                if (HeadAudioSource && _deathSound)
+                if (HeadAudioSource)
                 {
-                    HeadAudioSource.PlayOneShot(_deathSound, Random.Range(0.75f, 1f));
+                    HeadAudioSource.PlayClip(_deathSound, Random.Range(0.75f, 1f));
                 }
 
                 var killer = Entity.Game.EntityManager.FindEntity(dmgInfo.AttackerEntityId);

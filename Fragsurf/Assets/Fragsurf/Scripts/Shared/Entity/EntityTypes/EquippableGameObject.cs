@@ -34,7 +34,6 @@ namespace Fragsurf.Shared.Entity
         private float _unequipTimer;
         private RaycastHit[] _hitBuffer = new RaycastHit[64];
         private Dictionary<int, bool> _actionDown = new Dictionary<int, bool>();
-        private GameObject _audioSourceContainer;
 
         public Equippable Equippable => Entity as Equippable;
         public EquippableWorldModel WorldModel { get; private set; }
@@ -88,14 +87,6 @@ namespace Fragsurf.Shared.Entity
                 rb.isKinematic = true;
             }
 
-            AudioSource = CreateAudioSource(0.2f, 10f);
-
-            //if (!Entity.Game.IsHost
-            //    && WorldModel.TryGetComponent(out Rigidbody rb))
-            //{
-            //    rb.isKinematic = true;
-            //}
-
             if (Data.ViewModelPrefab)
             {
                 ViewModel = GameObject.Instantiate<EquippableViewModel>(Data.ViewModelPrefab);
@@ -116,34 +107,11 @@ namespace Fragsurf.Shared.Entity
             viewModelCamera.cullingMask = 1 << Layers.Viewmodel;
             //viewModelCamera.tag = "ViewModelCamera";
 
+            AudioSource = CreateAudioSource(SoundCategory.Weapon, 0.2f, 10f);
+
             CleanRealm();
 
             _Init();
-        }
-
-        protected AudioSource CreateAudioSource(float minDistance, float maxDistance, AnimationCurve customRolloff = null)
-        {
-            minDistance = Mathf.Max(minDistance, 0.1f);
-
-            if (!_audioSourceContainer)
-            {
-                _audioSourceContainer = new GameObject("[Audio Sources]");
-                _audioSourceContainer.transform.SetParent(transform);
-            }
-
-            var obj = new GameObject("_");
-            obj.transform.SetParent(_audioSourceContainer.transform);
-            var result = obj.AddComponent<AudioSource>();
-            result.rolloffMode = AudioRolloffMode.Logarithmic;
-            result.spatialBlend = 1f;
-            result.maxDistance = maxDistance;
-            result.minDistance = minDistance;
-            if(customRolloff != null)
-            {
-                result.rolloffMode = AudioRolloffMode.Custom;
-                result.SetCustomCurve(AudioSourceCurveType.CustomRolloff, customRolloff);
-            }
-            return result;
         }
 
         protected virtual void _Init() { }
@@ -214,7 +182,7 @@ namespace Fragsurf.Shared.Entity
                 ViewModel.PlayAnimation("Equip", 0);
             }
 
-            PlayClip(Data.EquipSound);
+            AudioSource.PlayClip(Data.EquipSound, 1f, true);
 
             WorldModel.gameObject.SetCollidersEnabled(false);
 
@@ -325,14 +293,19 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
-        public void PlayClip(AudioClip clip)
+        public void PlayClip(AudioSource src, AudioClip clip, bool stop = false)
         {
-            if (!clip || !AudioSource || Entity.Game.IsHost)
+            if (!clip || !src || Entity.Game.IsHost)
             {
                 return;
             }
 
-            AudioSource.PlayOneShot(clip, 1.0f);
+            if (stop)
+            {
+                src.Stop();
+            }
+
+            src.PlayOneShot(clip, 1.0f);
         }
 
         protected virtual void ImpactEffect(RaycastHit hit)

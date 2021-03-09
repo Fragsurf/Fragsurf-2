@@ -20,9 +20,9 @@ namespace Fragsurf.Shared
         private bool _reloading;
         private float _fireTimer;
         private GunEffectTrigger[] _gunEffectTriggers;
-        private AudioSource _fireSrc;
-        private AudioSource _follySrc;
-        private AudioSource _tailSrc;
+        private GameAudioSource _fireSrc;
+        private GameAudioSource _foley;
+        private GameAudioSource _tailSrc;
 
         [NetProperty]
         public int ZoomLevel
@@ -43,9 +43,10 @@ namespace Fragsurf.Shared
 
             _gunEffectTriggers = GetComponentsInChildren<GunEffectTrigger>(true);
 
-            _fireSrc = CreateAudioSource(0.5f, GunData.FireMaxDistance, GunData.FireRolloff);
-            _tailSrc = CreateAudioSource(0.5f, GunData.FireMaxDistance, GunData.FireRolloff);
-            _follySrc = CreateAudioSource(0f, 20f, GunData.FolleyRolloff);
+            _fireSrc = CreateAudioSource(SoundCategory.Weapon, 0.5f, GunData.FireMaxDistance, GunData.FireRolloff);
+            _tailSrc = CreateAudioSource(SoundCategory.Weapon, 0.5f, GunData.FireMaxDistance, GunData.FireRolloff);
+            _foley = CreateAudioSource(SoundCategory.Weapon, 0f, 20f, GunData.FolleyRolloff);
+            AudioSource = _foley;
         }
 
         protected override void OnActionDown(int actionId)
@@ -106,7 +107,7 @@ namespace Fragsurf.Shared
 
             _zoomLevel = zoom;
 
-            _follySrc.PlayOneShot(GunData.ScopeSound);
+            _foley.PlayClip(GunData.ScopeSound);
 
             var vmLayer = _zoomLevel == 0
                 ? Layers.Viewmodel
@@ -140,7 +141,7 @@ namespace Fragsurf.Shared
             {
                 _tryFireRequiresRelease = true;
                 ViewModel.PlayAnimation("DryFire");
-                _follySrc.PlayOneShot(GunData.DryFireSound);
+                _foley.PlayClip(GunData.DryFireSound);
                 TryReload();
                 return;
             }
@@ -190,14 +191,14 @@ namespace Fragsurf.Shared
             {
                 SetZoomLevel(0);
                 ViewModel.PlayAnimation("Reload");
-                _follySrc.PlayOneShot(GunData.ReloadSound);
+                _foley.PlayClip(GunData.ReloadSound, 1f, true);
                 yield return new WaitForSeconds(GunData.ReloadTime);
                 var delta = Mathf.Min(ExtraRounds, GunData.RoundsPerClip) - RoundsInClip;
                 ExtraRounds -= delta;
                 RoundsInClip += delta;
                 if (GunData.FiringMode == GunFiringMode.BoltAction)
                 {
-                    _follySrc.PlayOneShot(GunData.BoltActionSound);
+                    _foley.PlayClip(GunData.BoltActionSound);
                     ViewModel.PlayAnimation("BoltAction");
                     yield return new WaitForSeconds(GunData.BoltActionTime);
                 }
@@ -217,16 +218,16 @@ namespace Fragsurf.Shared
                 Equippable.Random.Range(GunData.AimPunchMin.z, GunData.AimPunchMax.z));
             Equippable.Human?.Punch(punch, Vector3.zero);
 
+            _fireSrc.PlayClip(GunData.FireSound);
+
             if (Entity.Game.IsHost)
             {
                 return;
             }
 
-            _fireSrc.PlayOneShot(GunData.FireSound);
-
             if (Equippable.Human != null && Equippable.Human.IsFirstPerson)
             {
-                _tailSrc.PlayOneShot(GunData.FireTailSound);
+                _tailSrc.PlayClip(GunData.FireTailSound);
             }
 
             ViewModel.PlayAnimation("Fire");
@@ -254,7 +255,7 @@ namespace Fragsurf.Shared
 
             if (GunData.FiringMode == GunFiringMode.BoltAction)
             {
-                _follySrc.PlayOneShot(GunData.BoltActionSound);
+                _foley.PlayClip(GunData.BoltActionSound);
                 ViewModel.PlayAnimation("BoltAction");
             }
 

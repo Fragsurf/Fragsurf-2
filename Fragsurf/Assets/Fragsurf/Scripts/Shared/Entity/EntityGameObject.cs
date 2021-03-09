@@ -14,6 +14,8 @@ namespace Fragsurf.Shared.Entity
         [SerializeField]
         protected Animator _animator;
 
+        protected GameObject _audioSourceContainer;
+
         public virtual Vector3 Position
         {
             get => transform.position;
@@ -42,10 +44,11 @@ namespace Fragsurf.Shared.Entity
                         hb.EntityId = _entity.EntityId;
                     }
                 }
+                SetAudioSourceRealms(_entity != null ? _entity.Game.IsHost : false);
             }
         }
 
-        public AudioSource AudioSource { get; protected set; }
+        public GameAudioSource AudioSource { get; protected set; }
         public Animator Animator => _animator;
         public HitboxBehaviour[] Hitboxes { get; private set; }
         public Renderer[] Renderers { get; private set; }
@@ -60,7 +63,7 @@ namespace Fragsurf.Shared.Entity
             {
                 _animator = GetComponentInChildren<Animator>();
             }
-            AudioSource = GetComponentInChildren<AudioSource>();
+            AudioSource = GetComponentInChildren<GameAudioSource>();
             Renderers = gameObject.GetComponentsInChildren<Renderer>();
             Hitboxes = gameObject.GetComponentsInChildren<HitboxBehaviour>();
         }
@@ -108,6 +111,51 @@ namespace Fragsurf.Shared.Entity
             foreach (Renderer r in Renderers)
             {
                 r.enabled = visible;
+            }
+        }
+
+        protected GameAudioSource CreateAudioSource(SoundCategory cat, float minDistance, float maxDistance, AnimationCurve customRolloff = null)
+        {
+            minDistance = Mathf.Max(minDistance, 0.1f);
+
+            if (!_audioSourceContainer)
+            {
+                _audioSourceContainer = new GameObject("[Audio Sources]");
+                _audioSourceContainer.transform.SetParent(transform);
+            }
+
+            var obj = new GameObject("_");
+            obj.transform.SetParent(_audioSourceContainer.transform);
+            var result = obj.AddComponent<GameAudioSource>();
+            result.Category = cat;
+            result.Src.rolloffMode = AudioRolloffMode.Linear;
+            result.Src.spatialBlend = 1f;
+            result.Src.maxDistance = maxDistance;
+            result.Src.minDistance = minDistance;
+            if(Entity != null)
+            {
+                result.IsHost = Entity.Game.IsHost;
+            }
+            if (customRolloff != null)
+            {
+                result.Src.rolloffMode = AudioRolloffMode.Custom;
+                result.Src.SetCustomCurve(AudioSourceCurveType.CustomRolloff, customRolloff);
+            }
+            return result;
+        }
+
+        private void SetAudioSourceRealms(bool isHost)
+        {
+            if (AudioSource)
+            {
+                AudioSource.IsHost = isHost;
+            }
+            if (_audioSourceContainer)
+            {
+                foreach (var src in _audioSourceContainer.GetComponentsInChildren<GameAudioSource>(true))
+                {
+                    src.IsHost = isHost;
+                }
             }
         }
 

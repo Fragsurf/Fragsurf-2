@@ -1,3 +1,4 @@
+using Fragsurf.Shared;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,21 +11,26 @@ public class ImpactSoundOnEnable : MonoBehaviour
     private AudioClip[] _clips;
 
     private AudioSource _src;
+    private GameAudioSource _gameSrc;
 
     private void Awake()
     {
         _src = GetComponent<AudioSource>();
+        if(!TryGetComponent(out _gameSrc))
+        {
+            _gameSrc = gameObject.AddComponent<GameAudioSource>();
+        }
+        _gameSrc.Category = SoundCategory.Effects;
     }
 
     private void OnEnable()
     {
         if(_clips.Length == 0)
         {
-            _src.Play();
+            _gameSrc.PlayClip(_src.clip);
             return;
         }
-        _src.clip = _clips[Random.Range(0, _clips.Length)];
-        _src.Play();
+        _gameSrc.PlayClip(_clips[Random.Range(0, _clips.Length)]);
     }
 
 }
