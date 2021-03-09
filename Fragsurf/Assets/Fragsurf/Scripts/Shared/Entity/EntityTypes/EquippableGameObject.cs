@@ -428,10 +428,13 @@ namespace Fragsurf.Shared.Entity
             // todo: Implement IDisposable to give lag compensator a clean, safe rewind block
             try
             {
-                if(Equippable.Human != null && Equippable.Human.HumanGameObject)
+                if(Equippable.Human != null)
                 {
                     RewindLagCompensator();
-                    Equippable.Human.HumanGameObject.SetLayersToIgnore();
+                    if (Equippable.Human.HumanGameObject)
+                    {
+                        Equippable.Human.HumanGameObject.SetLayersToIgnore();
+                    }
                 }
 
                 if (radius > 0)
@@ -456,10 +459,13 @@ namespace Fragsurf.Shared.Entity
             }
             finally
             {
-                if (Equippable.Human != null && Equippable.Human.HumanGameObject)
+                if (Equippable.Human != null)
                 {
                     RestoreLagCompensator();
-                    Equippable.Human.HumanGameObject.ResetLayers();
+                    if (Equippable.Human.HumanGameObject)
+                    {
+                        Equippable.Human.HumanGameObject.ResetLayers();
+                    }
                 }
             }
 
