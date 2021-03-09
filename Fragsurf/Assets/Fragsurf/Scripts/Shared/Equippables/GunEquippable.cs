@@ -73,20 +73,6 @@ namespace Fragsurf.Shared
             _tryFireRequiresRelease = false;
         }
 
-        protected override void _Update()
-        {
-            base._Update();
-
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                TryFire();
-            }
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                _follySrc.PlayOneShot(GunData.ReloadSound);
-            }
-        }
-
         protected override void _Tick()
         {
             base._Tick();
