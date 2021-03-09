@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +20,61 @@ namespace Fragsurf.Utility
         }
 
         // TRANSFORM/GAMEOBJECT
+
+        public static T GetCopyOf<T>(this Component comp, T other) where T : Component
+        {
+            var type = comp.GetType();
+            if (type != other.GetType())
+            {
+                return null;
+            }
+
+            var flags = BindingFlags.Public 
+                | BindingFlags.NonPublic 
+                | BindingFlags.Instance 
+                | BindingFlags.Default 
+                | BindingFlags.DeclaredOnly;
+
+            var pinfos = type.GetProperties(flags);
+            foreach (var pinfo in pinfos)
+            {
+                if (!pinfo.CanWrite)
+                {
+                    continue;
+                }
+                var obsolete = false;
+                foreach (var data in pinfo.CustomAttributes)
+                {
+                    if (data.AttributeType == typeof(ObsoleteAttribute))
+                    {
+                        obsolete = true;
+                        break;
+                    }
+                }
+                if (obsolete)
+                {
+                    continue;
+                }
+                try
+                {
+                    pinfo.SetValue(comp, pinfo.GetValue(other, null), null);
+                }
+                catch { }
+            }
+
+            var finfos = type.GetFields(flags);
+            foreach (var finfo in finfos)
+            {
+                finfo.SetValue(comp, finfo.GetValue(other));
+            }
+
+            return comp as T;
+        }
+
+        public static T AddComponent<T>(this GameObject go, T toAdd) where T : Component
+        {
+            return go.AddComponent<T>().GetCopyOf(toAdd) as T;
+        }
 
         public static T GetOrAddComponent<T>(this GameObject gameObject)
             where T : Component

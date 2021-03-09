@@ -45,7 +45,7 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
-        public AudioSource AudioSource { get; private set; }
+        public AudioSource AudioSource { get; protected set; }
         public Animator Animator => _animator;
         public HitboxBehaviour[] Hitboxes { get; private set; }
         public Renderer[] Renderers { get; private set; }

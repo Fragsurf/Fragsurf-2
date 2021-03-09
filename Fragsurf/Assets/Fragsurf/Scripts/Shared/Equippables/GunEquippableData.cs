@@ -18,6 +18,14 @@ namespace Fragsurf.Shared
         public AudioClip BoltActionSound;
         public AudioClip ScopeSound;
         public AudioClip DryFireSound;
+        public float FireMaxDistance = 100f;
+        public AnimationCurve FireRolloff = new AnimationCurve(new Keyframe[]
+        {
+            new Keyframe(0, 1.0f),
+            new Keyframe(.02f, 1.0f),
+            new Keyframe(.13f, .807f, -2.8657f, -2.8657f),
+            new Keyframe(1f, 0),
+        });
         [Header("Ammo")]
         public int RoundsPerClip = 30;
         public int MaxClips = 3;

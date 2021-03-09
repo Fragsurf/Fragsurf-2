@@ -16,7 +16,7 @@ namespace Fragsurf.Shared
         [Header("Base Equippable")]
         public string Name;
         public ItemSlot Slot;
-        public GameObject WorldModelPrefab;
+        public EquippableWorldModel WorldModelPrefab;
         public EquippableViewModel ViewModelPrefab;
         public EquippableAnimationLayer PlayerAnimationLayer;
         public AudioClip EquipSound;

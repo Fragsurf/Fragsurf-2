@@ -34,9 +34,10 @@ namespace Fragsurf.Shared.Entity
         private float _unequipTimer;
         private RaycastHit[] _hitBuffer = new RaycastHit[64];
         private Dictionary<int, bool> _actionDown = new Dictionary<int, bool>();
+        private GameObject _audioSourceContainer;
 
         public Equippable Equippable => Entity as Equippable;
-        public GameObject WorldModel { get; private set; }
+        public EquippableWorldModel WorldModel { get; private set; }
         public EquippableViewModel ViewModel { get; private set; }
 
         public override Vector3 Position 
@@ -70,11 +71,11 @@ namespace Fragsurf.Shared.Entity
 
             if (Data.WorldModelPrefab)
             {
-                WorldModel = GameObject.Instantiate<GameObject>(Data.WorldModelPrefab);
+                WorldModel = GameObject.Instantiate<EquippableWorldModel>(Data.WorldModelPrefab);
             }
             else
             {
-                WorldModel = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Equippables/MissingWorldModel"));
+                WorldModel = GameObject.Instantiate<EquippableWorldModel>(Resources.Load<EquippableWorldModel>("Equippables/MissingWorldModel"));
             }
             WorldModel.transform.SetParent(transform, true);
             WorldModel.gameObject.SetActive(false);
@@ -86,6 +87,8 @@ namespace Fragsurf.Shared.Entity
             {
                 rb.isKinematic = true;
             }
+
+            AudioSource = CreateAudioSource(0.2f, 10f);
 
             //if (!Entity.Game.IsHost
             //    && WorldModel.TryGetComponent(out Rigidbody rb))
@@ -116,6 +119,29 @@ namespace Fragsurf.Shared.Entity
             CleanRealm();
 
             _Init();
+        }
+
+        protected AudioSource CreateAudioSource(float minDistance, float maxDistance, AnimationCurve customRolloff = null)
+        {
+            if (!_audioSourceContainer)
+            {
+                _audioSourceContainer = new GameObject("[Audio Sources]");
+                _audioSourceContainer.transform.SetParent(transform);
+            }
+
+            var obj = new GameObject("_");
+            obj.transform.SetParent(_audioSourceContainer.transform);
+            var result = obj.AddComponent<AudioSource>();
+            result.rolloffMode = AudioRolloffMode.Logarithmic;
+            result.spatialBlend = 1f;
+            result.maxDistance = maxDistance;
+            result.minDistance = minDistance;
+            if(customRolloff != null)
+            {
+                result.rolloffMode = AudioRolloffMode.Custom;
+                result.SetCustomCurve(AudioSourceCurveType.CustomRolloff, customRolloff);
+            }
+            return result;
         }
 
         protected virtual void _Init() { }
@@ -149,6 +175,22 @@ namespace Fragsurf.Shared.Entity
                 }
             }
 
+            if (_audioSourceContainer)
+            {
+                var origin = Vector3.zero;
+                if (Equippable.Human != null
+                        && Equippable.Human.EntityGameObject
+                        && Equippable.Human.HumanGameObject.HandAttachment)
+                {
+                    origin = Equippable.Human.HumanGameObject.HeadAttachment.position;
+                }
+                else if (WorldModel != null)
+                {
+                    origin = WorldModel.transform.position;
+                }
+                _audioSourceContainer.transform.position = origin;
+            }
+
             SetVisibility();
         }
         
@@ -170,9 +212,9 @@ namespace Fragsurf.Shared.Entity
                 ViewModel.PlayAnimation("Equip", 0);
             }
 
-            PlaySound(Data.EquipSound, true);
+            PlayClip(Data.EquipSound);
 
-            WorldModel.SetCollidersEnabled(false);
+            WorldModel.gameObject.SetCollidersEnabled(false);
 
             OnEquip?.Invoke();
         }
@@ -198,7 +240,7 @@ namespace Fragsurf.Shared.Entity
 
             StopAllCoroutines();
 
-            WorldModel.SetCollidersEnabled(true);
+            WorldModel.gameObject.SetCollidersEnabled(true);
 
             OnUnequip?.Invoke();
         }
@@ -281,22 +323,14 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
-        public void PlaySound(AudioClip clip, bool usePersistentInstance = false)
+        public void PlayClip(AudioClip clip)
         {
-            if (Entity.Game.IsHost
-                || Equippable.Human == null
-                || Equippable.Human.HumanGameObject == null
-                || Equippable.Human.HumanGameObject.AudioSource == null)
+            if (!clip || !AudioSource || Entity.Game.IsHost)
             {
                 return;
             }
 
-            if (usePersistentInstance)
-            {
-                // stop persisting sound
-            }
-
-            Equippable.Human.HumanGameObject.AudioSource.PlayOneShot(clip, 1.0f);
+            AudioSource.PlayOneShot(clip, 1.0f);
         }
 
         protected virtual void ImpactEffect(RaycastHit hit)
@@ -368,11 +402,20 @@ namespace Fragsurf.Shared.Entity
         protected void RestoreLagCompensator()
         {
             if (!Entity.Game.IsHost)
+            {
                 return;
+            }
 
-            Equippable.Human.DisableLagCompensation = true;
-            Entity.Game.LagCompensator.Restore();
-            Equippable.Human.DisableLagCompensation = false;
+            if (Equippable.Human != null)
+            {
+                Equippable.Human.DisableLagCompensation = true;
+                Entity.Game.LagCompensator.Restore();
+                Equippable.Human.DisableLagCompensation = false;
+            }
+            else
+            {
+                Entity.Game.LagCompensator.Restore();
+            }
         }
 
         protected bool TraceNearestHit(Ray ray, float radius, float maxDist, out RaycastHit hit)
@@ -380,11 +423,16 @@ namespace Fragsurf.Shared.Entity
             hit = default;
             int hitCount = 0;
 
+            
+
             // todo: Implement IDisposable to give lag compensator a clean, safe rewind block
             try
             {
-                RewindLagCompensator();
-                Equippable.Human.HumanGameObject.SetLayersToIgnore();
+                if(Equippable.Human != null && Equippable.Human.HumanGameObject)
+                {
+                    RewindLagCompensator();
+                    Equippable.Human.HumanGameObject.SetLayersToIgnore();
+                }
 
                 if (radius > 0)
                 {
@@ -408,8 +456,11 @@ namespace Fragsurf.Shared.Entity
             }
             finally
             {
-                RestoreLagCompensator();
-                Equippable.Human.HumanGameObject.ResetLayers();
+                if (Equippable.Human != null && Equippable.Human.HumanGameObject)
+                {
+                    RestoreLagCompensator();
+                    Equippable.Human.HumanGameObject.ResetLayers();
+                }
             }
 
             if (hitCount == 0)
@@ -444,7 +495,15 @@ namespace Fragsurf.Shared.Entity
 
         protected bool TraceNearestHit(float radius, float maxDist, out RaycastHit hit)
         {
-            var ray = Equippable.Human.GetEyeRay();
+            Ray ray = default;
+            if(Equippable.Human != null)
+            {
+                ray = Equippable.Human.GetEyeRay();
+            }
+            else
+            {
+                // ray = world model + forward?
+            }
             return TraceNearestHit(ray, radius, maxDist, out hit);
         }
 

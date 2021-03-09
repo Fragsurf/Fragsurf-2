@@ -5,10 +5,11 @@ using UnityEngine;
 
 namespace Fragsurf.Misc
 {
-    [RequireComponent(typeof(AudioSource))]
     public class PhysicsFidelityObject : MonoBehaviour, IClientComponent
     {
 
+        [SerializeField]
+        private AudioSource _audioSrc;
         [SerializeField]
         private float _soundDelay = .25f;
         [SerializeField]
@@ -17,13 +18,14 @@ namespace Fragsurf.Misc
         private float _velocityMaxVolume = 2f;
 
         private float _soundTimer;
-        private AudioSource _source;
 
         private static Collider[] _overlapResult = new Collider[32];
 
         private void Start()
         {
-            _source = GetComponent<AudioSource>();
+            _audioSrc.spatialBlend = 1.0f;
+            _audioSrc.minDistance = .1f;
+            _audioSrc.maxDistance = 3f;
         }
 
         void OnCollisionEnter(Collision coll)
@@ -48,7 +50,7 @@ namespace Fragsurf.Misc
             if(GameData.Instance.TryGetPhysicsSound(surfaceType, out AudioClip clip))
             {
                 var vol = Mathf.Lerp(0, 1, coll.relativeVelocity.magnitude / _velocityMaxVolume);
-                _source.PlayOneShot(clip, vol);
+                _audioSrc.PlayOneShot(clip, vol);
                 _soundTimer = _soundDelay;
             }
         }
