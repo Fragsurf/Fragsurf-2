@@ -31,6 +31,7 @@ namespace Fragsurf.UI
         [SerializeField]
         private AudioSource _chatMessageSrc;
 
+        private GameAudioSource _gameSrc;
         private TextChat _textChat;
         private Modal_ChatboxChatEntry _chatTemplate;
         private Modal_ChatboxAutoCompleteEntry _autoCompleteTemplate;
@@ -50,6 +51,12 @@ namespace Fragsurf.UI
             HookTextChat();
 
             SteamFriends.OnClanChatMessage += SteamFriends_OnClanChatMessage;
+
+            if (_chatMessageSrc)
+            {
+                _gameSrc = _chatMessageSrc.gameObject.AddComponent<GameAudioSource>();
+                _gameSrc.Category = SoundCategory.UI;
+            }
         }
 
         protected override void OnDestroy()
@@ -230,7 +237,11 @@ namespace Fragsurf.UI
                 ClanTag = clanTag
             });
 
-            if (_chatMessageSrc)
+            if (_gameSrc)
+            {
+                _gameSrc.PlayClip(_chatMessageSrc.clip, _chatMessageSrc.volume);
+            }
+            else
             {
                 _chatMessageSrc.Play();
             }
