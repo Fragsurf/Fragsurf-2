@@ -42,6 +42,16 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             hu.Spawn();
         }
 
+        [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]
+        public void Give(IPlayer player, string item)
+        {
+            if (!Game.IsHost || !(player.Entity is Human hu))
+            {
+                return;
+            }
+            hu.Give(item);
+        }
+
     }
 }
 

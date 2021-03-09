@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Fragsurf.Shared.Entity
 {
-    public class Human : NetEntity
+    public class Human : NetEntity, IDamageable
     {
 
         public MovementController MovementController;
@@ -40,6 +40,8 @@ namespace Fragsurf.Shared.Entity
         }
         [NetProperty]
         public bool Ducked { get; set; }
+
+        public bool Dead => false;
 
         protected override void _Start()
         {
@@ -256,6 +258,11 @@ namespace Fragsurf.Shared.Entity
                     }
                 }
             }
+        }
+
+        public void Damage(DamageInfo dmgInfo)
+        {
+            Debug.Log("Ouch: " + dmgInfo.Amount);
         }
 
     }
