@@ -215,7 +215,7 @@ namespace Fragsurf.Shared
             var punch = new Vector3(Equippable.Random.Range(GunData.AimPunchMin.x, GunData.AimPunchMax.x),
                 Equippable.Random.Range(GunData.AimPunchMin.y, GunData.AimPunchMax.y),
                 Equippable.Random.Range(GunData.AimPunchMin.z, GunData.AimPunchMax.z));
-            Equippable.Human.Punch(punch, Vector3.zero);
+            Equippable.Human?.Punch(punch, Vector3.zero);
 
             if (Entity.Game.IsHost)
             {
