@@ -25,6 +25,8 @@ namespace Fragsurf.Shared
         public float TimeToEquip = .5f;
         public float TimeToUnequip = .5f;
 
+        public virtual ImpactType ImpactType { get; } = ImpactType.Bullet;
+
         public abstract Type ComponentType { get; }
 
     }

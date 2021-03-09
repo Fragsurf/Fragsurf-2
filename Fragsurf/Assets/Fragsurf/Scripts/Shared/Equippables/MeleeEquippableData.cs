@@ -8,6 +8,7 @@ namespace Fragsurf.Shared
     public class MeleeEquippableData : BaseEquippableData
     {
 
+        public override ImpactType ImpactType => _ImpactType;
         public override Type ComponentType => typeof(MeleeEquippable);
 
         [Header("Animations")]
@@ -20,6 +21,7 @@ namespace Fragsurf.Shared
         public int BaseDamage = 50;
         public float HitRange = 2f;
         public float HitRadius = .1f;
+        public ImpactType _ImpactType = ImpactType.Slash;
 
         [Header("Audio")]
         public AudioClip SwingSound;

@@ -227,7 +227,7 @@ namespace Fragsurf.Shared
 
             if (Equippable.Human != null && Equippable.Human.IsFirstPerson)
             {
-                _tailSrc.PlayClip(GunData.FireTailSound);
+                _tailSrc.PlayClip(GunData.FireTailSound, 1.0f, true);
             }
 
             ViewModel.PlayAnimation("Fire");

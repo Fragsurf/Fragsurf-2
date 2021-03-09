@@ -103,6 +103,7 @@ namespace Fragsurf.Shared
             }
             else
             {
+                AudioSource.PlayClip(MeleeData.HitSolidSound);
                 ImpactEffect(hit);
             }
         }

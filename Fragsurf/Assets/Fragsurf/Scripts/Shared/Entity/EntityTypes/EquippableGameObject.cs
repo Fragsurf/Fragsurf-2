@@ -324,7 +324,7 @@ namespace Fragsurf.Shared.Entity
                 {
                     matType = mi.SurfaceType;
                 }
-                if(GameData.Instance.TryGetImpactPrefab(matType, out GameObject prefab))
+                if(GameData.Instance.TryGetImpactPrefab(Data.ImpactType, matType, out GameObject prefab))
                 {
                     var effect = Entity.Game.Pool.Get(prefab, 10f);
                     effect.transform.position = hit2.point;

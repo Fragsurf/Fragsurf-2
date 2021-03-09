@@ -64,18 +64,48 @@ namespace Fragsurf.Shared
             return clip != null;
         }
 
+        public bool TryGetImpactPrefab(ImpactType impactType, SurfaceType surfaceType, out GameObject prefab)
+        {
+            prefab = null;
+            var cfg = GetSurfaceConfig(surfaceType);
+            if (cfg == null)
+            {
+                return false;
+            }
+            GameObject[] prefabArr = null;
+            switch (impactType)
+            {
+                case ImpactType.Bullet:
+                    prefabArr = cfg.BulletImpactEffects;
+                    break;
+                case ImpactType.Blunt:
+                    prefabArr = cfg.BluntImpactEffects;
+                    break;
+                case ImpactType.Slash:
+                    prefabArr = cfg.SlashImpactEffects;
+                    break;
+            }
+            if(prefabArr == null || prefabArr.Length == 0)
+            {
+                return false;
+            }
+            prefab = prefabArr[UnityEngine.Random.Range(0, prefabArr.Length)];
+            return true && prefab;
+        }
+
         public bool TryGetImpactPrefab(SurfaceType surfaceType, out GameObject prefab) => (prefab = GetImpactEffect(surfaceType)) != null;
 
         private GameObject GetImpactEffect(SurfaceType surfaceType)
         {
-            var cfg = GetSurfaceConfig(surfaceType);
-            if (cfg == null)
-            {
-                return null;
-            }
-            return cfg.BulletImpactEffects.Length > 0
-                ? cfg.BulletImpactEffects[UnityEngine.Random.Range(0, cfg.BulletImpactEffects.Length)]
-                : null;
+            return null;
+            //var cfg = GetSurfaceConfig(surfaceType);
+            //if (cfg == null)
+            //{
+            //    return null;
+            //}
+            //return cfg.BulletImpactEffects.Length > 0
+            //    ? cfg.BulletImpactEffects[UnityEngine.Random.Range(0, cfg.BulletImpactEffects.Length)]
+            //    : null;
         }
 
         private SurfaceTypeConfig GetSurfaceConfig(SurfaceType surfaceType)
@@ -95,4 +125,12 @@ namespace Fragsurf.Shared
         }
 
     }
+
+    public enum ImpactType
+    {
+        Bullet,
+        Slash,
+        Blunt
+    }
+
 }

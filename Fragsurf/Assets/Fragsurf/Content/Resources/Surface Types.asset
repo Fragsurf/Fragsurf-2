@@ -16,6 +16,10 @@ MonoBehaviour:
   - SurfaceType: 1
     BulletImpactEffects:
     - {fileID: 1870241236171668699, guid: 0b626ae43b214d14481e95bbd992edbe, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 74664c2b24a9a8f4095ba4bb8dc08873, type: 3}
     - {fileID: 8300000, guid: 77614f1f902ec454281afcee232cd503, type: 3}
@@ -25,6 +29,10 @@ MonoBehaviour:
   - SurfaceType: 2
     BulletImpactEffects:
     - {fileID: 1870241236171668699, guid: 0b626ae43b214d14481e95bbd992edbe, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 66b605fce2b964d409eacd2c60758e25, type: 3}
     - {fileID: 8300000, guid: 7d1f43065fcdddd4db975cbe9920b805, type: 3}
@@ -34,6 +42,10 @@ MonoBehaviour:
   - SurfaceType: 3
     BulletImpactEffects:
     - {fileID: 1213103672126206595, guid: 4e5177e866285f748901d6fb1b146105, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 5f595048db9b73644bf872efd130cd0d, type: 3}
     - {fileID: 8300000, guid: dfcd0104f8bd9f54d8bcb0730abc3cd6, type: 3}
@@ -43,6 +55,10 @@ MonoBehaviour:
   - SurfaceType: 4
     BulletImpactEffects:
     - {fileID: 1407161024741387463, guid: 1b3188fbdb392ef4197deb35232e37fb, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: ad5bc2175532d604586eee705e144ee4, type: 3}
     - {fileID: 8300000, guid: 97d522e351831b94fb50a30875f15d30, type: 3}
@@ -52,6 +68,10 @@ MonoBehaviour:
   - SurfaceType: 5
     BulletImpactEffects:
     - {fileID: 8946173193281812791, guid: b956dd5a84dbf0a488b8c87ddd94ca50, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: e1c719656e908d64bbdd24c3e8c579f2, type: 3}
     - {fileID: 8300000, guid: 0a6037cd4ae526f4bb20529d861d7872, type: 3}
@@ -61,6 +81,10 @@ MonoBehaviour:
   - SurfaceType: 6
     BulletImpactEffects:
     - {fileID: 6472749962501309942, guid: 4beaa58189398a14fad2aa47e30295d8, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 516b5f979bf606c4cae4473d136a7feb, type: 3}
     - {fileID: 8300000, guid: 52aa8e1d2ca43b44ebf7ef371b6eb50b, type: 3}
@@ -72,6 +96,10 @@ MonoBehaviour:
   - SurfaceType: 7
     BulletImpactEffects:
     - {fileID: 8036871958576604112, guid: aa2d44feb3ac55a4f932e4a973e73d09, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 7f6a3914ad256924d9771984f687a1ff, type: 3}
     - {fileID: 8300000, guid: 6f03e114366b1a242ba9bbe68dcb85ff, type: 3}
@@ -81,6 +109,10 @@ MonoBehaviour:
   - SurfaceType: 8
     BulletImpactEffects:
     - {fileID: 1213103672126206595, guid: 4e5177e866285f748901d6fb1b146105, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 021e38a8e3127484fb2fa71510621a72, type: 3}
     - {fileID: 8300000, guid: ce2499f7c6dafc94bb8d72f5a284ee52, type: 3}
@@ -90,6 +122,10 @@ MonoBehaviour:
   - SurfaceType: 9
     BulletImpactEffects:
     - {fileID: 1870241236171668699, guid: 0b626ae43b214d14481e95bbd992edbe, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 03cd63f312b0f3a4f9bd762f3cdbac76, type: 3}
     - {fileID: 8300000, guid: cb4369bf35218614b91d055275b0914c, type: 3}
@@ -99,6 +135,10 @@ MonoBehaviour:
   - SurfaceType: 10
     BulletImpactEffects:
     - {fileID: 1407161024741387463, guid: 1b3188fbdb392ef4197deb35232e37fb, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: e134da3e6c2142845aac40b5a356093f, type: 3}
     - {fileID: 8300000, guid: c15f624321366cd468844f9340fd0cf3, type: 3}
@@ -108,6 +148,10 @@ MonoBehaviour:
   - SurfaceType: 11
     BulletImpactEffects:
     - {fileID: 1870241236171668699, guid: 0b626ae43b214d14481e95bbd992edbe, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: f7cdcb2c15ed92a49a762480c0c5d973, type: 3}
     - {fileID: 8300000, guid: fdb404babc16a064b8839ffa26ff6fa6, type: 3}
@@ -117,6 +161,10 @@ MonoBehaviour:
   - SurfaceType: 12
     BulletImpactEffects:
     - {fileID: 4832360012478719781, guid: 28a34587d97584f49944a4b962ccc0cf, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 28b3eeec16b3fd64f9aa90da3ecae2ff, type: 3}
     - {fileID: 8300000, guid: 2d2efcbe7874049439f5fb32bd369f29, type: 3}
@@ -126,6 +174,10 @@ MonoBehaviour:
   - SurfaceType: 13
     BulletImpactEffects:
     - {fileID: 8946173193281812791, guid: b956dd5a84dbf0a488b8c87ddd94ca50, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 28b3eeec16b3fd64f9aa90da3ecae2ff, type: 3}
     - {fileID: 8300000, guid: 2d2efcbe7874049439f5fb32bd369f29, type: 3}
@@ -135,6 +187,10 @@ MonoBehaviour:
   - SurfaceType: 14
     BulletImpactEffects:
     - {fileID: 6472749962501309942, guid: 4beaa58189398a14fad2aa47e30295d8, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: 03cd63f312b0f3a4f9bd762f3cdbac76, type: 3}
     - {fileID: 8300000, guid: cb4369bf35218614b91d055275b0914c, type: 3}
@@ -144,6 +200,10 @@ MonoBehaviour:
   - SurfaceType: 15
     BulletImpactEffects:
     - {fileID: 1213103672126206595, guid: 4e5177e866285f748901d6fb1b146105, type: 3}
+    SlashImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
+    BluntImpactEffects:
+    - {fileID: 3696805205603378684, guid: 492daffd070759a428d42174dce2258d, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: d862662cb2918e949a19d87b392bc4ea, type: 3}
     - {fileID: 8300000, guid: a85bb771293e7274aa5a0589454e9255, type: 3}
@@ -152,6 +212,10 @@ MonoBehaviour:
     PhysicsSounds: []
   - SurfaceType: 0
     BulletImpactEffects:
+    - {fileID: 7634768499986879330, guid: d2570d70b54047f4bab28496cc2d0423, type: 3}
+    SlashImpactEffects:
+    - {fileID: 7634768499986879330, guid: d2570d70b54047f4bab28496cc2d0423, type: 3}
+    BluntImpactEffects:
     - {fileID: 7634768499986879330, guid: d2570d70b54047f4bab28496cc2d0423, type: 3}
     FootstepSounds:
     - {fileID: 8300000, guid: e3ad6d8f04630a3488321bc23f4e5f72, type: 3}

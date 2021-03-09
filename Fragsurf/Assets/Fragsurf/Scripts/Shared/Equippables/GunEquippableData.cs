@@ -65,6 +65,7 @@ namespace Fragsurf.Shared
             new AreaDamageDefinition(HitboxArea.Foot, 30)
         };
 
+        public override ImpactType ImpactType => ImpactType.Bullet;
         public override Type ComponentType => typeof(GunEquippable);
 
         public float GetDamageMultiplier(HitboxArea hitbox)

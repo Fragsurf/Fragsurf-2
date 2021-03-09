@@ -29,6 +29,8 @@ namespace SurfaceConfigurator
     {
         public SurfaceType SurfaceType;
         public GameObject[] BulletImpactEffects;
+        public GameObject[] SlashImpactEffects;
+        public GameObject[] BluntImpactEffects;
         public AudioClip[] FootstepSounds;
         public AudioClip[] PhysicsSounds;
 
