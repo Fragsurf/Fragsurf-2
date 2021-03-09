@@ -107,7 +107,7 @@ namespace Fragsurf.Shared.Entity
             viewModelCamera.cullingMask = 1 << Layers.Viewmodel;
             //viewModelCamera.tag = "ViewModelCamera";
 
-            AudioSource = CreateAudioSource(SoundCategory.Weapon, 0.2f, 10f);
+            AudioSource = CreateAudioSource(SoundCategory.Equippable, 0.2f, 10f);
 
             CleanRealm();
 

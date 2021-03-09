@@ -43,9 +43,9 @@ namespace Fragsurf.Shared
 
             _gunEffectTriggers = GetComponentsInChildren<GunEffectTrigger>(true);
 
-            _fireSrc = CreateAudioSource(SoundCategory.Weapon, 0.5f, GunData.FireMaxDistance, GunData.FireRolloff);
-            _tailSrc = CreateAudioSource(SoundCategory.Weapon, 0.5f, GunData.FireMaxDistance, GunData.FireRolloff);
-            _foley = CreateAudioSource(SoundCategory.Weapon, 0f, 20f, GunData.FolleyRolloff);
+            _fireSrc = CreateAudioSource(SoundCategory.Equippable, 0.5f, GunData.FireMaxDistance, GunData.FireRolloff);
+            _tailSrc = CreateAudioSource(SoundCategory.Equippable, 0.5f, GunData.FireMaxDistance, GunData.FireRolloff);
+            _foley = CreateAudioSource(SoundCategory.Equippable, 0f, 20f, GunData.FolleyRolloff);
             AudioSource = _foley;
         }
 
