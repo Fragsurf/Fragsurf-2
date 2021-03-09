@@ -115,12 +115,12 @@ namespace Fragsurf.Shared
                     return;
                 }
 
-                //try
-                //{
+                try
+                {
                     var parameters = new List<object>() { player };
                     for (int i = 0; i < args.Length; i++)
                     {
-                        if(i >= Parameters.Length)
+                        if (i >= Parameters.Length)
                         {
                             break;
                         }
@@ -129,11 +129,11 @@ namespace Fragsurf.Shared
                         parameters.Add(obj);
                     }
                     MethodInfo.Invoke(Owner, parameters.ToArray());
-                //}
-                //catch(Exception e)
-                //{
-                //    Debug.LogError(e.Message);
-                //}
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e.Message);
+                }
             }
 
         }
