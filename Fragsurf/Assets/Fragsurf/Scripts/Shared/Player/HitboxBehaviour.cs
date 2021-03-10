@@ -20,5 +20,13 @@ namespace Fragsurf.Shared.Player
     {
         public HitboxArea Area;
         public int EntityId;
+
+        private void Start()
+        {
+            if(TryGetComponent(out Collider collider))
+            {
+                collider.isTrigger = true;
+            }
+        }
     }
 }
