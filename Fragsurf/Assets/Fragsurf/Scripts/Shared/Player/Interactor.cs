@@ -6,101 +6,101 @@ using Fragsurf.Actors;
 
 namespace Fragsurf.Shared.Player
 {
-    //public class Interactor
-    //{
-    //    public Interactor(NetEntity entity)
-    //    {
-    //        _entity = entity;
-    //    }
+    public class Interactor
+    {
+        public Interactor(Human hu)
+        {
+            _human = hu;
+        }
 
-    //    private NetEntity _entity;
-    //    private RaycastHit[] _hitBuffer = new RaycastHit[24];
-    //    private float _interactionDistance = 2.5f;
+        private Human _human;
+        private RaycastHit[] _hitBuffer = new RaycastHit[24];
+        private float _interactionDistance = 2.5f;
 
-    //    public void RunCommand(UserCmd.CmdFields userCmd)
-    //    {
-    //        //if (!_human.Game.IsHost)
-    //        //    return;
+        public void RunCommand(UserCmd.CmdFields userCmd)
+        {
+            //if (!_human.Game.IsHost)
+            //    return;
 
-    //        if (userCmd.Buttons.HasFlag(InputActions.Interact))
-    //        {
-    //            CheckForInteractables();
-    //        }
-    //    }
+            if (userCmd.Buttons.HasFlag(InputActions.Interact))
+            {
+                CheckForInteractables();
+            }
+        }
 
-    //    private void DrawEntities(Color color, float scale = 1)
-    //    {
-    //        foreach (NetEntity ent in _entity.Game.EntityManager.Entities)
-    //        {
-    //            if (ent.DisableLagCompensation)
-    //            {
-    //                continue;
-    //            }
-    //            Debug.DrawLine(ent.EntityGameObject.Position, ent.EntityGameObject.Position + Vector3.up * scale, color, 6f);
-    //        }
-    //    }
+        private void DrawEntities(Color color, float scale = 1)
+        {
+            foreach (NetEntity ent in _human.Game.EntityManager.Entities)
+            {
+                if (ent.DisableLagCompensation)
+                {
+                    continue;
+                }
+                Debug.DrawLine(ent.EntityGameObject.Position, ent.EntityGameObject.Position + Vector3.up * scale, color, 6f);
+            }
+        }
 
-    //    private void CheckForInteractables()
-    //    {
-    //        var testlag = DevConsole.GetVariable<bool>("net.testlag");
+        private void CheckForInteractables()
+        {
+            var testlag = DevConsole.GetVariable<bool>("net.testlag");
 
-    //        if (!_entity.Game.IsHost)
-    //        {
-    //            if (testlag)
-    //            {
-    //                var ownerRay = _entity.GetEyeRay();
-    //                Debug.DrawRay(ownerRay.origin, ownerRay.direction * 32, Color.blue, 4);
-    //                DrawEntities(Color.green, 1.5f);
-    //            }
-    //            return;
-    //        }
+            if (!_human.Game.IsHost)
+            {
+                if (testlag)
+                {
+                    var ownerRay = _human.GetEyeRay();
+                    Debug.DrawRay(ownerRay.origin, ownerRay.direction * 32, Color.blue, 4);
+                    DrawEntities(Color.green, 1.5f);
+                }
+                return;
+            }
 
-    //        var latency = _entity.TickTimeDiff;
+            var latency = _human.Game.PlayerManager.FindPlayer(_human).LatencyMs / 1000f;
 
-    //        _entity.DisableLagCompensation = true;
-    //        _entity.Game.LagCompensator.Rewind(latency);
+            _human.DisableLagCompensation = true;
+            _human.Game.LagCompensator.Rewind(latency);
 
-    //        if (testlag)
-    //        {
-    //            var ownerRay = _entity.GetEyeRay();
-    //            Debug.DrawRay(ownerRay.origin, ownerRay.direction * 32, Color.magenta, 4);
-    //            DrawEntities(Color.yellow);
-    //        }
+            if (testlag)
+            {
+                var ownerRay = _human.GetEyeRay();
+                Debug.DrawRay(ownerRay.origin, ownerRay.direction * 32, Color.magenta, 4);
+                DrawEntities(Color.yellow);
+            }
 
-    //        var ray = _entity.GetEyeRay();
-    //        var ragdollLayer = Layers.Ragdoll;
+            var ray = _human.GetEyeRay();
+            var ragdollLayer = Layers.Ragdoll;
 
-    //        var hitCount = _entity.Game.Physics.RaycastAll(ray: ray,
-    //            results: _hitBuffer,
-    //            maxDistance: _interactionDistance,
-    //            layerMask: (1 << _entity.Game.ScopeLayer) | (1 << ragdollLayer) | (1 << 0),
-    //            qt: QueryTriggerInteraction.Collide);
+            var hitCount = _human.Game.Physics.RaycastAll(ray: ray,
+                results: _hitBuffer,
+                maxDistance: _interactionDistance,
+                layerMask: (1 << _human.Game.ScopeLayer) | (1 << ragdollLayer) | (1 << 0),
+                qt: QueryTriggerInteraction.Collide);
 
-    //        // important to call restore after tracing!!
-    //        _entity.Game.LagCompensator.Restore();
-    //        _entity.DisableLagCompensation = false;
+            // important to call restore after tracing!!
+            _human.Game.LagCompensator.Restore();
+            _human.DisableLagCompensation = false;
 
-    //        for (int i = 0; i < hitCount; i++)
-    //        {
-    //            var hit = _hitBuffer[i];
-    //            var trigger = hit.collider.GetComponentInParent<FSMTrigger>();
+            for (int i = 0; i < hitCount; i++)
+            {
+                var hit = _hitBuffer[i];
+                var trigger = hit.collider.GetComponentInParent<FSMTrigger>();
 
-    //            if (trigger != null)
-    //            {
-    //                trigger.OnInteract(_entity.EntityId, _entity.Game.IsHost);
-    //                return;
-    //            }
+                if (trigger != null)
+                {
+                    trigger.OnInteract(_human.EntityId, _human.Game.IsHost);
+                    return;
+                }
 
-    //            var ent = _entity.Game.EntityManager.FindEntity(hit.collider.gameObject);
+                var ent = _human.Game.EntityManager.FindEntity(hit.collider.gameObject);
 
-    //            if(!(ent != null && ent is IInteractable interactable))
-    //            {
-    //                interactable = hit.collider.GetComponentInParent<IInteractable>();
-    //            }
+                if (!(ent != null && ent is IInteractable interactable))
+                {
+                    interactable = hit.collider.GetComponentInParent<IInteractable>();
+                }
 
-    //            interactable?.OnInteract(_entity);
-    //        }
-    //    }
+                interactable?.OnInteract(_human);
+            }
+        }
 
-    //}
+    }
 }

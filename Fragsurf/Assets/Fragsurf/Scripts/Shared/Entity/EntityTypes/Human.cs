@@ -14,6 +14,7 @@ namespace Fragsurf.Shared.Entity
         public CameraController CameraController;
         public EntityAnimationController AnimationController;
 
+        private Interactor _interactor;
         private int _ownerId = -1;
         private bool _hasAuthorityNextTick;
 
@@ -21,6 +22,7 @@ namespace Fragsurf.Shared.Entity
             : base(game)
         {
             _autoRecordTimeline = false;
+            _interactor = new Interactor(this);
         }
 
         public static Human Local { get; set; }
@@ -110,6 +112,7 @@ namespace Fragsurf.Shared.Entity
             if(Game.IsHost || prediction)
             {
                 Equippables?.RunCommand(cmd.Fields);
+                _interactor?.RunCommand(cmd.Fields);
             }
 
             if (EntityGameObject)
