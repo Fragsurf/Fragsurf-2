@@ -208,14 +208,13 @@ namespace Fragsurf.Shared.Entity
                 }
             }
 
-            var dropPos = Human.HumanGameObject.HandAttachment 
-                ? Human.HumanGameObject.HandAttachment.position 
-                : Human.HumanGameObject.Position;
-
-            EquippableGameObject.DropOrigin = dropPos + Human.HumanGameObject.transform.forward * .25f + Human.HumanGameObject.transform.right * .25f + Vector3.down * .25f;
+            var dropPos = Human.GetEyeRay().origin;
+            var fwd = Quaternion.Euler(Human.Angles) * Vector3.forward;
+            var right = Quaternion.Euler(Human.Angles) * Vector3.right;
+            EquippableGameObject.DropOrigin = dropPos + fwd * .25f + right * .25f + Vector3.down * .25f;
             EquippableGameObject.DropAngles = Human.Angles;
-            EquippableGameObject.DropForce = Human.Velocity.normalized + Human.HumanGameObject.transform.forward * 1.5f;
-            EquippableGameObject.DropTorque = Human.HumanGameObject.transform.forward * 5f;
+            EquippableGameObject.DropForce = Human.Velocity.normalized + fwd * 1.5f;
+            EquippableGameObject.DropTorque = fwd * 5f;
 
             HumanId = -1;
         }
