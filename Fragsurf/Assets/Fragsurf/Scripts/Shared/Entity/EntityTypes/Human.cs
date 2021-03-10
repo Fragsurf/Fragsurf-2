@@ -113,16 +113,16 @@ namespace Fragsurf.Shared.Entity
             {
                 Equippables?.RunCommand(cmd.Fields);
                 _interactor?.RunCommand(cmd.Fields);
+
+                if(Timeline != null && Timeline.Mode == TimelineMode.Record)
+                {
+                    Timeline.RecordTick();
+                }
             }
 
             if (EntityGameObject)
             {
                 EntityGameObject.SendMessage("OnHumanRunCommand");
-            }
-            
-            if(Timeline != null && Timeline.Mode == TimelineMode.Record && (prediction || Game.IsHost))
-            {
-                Timeline?.RecordTick();
             }
         }
 

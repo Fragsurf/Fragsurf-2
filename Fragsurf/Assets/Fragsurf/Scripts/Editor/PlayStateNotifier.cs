@@ -11,6 +11,12 @@ using DTCommandPalette;
 public static class PlayStateNotifier
 {
 
+    static PlayStateNotifier()
+    {
+        EditorApplication.playModeStateChanged += ModeChanged;
+        SetPlaytestChecked();
+    }
+
     [MethodCommand("Fragsurf/Toggle Realtime-CSG")]
     static void ToggleRealtimeCSG()
     {
@@ -22,10 +28,17 @@ public static class PlayStateNotifier
     {
         var pref = EditorPrefs.GetBool("Fragsurf.PlayTest", true);
         EditorPrefs.SetBool("Fragsurf.PlayTest", !pref);
-        var str = !pref
+        var str = !pref 
             ? "PlayTesting has been enabled, Fragsurf will load up when you enter play mode."
             : "PlayTesting has been disabled, Fragsurf will NOT load up when you enter play mode.";
         EditorUtility.DisplayDialog("PlayTest", str, "Ok");
+        SetPlaytestChecked();
+    }
+
+    private static void SetPlaytestChecked()
+    {
+        var pref = EditorPrefs.GetBool("Fragsurf.PlayTest", true);
+        Menu.SetChecked("Fragsurf/Play/Toggle PlayTest", pref);
     }
 
     [MethodCommand("Clear Play From")]
@@ -40,11 +53,6 @@ public static class PlayStateNotifier
     {
         get => VectorExtensions.StringToVector3(EditorPrefs.GetString("Fragsurf.PlayFrom", Vector3.zero.ToString()));
         set => EditorPrefs.SetString("Fragsurf.PlayFrom", value.ToString());
-    }
-
-    static PlayStateNotifier()
-    {
-        EditorApplication.playModeStateChanged += ModeChanged;
     }
 
     static async void ModeChanged(PlayModeStateChange stateChange)
