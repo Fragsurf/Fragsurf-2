@@ -78,6 +78,7 @@ namespace Fragsurf.Shared.Entity
             }
 
             _boundsCollider.gameObject.tag = "Player";
+            _boundsCollider.isTrigger = true;
 
             if (!TryGetComponent(out Rigidbody rb))
             {
