@@ -19,6 +19,7 @@ namespace SurfaceConfigurator
         Plastic = 13,
         Carpet = 14,
         Ladder = 15, 
+        Flesh = 16
     }
 }
 

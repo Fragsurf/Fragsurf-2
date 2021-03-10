@@ -234,7 +234,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 }
 
                 var ent = new ReplayHuman(cl);
-                cl.EntityManager.AddEntity(ent);
+                ent.EntityId = -int.MaxValue;
+                cl.EntityManager.AddEntity(ent, false);
                 ent.InterpolationMode = InterpolationMode.Frame;
                 ent.DisplayName = $"{ldbId.TrackName} - {ldbId.TrackType} [{ldbId.Style}]";
                 ent.Replay(tl);

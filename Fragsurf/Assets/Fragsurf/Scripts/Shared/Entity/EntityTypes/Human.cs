@@ -106,7 +106,11 @@ namespace Fragsurf.Shared.Entity
         {
             MovementController?.ProcessInput(cmd);
             MovementController?.RunCommand(cmd.Fields, prediction);
-            Equippables?.RunCommand(cmd.Fields);
+
+            if(Game.IsHost || prediction)
+            {
+                Equippables?.RunCommand(cmd.Fields);
+            }
 
             if (EntityGameObject)
             {
@@ -262,7 +266,15 @@ namespace Fragsurf.Shared.Entity
 
         public void Damage(DamageInfo dmgInfo)
         {
-            Debug.Log("Ouch: " + dmgInfo.Amount);
+            if (!Game.IsHost)
+            {
+                if (GameData.Instance.TryGetImpactPrefab(ImpactType.Bullet, SurfaceConfigurator.SurfaceType.Flesh, out GameObject prefab))
+                {
+                    var effect = Game.Pool.Get(prefab, 10f);
+                    effect.transform.position = dmgInfo.HitPoint;
+                    effect.transform.forward = dmgInfo.HitNormal;
+                }
+            }
         }
 
     }

@@ -99,7 +99,7 @@ namespace Fragsurf.Shared.Entity
         private void TryFindHuman(int humanId)
         {
             // EquippableGameObject needs to exist
-            if (!EquippableGameObject)
+            if (!EquippableGameObject || humanId == -1)
             {
                 return;
             }
@@ -114,22 +114,6 @@ namespace Fragsurf.Shared.Entity
             if (Human.Equippables.Equipped == null)
             {
                 Equipped = true;
-            }
-
-            var slot = EquippableGameObject.Data.Slot;
-            for (int i = Human.Equippables.Items.Count - 1; i >= 0; i--)
-            {
-                var item = Human.Equippables.Items[i];
-                if (item != this
-                    && item.EquippableGameObject
-                    && item.EquippableGameObject.Data.Slot == slot)
-                {
-                    if (item.Equipped)
-                    {
-                        Equipped = true;
-                    }
-                    item.Drop();
-                }
             }
         }
 
@@ -256,24 +240,22 @@ namespace Fragsurf.Shared.Entity
 
         public void Damage(DamageInfo dmgInfo)
         {
-            if(EquippableGameObject.WorldModel.TryGetComponent(out Rigidbody rb))
+            if (EquippableGameObject.WorldModel.TryGetComponent(out Rigidbody rb))
             {
                 var dir = dmgInfo.HitNormal;
                 var attacker = Game.EntityManager.FindEntity(dmgInfo.AttackerEntityId);
-                if(attacker != null)
+                if (attacker != null)
                 {
                     dir = (Origin - attacker.Origin).normalized;
                 }
                 rb.AddForceAtPosition(dir * 1.5f, dmgInfo.HitPoint, ForceMode.Impulse);
 
-                if (!Game.IsHost)
+                if (!Game.IsHost
+                    && GameData.Instance.TryGetImpactPrefab(ImpactType.Bullet, SurfaceType.Metal, out GameObject prefab))
                 {
-                    if (GameData.Instance.TryGetImpactPrefab(SurfaceType.Metal, out GameObject prefab))
-                    {
-                        var effect = Game.Pool.Get(prefab, 1f);
-                        effect.transform.position = dmgInfo.HitPoint;
-                        effect.transform.forward = dmgInfo.HitNormal;
-                    }
+                    var effect = Game.Pool.Get(prefab, 1f);
+                    effect.transform.position = dmgInfo.HitPoint;
+                    effect.transform.forward = dmgInfo.HitNormal;
                 }
             }
         }

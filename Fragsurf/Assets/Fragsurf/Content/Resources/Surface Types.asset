@@ -223,3 +223,12 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 2d65462f7b65bd54f8442b837bde9178, type: 3}
     - {fileID: 8300000, guid: 4516729f7efa8c745b5ac058240898d6, type: 3}
     PhysicsSounds: []
+  - SurfaceType: 16
+    BulletImpactEffects:
+    - {fileID: 100000, guid: bd1b09ecbf112814399e16be0e5243a9, type: 3}
+    SlashImpactEffects:
+    - {fileID: 100000, guid: bd1b09ecbf112814399e16be0e5243a9, type: 3}
+    BluntImpactEffects:
+    - {fileID: 100000, guid: bd1b09ecbf112814399e16be0e5243a9, type: 3}
+    FootstepSounds: []
+    PhysicsSounds: []
