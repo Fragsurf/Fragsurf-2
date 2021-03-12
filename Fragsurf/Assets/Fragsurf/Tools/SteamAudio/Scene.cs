@@ -71,10 +71,10 @@ namespace SteamAudio
                         " vertices, " + triangles.Length.ToString() + " triangles): [" + error.ToString() + "]");
                 }
 
-#if UNITY_EDITOR
-                if (!Directory.Exists(Application.streamingAssetsPath))
-                    UnityEditor.AssetDatabase.CreateFolder("Assets", "StreamingAssets");
-#endif
+//#if UNITY_EDITOR
+//                if (!Directory.Exists(Application.streamingAssetsPath))
+//                    UnityEditor.AssetDatabase.CreateFolder("Assets", "StreamingAssets");
+//#endif
 
                 if (exportOBJ)
                 {
