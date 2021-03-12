@@ -1072,6 +1072,36 @@ namespace InternalRealtimeCSG
             }
         }
 
+        private static SteamAudio.MaterialPreset SurfaceTypeToMaterialPreset(SurfaceType surface)
+        {
+            switch (surface)
+            {
+                case SurfaceType.Carpet:
+                    return SteamAudio.MaterialPreset.Carpet;
+                case SurfaceType.Concrete:
+                case SurfaceType.Tile:
+                    return SteamAudio.MaterialPreset.Concrete;
+                case SurfaceType.Glass:
+                    return SteamAudio.MaterialPreset.Glass;
+                case SurfaceType.Gravel:
+                    return SteamAudio.MaterialPreset.Gravel;
+                case SurfaceType.Ladder:
+                case SurfaceType.Metal:
+                case SurfaceType.MetalGrate:
+                    return SteamAudio.MaterialPreset.Metal;
+                case SurfaceType.Wood:
+                    return SteamAudio.MaterialPreset.Wood;
+                case SurfaceType.Dirt:
+                case SurfaceType.Flesh:
+                case SurfaceType.Grass:
+                case SurfaceType.Mud:
+                case SurfaceType.Plastic:
+                case SurfaceType.Sand:
+                    return SteamAudio.MaterialPreset.Generic;
+            }
+            return SteamAudio.MaterialPreset.Generic;
+        }
+
         //		internal static double updateMeshColliderMeshTime = 0.0;
         public static void Refresh(GeneratedMeshInstance instance, CSGModel owner, bool postProcessScene = false, bool onlyFastRefreshes = true, bool skipAssetDatabaseUpdate = true)
         {
@@ -1107,6 +1137,15 @@ namespace InternalRealtimeCSG
                         id.SurfaceType = cfg.SurfaceType;
                     }
                 }
+                if(!instance.gameObject.TryGetComponent(out SteamAudio.SteamAudioGeometry geo))
+                {
+                    geo = instance.gameObject.AddComponent<SteamAudio.SteamAudioGeometry>();
+                }
+                if(!instance.gameObject.TryGetComponent(out SteamAudio.SteamAudioMaterial audiomat))
+                {
+                    audiomat = instance.gameObject.AddComponent<SteamAudio.SteamAudioMaterial>();
+                }
+                audiomat.Preset = SurfaceTypeToMaterialPreset(id.SurfaceType);
             }
 
             // Update the transform, if incorrect

@@ -1,6 +1,7 @@
 using Fragsurf.Shared;
 using SurfaceConfigurator;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Fragsurf.Client
 {
