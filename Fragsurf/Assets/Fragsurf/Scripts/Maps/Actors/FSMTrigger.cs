@@ -54,6 +54,7 @@ namespace Fragsurf.Actors
             {
                 rb = gameObject.AddComponent<Rigidbody>();
             }
+            rb.tag = "IgnoreItemTrace";
             rb.isKinematic = true;
         }
 
