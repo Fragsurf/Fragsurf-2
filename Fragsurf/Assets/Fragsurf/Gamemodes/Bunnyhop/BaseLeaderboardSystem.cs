@@ -39,6 +39,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public abstract Task<LeaderboardEntry> FindRank(LeaderboardIdentifier ldbId, ulong userId);
         public abstract Task<IEnumerable<LeaderboardEntry>> QueryFriends(LeaderboardIdentifier ldbId);
         public abstract Task<IEnumerable<LeaderboardEntry>> Query(LeaderboardIdentifier ldbId, int offset, int count);
+        public abstract Task<IEnumerable<Top10Entry>> QueryRecentTops(LeaderboardIdentifier ldbId, int count);
         public abstract Task<byte[]> DownloadReplayAsync(LeaderboardIdentifier ldbId, int rank);
         protected abstract Task<bool> _SaveReplay(LeaderboardIdentifier ldbId, byte[] data);
         protected abstract Task<SubmitResponse> _SubmitRun(LeaderboardIdentifier ldbId, BunnyhopTimelineFrame frame);
@@ -174,6 +175,34 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         public int Takeover;
         public int TimeMilliseconds;
         public bool Improved;
+    }
+
+    public class Top10Entry
+    {
+        public string DisplayName;
+        public ulong UserId;
+        public int NewRank;
+        public int OldRank;
+        public int TimeMilliseconds;
+        public int ImprovementMilliseconds;
+        public int UnixTimestamp;
+        public int Jumps;
+        public int Strafes;
+
+        public DateTime DateTime
+        {
+            get
+            {
+                var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                dtDateTime = dtDateTime.AddSeconds(UnixTimestamp).ToLocalTime();
+                return dtDateTime;
+            }
+        }
+
+        public string GetDate()
+        {
+            return DateTime.ToString("ddd, MMM dd yyyy hh:mm tt");
+        }
     }
 
     public class LeaderboardEntry

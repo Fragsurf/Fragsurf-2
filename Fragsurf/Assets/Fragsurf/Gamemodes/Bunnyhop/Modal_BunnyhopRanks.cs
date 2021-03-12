@@ -7,6 +7,7 @@ using Fragsurf.Shared.Entity;
 using Fragsurf.UI;
 using Steamworks;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     {
 
         [SerializeField]
+        private Button _recentTops;
+        [SerializeField]
         private Button _myRank;
         [SerializeField]
         private Button _top100;
@@ -23,6 +26,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private Button _friends;
 
         private Modal_BunnyhopRanksRankEntry _rankTemplate;
+        private Modal_BunnyhopRanksTop10Entry _top10Template;
         private Modal_BunnyhopRanksTrackEntry _trackTemplate;
         private FSMTrack _selectedTrack;
         private int _selectedNumber;
@@ -33,6 +37,15 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private void Start()
         {
+            _recentTops.onClick.AddListener(() =>
+            {
+                if (!_selectedTrack)
+                {
+                    return;
+                }
+                LoadRecentTops(_selectedTrack, 50, _selectedNumber);
+            });
+
             _myRank.onClick.AddListener(() => 
             {
                 if (!_selectedTrack)
@@ -64,6 +77,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _rankTemplate.gameObject.SetActive(false);
             _trackTemplate = GameObject.FindObjectOfType<Modal_BunnyhopRanksTrackEntry>();
             _trackTemplate.gameObject.SetActive(false);
+            _top10Template = GameObject.FindObjectOfType<Modal_BunnyhopRanksTop10Entry>();
+            _top10Template.gameObject.SetActive(false);
 
             LoadTracks();
         }
@@ -74,6 +89,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _friends.interactable = !btnsDisabled;
             _top100.interactable = !btnsDisabled;
             _myRank.interactable = !btnsDisabled;
+            _recentTops.interactable = !btnsDisabled;
         }
 
         private void LoadTracks()
@@ -119,12 +135,40 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
+        private async void LoadRecentTops(FSMTrack track, int count, int number = 0)
+        {
+            _loadingRanks = true;
+            _selectedTrack = track;
+            _selectedNumber = number;
+            _rankTemplate.Clear();
+            _top10Template.Clear();
+
+            count = Mathf.Clamp(count, 1, 100);
+
+            try
+            {
+                var ldbId = BaseLeaderboardSystem.GetLeaderboardId(Map.Current.Name, track, MoveStyle.FW, number);
+                var ranks = await LeaderboardSystem.QueryRecentTops(ldbId, count);
+                if(ranks == null || ranks.Count() == 0)
+                {
+                    _loadingRanks = false;
+                    return;
+                }
+                AddEntries(ldbId, ranks);
+            }
+            finally
+            {
+                _loadingRanks = false;
+            }
+        }
+
         private async void LoadRanksAroundMe(FSMTrack track, int offset, int count, int number = 0)
         {
             _loadingRanks = true;
             _selectedTrack = track;
             _selectedNumber = number;
             _rankTemplate.Clear();
+            _top10Template.Clear();
 
             offset = Mathf.Clamp(offset, 5, 15);
             count = Mathf.Clamp(count, 1, 100);
@@ -154,6 +198,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             _loadingRanks = true;
             _rankTemplate.Clear();
+            _top10Template.Clear();
             _selectedTrack = track;
             _selectedNumber = number;
 
@@ -176,6 +221,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _selectedTrack = track;
             _selectedNumber = number;
             _rankTemplate.Clear();
+            _top10Template.Clear();
 
             try
             {
@@ -194,6 +240,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private void AddEntries(LeaderboardIdentifier ldbId, IEnumerable<LeaderboardEntry> entries)
         {
             _rankTemplate.Clear();
+            _top10Template.Clear();
 
             foreach (var entry in entries)
             {
@@ -205,6 +252,20 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                     OnClickProfile = () => SteamFriends.OpenUserOverlay(userid, "steamid"),
                     OnClickReplay = () => SpawnBot(ldbId, rank),
                     DisableButtons = AreButtonsDisabled
+                });
+            }
+        }
+
+        private void AddEntries(LeaderboardIdentifier ldbId, IEnumerable<Top10Entry> entries)
+        {
+            _rankTemplate.Clear();
+            _top10Template.Clear();
+
+            foreach (var entry in entries)
+            {
+                _top10Template.Append(new Modal_BunnyhopRanksTop10EntryData()
+                {
+                    Entry = entry
                 });
             }
         }

@@ -119,6 +119,61 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             return result;
         }
 
+        public override async Task<IEnumerable<Top10Entry>> QueryRecentTops(LeaderboardIdentifier ldbId, int count)
+        {
+            var result = new List<Top10Entry>();
+
+            if (!SteamClient.IsValid)
+            {
+                return result;
+            }
+
+            var ldbName = GetRtopLeaderboardName(ldbId);
+            var ldb = await SteamUserStats.FindLeaderboardAsync(ldbName);
+            if (!ldb.HasValue)
+            {
+                return result;
+            }
+
+            var scores = await ldb.Value.GetScoresAsync(count, 1);
+
+            if(scores == null || scores.Length == 0)
+            {
+                return result;
+            }
+
+            foreach(var score in scores)
+            {
+                result.Add(LdbEntryToTop10(score));
+            }
+
+            return result;
+        }
+
+        private Top10Entry LdbEntryToTop10(Steamworks.Data.LeaderboardEntry entry)
+        {
+            var result = new Top10Entry() 
+            { 
+                DisplayName = entry.User.Name,
+                UserId = entry.User.Id
+            };
+
+            if (entry.Details.Length < 6)
+            {
+                return result;
+            }
+
+            result.UnixTimestamp = entry.Score;
+            result.NewRank = entry.Details[0];
+            result.OldRank = entry.Details[1];
+            result.TimeMilliseconds = entry.Details[2];
+            result.ImprovementMilliseconds = entry.Details[3];
+            result.Jumps = entry.Details[4];
+            result.Strafes = entry.Details[5];
+
+            return result;
+        }
+
         public override async Task<byte[]> DownloadReplayAsync(LeaderboardIdentifier ldbId, int rank)
         {
             if (!SteamClient.IsValid)
@@ -206,6 +261,28 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 }
             }
 
+            if(response.Improved && response.NewRank <= 10)
+            {
+                var rtopDetails = new int[]
+                {
+                    response.NewRank,
+                    response.OldRank,
+                    response.TimeMilliseconds,
+                    response.Improvement,
+                    frame.Jumps,
+                    frame.Strafes
+                };
+                var rtopLdbName = GetRtopLeaderboardName(ldbId);
+                var rtopLeaderboard = await SteamUserStats.FindOrCreateLeaderboardAsync(rtopLdbName, LeaderboardSort.Descending, LeaderboardDisplay.TimeMilliSeconds);
+
+                if (!rtopLeaderboard.HasValue)
+                {
+                    return response;
+                }
+
+                await rtopLeaderboard.Value.ReplaceScore(unixTimestamp, rtopDetails);
+            }
+
             return response;
         }
 
@@ -242,6 +319,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
 
             return true;
+        }
+
+        private string GetRtopLeaderboardName(LeaderboardIdentifier ldbId)
+        {
+            return $"rtop--" + GetLeaderboardName(ldbId);
         }
 
         private string GetLeaderboardName(LeaderboardIdentifier ldb)
