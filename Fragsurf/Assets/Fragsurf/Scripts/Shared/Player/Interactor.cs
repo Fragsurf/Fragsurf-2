@@ -92,13 +92,11 @@ namespace Fragsurf.Shared.Player
                 }
 
                 var ent = _human.Game.EntityManager.FindEntity(hit.collider.gameObject);
-
-                if (!(ent != null && ent is IInteractable interactable))
+                if(ent is IInteractable interactable)
                 {
-                    interactable = hit.collider.GetComponentInParent<IInteractable>();
+                    interactable.OnInteract(_human);
+                    break;
                 }
-
-                interactable?.OnInteract(_human);
             }
         }
 
