@@ -16,6 +16,9 @@ public class ImpactSoundOnEnable : MonoBehaviour
     private void Awake()
     {
         _src = GetComponent<AudioSource>();
+        _src.minDistance = .05f;
+        _src.maxDistance = 10f;
+        _src.volume = .9f;
         if(!TryGetComponent(out _gameSrc))
         {
             _gameSrc = gameObject.AddComponent<GameAudioSource>();
