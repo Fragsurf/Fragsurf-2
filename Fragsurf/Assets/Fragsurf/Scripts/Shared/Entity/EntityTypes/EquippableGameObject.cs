@@ -133,6 +133,11 @@ namespace Fragsurf.Shared.Entity
 
         protected override void _Update()
         {
+
+        }
+
+        private void LateUpdate()
+        {
             if (Equippable.Human != null)
             {
                 ViewModel.transform.position = Equippable.Human.Origin + Equippable.Human.HumanGameObject.EyeOffset;
@@ -148,11 +153,12 @@ namespace Fragsurf.Shared.Entity
             if (_audioSourceContainer)
             {
                 var origin = Vector3.zero;
-                if (Equippable.Human != null
-                        && Equippable.Human.EntityGameObject
-                        && Equippable.Human.HumanGameObject.HandAttachment)
+                if (Equippable.Human != null && Equippable.Human.HumanGameObject)
                 {
-                    origin = Equippable.Human.HumanGameObject.HeadAttachment.position;
+                    var fwd = Quaternion.Euler(Equippable.Human.Angles) * Vector3.forward;
+                    origin = Equippable.Human.HumanGameObject.Position 
+                        + Equippable.Human.HumanGameObject.EyeOffset
+                        + fwd * .15f;
                 }
                 else if (WorldModel != null)
                 {
@@ -163,7 +169,7 @@ namespace Fragsurf.Shared.Entity
 
             SetVisibility();
         }
-        
+
         public virtual void ProcessEquip()
         {
             if (_equipped)
