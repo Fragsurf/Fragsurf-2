@@ -13,10 +13,12 @@ namespace Fragsurf.Shared.Entity
         public MovementController MovementController;
         public CameraController CameraController;
         public EntityAnimationController AnimationController;
+        public BotController BotController;
 
         private Interactor _interactor;
         private int _ownerId = -1;
         private bool _hasAuthorityNextTick;
+        private bool _dead;
 
         public Human(FSGameLoop game) 
             : base(game)
@@ -45,8 +47,12 @@ namespace Fragsurf.Shared.Entity
         public bool Ducked { get; set; }
         [NetProperty]
         public int Health { get; set; }
-
-        public bool Dead => Health <= 0;
+        [NetProperty]
+        public bool Dead
+        {
+            get => _dead;
+            set => SetIsDead(value);
+        }
 
         protected override void _Start()
         {
@@ -92,12 +98,20 @@ namespace Fragsurf.Shared.Entity
             }
 
             TickPunches();
+
+            BotController?.Tick();
         }
 
         protected override void _Update()
         {
             MovementController?.Update();
             AnimationController?.Update();
+
+            if(Game.IsHost && Input.GetKeyDown(KeyCode.Space))
+            {
+                Health = 100;
+                Dead = false;
+            }
         }
 
         public Ray GetEyeRay()
@@ -124,9 +138,9 @@ namespace Fragsurf.Shared.Entity
                 }
             }
 
-            if (EntityGameObject)
+            if (HumanGameObject)
             {
-                EntityGameObject.SendMessage("OnHumanRunCommand");
+                HumanGameObject.OnRunCommand();
             }
         }
 
@@ -153,12 +167,23 @@ namespace Fragsurf.Shared.Entity
 
         private void OnKilled()
         {
-            // disable colliders (maybe disable gameobject while ragdoll is active?)
+            if (HumanGameObject)
+            {
+                HumanGameObject.OnKilled(default);
+            }
+
+            if (Game.IsHost)
+            {
+                Equippables.DropAllItems();
+            }
         }
 
         private void OnSpawned()
         {
-            
+            if (HumanGameObject)
+            {
+                HumanGameObject.OnSpawned();
+            }
         }
 
         private void SetOwnerId(int value)
@@ -272,6 +297,23 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
+        private void SetIsDead(bool dead)
+        {
+            if(_dead == dead)
+            {
+                return;
+            }
+            _dead = dead;
+            if (dead)
+            {
+                OnKilled();
+            }
+            else
+            {
+                OnSpawned();
+            }
+        }
+
         public void Damage(DamageInfo dmgInfo)
         {
             if (!Game.IsHost)
@@ -282,6 +324,11 @@ namespace Fragsurf.Shared.Entity
                     effect.transform.position = dmgInfo.HitPoint;
                     effect.transform.forward = dmgInfo.HitNormal;
                 }
+            }
+            else
+            {
+                Health -= dmgInfo.Amount;
+                Dead = Health <= 0;
             }
         }
 

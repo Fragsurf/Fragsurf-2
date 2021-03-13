@@ -54,6 +54,22 @@ namespace Fragsurf.Gamemodes.Playtest
             hu.Give(item);
         }
 
+        [ChatCommand("Spawns a bot", "bot")]
+        public void SpawnBot(IPlayer player)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+
+            var bot = new Human(Game);
+            Game.EntityManager.AddEntity(bot);
+            bot.BotController = new BotController(bot);
+            bot.Spawn(1);
+            bot.Give("Knife");
+            bot.Give("AK47");
+        }
+
         [ChatCommand("Teleport to the beginning", "r", "spawn", "restart")]
         public void SpawnPlayer(IPlayer player)
         {

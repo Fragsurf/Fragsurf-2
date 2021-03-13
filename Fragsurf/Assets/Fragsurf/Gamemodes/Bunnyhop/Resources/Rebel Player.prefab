@@ -1079,7 +1079,7 @@ MonoBehaviour:
   _feetAttachment: {fileID: 7776529294251587980}
   _headAttachment: {fileID: 7776529293438580332}
   _handAttachment: {fileID: 7776529293738310343}
-  _ragdollPrefab: {fileID: 0}
+  _ragdollPrefab: {fileID: 7776529293873923163, guid: 72f8f432cd3eb53459c99e62b6ebb0cf, type: 3}
   _eyeOffset: 1.6256
   _duckedOffset: 0.5
   _deathSound: {fileID: 0}

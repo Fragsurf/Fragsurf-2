@@ -141,12 +141,17 @@ namespace Fragsurf.Shared.Entity
 
         public void ResetLayers()
         {
-            gameObject.layer = Entity.Game.IsHost
+            var layer = Entity.Game.IsHost
                 ? Layers.Host
                 : Layers.Client;
+            gameObject.layer = layer;
+            foreach (var hb in Hitboxes)
+            {
+                hb.gameObject.layer = layer;
+            }
         }
 
-        private void OnHumanRevived()
+        public void OnSpawned()
         {
             ResetLayers();
 
@@ -157,7 +162,7 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
-        private void OnHumanKilled(DamageInfo dmgInfo)
+        public void OnKilled(DamageInfo dmgInfo)
         {
             SetLayersToIgnore();
 
@@ -245,7 +250,7 @@ namespace Fragsurf.Shared.Entity
             Animator.SetFloat("forward", _currentMoveBlend.z);
         }
 
-        private void OnHumanRunCommand()
+        public void OnRunCommand()
         {
             if (!Animator
                 || !(Human.MovementController is CSMovementController move))
