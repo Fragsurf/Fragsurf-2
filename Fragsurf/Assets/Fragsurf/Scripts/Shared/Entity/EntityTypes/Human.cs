@@ -43,8 +43,10 @@ namespace Fragsurf.Shared.Entity
         }
         [NetProperty]
         public bool Ducked { get; set; }
+        [NetProperty]
+        public int Health { get; set; }
 
-        public bool Dead => false;
+        public bool Dead => Health <= 0;
 
         protected override void _Start()
         {
@@ -135,6 +137,7 @@ namespace Fragsurf.Shared.Entity
             Angles = angles;
             Velocity = Vector3.zero;
             BaseVelocity = Vector3.zero;
+            Health = 100;
         }
 
         public void Give(string itemName)
