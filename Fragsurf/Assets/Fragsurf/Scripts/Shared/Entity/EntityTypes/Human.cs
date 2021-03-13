@@ -29,6 +29,7 @@ namespace Fragsurf.Shared.Entity
         public HumanGameObject HumanGameObject => EntityGameObject as HumanGameObject;
         public bool IsFirstPerson { get; set; }
         public EquippableManager Equippables { get; private set; } = new EquippableManager();
+        public UserCmd.CmdFields CurrentCmd { get; protected set; }
 
         [NetProperty(true)]
         public virtual Vector3 Velocity { get; set; }
@@ -106,6 +107,7 @@ namespace Fragsurf.Shared.Entity
 
         public virtual void RunCommand(UserCmd cmd, bool prediction)
         {
+            CurrentCmd = cmd.Fields;
             MovementController?.ProcessInput(cmd);
             MovementController?.RunCommand(cmd.Fields, prediction);
 

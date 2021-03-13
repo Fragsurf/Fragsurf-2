@@ -47,6 +47,7 @@ namespace Fragsurf.Client
         };
 
         protected UserCmd UserCmd { get; } = new UserCmd();
+        public UserCmd.CmdFields CurrentCommand => UserCmd.Fields;
 
         [ConVar("input.pitchmodifier", "Y axis modifier", ConVarFlags.UserSetting)]
         public float PitchModifier { get; set; } = 1f;
