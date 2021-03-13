@@ -46,7 +46,7 @@ namespace Fragsurf.UI
                 md.OnEndDrag.AddListener(OnEndDrag);
             }
 
-            _titleText.text = modal.Name;
+            _titleText.text = modal.Name.SplitCamelCase();
 
             if (!_closeButton)
             {

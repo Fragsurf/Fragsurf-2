@@ -7,6 +7,10 @@ namespace Fragsurf.Utility
 {
     public static class StringExtensions
     {
+        public static string SplitCamelCase(this string input)
+        {
+            return Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
+        }
         public static bool Contains(this string source, string toCheck, StringComparison comp)
         {
             return source?.IndexOf(toCheck, comp) >= 0;
