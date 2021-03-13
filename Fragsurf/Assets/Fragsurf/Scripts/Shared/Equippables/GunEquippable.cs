@@ -85,16 +85,6 @@ namespace Fragsurf.Shared
             }
         }
 
-        protected override void _Update()
-        {
-            base._Update();
-
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                _fireSrc.PlayClip(GunData.FireSound);
-            }
-        }
-
         private void TryAds()
         {
             if(_fireTimer > 0 || _reloading || GunData.ZoomLevels.Length == 0)
