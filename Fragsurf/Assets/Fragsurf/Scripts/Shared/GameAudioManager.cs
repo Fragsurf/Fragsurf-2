@@ -32,6 +32,25 @@ namespace Fragsurf.Shared
             }
         }
 
+        public void Play(GameAudioSource src, bool stop = false)
+        {
+            if (Game.IsHost)
+            {
+                // network the sound?
+                return;
+            }
+            if (stop)
+            {
+                src.Src.Stop();
+            }
+            var volModifier = _volumes.ContainsKey(src.Category)
+                ? _volumes[src.Category]
+                : 1.0f;
+            src.Src.volume *= volModifier;
+            src.Src.Play();
+            src.Src.volume /= volModifier;
+        }
+
         public void PlayClip(GameAudioSource src, AudioClip clip, float volume, bool stop = false)
         {
             if (Game.IsHost)

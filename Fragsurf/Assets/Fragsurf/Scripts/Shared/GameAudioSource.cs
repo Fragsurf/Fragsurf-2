@@ -27,6 +27,25 @@ namespace Fragsurf.Shared
             }
         }
 
+        public void Play(bool stop = false)
+        {
+            if (!Src)
+            {
+                return;
+            }
+            var game = FSGameLoop.GetGameInstance(IsHost);
+            if (!game)
+            {
+                if (stop)
+                {
+                    Src.Stop();
+                }
+                Src.Play();
+                return;
+            }
+            game.Audio.Play(this, stop);
+        }
+
         public void PlayClip(AudioClip clip, float volume = 1f, bool stop = false)
         {
             if (!clip || !Src)
