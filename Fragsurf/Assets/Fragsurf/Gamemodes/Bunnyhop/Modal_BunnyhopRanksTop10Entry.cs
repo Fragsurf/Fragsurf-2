@@ -1,5 +1,5 @@
 using Fragsurf.UI;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -17,6 +17,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         [SerializeField]
         private TMP_Text _text;
+
+        protected override bool ContainsSearch(string input)
+        {
+            return _text.text.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) != -1;
+        }
 
         public override void LoadData(Modal_BunnyhopRanksTop10EntryData data)
         {
