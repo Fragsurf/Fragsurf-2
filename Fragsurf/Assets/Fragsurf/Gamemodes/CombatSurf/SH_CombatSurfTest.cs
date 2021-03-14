@@ -21,24 +21,6 @@ namespace Fragsurf.Gamemodes.CombatSurf
             SpawnPlayer(player);
         }
 
-        protected override void OnHumanKilled(Human hu)
-        {
-        }
-
-        protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
-        {
-            if (Game.IsHost && dmgInfo.ResultedInDeath)
-            {
-                var props = Game.Get<PlayerProps>();
-                var killer = Game.EntityManager.FindEntity<Human>(dmgInfo.AttackerEntityId);
-                if(killer != null)
-                {
-                    props.IncrementProp(killer.OwnerId, "Kills", 1);
-                }
-                props.IncrementProp(hu.OwnerId, "Deaths", -1);
-            }
-        }
-
         private void SpawnPlayer(IPlayer player)
         {
             if (!Game.IsHost)

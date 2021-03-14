@@ -39,11 +39,12 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 return;
             }
 
-            var props = cl.Get<PlayerProps>();
-            var kills = props.GetProp(data.Player.ClientIndex, "Kills");
-            var deaths = props.GetProp(data.Player.ClientIndex, "Deaths");
+            var stats = cl.Get<CombatSurfStatTracker>();
+            var kills = stats.GetKills(data.Player.ClientIndex);
+            var deaths = stats.GetDeaths(data.Player.ClientIndex);
+            var damage = stats.GetDamage(data.Player.ClientIndex);
             var latency = data.Player.LatencyMs;
-            _score.text = $"{latency}ms  <color=green>{kills}</color> kills  <color=red>{deaths}</color> deaths";
+            _score.text = $"{latency}ms | <color=yellow>{damage}</color> dmg | <color=green>{kills}</color> kills | <color=red>{deaths}</color> deaths";
 
         }
 
