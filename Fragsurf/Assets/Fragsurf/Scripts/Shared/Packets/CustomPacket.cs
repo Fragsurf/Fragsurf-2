@@ -42,6 +42,7 @@ namespace Fragsurf.Shared.Packets
         {
             DataEntries.Clear();
             Label = string.Empty;
+            Index = 0;
         }
 
         public void Read(NetBuffer buffer)
