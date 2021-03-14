@@ -15,6 +15,8 @@ namespace Fragsurf.UI
 
         private Modal_EquippablesSlotEntry _slotTemplate;
         private float _hideTimer;
+        private int _prevItemCount;
+        private int _lastHuId;
         private const float _hideDelay = 3f;
 
         private void Start()
@@ -48,6 +50,8 @@ namespace Fragsurf.UI
                 return;
             }
 
+            var id = spec.TargetHuman.EntityId;
+            var count = spec.TargetHuman.Equippables.Items.Count;
             var btns = spec.TargetHuman.CurrentCmd.Buttons;
             if(btns.HasFlag(InputActions.Slot1)
                 || btns.HasFlag(InputActions.Slot2)
@@ -59,12 +63,19 @@ namespace Fragsurf.UI
                 if(_hideTimer <= 0)
                 {
                     BuildSlotItems();
+                    _prevItemCount = count;
+                    _lastHuId = id;
                 }
                 _hideTimer = _hideDelay;
             }
-            if (_hideTimer > 0 && btns.HasFlag(InputActions.Drop))
+
+            // try to update whenever there's a change
+            if (_hideTimer > 0 
+                && (btns.HasFlag(InputActions.Drop) || _prevItemCount != count || _lastHuId != id))
             {
                 BuildSlotItems();
+                _prevItemCount = count;
+                _lastHuId = id;
             }
         }
 
