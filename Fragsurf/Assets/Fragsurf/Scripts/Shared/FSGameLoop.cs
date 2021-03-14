@@ -14,8 +14,8 @@ namespace Fragsurf.Shared
     {
         public bool IsLocalServer;
         public int ClientIndex = -1;
-
         public Action PostExecConfig;
+
 
         public abstract bool IsHost { get; }
         protected abstract void RegisterComponents();

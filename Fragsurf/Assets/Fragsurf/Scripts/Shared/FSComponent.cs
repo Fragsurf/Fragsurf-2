@@ -1,18 +1,32 @@
-﻿using System;
+﻿using Fragsurf.Shared.Entity;
+using Fragsurf.Utility;
+using System;
 using UnityEngine;
 
 namespace Fragsurf.Shared
 {
-    public abstract class FSComponent : MonoBehaviour
+    public abstract class FSComponent : MonoBehaviour, IHasNetProps
     {
 
         public FSGameLoop Game { get; private set; }
         public BaseGamemode Gamemode { get; set; }
         public bool Started { get; private set; }
         public bool Destroyed { get; private set; }
+        public int UniqueId { get; set; }
+        public virtual bool HasNetProps => false;
+        public virtual bool HasAuthority => Game.IsHost;
 
         public void Initialize(FSGameLoop game)
         {
+            // todo: maybe this isn't a good idea
+            // because IHasNetProps is implemented for NetEntity, FSMActor, and FSComponent
+            // maybe it's better to build a system for identifying individual instances
+            // otherwise, just do our best to make sure there's no conflict and it's 
+            // deterministic across machines.
+            // Entities = EntityId (1...)
+            // Actors = offset + Accumulator
+            // Components = stable hash of type Name
+            UniqueId = GetType().Name.GetStableHashCode();
             Game = game;
 
             try
@@ -53,6 +67,10 @@ namespace Fragsurf.Shared
             try
             {
                 _Start();
+                if (HasNetProps)
+                {
+                    BuildNetProps();
+                }
             }
            catch(Exception e)
             {
@@ -99,6 +117,15 @@ namespace Fragsurf.Shared
 #if UNITY_EDITOR
         public virtual void DrawGizmos() { }
 #endif
+
+        private void BuildNetProps()
+        {
+            if (Game.IsHost)
+            {
+                var actor = new FSComponentSync(Game, UniqueId);
+                Game.EntityManager.AddEntity(actor);
+            }
+        }
 
     }
 }

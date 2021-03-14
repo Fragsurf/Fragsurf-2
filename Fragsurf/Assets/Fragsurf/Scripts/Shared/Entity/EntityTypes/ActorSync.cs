@@ -11,26 +11,27 @@ namespace Fragsurf.Shared.Entity
 
         }
 
-        public ActorSync(int actorId, FSGameLoop game)
+        public ActorSync(FSGameLoop game, int targetId)
             : base(game)
         {
-            UniqueActorId = actorId;
+            TargetIdentifier = targetId;
         }
 
-        private IHasNetProps _actor;
-        private int _uniqueActorId;
+        private IHasNetProps _targetObject;
+        private int _targetIdentifier;
 
         [NetProperty]
-        public int UniqueActorId 
+        public int TargetIdentifier
         {
-            get { return _uniqueActorId; }
-            set {
-                _uniqueActorId = value;
-                _actor = GameObject.FindObjectsOfType<MonoBehaviour>()
+            get { return _targetIdentifier; }
+            set
+            {
+                _targetIdentifier = value;
+                _targetObject = GameObject.FindObjectsOfType<MonoBehaviour>(true)
                     .OfType<IHasNetProps>()
                     .FirstOrDefault(x => x.UniqueId == value);
 
-                if(_actor != null && _actor is IHasNetProps dp)
+                if (_targetObject is IHasNetProps dp)
                 {
                     BuildNetProps(dp);
                 }
@@ -39,11 +40,10 @@ namespace Fragsurf.Shared.Entity
 
         protected override void _Tick()
         {
-            if (Game.IsHost && _actor == null)
+            if (Game.IsHost && _targetObject == null)
             {
                 Delete();
             }
         }
     }
 }
-
