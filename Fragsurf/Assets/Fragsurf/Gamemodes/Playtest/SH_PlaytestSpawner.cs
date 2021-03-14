@@ -66,8 +66,8 @@ namespace Fragsurf.Gamemodes.Playtest
             Game.EntityManager.AddEntity(bot);
             bot.BotController = new BotController(bot);
             bot.Spawn(1);
-            bot.Give("Knife");
             bot.Give("AK47");
+            bot.Give("Knife");
         }
 
         [ChatCommand("Teleport to the beginning", "r", "spawn", "restart")]

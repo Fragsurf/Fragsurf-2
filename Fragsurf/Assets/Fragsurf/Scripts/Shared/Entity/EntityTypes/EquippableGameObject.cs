@@ -153,19 +153,13 @@ namespace Fragsurf.Shared.Entity
             if (_audioSourceContainer)
             {
                 var origin = Vector3.zero;
-                if (Equippable.Human != null && Equippable.Human.HumanGameObject)
+                if (Equippable.Human != null
+                    && Equippable.Human.IsFirstPerson)
                 {
-                    if (Equippable.Human.IsFirstPerson)
-                    {
-                        origin = GameCamera.Camera.transform.position;
-                        origin += Quaternion.Euler(Equippable.Human.Angles) * Vector3.forward * .15f;
-                    }
-                    else
-                    {
-                        origin = WorldModel.transform.position;
-                    }
+                    origin = GameCamera.Camera.transform.position
+                        + Quaternion.Euler(Equippable.Human.Angles) * Vector3.forward * .15f;
                 }
-                else if (WorldModel != null)
+                else if (WorldModel)
                 {
                     origin = WorldModel.transform.position;
                 }
