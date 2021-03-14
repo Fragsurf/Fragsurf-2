@@ -35,6 +35,12 @@ namespace Fragsurf.Shared
             }
         }
 
+        public void IncrementProp(int clientIndex, string key, float value)
+        {
+            var val = GetProp(clientIndex, key);
+            SetProp(clientIndex, key, val + value);
+        }
+
         protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
         {
             if(Game.IsHost 

@@ -27,7 +27,16 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
         {
-            Debug.Log(Game.IsHost + ":" + dmgInfo.Amount);
+            if (Game.IsHost && dmgInfo.ResultedInDeath)
+            {
+                var props = Game.Get<PlayerProps>();
+                var killer = Game.EntityManager.FindEntity<Human>(dmgInfo.AttackerEntityId);
+                if(killer != null)
+                {
+                    props.IncrementProp(killer.OwnerId, "Kills", 1);
+                }
+                props.IncrementProp(hu.OwnerId, "Deaths", -1);
+            }
         }
 
         private void SpawnPlayer(IPlayer player)
@@ -52,6 +61,32 @@ namespace Fragsurf.Gamemodes.CombatSurf
             }
 
             hu.Spawn();
+        }
+
+        [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]
+        public void Give(IPlayer player, string item)
+        {
+            if (!Game.IsHost || !(player.Entity is Human hu))
+            {
+                return;
+            }
+            hu.Give(item);
+        }
+
+        [ChatCommand("Spawns a bot", "bot")]
+        public void SpawnBot(IPlayer player)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+
+            var bot = new Human(Game);
+            Game.EntityManager.AddEntity(bot);
+            bot.BotController = new BotController(bot);
+            bot.Spawn(1);
+            bot.Give("Knife");
+            bot.Give("AK47");
         }
 
     }

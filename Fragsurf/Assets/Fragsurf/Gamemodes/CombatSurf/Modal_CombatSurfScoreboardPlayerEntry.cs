@@ -1,3 +1,4 @@
+using Fragsurf.Shared;
 using Fragsurf.Shared.Player;
 using Fragsurf.UI;
 using System.Collections;
@@ -25,12 +26,25 @@ namespace Fragsurf.Gamemodes.CombatSurf
         public override void LoadData(Data data)
         {
             _name.text = data.Player.DisplayName;
-            _score.text = $"128ms  <color=green>0</color> kills  <color=red>0</color> deaths";
             if (_steamAvatar)
             {
                 _steamAvatar.SteamId = data.Player.SteamId;
                 _steamAvatar.Fetch();
             }
+
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (!cl)
+            {
+                _score.text = string.Empty;
+                return;
+            }
+
+            var props = cl.Get<PlayerProps>();
+            var kills = props.GetProp(data.Player.ClientIndex, "Kills");
+            var deaths = props.GetProp(data.Player.ClientIndex, "Deaths");
+            var latency = data.Player.LatencyMs;
+            _score.text = $"{latency}ms  <color=green>{kills}</color> kills  <color=red>{deaths}</color> deaths";
+
         }
 
     }
