@@ -4,7 +4,7 @@ using Lidgren.Network;
 
 namespace Fragsurf.Shared.Packets
 {
-    public class DamageEvent : IBasePacket
+    public class DamageInfoPacket : IBasePacket
     {
         public SendCategory Sc => SendCategory.EntityImportant;
         public int ByteSize => 0;

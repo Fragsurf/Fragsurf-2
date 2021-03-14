@@ -21,6 +21,15 @@ namespace Fragsurf.Gamemodes.CombatSurf
             SpawnPlayer(player);
         }
 
+        protected override void OnHumanKilled(Human hu)
+        {
+        }
+
+        protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
+        {
+            Debug.Log(Game.IsHost + ":" + dmgInfo.Amount);
+        }
+
         private void SpawnPlayer(IPlayer player)
         {
             if (!Game.IsHost)

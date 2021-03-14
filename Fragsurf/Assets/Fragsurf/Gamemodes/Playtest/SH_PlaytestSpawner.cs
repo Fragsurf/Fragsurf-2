@@ -103,6 +103,11 @@ namespace Fragsurf.Gamemodes.Playtest
             Debug.Log(Game.IsHost + "human killed");
         }
 
+        protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
+        {
+            Debug.Log(Game.IsHost + ": " + dmgInfo.Amount);
+        }
+
     }
 }
 

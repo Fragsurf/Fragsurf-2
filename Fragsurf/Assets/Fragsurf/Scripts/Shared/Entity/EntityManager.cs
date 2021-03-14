@@ -28,6 +28,7 @@ namespace Fragsurf.Shared.Entity
         public event Action<NetEntity> OnEntityDestroyed;
         public event Action<Human> OnHumanSpawned;
         public event Action<Human> OnHumanKilled;
+        public event Action<Human, DamageInfo> OnHumanDamaged;
         public event TimedEntityEventHandler OnEntityUpdated;
         public event HumanTriggerHandler OnHumanTrigger;
 
@@ -71,6 +72,13 @@ namespace Fragsurf.Shared.Entity
                         break;
                     case EntityUpdate entityUpdate:
                         UpdateEntity(entityUpdate);
+                        break;
+                    case DamageInfoPacket dmgInfo:
+                        var hu = FindEntity(dmgInfo.DamageInfo.VictimEntityId) as Human;
+                        if(hu != null)
+                        {
+                            BroadcastHumanDamaged(hu, dmgInfo.DamageInfo);
+                        }
                         break;
                 }
             }
@@ -215,6 +223,23 @@ namespace Fragsurf.Shared.Entity
             OnHumanSpawned?.Invoke(hu);
         }
 
+        public void BroadcastHumanDamaged(Human hu, DamageInfo dmgInfo)
+        {
+            if (hu == null)
+            {
+                return;
+            }
+
+            OnHumanDamaged?.Invoke(hu, dmgInfo);
+
+            if (Game.IsHost)
+            {
+                var packet = PacketUtility.TakePacket<DamageInfoPacket>();
+                packet.DamageInfo = dmgInfo;
+                Game.Network.BroadcastPacket(packet);
+            }
+        }
+
         [ConCommand("entity.count")]
         private void PrintEntityCount()
         {
@@ -222,4 +247,5 @@ namespace Fragsurf.Shared.Entity
         }
 
     }
+
 }

@@ -307,8 +307,14 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
+        private bool _deadInitted;
         private void SetIsDead(bool dead)
         {
+            if(_dead == dead && _deadInitted)
+            {
+                return;
+            }
+            _deadInitted = true;
             _dead = dead;
             if (dead)
             {
@@ -333,8 +339,11 @@ namespace Fragsurf.Shared.Entity
             }
             else
             {
+                var wasDead = Dead;
                 Health -= dmgInfo.Amount;
                 Dead = Health <= 0;
+                dmgInfo.ResultedInDeath = !wasDead && Dead;
+                Game.EntityManager.BroadcastHumanDamaged(this, dmgInfo);
             }
         }
 
