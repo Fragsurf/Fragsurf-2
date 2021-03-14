@@ -155,10 +155,15 @@ namespace Fragsurf.Shared.Entity
                 var origin = Vector3.zero;
                 if (Equippable.Human != null && Equippable.Human.HumanGameObject)
                 {
-                    var fwd = Quaternion.Euler(Equippable.Human.Angles) * Vector3.forward;
-                    origin = Equippable.Human.HumanGameObject.Position 
-                        + Equippable.Human.HumanGameObject.EyeOffset
-                        + fwd * .15f;
+                    if (Equippable.Human.IsFirstPerson)
+                    {
+                        origin = GameCamera.Camera.transform.position;
+                        origin += Quaternion.Euler(Equippable.Human.Angles) * Vector3.forward * .15f;
+                    }
+                    else
+                    {
+                        origin = WorldModel.transform.position;
+                    }
                 }
                 else if (WorldModel != null)
                 {
