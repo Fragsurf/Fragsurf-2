@@ -24,6 +24,8 @@ namespace Fragsurf.Shared
             Game.EntityManager.OnEntityDestroyed += OnEntityDestroyed;
             Game.EntityManager.OnEntityUpdated += OnEntityUpdated;
             Game.EntityManager.OnHumanTrigger += OnHumanTrigger;
+            Game.EntityManager.OnHumanKilled += OnHumanKilled;
+            Game.EntityManager.OnHumanSpawned += OnHumanSpawned;
             Game.GameLoader.PreGameLoaded += OnPreGameLoaded;
             Game.GameLoader.GameLoaded += OnGameLoaded;
 
@@ -51,6 +53,8 @@ namespace Fragsurf.Shared
             Game.EntityManager.OnEntityDestroyed -= OnEntityDestroyed;
             Game.EntityManager.OnEntityUpdated -= OnEntityUpdated;
             Game.EntityManager.OnHumanTrigger -= OnHumanTrigger;
+            Game.EntityManager.OnHumanKilled -= OnHumanKilled;
+            Game.EntityManager.OnHumanSpawned -= OnHumanSpawned;
             Game.GameLoader.PreGameLoaded -= OnPreGameLoaded;
             Game.GameLoader.GameLoaded -= OnGameLoaded;
 
@@ -67,6 +71,8 @@ namespace Fragsurf.Shared
         protected virtual void OnEntityDestroyed(NetEntity entity) { }
         protected virtual void OnEntityUpdated(NetEntity entity, int remoteTick, double remoteTime) { }
         protected virtual void OnHumanTrigger(NetEntity entity, Actors.FSMTrigger trigger, TriggerEventType type, float offset = 0f) { }
+        protected virtual void OnHumanKilled(Human hu) { }
+        protected virtual void OnHumanSpawned(Human hu) { }
         protected virtual void OnPlayerPacketReceived(IPlayer player, IBasePacket packet) { }
         protected virtual void OnPlayerConnected(IPlayer player) { }
         protected virtual void OnPlayerApprovedToJoin(IPlayer player) { }

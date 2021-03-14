@@ -32,6 +32,7 @@ namespace Fragsurf.Shared.Entity
         public bool IsFirstPerson { get; set; }
         public EquippableManager Equippables { get; private set; } = new EquippableManager();
         public UserCmd.CmdFields CurrentCmd { get; protected set; }
+        public bool IsBot => BotController != null;
 
         [NetProperty(true)]
         public virtual Vector3 Velocity { get; set; }
@@ -152,6 +153,11 @@ namespace Fragsurf.Shared.Entity
             Velocity = Vector3.zero;
             BaseVelocity = Vector3.zero;
             Health = 100;
+
+            if (Game.IsHost)
+            {
+                Dead = false;
+            }
         }
 
         public void Give(string itemName)
@@ -176,6 +182,8 @@ namespace Fragsurf.Shared.Entity
             {
                 Equippables.DropAllItems();
             }
+
+            Game.EntityManager.RaiseHumanKilled(this);
         }
 
         private void OnSpawned()
@@ -184,6 +192,8 @@ namespace Fragsurf.Shared.Entity
             {
                 HumanGameObject.OnSpawned();
             }
+
+            Game.EntityManager.RaiseHumanSpawned(this);
         }
 
         private void SetOwnerId(int value)
@@ -299,10 +309,6 @@ namespace Fragsurf.Shared.Entity
 
         private void SetIsDead(bool dead)
         {
-            if(_dead == dead)
-            {
-                return;
-            }
             _dead = dead;
             if (dead)
             {

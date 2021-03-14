@@ -93,6 +93,16 @@ namespace Fragsurf.Gamemodes.Playtest
             hu.Spawn();
         }
 
+        protected override void OnHumanSpawned(Human hu)
+        {
+            Debug.Log(Game.IsHost + "human spawned");
+        }
+
+        protected override void OnHumanKilled(Human hu)
+        {
+            Debug.Log(Game.IsHost + "human killed");
+        }
+
     }
 }
 

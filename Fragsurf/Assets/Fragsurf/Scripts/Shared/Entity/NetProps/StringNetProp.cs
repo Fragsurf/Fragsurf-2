@@ -33,8 +33,9 @@ namespace Fragsurf.Shared.Entity
         {
             var newValue = buffer.ReadString();
 
-            if (!newValue.Equals(_lastKnownValue) && CanSet)
+            if ((!newValue.Equals(_lastKnownValue) || !_initialized) && CanSet)
             {
+                _initialized = true;
                 _set?.Invoke(newValue);
                 StoreValue();
             }

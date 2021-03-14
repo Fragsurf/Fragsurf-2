@@ -26,6 +26,8 @@ namespace Fragsurf.Shared.Entity
 
         public event Action<NetEntity> OnEntityAdded;
         public event Action<NetEntity> OnEntityDestroyed;
+        public event Action<Human> OnHumanSpawned;
+        public event Action<Human> OnHumanKilled;
         public event TimedEntityEventHandler OnEntityUpdated;
         public event HumanTriggerHandler OnHumanTrigger;
 
@@ -193,6 +195,24 @@ namespace Fragsurf.Shared.Entity
                     OnEntityDestroyed?.Invoke(ent);
                 }
             }
+        }
+
+        public void RaiseHumanKilled(Human hu)
+        {
+            if(hu == null)
+            {
+                return;
+            }
+            OnHumanKilled?.Invoke(hu);
+        }
+
+        public void RaiseHumanSpawned(Human hu)
+        {
+            if(hu == null)
+            {
+                return;
+            }
+            OnHumanSpawned?.Invoke(hu);
         }
 
         [ConCommand("entity.count")]

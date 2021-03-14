@@ -44,8 +44,9 @@ namespace Fragsurf.Shared.Entity
             buffer.Position += sz * 8;
 
             T readValue = Serializer.Deserialize<T>(_buffer);
-            if (!readValue.Equals(_lastKnownValue) && CanSet)
+            if ((!readValue.Equals(_lastKnownValue) || !_initialized) && CanSet)
             {
+                _initialized = true;
                 _set?.Invoke(readValue);
                 StoreValue();
             }
