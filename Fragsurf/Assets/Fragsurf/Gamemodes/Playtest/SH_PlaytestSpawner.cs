@@ -105,7 +105,12 @@ namespace Fragsurf.Gamemodes.Playtest
 
         protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
         {
-            Debug.Log(Game.IsHost + ": " + dmgInfo.Amount);
+            if (Game.IsHost)
+            {
+                var pp = Game.Get<PlayerProps>();
+                var dmg = pp.GetProp(dmgInfo.AttackerEntityId, "Damage");
+                pp.SetProp(dmgInfo.AttackerEntityId, "Damage", dmg + dmgInfo.Amount);
+            }
         }
 
     }
