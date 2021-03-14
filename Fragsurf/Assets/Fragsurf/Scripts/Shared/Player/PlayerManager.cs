@@ -6,22 +6,18 @@ using Fragsurf.Shared.Packets;
 namespace Fragsurf.Shared.Player
 {
 
-    public delegate void PlayerEventHandler(IPlayer player);
-    public delegate void PlayerSpectateHandler(IPlayer spectator, IPlayer target);
-    public delegate void PlayerCommandHandler(IPlayer player, string[] args);
-
     public class PlayerManager : FSComponent
     {
-        public event PlayerEventHandler OnPlayerConnected;
-        public event PlayerEventHandler OnPlayerDisconnected;
-        public event PlayerEventHandler OnPlayerApprovedToJoin;
-        public event PlayerEventHandler OnPlayerIntroduced;
-        public event PlayerEventHandler OnPlayerChangedTeam;
-        public event PlayerEventHandler OnPlayerChangedName;
-        public event PlayerEventHandler OnPlayerLatencyUpdated;
-        public event PlayerEventHandler OnPlayerRunCommand;
-        public event PlayerSpectateHandler OnPlayerSpectate;
-        public event PlayerCommandHandler OnChatCommand;
+        public event Action<IPlayer> OnPlayerConnected;
+        public event Action<IPlayer> OnPlayerDisconnected;
+        public event Action<IPlayer> OnPlayerApprovedToJoin;
+        public event Action<IPlayer> OnPlayerIntroduced;
+        public event Action<IPlayer> OnPlayerChangedTeam;
+        public event Action<IPlayer> OnPlayerChangedName;
+        public event Action<IPlayer> OnPlayerLatencyUpdated;
+        public event Action<IPlayer> OnPlayerRunCommand;
+        public event Action<IPlayer, IPlayer> OnPlayerSpectate;
+        public event Action<IPlayer, string[]> OnChatCommand;
         public event Action<IPlayer, IBasePacket> OnPlayerPacketReceived;
 
         public IPlayer LocalPlayer => FindPlayer(Game.ClientIndex);
