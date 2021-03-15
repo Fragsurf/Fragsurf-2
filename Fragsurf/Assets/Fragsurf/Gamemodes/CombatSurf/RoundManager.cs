@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Fragsurf.Gamemodes.CombatSurf
 {
     [Inject(InjectRealm.Shared, typeof(CombatSurf))]
-    public class CombatSurfGameFlow : FSSharedScript
+    public class RoundManager : FSSharedScript
     {
 
         [ConVar("rounds.enabled", "", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
