@@ -76,19 +76,20 @@ namespace Fragsurf.Shared
         protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
         {
             if(Game.IsHost
-                || FSGameLoop.GetGameInstance(true) != null
-                || !(packet is CustomPacket cp && cp.Label == "Replicate"))
+                || !(packet is CustomPacket cp)
+                || !cp.Label.Equals("Replicate"))
             {
                 return;
             }
 
             var replStr = cp.GetString(0);
             var cmds = replStr.Split('&');
-            if(cmds != null && cmds.Length > 0)
+
+            if (cmds != null && cmds.Length > 0)
             {
                 foreach(var cmd in cmds)
                 {
-                    DevConsole.ExecuteLine(cmd);
+                    DevConsole.ExecuteLine(cmd, true);
                 }
             }
         }

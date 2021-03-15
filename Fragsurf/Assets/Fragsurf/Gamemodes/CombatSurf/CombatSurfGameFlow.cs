@@ -22,7 +22,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ConVar("rounds.cooldownduration", "Duration in seconds from round end to next round", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
         public int CooldownDuration { get; set; } = 30;
 
-        [NetProperty]
+        [ConVar("rounds.gamestate", "", ConVarFlags.Gamemode | ConVarFlags.Replicator | ConVarFlags.Poll)]
         public int GameState
         {
             get => (int)_gameState;
@@ -42,20 +42,18 @@ namespace Fragsurf.Gamemodes.CombatSurf
         {
             if(Game.IsHost && Input.GetKeyDown(KeyCode.T))
             {
-                GameState = (int)FlowState.Live;
+                _gameState = FlowState.Live;
             }
         }
 
         private void SetGameState(FlowState state)
         {
             _gameState = state;
-            Debug.Log(Game.IsHost + ":" + state);
         }
 
         private void SetRoundState(FlowState state)
         {
             _roundState = state;
-            Debug.Log(Game.IsHost + ":" + state);
         }
 
         public enum FlowState : int

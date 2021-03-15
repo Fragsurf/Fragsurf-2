@@ -28,8 +28,6 @@ namespace Fragsurf.Shared.Entity
             {
                 _targetIdentifier = value;
 
-                Debug.Log(Game.IsHost + ":" + value);
-
                 foreach (var component in Game.FSComponents)
                 {
                     if (!(component is IHasNetProps props)
@@ -39,7 +37,6 @@ namespace Fragsurf.Shared.Entity
                     }
                     _targetObject = props;
                     BuildNetProps(props);
-                    Debug.Log(Game.IsHost + ":" + _targetObject);
                     break;
                 }
             }

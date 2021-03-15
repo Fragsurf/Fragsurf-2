@@ -11,6 +11,7 @@ namespace Fragsurf
 		UserSetting			= 4,
 		Silent				= 8,
 		Gamemode			= 16,
-		UserSettingHidden	= 32
+		UserSettingHidden	= 32,
+		Poll				= 64
 	}
 }

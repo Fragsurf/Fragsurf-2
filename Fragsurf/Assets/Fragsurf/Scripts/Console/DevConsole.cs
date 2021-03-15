@@ -8,9 +8,6 @@ using Fragsurf.Utility;
 
 namespace Fragsurf
 {
-
-    public delegate void ConsoleLogHandler(string message);
-
     public static class DevConsole
     {
 
@@ -20,12 +17,26 @@ namespace Fragsurf
             public string[] CommandArgs;
         }
 
-        public static event ConsoleLogHandler OnMessageLogged;
+        public static event Action<string> OnMessageLogged;
         public static event Action<string> OnVariableChanged;
 
         private static Dictionary<string, List<DevConsoleEntry>> _entries = new Dictionary<string, List<DevConsoleEntry>>();
         private static Dictionary<string, CmdCache> _commandCache = new Dictionary<string, CmdCache>();
         private static ConVarFlags _lockedFlags;
+
+        static DevConsole()
+        {
+            TimeStep.Instance.OnTick.AddListener((a, b) =>
+            {
+                foreach(var entry in _entries)
+                {
+                    foreach(var e in entry.Value)
+                    {
+                        e.Tick();
+                    }
+                }
+            });
+        }
 
         public static void LockFlags(bool locked, ConVarFlags flags)
         {

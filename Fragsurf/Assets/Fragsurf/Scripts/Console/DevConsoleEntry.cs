@@ -15,12 +15,18 @@ namespace Fragsurf
         public readonly string Name;
         public readonly string Description;
 
+        public void Tick()
+        {
+            _OnTick();
+        }
+
         public void Execute(string[] args)
         {
             _OnExecute(args);
         }
 
         protected abstract void _OnExecute(string[] args);
+        protected virtual void _OnTick() { }
 
     }
 }

@@ -19,6 +19,7 @@ namespace Fragsurf
 
         private Func<T> _getter;
         private Action<T> _setter;
+        private T _lastKnownValue;
 
         Type ITypeVariable.MyType
         {
@@ -39,21 +40,52 @@ namespace Fragsurf
             return result;
         }
 
+        protected override void _OnTick()
+        {
+            if (!Flags.HasFlag(ConVarFlags.Poll))
+            {
+                return;
+            }
+
+            if(Differs())
+            {
+                DevConsole.RaiseVariableChanged(Name);
+            }
+        }
+
         public void SetValue(T value, bool noEvent = false)
         {
             try
             {
                 _setter.Invoke(value);
+                _lastKnownValue = value;
             }
             catch(Exception e)
             {
                 UnityEngine.Debug.LogError("Failed to set " + Name + ": " + e.Message);
             }
 
-            if(!noEvent)
+            if(!noEvent && Differs())
             {
                 DevConsole.RaiseVariableChanged(Name);
             }
+        }
+
+        private bool Differs()
+        {
+            var curValue = _getter.Invoke();
+            var differs = false;
+
+            if (curValue is IEquatable<T> equatable)
+            {
+                differs = !equatable.Equals(_lastKnownValue);
+            }
+            else if (curValue != null)
+            {
+                differs = !curValue.Equals(_lastKnownValue);
+            }
+            _lastKnownValue = curValue;
+            return differs;
         }
 
         protected override void _OnExecute(string[] args)
