@@ -54,6 +54,8 @@ namespace Fragsurf.Shared.Entity
             get => _dead;
             set => SetIsDead(value);
         }
+        [NetProperty]
+        public bool Frozen { get; set; }
 
         protected override void _Start()
         {
@@ -105,6 +107,11 @@ namespace Fragsurf.Shared.Entity
 
         protected override void _Update()
         {
+            if(Game.IsHost && Input.GetKeyDown(KeyCode.F))
+            {
+                Frozen = !Frozen;
+            }
+
             MovementController?.Update();
             AnimationController?.Update();
 
@@ -124,6 +131,16 @@ namespace Fragsurf.Shared.Entity
 
         public virtual void RunCommand(UserCmd cmd, bool prediction)
         {
+            if (Frozen)
+            {
+                cmd.Buttons &= ~InputActions.MoveLeft;
+                cmd.Buttons &= ~InputActions.MoveRight;
+                cmd.Buttons &= ~InputActions.MoveForward;
+                cmd.Buttons &= ~InputActions.MoveBack;
+                cmd.Buttons &= ~InputActions.HandAction;
+                cmd.Buttons &= ~InputActions.HandAction2;
+            }
+
             CurrentCmd = cmd.Fields;
             MovementController?.ProcessInput(cmd);
             MovementController?.RunCommand(cmd.Fields, prediction);
