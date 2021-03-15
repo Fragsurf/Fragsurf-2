@@ -49,7 +49,11 @@ namespace Fragsurf.Shared.Entity
 
         public static BaseNetProp GetNetProp(IHasNetProps instance, NetPropertyAttributeData propAttr)
         {
-            if (propAttr.PropertyType.IsUnmanaged())
+            if (propAttr.PropertyType.IsEnum)
+            {
+                return new UnmanagedNetProp<int>(instance, propAttr);
+            }
+            else if (propAttr.PropertyType.IsUnmanaged())
             {
                 var genericType = typeof(UnmanagedNetProp<>).MakeGenericType(propAttr.PropertyType);
                 return Activator.CreateInstance(genericType, instance, propAttr) as BaseNetProp;
