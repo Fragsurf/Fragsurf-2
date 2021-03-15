@@ -62,7 +62,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
             {
                 switch (RoundState)
                 {
-                    case RoundStates.NewRound:
+                    case RoundStates.Freeze:
                         RoundState = RoundStates.Live;
                         Timer = RoundDuration;
                         OnRoundLive();
@@ -73,7 +73,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
                         OnRoundExpire();
                         break;
                     case RoundStates.Cooldown:
-                        RoundState = RoundStates.NewRound;
+                        RoundState = RoundStates.Freeze;
                         Timer = FreezeDuration;
                         OnRoundEnd();
                         break;
@@ -103,7 +103,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
             }
             CleanRound();
             FreezePlayers(true);
-            RoundState = RoundStates.NewRound;
+            RoundState = RoundStates.Freeze;
             Timer = FreezeDuration;
         }
 
@@ -124,7 +124,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         {
             // start match when there's enough players and players on separate teams
             MatchState = MatchStates.Live;
-            RoundState = RoundStates.NewRound;
+            RoundState = RoundStates.Freeze;
         }
 
         private void CleanRound()
@@ -172,7 +172,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
     public enum RoundStates
     {
-        NewRound,
+        Freeze,
         Live,
         Cooldown
     }
