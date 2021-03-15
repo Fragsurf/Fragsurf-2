@@ -15,10 +15,9 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         public event Action OnMatchStart;
         public event Action<int> OnMatchEnd;
-        public event Action<int> OnRoundStart;
+        public event Action<int> OnRoundLive;
         public event Action<int, int> OnRoundEnd;
         public event Action<int> OnRoundFreeze;
-        public event Action<int> OnRoundExpired;
 
         [ConVar("rounds.enabled", "", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
         public bool RoundsEnabled { get; set; }
@@ -55,10 +54,6 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 {
                     MoveToNextState();
                 }
-                if(/*team1won*/false)
-                {
-
-                }
             }
         }
 
@@ -77,19 +72,12 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 switch (RoundState)
                 {
                     case RoundStates.Freeze:
-                        RoundState = RoundStates.Live;
-                        Timer = RoundDuration;
                         DoRoundLive();
                         break;
                     case RoundStates.Live:
-                        RoundState = RoundStates.Cooldown;
-                        Timer = CooldownDuration;
-                        OnRoundExpired?.Invoke(CurrentRound);
                         DoRoundEnd(DefaultWinner);
                         break;
                     case RoundStates.Cooldown:
-                        RoundState = RoundStates.Freeze;
-                        Timer = FreezeDuration;
                         DoRoundFreeze();
                         break;
                 }
@@ -102,7 +90,14 @@ namespace Fragsurf.Gamemodes.CombatSurf
             RoundState = RoundStates.Cooldown;
             Timer = CooldownDuration;
 
-            OnRoundEnd?.Invoke(CurrentRound, winningTeam);
+            try
+            {
+                OnRoundEnd?.Invoke(CurrentRound, winningTeam);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
 
             CurrentRound++;
 
@@ -119,8 +114,18 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         private void DoRoundLive()
         {
+            RoundState = RoundStates.Live;
+            Timer = RoundDuration;
             FreezePlayers(false);
-            OnRoundStart?.Invoke(CurrentRound);
+
+            try
+            {
+                OnRoundLive?.Invoke(CurrentRound);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
         }
 
         private void DoRoundFreeze()
@@ -130,7 +135,15 @@ namespace Fragsurf.Gamemodes.CombatSurf
             RoundState = RoundStates.Freeze;
             Timer = FreezeDuration;
             DefaultWinner = UnityEngine.Random.Range(1, 3);
-            OnRoundFreeze?.Invoke(CurrentRound);
+
+            try
+            {
+                OnRoundFreeze?.Invoke(CurrentRound);
+            }
+            catch(Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
         }
 
         private void DoMatchEnd()
@@ -139,7 +152,15 @@ namespace Fragsurf.Gamemodes.CombatSurf
             {
                 // ended abruptly
             }
-            OnMatchEnd?.Invoke(1);
+
+            try
+            {
+                OnMatchEnd?.Invoke(1);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
         }
 
         public int GetTeamScore(int teamNumber) => (int)Game.Get<PlayerProps>().GetProp(-teamNumber, "Score");
@@ -173,7 +194,15 @@ namespace Fragsurf.Gamemodes.CombatSurf
             {
                 SetTeamScore(i, 0);
             }
-            OnMatchStart?.Invoke();
+
+            try
+            {
+                OnMatchStart?.Invoke();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
         }
 
         private void CleanRound()
