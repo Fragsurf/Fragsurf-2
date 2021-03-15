@@ -1,10 +1,6 @@
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
-using Fragsurf.Shared.Player;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.CombatSurf
@@ -12,6 +8,9 @@ namespace Fragsurf.Gamemodes.CombatSurf
     [Inject(InjectRealm.Shared, typeof(CombatSurf))]
     public class RoundManager : FSSharedScript
     {
+
+        private MatchStates _matchState;
+        private RoundStates _roundState;
 
         public event Action OnMatchStart;
         public event Action<int> OnMatchEnd;
@@ -25,8 +24,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
         public int RoundDuration { get; set; } = 5;
         [ConVar("rounds.warmupduration", "Duration in seconds before game starts", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
         public int WarmupDuration { get; set; } = 30;
-        [ConVar("rounds.cooldownduration", "Duration in seconds from round end to next round", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
-        public int CooldownDuration { get; set; } = 4;
+        [ConVar("rounds.roundendduration", "Duration in seconds from round end to next round", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
+        public int RoundEndDuration { get; set; } = 4;
         [ConVar("rounds.freezeduration", "Duration in seconds at the start of a round", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
         public int FreezeDuration { get; set; } = 4;
         [ConVar("rounds.limit", "How many rounds until the game ends", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
@@ -35,15 +34,66 @@ namespace Fragsurf.Gamemodes.CombatSurf
         public override bool HasNetProps => true;
 
         [NetProperty]
-        public MatchStates MatchState { get; set; }
-        [NetProperty]
-        public RoundStates RoundState { get; set; }
-        [NetProperty]
         public float Timer { get; set; }
         [NetProperty]
         public int CurrentRound { get; set; }
         [NetProperty]
         public int DefaultWinner { get; set; }
+        [NetProperty]
+        public int RoundWinner { get; set; }
+        [NetProperty]
+        public int MatchWinner { get; set; }
+        [NetProperty]
+        public MatchStates MatchState
+        {
+            get => _matchState;
+            set => SetMatchState(value);
+        }
+        [NetProperty]
+        public RoundStates RoundState
+        {
+            get => _roundState;
+            set => SetRoundState(value);
+        }
+
+        private void SetMatchState(MatchStates state)
+        {
+            _matchState = state;
+
+            if (!Game.IsHost)
+            {
+                switch (state)
+                {
+                    case MatchStates.Live:
+                        try { OnMatchStart?.Invoke(); } catch (Exception e) { Debug.LogError(e); }
+                        break;
+                    case MatchStates.Post:
+                        try { OnMatchEnd?.Invoke(MatchWinner); } catch(Exception e) { Debug.LogError(e); }
+                        break;
+                }
+            }
+        }
+
+        private void SetRoundState(RoundStates state)
+        {
+            _roundState = state;
+
+            if (!Game.IsHost)
+            {
+                switch (RoundState)
+                {
+                    case RoundStates.Live:
+                        try { OnRoundLive?.Invoke(CurrentRound); } catch(Exception e) { Debug.LogError(e); }
+                        break;
+                    case RoundStates.End:
+                        try { OnRoundEnd?.Invoke(CurrentRound, RoundWinner); } catch (Exception e) { Debug.LogError(e); }
+                        break;
+                    case RoundStates.Freeze:
+                        try { OnRoundFreeze?.Invoke(CurrentRound); } catch(Exception e) { Debug.LogError(e); }
+                        break;
+                }
+            }
+        }
 
         protected override void _Tick()
         {
@@ -77,7 +127,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
                     case RoundStates.Live:
                         DoRoundEnd(DefaultWinner);
                         break;
-                    case RoundStates.Cooldown:
+                    case RoundStates.End:
                         DoRoundFreeze();
                         break;
                 }
@@ -87,8 +137,9 @@ namespace Fragsurf.Gamemodes.CombatSurf
         private void DoRoundEnd(int winningTeam)
         {
             ScoreRound(winningTeam);
-            RoundState = RoundStates.Cooldown;
-            Timer = CooldownDuration;
+            RoundWinner = winningTeam;
+            RoundState = RoundStates.End;
+            Timer = RoundEndDuration;
 
             try
             {
@@ -153,9 +204,11 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 // ended abruptly
             }
 
+            MatchWinner = 1;
+
             try
             {
-                OnMatchEnd?.Invoke(1);
+                OnMatchEnd?.Invoke(MatchWinner);
             }
             catch (Exception e)
             {
@@ -252,7 +305,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
     {
         Freeze,
         Live,
-        Cooldown
+        End
     }
 
     public enum MatchStates
