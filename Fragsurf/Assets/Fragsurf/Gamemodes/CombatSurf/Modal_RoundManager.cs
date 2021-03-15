@@ -24,12 +24,19 @@ namespace Fragsurf.Gamemodes.CombatSurf
         private TMP_Text _team1Score;
         [SerializeField]
         private TMP_Text _team2Score;
+        [SerializeField]
+        private TMP_Text _team1Name;
+        [SerializeField]
+        private TMP_Text _team2Name;
 
         private RoundManager _rm;
         private MatchStates _prevMatchState;
         private RoundStates _prevRoundState;
         private int _prevTime;
         private int _prevRoundNumber = -1;
+        private int _prevDefaultWinner = -1;
+        private int _prevTeam1Score;
+        private int _prevTeam2Score;
 
         private void Start()
         {
@@ -71,6 +78,22 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 _prevRoundNumber = _rm.CurrentRound;
             }
 
+            if(_prevDefaultWinner != _rm.DefaultWinner)
+            {
+                switch (_rm.DefaultWinner)
+                {
+                    case 1:
+                        _team1Name.color = Color.green;
+                        _team2Name.color = Color.white;
+                        break;
+                    case 2:
+                        _team1Name.color = Color.white;
+                        _team2Name.color = Color.green;
+                        break;
+                }
+                _prevDefaultWinner = _rm.DefaultWinner;
+            }
+
             var t = (int)_rm.Timer;
             if(_prevTime != t)
             {
@@ -78,8 +101,19 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 _prevTime = t;
             }
 
-            _team1Score.text = 0.ToString();
-            _team2Score.text = 0.ToString();
+            var t1score = _rm.GetTeamScore(1);
+            if(t1score != _prevTeam1Score)
+            {
+                _team1Score.text = t1score.ToString();
+                _prevTeam1Score = t1score;
+            }
+
+            var t2score = _rm.GetTeamScore(2);
+            if (t2score != _prevTeam2Score)
+            {
+                _team2Score.text = t2score.ToString();
+                _prevTeam2Score = t2score;
+            }
         }
 
     }

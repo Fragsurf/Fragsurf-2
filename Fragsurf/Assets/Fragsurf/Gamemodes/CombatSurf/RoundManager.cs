@@ -1,6 +1,7 @@
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -11,6 +12,13 @@ namespace Fragsurf.Gamemodes.CombatSurf
     [Inject(InjectRealm.Shared, typeof(CombatSurf))]
     public class RoundManager : FSSharedScript
     {
+
+        public event Action OnMatchStart;
+        public event Action<int> OnMatchEnd;
+        public event Action<int> OnRoundStart;
+        public event Action<int, int> OnRoundEnd;
+        public event Action<int> OnRoundFreeze;
+        public event Action<int> OnRoundExpired;
 
         [ConVar("rounds.enabled", "", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
         public bool RoundsEnabled { get; set; }
@@ -35,6 +43,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
         public float Timer { get; set; }
         [NetProperty]
         public int CurrentRound { get; set; }
+        [NetProperty]
+        public int DefaultWinner { get; set; }
 
         protected override void _Tick()
         {
@@ -44,6 +54,10 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 if (Timer <= 0)
                 {
                     MoveToNextState();
+                }
+                if(/*team1won*/false)
+                {
+
                 }
             }
         }
@@ -65,59 +79,83 @@ namespace Fragsurf.Gamemodes.CombatSurf
                     case RoundStates.Freeze:
                         RoundState = RoundStates.Live;
                         Timer = RoundDuration;
-                        OnRoundLive();
+                        DoRoundLive();
                         break;
                     case RoundStates.Live:
                         RoundState = RoundStates.Cooldown;
                         Timer = CooldownDuration;
-                        OnRoundExpire();
+                        OnRoundExpired?.Invoke(CurrentRound);
+                        DoRoundEnd(DefaultWinner);
                         break;
                     case RoundStates.Cooldown:
                         RoundState = RoundStates.Freeze;
                         Timer = FreezeDuration;
-                        OnRoundEnd();
+                        DoRoundFreeze();
                         break;
                 }
             }
         }
 
-        private void OnRoundExpire()
+        private void DoRoundEnd(int winningTeam)
         {
-            ScoreRound(0);
-        }
+            ScoreRound(winningTeam);
+            RoundState = RoundStates.Cooldown;
+            Timer = CooldownDuration;
 
-        private void OnRoundLive()
-        {
-            FreezePlayers(false);
-        }
+            OnRoundEnd?.Invoke(CurrentRound, winningTeam);
 
-        private void OnRoundEnd()
-        {
             CurrentRound++;
-            if(CurrentRound >= RoundLimit)
+
+            if (CurrentRound >= RoundLimit)
             {
-                OnMatchEnd();
                 MatchState = MatchStates.Post;
                 Timer = 20f;
+                CleanRound();
+                FreezePlayers(false);
+                DoMatchEnd();
                 return;
             }
+        }
+
+        private void DoRoundLive()
+        {
+            FreezePlayers(false);
+            OnRoundStart?.Invoke(CurrentRound);
+        }
+
+        private void DoRoundFreeze()
+        {
             CleanRound();
             FreezePlayers(true);
             RoundState = RoundStates.Freeze;
             Timer = FreezeDuration;
+            DefaultWinner = UnityEngine.Random.Range(1, 3);
+            OnRoundFreeze?.Invoke(CurrentRound);
         }
 
-        private void OnMatchEnd()
+        private void DoMatchEnd()
         {
             if(CurrentRound < RoundLimit)
             {
                 // ended abruptly
             }
+            OnMatchEnd?.Invoke(1);
         }
 
-        private void ScoreRound(int winner)
+        public int GetTeamScore(int teamNumber) => (int)Game.Get<PlayerProps>().GetProp(-teamNumber, "Score");
+        public void SetTeamScore(int teamNumber, int score) => Game.Get<PlayerProps>().SetProp(-teamNumber, "Score", score);
+        public void IncrementTeamScore(int teamNumber) => Game.Get<PlayerProps>().IncrementProp(-teamNumber, "Score", 1);
+
+        private void ScoreRound(int winningTeam)
         {
-            Debug.Log("Winner: " + winner);
+            if(winningTeam <= 0)
+            {
+
+            }
+            else
+            {
+                IncrementTeamScore(winningTeam);
+            }
         }
 
         private void TryStartMatch()
@@ -125,6 +163,17 @@ namespace Fragsurf.Gamemodes.CombatSurf
             // start match when there's enough players and players on separate teams
             MatchState = MatchStates.Live;
             RoundState = RoundStates.Freeze;
+            DoMatchStart();
+        }
+
+        private void DoMatchStart()
+        {
+            CurrentRound = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                SetTeamScore(i, 0);
+            }
+            OnMatchStart?.Invoke();
         }
 
         private void CleanRound()
