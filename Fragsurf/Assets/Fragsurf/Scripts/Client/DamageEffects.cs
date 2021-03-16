@@ -19,31 +19,6 @@ namespace Fragsurf.Client
             _damageIndicator = GameObject.FindObjectOfType<bl_IndicatorManager>(true);
         }
 
-        protected override void _Update()
-        {
-            if (!Input.GetKeyDown(KeyCode.T))
-            {
-                return;
-            }
-            foreach(Human hu in Game.EntityManager.OfType<Human>())
-            {
-                if(hu.OwnerId == Game.ClientIndex)
-                {
-                    continue;
-                }
-                var dmgInfo = new DamageInfo()
-                {
-                    Amount = 50,
-                    AttackerEntityId = hu.EntityId,
-                    DamageType = DamageType.Bullet,
-                    ResultedInDeath = false,
-                    VictimEntityId = Human.Local.EntityId,
-                    Viewpunch = new Vector3(-Random.Range(0.5f, 1.25f), Random.Range(-1f, 1f), 0)
-                };
-                OnHumanDamaged(Human.Local, dmgInfo);
-            }
-        }
-
         protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
         {
             if (GameData.Instance.TryGetImpactPrefab(ImpactType.Bullet, SurfaceConfigurator.SurfaceType.Flesh, out GameObject prefab))
