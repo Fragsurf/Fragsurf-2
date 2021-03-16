@@ -1,6 +1,7 @@
 using Fragsurf.Shared.Player;
 using Fragsurf.Utility;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Fragsurf.Shared.Entity
 {
@@ -25,6 +26,8 @@ namespace Fragsurf.Shared.Entity
         private float _eyeOffset = 1.5f;
         [SerializeField]
         private float _duckedOffset = .5f;
+        [SerializeField]
+        private Light _flashlight;
 
         [Header("Audio")]
 
@@ -239,15 +242,23 @@ namespace Fragsurf.Shared.Entity
         {
             base._Update();
 
-            if (!Animator)
+            if (_flashlight)
             {
-                return;
+                var flashlightOn = !Human.Game.IsHost && Human.FlashlightOn;
+                if(_flashlight.enabled != flashlightOn)
+                {
+                    _flashlight.enabled = flashlightOn;
+                }
+                _flashlight.transform.forward = Quaternion.Euler(Human.Angles) * Vector3.forward;
             }
 
-            _desiredMoveBlend = ViewBody.transform.InverseTransformDirection(Human.Velocity);
-            _currentMoveBlend = Vector3.SmoothDamp(_currentMoveBlend, _desiredMoveBlend, ref _moveBlendVelocity, .1f);
-            Animator.SetFloat("sideways", _currentMoveBlend.x);
-            Animator.SetFloat("forward", _currentMoveBlend.z);
+            if (Animator)
+            {
+                _desiredMoveBlend = ViewBody.transform.InverseTransformDirection(Human.Velocity);
+                _currentMoveBlend = Vector3.SmoothDamp(_currentMoveBlend, _desiredMoveBlend, ref _moveBlendVelocity, .1f);
+                Animator.SetFloat("sideways", _currentMoveBlend.x);
+                Animator.SetFloat("forward", _currentMoveBlend.z);
+            }
         }
 
         public void OnRunCommand()

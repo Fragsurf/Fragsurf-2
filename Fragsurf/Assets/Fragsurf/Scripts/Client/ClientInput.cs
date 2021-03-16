@@ -43,7 +43,8 @@ namespace Fragsurf.Client
             InputActions.Slot3,
             InputActions.Slot4,
             InputActions.Slot5,
-            InputActions.Reload
+            InputActions.Reload,
+            InputActions.Flashlight
         };
 
         protected UserCmd UserCmd { get; } = new UserCmd();

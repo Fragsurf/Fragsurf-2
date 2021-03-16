@@ -25,6 +25,7 @@ namespace Fragsurf.Movement
         Reload = 1 << 18,
         NextItem = 1 << 19,
         PrevItem = 1 << 20,
-        Brake = 1 << 21
+        Brake = 1 << 21,
+        Flashlight = 1 << 22
     }
 }

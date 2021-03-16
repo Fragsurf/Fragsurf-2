@@ -56,9 +56,13 @@ namespace Fragsurf.Shared.Entity
         }
         [NetProperty]
         public bool Frozen { get; set; }
+        [NetProperty]
+        public bool FlashlightOn { get; set; }
 
         protected override void _Start()
         {
+            FlashlightOn = false;
+
             if(Game.GamemodeLoader.Gamemode.Data.HumanPrefab != null)
             {
                 var clone = GameObject.Instantiate(Game.GamemodeLoader.Gamemode.Data.HumanPrefab);
@@ -107,19 +111,8 @@ namespace Fragsurf.Shared.Entity
 
         protected override void _Update()
         {
-            if(Game.IsHost && Input.GetKeyDown(KeyCode.F))
-            {
-                Frozen = !Frozen;
-            }
-
             MovementController?.Update();
             AnimationController?.Update();
-
-            if(Game.IsHost && Input.GetKeyDown(KeyCode.Space))
-            {
-                Health = 100;
-                Dead = false;
-            }
         }
 
         public Ray GetEyeRay()
@@ -147,6 +140,11 @@ namespace Fragsurf.Shared.Entity
 
             if(Game.IsHost || prediction)
             {
+                if (cmd.Buttons.HasFlag(InputActions.Flashlight))
+                {
+                    FlashlightOn = !FlashlightOn;
+                }
+
                 Equippables?.RunCommand(cmd.Fields);
                 _interactor?.RunCommand(cmd.Fields);
 
