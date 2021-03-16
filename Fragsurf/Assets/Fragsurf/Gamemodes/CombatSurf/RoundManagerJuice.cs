@@ -53,12 +53,20 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 if(Game.PlayerManager.LocalPlayer.Team == winningTeam)
                 {
                     msg = "<color=#4acfff>your team won!</color>";
-                    UGuiManager.Instance.Find<Modal_RoundManager>()?.Vignette(Color.green);
+                    var rm = UGuiManager.Instance.Find<Modal_RoundManager>();
+                    if (rm)
+                    {
+                        rm.Vignette(Color.green);
+                    }
                 }
                 else
                 {
-                    msg = "<color=#ff4a4a>your team lost!</color> ";
-                    UGuiManager.Instance.Find<Modal_RoundManager>()?.Vignette(Color.red);
+                    msg = "<color=#ff4a4a>your team lost!</color>";
+                    var rm = UGuiManager.Instance.Find<Modal_RoundManager>();
+                    if (rm)
+                    {
+                        rm.Vignette(Color.red);
+                    }
                 }
             }
             else
