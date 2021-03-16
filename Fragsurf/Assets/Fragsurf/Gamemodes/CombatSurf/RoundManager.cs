@@ -136,7 +136,11 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         private void DoRoundEnd(int winningTeam)
         {
-            ScoreRound(winningTeam);
+            if(CurrentRound > 0)
+            {
+                ScoreRound(winningTeam);
+            }
+
             RoundWinner = winningTeam;
             RoundState = RoundStates.End;
             Timer = RoundEndDuration;
