@@ -9,6 +9,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
     {
         protected override void _Load(FSGameLoop game)
         {
+            LockVars = false;
         }
         protected override void _Unload(FSGameLoop game)
         {
