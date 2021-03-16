@@ -32,7 +32,11 @@ namespace Fragsurf.Shared.Entity
         [Header("Audio")]
 
         [SerializeField]
-        private AudioClip _deathSound;
+        private AudioClip[] _deathSounds;
+        [SerializeField]
+        private AudioClip[] _hurtSounds;
+        [SerializeField]
+        private AudioClip[] _headshotSounds;
         [SerializeField]
         private AudioClip _flashlightSound;
 
@@ -176,11 +180,6 @@ namespace Fragsurf.Shared.Entity
             {
                 SetVisible(false);
 
-                if (HeadAudioSource)
-                {
-                    HeadAudioSource.PlayClip(_deathSound, Random.Range(0.75f, 1f));
-                }
-
                 var killer = Entity.Game.EntityManager.FindEntity(dmgInfo.AttackerEntityId);
                 var ragdollDirection = Vector3.zero;
 
@@ -264,6 +263,32 @@ namespace Fragsurf.Shared.Entity
                 _currentMoveBlend = Vector3.SmoothDamp(_currentMoveBlend, _desiredMoveBlend, ref _moveBlendVelocity, .1f);
                 Animator.SetFloat("sideways", _currentMoveBlend.x);
                 Animator.SetFloat("forward", _currentMoveBlend.z);
+            }
+        }
+
+        public void PlayDamageSound(DamageInfo info)
+        {
+            if (!AudioSource)
+            {
+                return;
+            }
+
+            if (info.ResultedInDeath && _deathSounds != null && _deathSounds.Length > 0)
+            {
+                AudioSource.PlayClip(_deathSounds[Random.Range(0, _deathSounds.Length)]);
+            }
+            else if (!info.ResultedInDeath)
+            {
+                var soundArr = info.HitArea == HitboxArea.Head
+                    ? _headshotSounds
+                    : _hurtSounds;
+                var vol = info.HitArea == HitboxArea.Head
+                    ? 1f
+                    : .75f;
+                if(soundArr != null && soundArr.Length > 0)
+                {
+                    AudioSource.PlayClip(soundArr[Random.Range(0, soundArr.Length)], vol);
+                }
             }
         }
 

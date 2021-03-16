@@ -343,21 +343,14 @@ namespace Fragsurf.Shared.Entity
 
         public void Damage(DamageInfo dmgInfo)
         {
-            if (!Game.IsHost)
-            {
-                if (GameData.Instance.TryGetImpactPrefab(ImpactType.Bullet, SurfaceConfigurator.SurfaceType.Flesh, out GameObject prefab))
-                {
-                    var effect = Game.Pool.Get(prefab, 10f);
-                    effect.transform.position = dmgInfo.HitPoint;
-                    effect.transform.forward = dmgInfo.HitNormal;
-                }
-            }
-            else
+            if (Game.IsHost)
             {
                 var wasDead = Dead;
                 Health -= dmgInfo.Amount;
                 Dead = Health <= 0;
                 dmgInfo.ResultedInDeath = !wasDead && Dead;
+                dmgInfo.Viewpunch = new Vector3(-Random.Range(0.5f, 1.25f), Random.Range(-1f, 1f), 0);
+                Punch(dmgInfo.Viewpunch, Vector3.zero);
                 Game.EntityManager.BroadcastHumanDamaged(this, dmgInfo);
             }
         }

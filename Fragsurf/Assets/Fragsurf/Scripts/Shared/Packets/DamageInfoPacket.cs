@@ -21,7 +21,7 @@ namespace Fragsurf.Shared.Packets
             DamageInfo.ResultedInDeath = buffer.ReadBoolean();
             DamageInfo.HitNormal = buffer.ReadVector3();
             DamageInfo.HitPoint = buffer.ReadVector3();
-            DamageInfo.Viewpunch = buffer.ReadSingle();
+            DamageInfo.Viewpunch = buffer.ReadVector3();
             DamageInfo.HitArea = (HitboxArea)buffer.ReadByte();
             DamageInfo.DamageType = (DamageType)buffer.ReadByte();
         }

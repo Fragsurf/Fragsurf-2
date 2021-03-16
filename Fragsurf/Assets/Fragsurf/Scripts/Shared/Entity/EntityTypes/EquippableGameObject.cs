@@ -403,7 +403,11 @@ namespace Fragsurf.Shared.Entity
             hit = default;
             int hitCount = 0;
 
-            
+            if(Entity == null)
+            {
+                Debug.LogError("EquippableGameObject Entity is null..");
+                return false;
+            }
 
             // todo: Implement IDisposable to give lag compensator a clean, safe rewind block
             try

@@ -1177,7 +1177,19 @@ MonoBehaviour:
   _eyeOffset: 1.6256
   _duckedOffset: 0.5
   _flashlight: {fileID: 4634624598173663680}
-  _deathSound: {fileID: 0}
+  _deathSounds:
+  - {fileID: 8300000, guid: 56d0d530bb9ef0345a475927605be10e, type: 3}
+  - {fileID: 8300000, guid: 611882236f4df61429438647114fd564, type: 3}
+  - {fileID: 8300000, guid: f5de1437706c59e4eb59fad141f367a8, type: 3}
+  _hurtSounds:
+  - {fileID: 8300000, guid: fe57182b6207b8b49b9ba4de80c4e427, type: 3}
+  - {fileID: 8300000, guid: 4ce1e02bb53e9df4f823abde3afe2787, type: 3}
+  - {fileID: 8300000, guid: d5ff3895b52a6354aa5d98eae361670a, type: 3}
+  - {fileID: 8300000, guid: 07c6ae1909461be4f83b00dc388587c1, type: 3}
+  - {fileID: 8300000, guid: 1bb7130eafecc35449aee949cac6aa53, type: 3}
+  - {fileID: 8300000, guid: 9cf4203d063a17e4e8b8330ffbc15807, type: 3}
+  _headshotSounds:
+  - {fileID: 8300000, guid: 9872cca8dae1bbc479e670865617c617, type: 3}
   _flashlightSound: {fileID: 8300000, guid: c833b3f1e1cb3a2418249e7db3264f34, type: 3}
 --- !u!65 &7776529293873923160
 BoxCollider:

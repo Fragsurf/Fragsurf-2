@@ -19,7 +19,7 @@ namespace Fragsurf.Shared.Entity
         public bool ResultedInDeath;
         public Vector3 HitPoint;
         public Vector3 HitNormal;
-        public float Viewpunch;
+        public Vector3 Viewpunch;
         public HitboxArea HitArea;
         public DamageType DamageType;
     }

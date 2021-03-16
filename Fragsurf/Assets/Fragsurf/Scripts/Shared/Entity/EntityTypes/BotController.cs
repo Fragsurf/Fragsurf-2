@@ -1,3 +1,4 @@
+using Fragsurf.Movement;
 using Fragsurf.Shared.Packets;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Fragsurf.Shared.Entity
 
         public void Tick()
         {
+            Command.Buttons |= InputActions.HandAction;
             Human.RunCommand(Command, false);
         }
 
