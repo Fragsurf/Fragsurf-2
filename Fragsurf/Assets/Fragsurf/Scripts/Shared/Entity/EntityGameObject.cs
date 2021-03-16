@@ -43,8 +43,14 @@ namespace Fragsurf.Shared.Entity
                     {
                         hb.EntityId = _entity.EntityId;
                     }
+                    SetAudioSourceRealms(_entity.Game.IsHost);
+                    if (_animator)
+                    {
+                        _animator.cullingMode = _entity.Game.IsHost
+                            ? AnimatorCullingMode.AlwaysAnimate
+                            : AnimatorCullingMode.CullCompletely;
+                    }
                 }
-                SetAudioSourceRealms(_entity != null ? _entity.Game.IsHost : false);
             }
         }
 
