@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
+using Fragsurf.UI;
 
 namespace Fragsurf.Client 
 {
@@ -12,11 +13,16 @@ namespace Fragsurf.Client
 
         private bl_HudDamageManager _screenDamage;
         private bl_IndicatorManager _damageIndicator;
+        private Hitmarker _hitmarker;
+
+        [ConVar("game.hitmarker", "", ConVarFlags.UserSetting)]
+        public bool Hitmarker { get; set; } = true;
 
         protected override void _Start()
         {
             _screenDamage = GameObject.FindObjectOfType<bl_HudDamageManager>(true);
             _damageIndicator = GameObject.FindObjectOfType<bl_IndicatorManager>(true);
+            _hitmarker = GameObject.FindObjectOfType<Hitmarker>(true);
         }
 
         protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
@@ -39,7 +45,24 @@ namespace Fragsurf.Client
                 hu.HumanGameObject.PlayDamageSound(dmgInfo);
             }
 
-            if (hu != Game.Get<SpectateController>().TargetHuman
+            var targetHu = Game.Get<SpectateController>().TargetHuman;
+            if (Hitmarker
+                && _hitmarker
+                && targetHu != null 
+                && targetHu.EntityId == dmgInfo.AttackerEntityId 
+                && hu != targetHu)
+            {
+                if(dmgInfo.HitArea == Shared.Player.HitboxArea.Head)
+                {
+                    _hitmarker.Trigger2();
+                }
+                else
+                {
+                    _hitmarker.Trigger();
+                }
+            }
+
+            if (hu != targetHu
                 || !_screenDamage
                 || !_damageIndicator)
             {
