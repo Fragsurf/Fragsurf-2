@@ -12,7 +12,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
         public AudioClip MatchStart;
         public AudioClip MatchEnd;
         public AudioClip RoundLive;
-        public AudioClip RoundEnd;
+        public AudioClip RoundEndLose;
+        public AudioClip RoundEndWin;
         public AudioClip RoundFreeze;
         public AudioClip SpawnProtectedEnded;
 

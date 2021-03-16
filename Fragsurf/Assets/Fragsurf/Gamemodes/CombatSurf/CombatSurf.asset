@@ -22,6 +22,7 @@ MonoBehaviour:
   MatchStart: {fileID: 8300000, guid: 7aa67fd1ad1f5804ebae5625ffb893d0, type: 3}
   MatchEnd: {fileID: 8300000, guid: f621cd6a7d53d364cbe529cad593b4db, type: 3}
   RoundLive: {fileID: 8300000, guid: 4ba616b449150654cb94802b65b18546, type: 3}
-  RoundEnd: {fileID: 8300000, guid: 25d40aca64ea0594f81c3d51954380e7, type: 3}
+  RoundEndLose: {fileID: 8300000, guid: cfa6cbe2a5b32de47bc5c1c655a2b469, type: 3}
+  RoundEndWin: {fileID: 8300000, guid: 4ab916c854a052e45ad5c997fa615e69, type: 3}
   RoundFreeze: {fileID: 8300000, guid: 3ebe9c7834dd01946b4e23de383de978, type: 3}
   SpawnProtectedEnded: {fileID: 8300000, guid: 1910e7cc5d895a34bb99571bcd8aad67, type: 3}

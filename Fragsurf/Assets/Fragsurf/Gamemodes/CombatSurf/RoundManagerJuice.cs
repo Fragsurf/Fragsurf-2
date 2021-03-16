@@ -43,7 +43,6 @@ namespace Fragsurf.Gamemodes.CombatSurf
             {
                 return;
             }
-            _audioSrc.PlayClip(Data.RoundEnd);
 
             string msg;
 
@@ -52,6 +51,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
             {
                 if(Game.PlayerManager.LocalPlayer.Team == winningTeam)
                 {
+                    _audioSrc.PlayClip(Data.RoundEndWin);
                     msg = "<color=#4acfff>your team won!</color>";
                     var rm = UGuiManager.Instance.Find<Modal_RoundManager>();
                     if (rm)
@@ -61,6 +61,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 }
                 else
                 {
+                    _audioSrc.PlayClip(Data.RoundEndLose);
                     msg = "<color=#ff4a4a>your team lost!</color>";
                     var rm = UGuiManager.Instance.Find<Modal_RoundManager>();
                     if (rm)
@@ -71,6 +72,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
             }
             else
             {
+                _audioSrc.PlayClip(Data.RoundEndLose);
                 msg = $"<color=#14ffef>Team {winningTeam}</color> won!";
             }
 
