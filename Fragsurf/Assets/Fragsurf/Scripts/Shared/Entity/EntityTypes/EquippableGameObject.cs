@@ -353,8 +353,14 @@ namespace Fragsurf.Shared.Entity
                 return;
             }
 
-            var latency = Equippable.Game.PlayerManager.FindPlayer(Equippable.Human).LatencyMs / 1000f;
-            Equippable.Human.DisableLagCompensation = true;
+            var latency = 0f;
+            if(Equippable.Human != null)
+            {
+                var player = Equippable.Game.PlayerManager.FindPlayer(Equippable.Human);
+                latency = player != null ? player.LatencyMs / 1000f : 0;
+                Equippable.Human.DisableLagCompensation = true;
+            }
+
             Equippable.Game.LagCompensator.Rewind(latency);
 
             if (testlag)
@@ -364,7 +370,10 @@ namespace Fragsurf.Shared.Entity
                 DrawEntities(Color.yellow);
             }
 
-            Equippable.Human.DisableLagCompensation = false;
+            if(Equippable.Human != null)
+            {
+                Equippable.Human.DisableLagCompensation = false;
+            }
         }
 
         private void DrawEntities(Color color, float scale = 1)
@@ -412,7 +421,7 @@ namespace Fragsurf.Shared.Entity
             // todo: Implement IDisposable to give lag compensator a clean, safe rewind block
             try
             {
-                if(Equippable.Human != null)
+                if (Equippable.Human != null)
                 {
                     RewindLagCompensator();
                     if (Equippable.Human.HumanGameObject)
