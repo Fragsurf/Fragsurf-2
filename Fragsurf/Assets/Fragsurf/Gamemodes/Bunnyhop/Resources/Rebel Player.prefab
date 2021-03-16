@@ -1178,6 +1178,7 @@ MonoBehaviour:
   _duckedOffset: 0.5
   _flashlight: {fileID: 4634624598173663680}
   _deathSound: {fileID: 0}
+  _flashlightSound: {fileID: 8300000, guid: c833b3f1e1cb3a2418249e7db3264f34, type: 3}
 --- !u!65 &7776529293873923160
 BoxCollider:
   m_ObjectHideFlags: 0

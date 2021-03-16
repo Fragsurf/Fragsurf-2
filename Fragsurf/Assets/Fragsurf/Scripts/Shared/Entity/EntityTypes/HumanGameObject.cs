@@ -33,6 +33,8 @@ namespace Fragsurf.Shared.Entity
 
         [SerializeField]
         private AudioClip _deathSound;
+        [SerializeField]
+        private AudioClip _flashlightSound;
 
         public bool Ragdolled { get; private set; } // todo :implement ragdolling
         public GameObject Ragdoll { get; set; }
@@ -248,6 +250,10 @@ namespace Fragsurf.Shared.Entity
                 if(_flashlight.enabled != flashlightOn)
                 {
                     _flashlight.enabled = flashlightOn;
+                    if (_flashlightSound && AudioSource)
+                    {
+                        AudioSource.PlayClip(_flashlightSound, .9f);
+                    }
                 }
                 _flashlight.transform.forward = Quaternion.Euler(Human.Angles) * Vector3.forward;
             }
