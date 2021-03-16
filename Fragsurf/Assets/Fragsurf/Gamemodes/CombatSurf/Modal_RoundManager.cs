@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Fragsurf.Gamemodes.CombatSurf
 {
@@ -28,6 +29,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
         private TMP_Text _team1Name;
         [SerializeField]
         private TMP_Text _team2Name;
+        [SerializeField]
+        private Image _vignetteEffect;
 
         private RoundManager _rm;
         private MatchStates _prevMatchState;
@@ -48,8 +51,21 @@ namespace Fragsurf.Gamemodes.CombatSurf
             _rm = cl.Get<RoundManager>();
         }
 
+        public void Vignette(Color color)
+        {
+            if (_vignetteEffect)
+            {
+                _vignetteEffect.color = color;
+            }
+        }
+
         private void Update()
         {
+            if(_vignetteEffect && _vignetteEffect.color.a > 0)
+            {
+                _vignetteEffect.color = Color.Lerp(_vignetteEffect.color, new Color(0, 0, 0, 0), 4 * Time.deltaTime);
+            }
+            
             if (!_rm)
             {
                 return;
