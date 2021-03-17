@@ -41,7 +41,7 @@ namespace Fragsurf.Shared.Entity
         private AudioClip _flashlightSound;
 
         public bool Ragdolled { get; private set; } // todo :implement ragdolling
-        public GameObject Ragdoll { get; set; }
+        public RagdollBehaviour Ragdoll { get; set; }
         public GameObject ViewBody => _viewBody;
         public Transform FeetAttachment => _feetAttachment;
         public Transform HeadAttachment => _headAttachment;
@@ -199,16 +199,31 @@ namespace Fragsurf.Shared.Entity
             {
                 DestroyRagdoll();
             }
-            Ragdoll = Entity.Game.Instantiate(_ragdollPrefab);
+
+            if (!_ragdollPrefab)
+            {
+                return;
+            }
+
+            Ragdoll = Entity.Game.Instantiate(_ragdollPrefab).GetComponent<RagdollBehaviour>();
+
+            if (!Ragdoll)
+            {
+                return;
+            }
+
             Ragdoll.transform.SetParent(transform);
             CopyTransformToRagdoll(transform, Ragdoll.transform);
-            Ragdoll.GetComponent<RagdollBehaviour>().Ragdoll(force, point, torque);
+            Ragdoll.Ragdoll(force, point, torque);
             Ragdolled = true;
         }
 
         private void DestroyRagdoll()
         {
-            GameObject.Destroy(Ragdoll);
+            if (Ragdoll && Ragdoll.gameObject)
+            {
+                GameObject.Destroy(Ragdoll.gameObject);
+            }
             Ragdolled = false;
         }
 

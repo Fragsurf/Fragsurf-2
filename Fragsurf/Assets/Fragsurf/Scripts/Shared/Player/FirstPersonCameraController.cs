@@ -25,6 +25,19 @@ namespace Fragsurf.Shared.Player
                 return;
             }
 
+            if(Viewer is Human hu && hu.Dead)
+            {
+                var targetPos = hu.HumanGameObject && hu.HumanGameObject.Ragdoll
+                    ? hu.HumanGameObject.Ragdoll.Position
+                    : hu.HumanGameObject != null ? hu.HumanGameObject.transform.position : hu.Origin;
+                var targetRotation = Quaternion.LookRotation(targetPos - Camera.transform.position);
+                // Smoothly rotate towards the target point.
+                Camera.transform.rotation = Quaternion.Slerp(Camera.transform.rotation, targetRotation, .7f * Time.deltaTime);
+                targetPos -= Camera.transform.forward * 5f;
+                Camera.transform.position = Vector3.MoveTowards(Camera.transform.position, targetPos, .25f * Time.deltaTime);
+                return;
+            }
+
             var targetOrigin = Viewer.EntityGameObject 
                 ? Viewer.EntityGameObject.Position
                 : Viewer.Origin;
