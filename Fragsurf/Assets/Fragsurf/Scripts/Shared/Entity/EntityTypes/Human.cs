@@ -125,13 +125,6 @@ namespace Fragsurf.Shared.Entity
 
         protected override void _Update()
         {
-            if(Game.IsHost 
-                && Input.GetKeyDown(KeyCode.T)
-                && BotController != null)
-            {
-                OutOfGame = !OutOfGame;
-            }
-
             if (OutOfGame)
             {
                 return;

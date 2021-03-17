@@ -8,6 +8,7 @@ namespace Fragsurf.Shared.Player
 
     public class PlayerManager : FSComponent
     {
+
         public event Action<BasePlayer> OnPlayerConnected;
         public event Action<BasePlayer> OnPlayerDisconnected;
         public event Action<BasePlayer> OnPlayerApprovedToJoin;
@@ -26,9 +27,24 @@ namespace Fragsurf.Shared.Player
 
         public int PlayerCount => Players.Count;
 
+        public static int _fakePlayerIndex = int.MaxValue;
+
         protected override void _Destroy()
         {
             RemoveAllPlayers();
+        }
+
+        public BasePlayer CreateFakePlayer(string displayName)
+        {
+            var player = new BasePlayer()
+            {
+                DisplayName = displayName,
+                IsFake = true,
+                ClientIndex = --_fakePlayerIndex,
+                ConnectionTime = Game.ElapsedTime
+            };
+            IntroducePlayer(player);
+            return player;
         }
 
         public void IntroducePlayer(BasePlayer player)

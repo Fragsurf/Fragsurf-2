@@ -119,6 +119,11 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 Game.EntityManager.AddEntity(hu);
                 hu.OwnerId = player.ClientIndex;
             }
+
+            if (player.IsFake)
+            {
+                hu.BotController = new BotController(hu);
+            }
         }
 
         [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]
@@ -144,12 +149,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 return;
             }
 
-            var fake = new FakePlayer()
-            {
-                DisplayName = "Fake Player"
-            };
-
-            Game.PlayerManager.IntroducePlayer(fake);
+            Game.PlayerManager.CreateFakePlayer("Fake Player");
 
             //var bot = new Human(Game);
             //Game.EntityManager.AddEntity(bot);
