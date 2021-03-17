@@ -18,7 +18,7 @@ namespace Fragsurf.Shared.Entity
         public void Update() 
         { 
             if(Human == null
-                || !Human.IsValid()
+                || !Human.IsLive
                 || Human.EntityGameObject == null
                 || Human.EntityGameObject.Animator == null)
             {

@@ -42,7 +42,7 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
-        protected override void _Tick()
+        protected override void OnTick()
         {
             if (Game.IsHost && _targetObject == null)
             {

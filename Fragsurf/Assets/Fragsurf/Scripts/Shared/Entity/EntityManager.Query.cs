@@ -12,7 +12,7 @@ namespace Fragsurf.Shared.Entity
             var result = new List<NetEntity>();
             foreach(var ent in Entities)
             {
-                if(ent.IsValid() && Vector3.Distance(point, ent.Origin) <= radius)
+                if(ent.IsLive && Vector3.Distance(point, ent.Origin) <= radius)
                 {
                     result.Add(ent);
                 }

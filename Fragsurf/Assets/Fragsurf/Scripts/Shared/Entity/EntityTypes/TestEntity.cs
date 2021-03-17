@@ -39,7 +39,7 @@ namespace Fragsurf.Shared.Entity
         [NetProperty]
         public Vector4 TestProp13 { get; set; }
 
-        protected override void _Update()
+        protected override void OnUpdate()
         {
             if(_destructTimer > 0)
             {
@@ -51,7 +51,7 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
-        protected override void _Tick()
+        protected override void OnTick()
         {
             TestProp += Vector3.one;
             TestProp2 += Vector4.one;

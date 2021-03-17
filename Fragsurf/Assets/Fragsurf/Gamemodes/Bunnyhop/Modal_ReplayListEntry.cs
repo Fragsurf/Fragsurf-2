@@ -31,7 +31,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _kickButton.onClick.AddListener(() =>
             {
                 data.OnKick?.Invoke();
-                if (data.Replay != null && data.Replay.IsValid())
+                if (data.Replay != null && data.Replay.IsLive)
                 {
                     data.Replay.Delete();
                 }
@@ -39,7 +39,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _specButton.onClick.AddListener(() =>
             {
                 data.OnSpectate?.Invoke();
-                if(data.Replay != null && data.Replay.IsValid())
+                if(data.Replay != null && data.Replay.IsLive)
                 {
                     FSGameLoop.GetGameInstance(false).Get<SpectateController>().TargetHuman = data.Replay;
                 }

@@ -82,11 +82,11 @@ namespace Fragsurf.Gamemodes.CombatSurf
             if(player.Team <= 0)
             {
                 hu.Dead = true;
-                hu.OutOfGame = true;
+                hu.Enabled = false;
                 return;
             }
 
-            hu.OutOfGame = false;
+            hu.Enabled = true;
 
             var rm = Game.Get<RoundManager>();
             if(rm == null

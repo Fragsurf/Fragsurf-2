@@ -42,8 +42,8 @@ namespace Fragsurf.Shared
         public bool CanSpectate(Human hu)
         {
             if(hu == null
-                || !hu.IsValid()
-                || hu.OutOfGame)
+                || !hu.IsLive
+                || !hu.Enabled)
             {
                 return false;
             }

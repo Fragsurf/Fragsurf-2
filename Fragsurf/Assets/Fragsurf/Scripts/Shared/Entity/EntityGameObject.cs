@@ -78,7 +78,7 @@ namespace Fragsurf.Shared.Entity
         {
             OnUpdate.AddListener(() =>
             {
-                if (!Entity.IsValid())
+                if (!Entity.IsLive)
                 {
                     GameObject.Destroy(gameObject);
                     return;

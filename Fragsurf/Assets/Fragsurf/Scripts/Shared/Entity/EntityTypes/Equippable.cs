@@ -57,25 +57,25 @@ namespace Fragsurf.Shared.Entity
 
         public bool Dead => throw new System.NotImplementedException();
 
-        protected override void _Start()
+        protected override void OnInitialized()
         {
             Random = new StateRandom(EntityId);
             InterpolationMode = InterpolationMode.None;
         }
 
-        protected override void _Delete()
+        protected override void OnDelete()
         {
             if (Human != null)
             {
                 Human.Equippables.Remove(this);
             }
 
-            base._Delete();
+            base.OnDelete();
         }
 
-        protected override void _Tick()
+        protected override void OnTick()
         {
-            base._Tick();
+            base.OnTick();
 
             if (!Game.IsHost)
             {

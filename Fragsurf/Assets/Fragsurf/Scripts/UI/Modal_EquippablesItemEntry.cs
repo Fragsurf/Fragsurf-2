@@ -34,8 +34,7 @@ namespace Fragsurf.UI
 
         private void Update()
         {
-            if (_item == null 
-                || !_item.IsValid())
+            if (_item == null || !_item.IsLive)
             {
                 _wasEquipped = false;
                 _item = null;

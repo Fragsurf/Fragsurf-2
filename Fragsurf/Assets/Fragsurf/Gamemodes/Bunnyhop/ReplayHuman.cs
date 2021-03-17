@@ -41,18 +41,18 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             _autoReplayTimeline = false;
         }
 
-        protected override void _Start()
+        protected override void OnInitialized()
         {
-            base._Start();
+            base.OnInitialized();
             
             InterpolationMode = InterpolationMode.Frame;
         }
 
         private float _accumulator;
         private float _elapsedTime;
-        protected override void _Update()
+        protected override void OnUpdate()
         {
-            base._Update();
+            base.OnUpdate();
 
             var playbackSpeed = Mathf.Clamp(PlaybackSpeed, .25f, 5);
             var fixedDeltaTime = Game.FixedDeltaTime / playbackSpeed;
@@ -69,9 +69,9 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
         }
 
-        protected override void _Delete()
+        protected override void OnDelete()
         {
-            base._Delete();
+            base.OnDelete();
 
             if (_lineObject)
             {

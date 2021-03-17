@@ -211,7 +211,7 @@ namespace Fragsurf.Actors
             for (int i = _runDatas.Count - 1; i >= 0; i--)
             {
                 if (_runDatas[i].Human == null
-                    || !_runDatas[i].Human.IsValid())
+                    || !_runDatas[i].Human.IsLive)
                 {
                     _runDatas.RemoveAt(i);
                 }
@@ -220,7 +220,7 @@ namespace Fragsurf.Actors
             for(int i = _stageRunDatas.Count - 1; i >= 0; i--)
             {
                 if(_stageRunDatas[i].Human == null
-                    || !_stageRunDatas[i].Human.IsValid())
+                    || !_stageRunDatas[i].Human.IsLive)
                 {
                     _stageRunDatas.RemoveAt(i);
                 }

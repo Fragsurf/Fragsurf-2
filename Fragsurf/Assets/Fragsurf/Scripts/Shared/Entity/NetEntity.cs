@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
-using Fragsurf.Utility;
 
 namespace Fragsurf.Shared.Entity
 {
@@ -19,13 +17,14 @@ namespace Fragsurf.Shared.Entity
         protected Vector3 _angles;
         private EntityGameObject _entityGameObject;
         private bool _firstTick = true;
+        private bool _enabled = true;
 
         public int EntityId { get; set; }
         public NetEntityState State { get; private set; }
         public byte TypeId { get; private set; }
         public float ChangedTime { get; private set; }
         public int ChangedTick { get; private set; }
-        public bool Started => State == NetEntityState.Started;
+        public bool IsLive => State == NetEntityState.Live;
         public FSGameLoop Game { get; private set; }
         public bool HasAuthority { get; protected set; }
         public bool OriginOrRotationChanged { get; set; }
@@ -81,12 +80,26 @@ namespace Fragsurf.Shared.Entity
         }
         [NetProperty]
         public string EntityName { get; set; } = string.Empty;
-
-        public void Start()
+        [NetProperty]
+        public bool Enabled
         {
-            if (State == NetEntityState.Deleted)
+            get => _enabled;
+            set 
             {
-                Debug.LogError("Trying to start a deleted entity.");
+                if(_enabled == value)
+                {
+                    return;
+                }
+                _enabled = value;
+                (value ? (Action)OnEnabled : OnDisabled)();
+            }
+        }
+
+        public void Initialize()
+        {
+            if (State != NetEntityState.Created)
+            {
+                Debug.LogError("Trying to initialize a bad entity.");
                 return;
             }
 
@@ -96,28 +109,44 @@ namespace Fragsurf.Shared.Entity
 
             HasAuthority = Game.IsHost;
             UniqueId = EntityId;
-
             TypeId = GetEntityTypeId(GetType());
-            _Start();
 
-            State = NetEntityState.Started;
+            OnInitialized();
+
+            if (Enabled)
+            {
+                OnEnabled();
+            }
+
+            State = NetEntityState.Live;
         }
 
         public void Update()
         {
+            if (!_enabled)
+            {
+                return;
+            }
+
+            OnUpdate();
+
             if (EntityGameObject)
             {
                 EntityGameObject.OnUpdate?.Invoke();
             }
-            _Update();
         }
 
         public void Tick()
         {
+            if (!_enabled)
+            {
+                return;
+            }
+
             if (_firstTick)
             {
                 _firstTick = false;
-                _FirstTick();
+                OnFirstTick();
             }
 
             if (EntityGameObject)
@@ -127,38 +156,40 @@ namespace Fragsurf.Shared.Entity
 
             Tick_Timeline();
             
-            _Tick();
+            OnTick();
         }
 
         public void LateUpdate()
         {
-            _LateUpdate();
+            if (!_enabled)
+            {
+                return;
+            }
+
+            OnLateUpdate();
         }
 
         public void Delete()
         {
             State = NetEntityState.Deleted;
+            Enabled = false;
 
-            _Delete();
+            OnDelete();
 
-            GameObject.Destroy(EntityGameObject.gameObject);
-        }
-
-        protected virtual void _Start() { }
-        protected virtual void _FirstTick() { }
-        protected virtual void _Update() { }
-        protected virtual void _LateUpdate() { }
-        protected virtual void _Tick() { }
-        protected virtual void _Delete() { }
-
-        public virtual bool IsValid()
-        {
-            if (State == NetEntityState.Deleted)
+            if (EntityGameObject)
             {
-                return false;
+                GameObject.Destroy(EntityGameObject.gameObject);
             }
-            return true;
         }
+
+        protected virtual void OnInitialized() { }
+        protected virtual void OnEnabled() { }
+        protected virtual void OnDisabled() { }
+        protected virtual void OnFirstTick() { }
+        protected virtual void OnUpdate() { }
+        protected virtual void OnLateUpdate() { }
+        protected virtual void OnTick() { }
+        protected virtual void OnDelete() { }
 
         public override string ToString()
         {
@@ -183,47 +214,6 @@ namespace Fragsurf.Shared.Entity
             }
         }
 #endif
-
-        public static Dictionary<byte, Type> EntityTypeIdMap;
-        public static byte GetEntityTypeId(Type type)
-        {
-            if (EntityTypeIdMap == null)
-            {
-                RebuildEntityTypeIds();
-            }
-            foreach (var kvp in EntityTypeIdMap)
-            {
-                if (type == kvp.Value)
-                {
-                    return kvp.Key;
-                }
-            }
-            return 0;
-        }
-
-        public static NetEntity CreateInstanceOfEntity(FSGameLoop game, byte typeId)
-        {
-            if (EntityTypeIdMap == null)
-            {
-                RebuildEntityTypeIds();
-            }
-            if (!EntityTypeIdMap.ContainsKey(typeId))
-            {
-                return null;
-            }
-            return Activator.CreateInstance(EntityTypeIdMap[typeId], args: game) as NetEntity;
-        }
-
-        public static void RebuildEntityTypeIds()
-        {
-            EntityTypeIdMap = new Dictionary<byte, Type>();
-            byte index = 0;
-            foreach (var t in ReflectionExtensions.GetTypesOf<NetEntity>())
-            {
-                EntityTypeIdMap.Add(index, t);
-                index++;
-            }
-        }
 
     }
 }

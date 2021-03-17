@@ -140,7 +140,7 @@ namespace Fragsurf.Server
 
             foreach(var ent in Game.EntityManager.Entities)
             {
-                if (ent.IsValid())
+                if (ent.IsLive)
                 {
                     var updatePacket = PacketUtility.TakePacket<EntityUpdate>();
                     updatePacket.Sc = SendCategory.UI_Important;

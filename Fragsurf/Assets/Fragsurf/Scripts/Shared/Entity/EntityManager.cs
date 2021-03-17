@@ -93,7 +93,7 @@ namespace Fragsurf.Shared.Entity
 		{
             for (int i = 0; i < Entities.Count; i++)
 			{
-                if (!Entities[i].Started)
+                if (!Entities[i].IsLive)
                 {
                     continue;
                 }
@@ -111,7 +111,7 @@ namespace Fragsurf.Shared.Entity
                     continue;
                 }
 
-                if (!Entities[i].Started || !Entities[i].IsValid())
+                if (!Entities[i].IsLive)
                 {
                     continue;
                 }
@@ -126,7 +126,7 @@ namespace Fragsurf.Shared.Entity
 		{
 			for (int i = 0; i < Entities.Count; i++)
 			{
-                if (!Entities[i].Started)
+                if (!Entities[i].IsLive)
                     continue;
                 Entities[i].LateUpdate();
 			}
@@ -149,11 +149,11 @@ namespace Fragsurf.Shared.Entity
 
 		public int AddEntity(NetEntity entity, bool setIndex = true)
 		{
-			if (Entities.Contains(entity))
-				return -1;
-
-            if (entity.Started)
-                return -1;
+			if (Entities.Contains(entity) || entity.IsLive)
+            {
+                Debug.LogError("Adding duplicate or started entity to game..." + entity.GetType().Name);
+                return 0;
+            }
 
 			Entities.Add(entity);
 
@@ -169,7 +169,7 @@ namespace Fragsurf.Shared.Entity
                 }
             }
 
-            entity.Start();
+            entity.Initialize();
 
             OnEntityAdded?.Invoke(entity);
 
