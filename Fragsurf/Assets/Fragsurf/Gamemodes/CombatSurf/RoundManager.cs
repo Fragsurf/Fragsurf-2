@@ -1,6 +1,10 @@
+using Fragsurf.Actors;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
+using Fragsurf.Shared.Player;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.CombatSurf
@@ -19,17 +23,19 @@ namespace Fragsurf.Gamemodes.CombatSurf
         public event Action<int> OnRoundFreeze;
 
         [ConVar("rounds.enabled", "", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
-        public bool RoundsEnabled { get; set; }
+        public bool RoundsEnabled { get; set; } = true;
         [ConVar("rounds.duration", "Duration in seconds of each round", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
-        public int RoundDuration { get; set; } = 5;
+        public int RoundDuration { get; set; } = 300;
         [ConVar("rounds.warmupduration", "Duration in seconds before game starts", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
         public int WarmupDuration { get; set; } = 30;
         [ConVar("rounds.roundendduration", "Duration in seconds from round end to next round", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
-        public int RoundEndDuration { get; set; } = 4;
+        public int RoundEndDuration { get; set; } = 3;
         [ConVar("rounds.freezeduration", "Duration in seconds at the start of a round", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
-        public int FreezeDuration { get; set; } = 4;
+        public int FreezeDuration { get; set; } = 3;
         [ConVar("rounds.limit", "How many rounds until the game ends", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
         public int RoundLimit { get; set; } = 15;
+        [ConVar("rounds.autostart", "", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
+        public bool AutoStart { get; set; } = true;
 
         public override bool HasNetProps => true;
 
@@ -44,16 +50,16 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [NetProperty]
         public int MatchWinner { get; set; }
         [NetProperty]
-        public MatchStates MatchState
-        {
-            get => _matchState;
-            set => SetMatchState(value);
-        }
-        [NetProperty]
         public RoundStates RoundState
         {
             get => _roundState;
             set => SetRoundState(value);
+        }
+        [NetProperty]
+        public MatchStates MatchState
+        {
+            get => _matchState;
+            set => SetMatchState(value);
         }
 
         private void SetMatchState(MatchStates state)
@@ -107,30 +113,76 @@ namespace Fragsurf.Gamemodes.CombatSurf
             }
         }
 
+        [ChatCommand("Restarts the match", "warmup", "startmatch")]
+        public void ForceStartMatch(IPlayer player)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+            DoMatchWarmup();
+        }
+
+        [ChatCommand("Forces the match to end", "endmatch")]
+        public void ForceEndMatch(IPlayer player)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+            DoMatchEnd();
+        }
+
+        [ChatCommand("Forces the round to end", "endround")]
+        public void ForceEndRound(IPlayer player)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+            DoRoundEnd(DefaultWinner);
+        }
+
+        [ChatCommand("Changes your team (0-2), 0 = spec", "team")]
+        public void ChatPickTeam(IPlayer player, int teamNumber)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+            Game.PlayerManager.SetPlayerTeam(player, (byte)Mathf.Clamp(teamNumber, 0, 2));
+        }
+
         private void MoveToNextState()
         {
-            if(MatchState == MatchStates.Pre)
+            switch (MatchState)
             {
-                TryStartMatch();
-            }
-            else if(MatchState == MatchStates.Post)
-            {
-                MatchState = MatchStates.Pre;
-            }
-            else if(MatchState == MatchStates.Live)
-            {
-                switch (RoundState)
-                {
-                    case RoundStates.Freeze:
-                        DoRoundLive();
-                        break;
-                    case RoundStates.Live:
-                        DoRoundEnd(DefaultWinner);
-                        break;
-                    case RoundStates.End:
-                        DoRoundFreeze();
-                        break;
-                }
+                case MatchStates.None:
+                    if (AutoStart && CanMatchAutoStart())
+                    {
+                        DoMatchWarmup();
+                    }
+                    break;
+                case MatchStates.Warmup:
+                    DoMatchLive();
+                    break;
+                case MatchStates.Post:
+                    MatchState = MatchStates.None;
+                    break;
+                case MatchStates.Live:
+                    switch (RoundState)
+                    {
+                        case RoundStates.Freeze:
+                            DoRoundLive();
+                            break;
+                        case RoundStates.Live:
+                            DoRoundEnd(DefaultWinner);
+                            break;
+                        case RoundStates.End:
+                            DoRoundFreeze();
+                            break;
+                    }
+                    break;
             }
         }
 
@@ -158,12 +210,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
             if (CurrentRound >= RoundLimit)
             {
-                MatchState = MatchStates.Post;
-                Timer = 20f;
-                CleanRound();
-                FreezePlayers(false);
                 DoMatchEnd();
-                return;
             }
         }
 
@@ -203,7 +250,12 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         private void DoMatchEnd()
         {
-            if(CurrentRound < RoundLimit)
+            MatchState = MatchStates.Post;
+            Timer = 20f;
+            CleanRound();
+            FreezePlayers(false);
+
+            if (CurrentRound < RoundLimit)
             {
                 // ended abruptly
             }
@@ -226,31 +278,51 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         private void ScoreRound(int winningTeam)
         {
-            if(winningTeam <= 0)
-            {
-
-            }
-            else
+            if(winningTeam > 0)
             {
                 IncrementTeamScore(winningTeam);
             }
         }
 
-        private void TryStartMatch()
+        private bool CanMatchAutoStart()
         {
-            // start match when there's enough players and players on separate teams
-            MatchState = MatchStates.Live;
-            RoundState = RoundStates.Freeze;
-            DoMatchStart();
+            int team1Players = 0;
+            int team2Players = 0;
+
+            foreach (var player in Game.PlayerManager.Players)
+            {
+                switch (player.Team)
+                {
+                    case 0:
+                        continue;
+                    case 1:
+                        team1Players++;
+                        break;
+                    case 2:
+                        team2Players++;
+                        break;
+                }
+            }
+
+            if(team1Players > 0 && team2Players > 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        private void DoMatchStart()
+        private void DoMatchLive()
         {
-            CurrentRound = 0;
+            MatchState = MatchStates.Live;
+            CurrentRound = 1;
+
             for (int i = 0; i < 8; i++)
             {
                 SetTeamScore(i, 0);
             }
+
+            DoRoundFreeze();
 
             try
             {
@@ -262,25 +334,57 @@ namespace Fragsurf.Gamemodes.CombatSurf
             }
         }
 
+        private void DoMatchWarmup()
+        {
+            MatchState = MatchStates.Warmup;
+            Timer = WarmupDuration;
+            CleanRound();
+            FreezePlayers(false);
+        }
+
         private void CleanRound()
         {
-            foreach(var player in Game.PlayerManager.Players)
+            if (!Game.IsHost)
             {
-                if(player.Entity is Human hu && player.Team > 0)
+                return;
+            }
+
+            // Delete guns on ground and equip/respawn players
+            for(int i = Game.EntityManager.Entities.Count - 1; i >= 0; i--)
+            {
+                var ent = Game.EntityManager.Entities[i];
+                if(ent == null)
                 {
-                    hu.Spawn(player.Team);
+                    continue;
+                }
+                if (ent is Equippable eq && eq.HumanId <= 0)
+                {
+                    ent.Delete();
+                }
+                else if (ent is Human hu)
+                {
+                    var owner = Game.PlayerManager.FindPlayer(hu.OwnerId);
+                    if (owner == null || owner.Team == 0)
+                    {
+                        continue;
+                    }
+
+                    hu.Spawn(owner.Team);
                     hu.Health = 100;
-                    if(!hu.Equippables.HasItemInSlot(ItemSlot.Melee))
+
+                    if (!hu.Equippables.HasItemInSlot(ItemSlot.Melee))
                     {
                         hu.Give("Knife");
                     }
+
                     if (!hu.Equippables.HasItemInSlot(ItemSlot.Light))
                     {
                         hu.Give("M1911");
                     }
+
                     foreach (var item in hu.Equippables.Items)
                     {
-                        if(!(item.EquippableGameObject is GunEquippable gun))
+                        if (!(item.EquippableGameObject is GunEquippable gun))
                         {
                             continue;
                         }
@@ -289,7 +393,12 @@ namespace Fragsurf.Gamemodes.CombatSurf
                     }
                 }
             }
-            // reset entities on ground etc
+
+            // Refresh actors (i.e. gun pickup can be reset)
+            foreach(var actor in FindObjectsOfType<FSMActor>())
+            {
+                actor.Refresh();
+            }
         }
 
         private void FreezePlayers(bool frozen)
@@ -314,7 +423,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
     public enum MatchStates
     {
-        Pre,
+        None,
+        Warmup,
         Live,
         Post
     }

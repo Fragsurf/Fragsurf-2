@@ -74,6 +74,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
             if(_rm.MatchState == MatchStates.Live)
             {
                 _matchState.gameObject.SetActive(false);
+                _prevMatchState = _rm.MatchState;
             }
             else if(_prevMatchState != _rm.MatchState)
             {

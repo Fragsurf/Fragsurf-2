@@ -2,6 +2,7 @@
 using Fragsurf.Shared;
 using Fragsurf.Maps;
 using Fragsurf.Shared.Player;
+using Fragsurf.Shared.Entity;
 
 namespace Fragsurf.Server
 {

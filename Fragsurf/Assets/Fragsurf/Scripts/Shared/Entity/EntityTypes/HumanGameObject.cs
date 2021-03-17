@@ -167,7 +167,7 @@ namespace Fragsurf.Shared.Entity
             if (!Entity.Game.IsHost)
             {
                 DestroyRagdoll();
-                SetVisible(true);
+                SetVisible(!Human.IsFirstPerson);
             }
         }
 
@@ -200,6 +200,7 @@ namespace Fragsurf.Shared.Entity
                 DestroyRagdoll();
             }
             Ragdoll = Entity.Game.Instantiate(_ragdollPrefab);
+            Ragdoll.transform.SetParent(transform);
             CopyTransformToRagdoll(transform, Ragdoll.transform);
             Ragdoll.GetComponent<RagdollBehaviour>().Ragdoll(force, point, torque);
             Ragdolled = true;

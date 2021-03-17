@@ -15,6 +15,31 @@ namespace Fragsurf.Gamemodes.CombatSurf
         {
             _teamTemplate = gameObject.GetComponentInChildren<Modal_CombatSurfScoreboardTeamEntry>(true);
             _teamTemplate.gameObject.SetActive(false);
+
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (cl)
+            {
+                cl.PlayerManager.OnPlayerChangedTeam += PlayerManager_OnPlayerChangedTeam;
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (cl)
+            {
+                cl.PlayerManager.OnPlayerChangedTeam -= PlayerManager_OnPlayerChangedTeam;
+            }
+        }
+
+        private void PlayerManager_OnPlayerChangedTeam(Shared.Player.IPlayer obj)
+        {
+            if (IsOpen)
+            {
+                BuildTeams();
+            }
         }
 
         protected override void OnOpen()
@@ -22,38 +47,21 @@ namespace Fragsurf.Gamemodes.CombatSurf
             BuildTeams();
         }
 
-        private HashSet<int> _teams = new HashSet<int>();
         private void BuildTeams()
         {
             _teamTemplate.Clear();
 
-            var cl = FSGameLoop.GetGameInstance(false);
-            if (!cl)
+            _teamTemplate.Append(new Modal_CombatSurfScoreboardTeamEntry.Data()
             {
-                return;
-            }
+                TeamName = string.Empty,
+                TeamNumber = 1
+            });
 
-            _teams.Clear();
-            foreach (var player in cl.PlayerManager.Players)
+            _teamTemplate.Append(new Modal_CombatSurfScoreboardTeamEntry.Data()
             {
-                if (!_teams.Contains(player.Team))
-                {
-                    _teams.Add(player.Team);
-                }
-            }
-
-            foreach(var team in _teams)
-            {
-                if(team == 0)
-                {
-                    continue;
-                }
-                _teamTemplate.Append(new Modal_CombatSurfScoreboardTeamEntry.Data()
-                {
-                    TeamName = string.Empty,
-                    TeamNumber = team
-                });
-            }
+                TeamName = string.Empty,
+                TeamNumber = 2
+            });
         }
 
     }

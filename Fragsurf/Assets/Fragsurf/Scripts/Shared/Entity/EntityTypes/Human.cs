@@ -19,6 +19,7 @@ namespace Fragsurf.Shared.Entity
         private int _ownerId = -1;
         private bool _hasAuthorityNextTick;
         private bool _dead;
+        private bool _outOfGame;
 
         public Human(FSGameLoop game) 
             : base(game)
@@ -58,6 +59,12 @@ namespace Fragsurf.Shared.Entity
         public bool Frozen { get; set; }
         [NetProperty]
         public bool FlashlightOn { get; set; }
+        [NetProperty]
+        public bool OutOfGame
+        {
+            get => _outOfGame;
+            set => SetOutOfGame(value);
+        }
 
         protected override void _Start()
         {
@@ -84,6 +91,8 @@ namespace Fragsurf.Shared.Entity
 
             MovementController = new CSMovementController(this);
             CameraController = new FirstPersonCameraController(this);
+
+            SetOutOfGame(OutOfGame);
         }
 
         protected override void _Delete()
@@ -96,6 +105,11 @@ namespace Fragsurf.Shared.Entity
 
         protected override void _Tick()
         {
+            if (OutOfGame)
+            {
+                return;
+            }
+
             // gives it one tick to update origin & angles from authority before taking control
             if (_hasAuthorityNextTick)
             {
@@ -111,6 +125,18 @@ namespace Fragsurf.Shared.Entity
 
         protected override void _Update()
         {
+            if(Game.IsHost 
+                && Input.GetKeyDown(KeyCode.T)
+                && BotController != null)
+            {
+                OutOfGame = !OutOfGame;
+            }
+
+            if (OutOfGame)
+            {
+                return;
+            }
+
             MovementController?.Update();
             AnimationController?.Update();
         }
@@ -124,6 +150,11 @@ namespace Fragsurf.Shared.Entity
 
         public virtual void RunCommand(UserCmd cmd, bool prediction)
         {
+            if (OutOfGame)
+            {
+                return;
+            }
+
             if (Frozen)
             {
                 cmd.Buttons &= ~InputActions.MoveLeft;
@@ -352,6 +383,22 @@ namespace Fragsurf.Shared.Entity
                 dmgInfo.Viewpunch = new Vector3(-Random.Range(0.5f, 1.25f), Random.Range(-1f, 1f), 0);
                 Punch(dmgInfo.Viewpunch, Vector3.zero);
                 Game.EntityManager.BroadcastHumanDamaged(this, dmgInfo);
+            }
+        }
+
+        private void SetOutOfGame(bool outOfGame)
+        {
+            _outOfGame = outOfGame;
+            DisableLagCompensation = !outOfGame;
+
+            if(outOfGame&& Game.IsHost)
+            {
+                Equippables.DropAllItems();
+            }
+
+            if (HumanGameObject)
+            {
+                HumanGameObject.gameObject.SetActive(!outOfGame);
             }
         }
 

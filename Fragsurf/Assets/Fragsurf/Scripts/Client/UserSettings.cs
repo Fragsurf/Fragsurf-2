@@ -165,6 +165,7 @@ namespace Fragsurf.Client
             _config["Binds"].Add("s", "+input moveback");
             _config["Binds"].Add("d", "+input moveright");
             _config["Binds"].Add("e", "+input interact");
+            _config["Binds"].Add("f", "+input flashlight");
             _config["Binds"].Add("alpha0", "+input slot0");
             _config["Binds"].Add("alpha1", "+input slot1");
             _config["Binds"].Add("alpha2", "+input slot2");

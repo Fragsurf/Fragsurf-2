@@ -39,6 +39,24 @@ namespace Fragsurf.Shared
             return hu.OwnerId != clientIndex;
         }
 
+        public bool CanSpectate(Human hu)
+        {
+            if(hu == null
+                || !hu.IsValid()
+                || hu.OutOfGame)
+            {
+                return false;
+            }
+
+            var owner = Game.PlayerManager.FindPlayer(hu.OwnerId);
+            if(owner != null && owner.Team == 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public int GetPlayersSpectating(int entityId, int[] clients)
         {
             if(clients == null || clients.Length == 0)
@@ -97,10 +115,28 @@ namespace Fragsurf.Shared
                 return;
             }
 
-            if (_targetHuman == null || !_targetHuman.IsValid())
+            if (!CanSpectate(_targetHuman))
             {
-                Spectate(Human.Local);
+                Spectate(FirstSpectatableHuman());
             }
+        }
+
+        private Human FirstSpectatableHuman()
+        {
+            if (CanSpectate(Human.Local))
+            {
+                return Human.Local;
+            }
+
+            foreach(Human hu in Game.EntityManager.OfType<Human>())
+            {
+                if (CanSpectate(hu))
+                {
+                    return hu;
+                }
+            }
+
+            return null;
         }
 
         protected override void _Update()
@@ -138,16 +174,15 @@ namespace Fragsurf.Shared
                 return;
             }
 
-            if (_targetHuman != null)
+            if(hu == null || !CanSpectate(hu))
             {
-                _targetHuman.IsFirstPerson = false;
-                _targetHuman.CameraController.Deactivate();
-                _targetHuman = null;
-            }
-
-            if(hu == null)
-            {
-                BroadcastSpecId(Game.ClientIndex, 0);
+                if(_targetHuman != null)
+                {
+                    _targetHuman.IsFirstPerson = false;
+                    _targetHuman.CameraController.Deactivate();
+                    _targetHuman = null;
+                    BroadcastSpecId(Game.ClientIndex, 0);
+                }
                 return;
             }
 

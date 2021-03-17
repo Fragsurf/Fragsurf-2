@@ -59,6 +59,8 @@ namespace Fragsurf.Actors
             }
         }
 
+        public virtual void Refresh() { }
+
     }
 }
 

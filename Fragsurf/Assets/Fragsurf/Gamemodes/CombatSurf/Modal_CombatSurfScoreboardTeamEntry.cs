@@ -1,9 +1,12 @@
 using Fragsurf.Shared;
+using Fragsurf.Shared.Packets;
 using Fragsurf.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Fragsurf.Gamemodes.CombatSurf
 {
@@ -18,6 +21,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         [SerializeField]
         private TMP_Text _teamName;
+        [SerializeField]
+        private Button _joinButton;
 
         private Modal_CombatSurfScoreboardPlayerEntry _playerTemplate;
 
@@ -27,6 +32,18 @@ namespace Fragsurf.Gamemodes.CombatSurf
             _playerTemplate.gameObject.SetActive(false);
             _teamName.text = $"Team {data.TeamNumber}";
             LoadPlayers(data.TeamNumber);
+
+            _joinButton.onClick.AddListener(() =>
+            {
+                var cl = FSGameLoop.GetGameInstance(false);
+                if (!cl)
+                {
+                    return;
+                }
+                var chooseTeam = PacketUtility.TakePacket<ChooseTeam>();
+                chooseTeam.TeamNumber = (byte)data.TeamNumber;
+                cl.Network.BroadcastPacket(chooseTeam);
+            });
         }
 
         private void LoadPlayers(int teamNumber)

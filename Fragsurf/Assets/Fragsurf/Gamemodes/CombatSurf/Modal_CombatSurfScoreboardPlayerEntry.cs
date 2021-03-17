@@ -22,9 +22,23 @@ namespace Fragsurf.Gamemodes.CombatSurf
         private TMP_Text _score;
         [SerializeField]
         private SteamAvatar _steamAvatar;
+        [SerializeField]
+        private GameObject _isPlayerObject;
 
         public override void LoadData(Data data)
         {
+            var localClient = -1;
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (cl)
+            {
+                localClient = cl.ClientIndex;
+            }
+
+            if (_isPlayerObject)
+            {
+                _isPlayerObject.gameObject.SetActive(data.Player.ClientIndex == localClient);
+            }
+
             _name.text = data.Player.DisplayName;
             if (_steamAvatar)
             {
@@ -32,7 +46,6 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 _steamAvatar.Fetch();
             }
 
-            var cl = FSGameLoop.GetGameInstance(false);
             if (!cl)
             {
                 _score.text = string.Empty;
