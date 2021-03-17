@@ -24,7 +24,11 @@ namespace Fragsurf.UI
         private GameObject _itemContainer;
 
         private int _prevHealth;
+        private bool _prevDead;
+        private int _prevRoundsInClip;
+        private int _prevExtraRounds;
         private Color _originalHealthColor;
+
 
         private void Start()
         {
@@ -47,20 +51,28 @@ namespace Fragsurf.UI
                 _healthContainer.SetActive(true);
                 _itemContainer.SetActive(true);
             }
-            _health.text = spec.TargetHuman.Health.ToString();
-            
 
-            if(spec.TargetHuman.Health < _prevHealth)
+            if(_prevHealth != spec.TargetHuman.Health
+                || _prevDead != spec.TargetHuman.Dead)
             {
-                _health.color = Color.red;
-            }
-            else if(spec.TargetHuman.Health > _prevHealth)
-            {
-                _health.color = Color.green;
+                _health.text = spec.TargetHuman.Dead
+                    ? "<color=red>DEAD</color>"
+                    : spec.TargetHuman.Health.ToString();
+
+                if (spec.TargetHuman.Health < _prevHealth)
+                {
+                    _health.color = Color.red;
+                }
+                else if (spec.TargetHuman.Health > _prevHealth)
+                {
+                    _health.color = Color.green;
+                }
+
+                _prevHealth = spec.TargetHuman.Health;
+                _prevDead = spec.TargetHuman.Dead;
             }
 
-            _prevHealth = spec.TargetHuman.Health;
-            _health.color = Color.Lerp(_health.color, _originalHealthColor, 4f * Time.deltaTime);
+            _health.color = Color.Lerp(_health.color, _originalHealthColor, Time.deltaTime);
 
             var item = spec.TargetHuman.Equippables.Equipped;
             if(item == null 
@@ -83,7 +95,14 @@ namespace Fragsurf.UI
             {
                 _itemLabel.gameObject.SetActive(true);
                 _ammo.gameObject.SetActive(true);
-                _ammo.text = $"{gun.RoundsInClip}/{gun.ExtraRounds}";
+
+                if(_prevExtraRounds != gun.ExtraRounds
+                    || _prevRoundsInClip != gun.RoundsInClip)
+                {
+                    _ammo.text = $"{gun.RoundsInClip}/{gun.ExtraRounds}";
+                    _prevExtraRounds = gun.ExtraRounds;
+                    _prevRoundsInClip = gun.RoundsInClip;
+                }
             }
         }
 

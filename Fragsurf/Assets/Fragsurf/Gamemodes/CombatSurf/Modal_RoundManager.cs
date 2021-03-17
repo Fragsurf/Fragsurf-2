@@ -30,7 +30,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [SerializeField]
         private TMP_Text _team2Name;
         [SerializeField]
-        private Image _vignetteEffect;
+        private Image _screenBorder;
 
         private RoundManager _rm;
         private MatchStates _prevMatchState;
@@ -51,19 +51,19 @@ namespace Fragsurf.Gamemodes.CombatSurf
             _rm = cl.Get<RoundManager>();
         }
 
-        public void Vignette(Color color)
+        public void FlashScreenBorder(Color color)
         {
-            if (_vignetteEffect)
+            if (_screenBorder)
             {
-                _vignetteEffect.color = color;
+                _screenBorder.color = color;
             }
         }
 
         private void Update()
         {
-            if(_vignetteEffect && _vignetteEffect.color.a > 0)
+            if(_screenBorder && _screenBorder.color.a > 0)
             {
-                _vignetteEffect.color = Color.Lerp(_vignetteEffect.color, new Color(0, 0, 0, 0), 4 * Time.deltaTime);
+                _screenBorder.color = Color.Lerp(_screenBorder.color, new Color(0, 0, 0, 0), Time.deltaTime);
             }
             
             if (!_rm)

@@ -56,7 +56,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
                     var rm = UGuiManager.Instance.Find<Modal_RoundManager>();
                     if (rm)
                     {
-                        rm.Vignette(Color.green);
+                        rm.FlashScreenBorder(Color.green);
                     }
                 }
                 else
@@ -66,7 +66,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
                     var rm = UGuiManager.Instance.Find<Modal_RoundManager>();
                     if (rm)
                     {
-                        rm.Vignette(Color.red);
+                        rm.FlashScreenBorder(Color.red);
                     }
                 }
             }
