@@ -169,21 +169,18 @@ namespace Fragsurf.Shared
 
         public void Spectate(Human hu)
         {
-            if (Game.IsHost)
+            if (Game.IsHost
+                || hu == null
+                || !CanSpectate(hu)
+                || _targetHuman == hu)
             {
                 return;
             }
 
-            if(hu == null || !CanSpectate(hu))
+            if (_targetHuman != null)
             {
-                if(_targetHuman != null)
-                {
-                    _targetHuman.IsFirstPerson = false;
-                    _targetHuman.CameraController.Deactivate();
-                    _targetHuman = null;
-                    BroadcastSpecId(Game.ClientIndex, 0);
-                }
-                return;
+                _targetHuman.IsFirstPerson = false;
+                _targetHuman.CameraController.Deactivate();
             }
 
             _targetHuman = hu;
