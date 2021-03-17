@@ -104,7 +104,7 @@ namespace Fragsurf.Server
             SteamServer.MapName = Map.Current.Name;
         }
 
-        protected override void OnPlayerIntroduced(IPlayer player)
+        protected override void OnPlayerIntroduced(BasePlayer player)
         {
             if(player.IsFake)
             {
@@ -112,18 +112,17 @@ namespace Fragsurf.Server
             }
             else
             {
-                var sp = player as ServerPlayer;
-                if(sp.TicketData != null 
-                    && sp.TicketData.Length > 0
+                if(player.TicketData != null 
+                    && player.TicketData.Length > 0
                     && !Game.IsLocalServer
-                    && !SteamServer.BeginAuthSession(sp.TicketData, sp.SteamId))
+                    && !SteamServer.BeginAuthSession(player.TicketData, player.SteamId))
                 {
-                    ((GameServer)Game).Socket.DisconnectPlayer(sp, DenyReason.SteamAuthFailed.ToString());
+                    ((GameServer)Game).Socket.DisconnectPlayer(player, DenyReason.SteamAuthFailed.ToString());
                 }
             }
         }
 
-        protected override void OnPlayerDisconnected(IPlayer player)
+        protected override void OnPlayerDisconnected(BasePlayer player)
         {
             if(player.IsFake)
             {

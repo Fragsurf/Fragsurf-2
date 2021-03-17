@@ -11,7 +11,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 {
     public class PlayerEntryData
     {
-        public IPlayer Player;
+        public BasePlayer Player;
     }
 
     public class ScoreboardPlayerEntry : EntryElement<PlayerEntryData>
@@ -26,7 +26,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [SerializeField]
         private SteamAvatar _avatar;
 
-        private IPlayer _playerRef;
+        private BasePlayer _playerRef;
 
         public override void LoadData(PlayerEntryData data)
         {

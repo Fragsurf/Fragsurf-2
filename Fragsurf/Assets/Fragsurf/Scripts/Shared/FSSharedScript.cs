@@ -76,17 +76,17 @@ namespace Fragsurf.Shared
         protected virtual void OnHumanKilled(Human hu) { }
         protected virtual void OnHumanDamaged(Human hu, DamageInfo dmgInfo) { }
         protected virtual void OnHumanSpawned(Human hu) { }
-        protected virtual void OnPlayerPacketReceived(IPlayer player, IBasePacket packet) { }
-        protected virtual void OnPlayerConnected(IPlayer player) { }
-        protected virtual void OnPlayerApprovedToJoin(IPlayer player) { }
-        protected virtual void OnPlayerIntroduced(IPlayer player) { }
-        protected virtual void OnPlayerDisconnected(IPlayer player) { }
-        protected virtual void OnPlayerChangedTeam(IPlayer player) { }
-        protected virtual void OnPlayerChangedName(IPlayer player) { }
-        protected virtual void OnPlayerLatencyUpdated(IPlayer player) { }
-        protected virtual void OnPlayerRunCommand(IPlayer player) { }
-        protected virtual void OnPlayerSpectate(IPlayer spectator, IPlayer target) { }
-        protected virtual void OnPlayerChatCommand(IPlayer player, string[] args) { }
+        protected virtual void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet) { }
+        protected virtual void OnPlayerConnected(BasePlayer player) { }
+        protected virtual void OnPlayerApprovedToJoin(BasePlayer player) { }
+        protected virtual void OnPlayerIntroduced(BasePlayer player) { }
+        protected virtual void OnPlayerDisconnected(BasePlayer player) { }
+        protected virtual void OnPlayerChangedTeam(BasePlayer player) { }
+        protected virtual void OnPlayerChangedName(BasePlayer player) { }
+        protected virtual void OnPlayerLatencyUpdated(BasePlayer player) { }
+        protected virtual void OnPlayerRunCommand(BasePlayer player) { }
+        protected virtual void OnPlayerSpectate(BasePlayer spectator, BasePlayer target) { }
+        protected virtual void OnPlayerChatCommand(BasePlayer player, string[] args) { }
 
     }
 }

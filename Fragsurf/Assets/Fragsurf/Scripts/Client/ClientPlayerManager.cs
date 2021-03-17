@@ -7,7 +7,7 @@ namespace Fragsurf.Client
     public class ClientPlayerManager : FSClientScript
     {
 
-        protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             switch (packet)
             {
@@ -19,9 +19,9 @@ namespace Fragsurf.Client
 
         private void IncomingPlayerEvent(PlayerEvent playerEvent)
         {
-            PeerPlayer peer = (PeerPlayer)Game.PlayerManager.FindPlayer(playerEvent.ClientIndex);
+            var player = Game.PlayerManager.FindPlayer(playerEvent.ClientIndex);
 
-            if(peer == null && 
+            if(player == null && 
                 (playerEvent.EventType != PlayerEventType.Backfill && playerEvent.EventType != PlayerEventType.Introduced))
             {
                 UnityEngine.Debug.Log("Player event [" + playerEvent.EventType + "] but player is missing: " + playerEvent.ClientIndex);
@@ -32,34 +32,37 @@ namespace Fragsurf.Client
             {
                 case PlayerEventType.Backfill:
                 case PlayerEventType.Introduced:
-                    AddPeer(playerEvent);
+                    CreatePlayerFromEvent(playerEvent);
                     break;
                 case PlayerEventType.Disconnected:
-                    peer.Disconnected = true;
-                    Game.PlayerManager.RemovePlayer(peer);
+                    player.Disconnected = true;
+                    Game.PlayerManager.RemovePlayer(player);
                     break;
                 case PlayerEventType.ChangedName:
-                    peer.DisplayName = playerEvent.DisplayName;
+                    player.DisplayName = playerEvent.DisplayName;
                     break;
                 case PlayerEventType.ChangedTeam:
-                    Game.PlayerManager.SetPlayerTeam(peer, playerEvent.TeamNumber);
+                    Game.PlayerManager.SetPlayerTeam(player, playerEvent.TeamNumber);
                     break;
                 case PlayerEventType.LatencyUpdated:
-                    peer.LatencyMs = playerEvent.Latency;
+                    player.LatencyMs = playerEvent.Latency;
                     break;
                 case PlayerEventType.Spectate:
-                    if (peer.ClientIndex != Game.ClientIndex)
-                        Game.PlayerManager.SetPlayerSpectateTarget(peer, Game.PlayerManager.FindPlayer(playerEvent.SpecTarget));
+                    if (player.ClientIndex != Game.ClientIndex)
+                        Game.PlayerManager.SetPlayerSpectateTarget(player, Game.PlayerManager.FindPlayer(playerEvent.SpecTarget));
                     break;
             }
         }
 
-        private void AddPeer(PlayerEvent e)
+        private void CreatePlayerFromEvent(PlayerEvent e)
         {
-            var peer = new PeerPlayer(e.ClientIndex);
-            peer.DisplayName = e.DisplayName;
-            peer.Team = e.TeamNumber;
-            peer.SteamId = e.SteamID;
+            var peer = new BasePlayer()
+            {
+                DisplayName = e.DisplayName,
+                ClientIndex = e.ClientIndex,
+                Team = e.TeamNumber,
+                SteamId = e.SteamID
+            };
             Game.PlayerManager.IntroducePlayer(peer);
         }
 

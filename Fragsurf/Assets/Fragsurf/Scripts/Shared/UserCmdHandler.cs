@@ -10,7 +10,7 @@ namespace Fragsurf.Shared
 
         // TODO: Consider moving hovered entity logic to Human's InputController.
 
-        private Dictionary<IPlayer, UserCmd> _finalCmds = new Dictionary<IPlayer, UserCmd>(256);
+        private Dictionary<BasePlayer, UserCmd> _finalCmds = new Dictionary<BasePlayer, UserCmd>(256);
         private Dictionary<int, int> _hoveredEnts = new Dictionary<int, int>();
 
         public NetEntity GetHoveredEntity(int clientIndex)
@@ -22,7 +22,7 @@ namespace Fragsurf.Shared
             return Game.EntityManager.FindEntity(_hoveredEnts[clientIndex]);
         }
 
-        public void HandleUserCommand(IPlayer player, UserCmd cmd, bool isPrediction = false)
+        public void HandleUserCommand(BasePlayer player, UserCmd cmd, bool isPrediction = false)
         {
             HandleRunCommand(player, cmd, isPrediction);
 
@@ -32,7 +32,7 @@ namespace Fragsurf.Shared
             }
         }
 
-        protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             if(packet is UserCmd cmd)
             {
@@ -40,7 +40,7 @@ namespace Fragsurf.Shared
             }
         }
 
-        protected override void OnPlayerDisconnected(IPlayer player)
+        protected override void OnPlayerDisconnected(BasePlayer player)
         {
             if (_hoveredEnts.ContainsKey(player.ClientIndex))
             {
@@ -73,7 +73,7 @@ namespace Fragsurf.Shared
             _finalCmds.Clear();
         }
 
-        private void HandleInteractables(IPlayer player, UserCmd cmd)
+        private void HandleInteractables(BasePlayer player, UserCmd cmd)
         {
             var ent = cmd.HoveredEntity > 0 
                 ? Game.EntityManager.FindEntity(cmd.HoveredEntity) as IInteractable
@@ -102,7 +102,7 @@ namespace Fragsurf.Shared
             }
         }
 
-        private void HandleRunCommand(IPlayer player, UserCmd cmd, bool isPrediction = false)
+        private void HandleRunCommand(BasePlayer player, UserCmd cmd, bool isPrediction = false)
         {
             if (!(player.Entity is Human human))
             {

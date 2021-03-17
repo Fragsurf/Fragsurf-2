@@ -26,7 +26,7 @@ namespace Fragsurf.Shared.Player
             }, true);
         }
 
-        protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             if (packet is ChatMessage chatMessage)
             {
@@ -62,7 +62,7 @@ namespace Fragsurf.Shared.Player
             }
         }
 
-        protected override void OnPlayerIntroduced(IPlayer player)
+        protected override void OnPlayerIntroduced(BasePlayer player)
         {
             OnMessageReceived?.Invoke(new ChatMessage()
             {
@@ -71,7 +71,7 @@ namespace Fragsurf.Shared.Player
             });
         }
 
-        protected override void OnPlayerDisconnected(IPlayer player)
+        protected override void OnPlayerDisconnected(BasePlayer player)
         {
             OnMessageReceived?.Invoke(new ChatMessage()
             {
@@ -80,7 +80,7 @@ namespace Fragsurf.Shared.Player
             });
         }
 
-        public void MessagePlayer(IPlayer player, string message)
+        public void MessagePlayer(BasePlayer player, string message)
         {
             if(!Game.IsHost)
             {
@@ -110,7 +110,7 @@ namespace Fragsurf.Shared.Player
             });
         }
 
-        private void ParseCommand(IPlayer player, string message)
+        private void ParseCommand(BasePlayer player, string message)
         {
             var args = DevConsole.ParseArguments(message.Remove(0, 1), ' ', '"').ToArray();
             Game.PlayerManager.RaiseChatCommand(player, args); 

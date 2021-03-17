@@ -34,7 +34,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
             }
         }
 
-        private void PlayerManager_OnPlayerChangedTeam(Shared.Player.IPlayer obj)
+        private void PlayerManager_OnPlayerChangedTeam(Shared.Player.BasePlayer obj)
         {
             if (IsOpen)
             {

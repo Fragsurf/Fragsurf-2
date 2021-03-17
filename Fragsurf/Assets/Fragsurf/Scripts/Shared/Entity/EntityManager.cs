@@ -61,7 +61,7 @@ namespace Fragsurf.Shared.Entity
             Game.PlayerManager.OnPlayerPacketReceived -= OnPlayerPacketReceived;
         }
 
-        private void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        private void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             if (!Game.IsHost)
             {

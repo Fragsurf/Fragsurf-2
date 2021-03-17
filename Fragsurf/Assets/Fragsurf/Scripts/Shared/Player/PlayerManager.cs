@@ -8,21 +8,21 @@ namespace Fragsurf.Shared.Player
 
     public class PlayerManager : FSComponent
     {
-        public event Action<IPlayer> OnPlayerConnected;
-        public event Action<IPlayer> OnPlayerDisconnected;
-        public event Action<IPlayer> OnPlayerApprovedToJoin;
-        public event Action<IPlayer> OnPlayerIntroduced;
-        public event Action<IPlayer> OnPlayerChangedTeam;
-        public event Action<IPlayer> OnPlayerChangedName;
-        public event Action<IPlayer> OnPlayerLatencyUpdated;
-        public event Action<IPlayer> OnPlayerRunCommand;
-        public event Action<IPlayer, IPlayer> OnPlayerSpectate;
-        public event Action<IPlayer, string[]> OnChatCommand;
-        public event Action<IPlayer, IBasePacket> OnPlayerPacketReceived;
+        public event Action<BasePlayer> OnPlayerConnected;
+        public event Action<BasePlayer> OnPlayerDisconnected;
+        public event Action<BasePlayer> OnPlayerApprovedToJoin;
+        public event Action<BasePlayer> OnPlayerIntroduced;
+        public event Action<BasePlayer> OnPlayerChangedTeam;
+        public event Action<BasePlayer> OnPlayerChangedName;
+        public event Action<BasePlayer> OnPlayerLatencyUpdated;
+        public event Action<BasePlayer> OnPlayerRunCommand;
+        public event Action<BasePlayer, BasePlayer> OnPlayerSpectate;
+        public event Action<BasePlayer, string[]> OnChatCommand;
+        public event Action<BasePlayer, IBasePacket> OnPlayerPacketReceived;
 
-        public IPlayer LocalPlayer => FindPlayer(Game.ClientIndex);
-        public List<IPlayer> Players { get; } = new List<IPlayer>();
-        public Dictionary<IPlayer, List<ulong>> SpecList { get; } = new Dictionary<IPlayer, List<ulong>>();
+        public BasePlayer LocalPlayer => FindPlayer(Game.ClientIndex);
+        public List<BasePlayer> Players { get; } = new List<BasePlayer>();
+        public Dictionary<BasePlayer, List<ulong>> SpecList { get; } = new Dictionary<BasePlayer, List<ulong>>();
 
         public int PlayerCount => Players.Count;
 
@@ -31,7 +31,7 @@ namespace Fragsurf.Shared.Player
             RemoveAllPlayers();
         }
 
-        public void IntroducePlayer(IPlayer player)
+        public void IntroducePlayer(BasePlayer player)
         {
             if (Players.Contains(player))
             {
@@ -47,7 +47,7 @@ namespace Fragsurf.Shared.Player
             OnPlayerIntroduced?.Invoke(player);
         }
 
-        public void RemovePlayer(IPlayer player)
+        public void RemovePlayer(BasePlayer player)
         {
             if (!Players.Contains(player))
             {
@@ -76,7 +76,7 @@ namespace Fragsurf.Shared.Player
             }
         }
 
-        public IPlayer FindPlayer(string name)
+        public BasePlayer FindPlayer(string name)
         {
             foreach(var player in Players)
             {
@@ -88,7 +88,7 @@ namespace Fragsurf.Shared.Player
             return null;
         }
 
-        public IPlayer FindPlayer(int clientIndex)
+        public BasePlayer FindPlayer(int clientIndex)
         {
             for(int i = 0; i < Players.Count; i++)
             {
@@ -100,7 +100,7 @@ namespace Fragsurf.Shared.Player
             return null;
         }
 
-        public IPlayer FindPlayer(ulong steamid)
+        public BasePlayer FindPlayer(ulong steamid)
         {
             for (int i = 0; i < Players.Count; i++)
             {
@@ -110,7 +110,7 @@ namespace Fragsurf.Shared.Player
             return null;
         }
 
-        public IPlayer FindPlayer(NetEntity human)
+        public BasePlayer FindPlayer(NetEntity human)
         {
             for (int i = 0; i < Players.Count; i++)
             {
@@ -122,7 +122,7 @@ namespace Fragsurf.Shared.Player
             return null;
         }
 
-        public void SetPlayerTeam(IPlayer player, byte teamNumber)
+        public void SetPlayerTeam(BasePlayer player, byte teamNumber)
         {
             player.Team = teamNumber;
             if(teamNumber > 0)
@@ -132,33 +132,33 @@ namespace Fragsurf.Shared.Player
             OnPlayerChangedTeam?.Invoke(player);
         }
 
-        public void RaisePlayerPacketReceived(IPlayer player, IBasePacket packet)
+        public void RaisePlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             OnPlayerPacketReceived?.Invoke(player, packet);
         }
 
-        public void RaisePlayerConnected(IPlayer player)
+        public void RaisePlayerConnected(BasePlayer player)
         {
             OnPlayerConnected?.Invoke(player);
         }
 
-        public void RaisePlayerApprovedToJoin(IPlayer player)
+        public void RaisePlayerApprovedToJoin(BasePlayer player)
         {
             OnPlayerApprovedToJoin?.Invoke(player);
         }
 
-        public void RaiseRunCommand(IPlayer player)
+        public void RaiseRunCommand(BasePlayer player)
         {
             OnPlayerRunCommand?.Invoke(player);
         }
 
-        public void SetPlayerName(IPlayer player, string name)
+        public void SetPlayerName(BasePlayer player, string name)
         {
             player.DisplayName = name;
             OnPlayerChangedName?.Invoke(player);
         }
 
-        public void SetPlayerLatency(IPlayer player, int latency)
+        public void SetPlayerLatency(BasePlayer player, int latency)
         {
             if (player == null)
                 return;
@@ -167,7 +167,7 @@ namespace Fragsurf.Shared.Player
             OnPlayerLatencyUpdated?.Invoke(player);
         }
 
-        public void SetPlayerSpectateTarget(IPlayer spectator, int targetClientIndex)
+        public void SetPlayerSpectateTarget(BasePlayer spectator, int targetClientIndex)
         {
             var targetRef = targetClientIndex == -1 
                 ? null 
@@ -175,7 +175,7 @@ namespace Fragsurf.Shared.Player
             SetPlayerSpectateTarget(spectator, targetRef);
         }
 
-        public void SetPlayerSpectateTarget(IPlayer spectator, IPlayer target)
+        public void SetPlayerSpectateTarget(BasePlayer spectator, BasePlayer target)
         {
             foreach(var kvp in SpecList)
             {
@@ -188,7 +188,7 @@ namespace Fragsurf.Shared.Player
             OnPlayerSpectate?.Invoke(spectator, target);
         }
 
-        public void RaiseChatCommand(IPlayer player, string[] args)
+        public void RaiseChatCommand(BasePlayer player, string[] args)
         {
             OnChatCommand?.Invoke(player, args);
         }

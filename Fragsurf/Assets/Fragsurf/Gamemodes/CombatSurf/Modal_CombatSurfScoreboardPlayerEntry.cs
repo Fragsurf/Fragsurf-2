@@ -13,7 +13,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         public class Data 
         {
-            public IPlayer Player;
+            public BasePlayer Player;
         }
 
         [SerializeField]

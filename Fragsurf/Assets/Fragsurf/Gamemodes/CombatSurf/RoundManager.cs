@@ -114,7 +114,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         }
 
         [ChatCommand("Restarts the match", "warmup", "startmatch")]
-        public void ForceStartMatch(IPlayer player)
+        public void ForceStartMatch(BasePlayer player)
         {
             if (!Game.IsHost)
             {
@@ -124,7 +124,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         }
 
         [ChatCommand("Forces the match to end", "endmatch")]
-        public void ForceEndMatch(IPlayer player)
+        public void ForceEndMatch(BasePlayer player)
         {
             if (!Game.IsHost)
             {
@@ -134,7 +134,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         }
 
         [ChatCommand("Forces the round to end", "endround")]
-        public void ForceEndRound(IPlayer player)
+        public void ForceEndRound(BasePlayer player)
         {
             if (!Game.IsHost)
             {
@@ -144,7 +144,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         }
 
         [ChatCommand("Changes your team (0-2), 0 = spec", "team")]
-        public void ChatPickTeam(IPlayer player, int teamNumber)
+        public void ChatPickTeam(BasePlayer player, int teamNumber)
         {
             if (!Game.IsHost)
             {

@@ -14,7 +14,7 @@ namespace Fragsurf.Shared
 
         private List<DownloadState> _downloads = new List<DownloadState>();
 
-        public async Task<TransferStatus> UploadFileAsync(IPlayer player, FSFileInfo file, bool temporaryFile)
+        public async Task<TransferStatus> UploadFileAsync(BasePlayer player, FSFileInfo file, bool temporaryFile)
         {
             var upload = new UploadState(file);
             upload.Status = TransferStatus.InProgress;
@@ -33,7 +33,7 @@ namespace Fragsurf.Shared
             return upload.Status;
         }
 
-        protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             if(Game.IsHost || !(packet is FileChunk chunk))
             {
@@ -42,7 +42,7 @@ namespace Fragsurf.Shared
             ReceiveChunk(chunk);
         }
 
-        private void SendChunk(IPlayer player, UploadState state)
+        private void SendChunk(BasePlayer player, UploadState state)
         {
             long remaining = state.InputStream.Length - state.SentOffset;
             int sendBytes = (remaining > state.ChunkLength ? state.ChunkLength : (int)remaining);

@@ -45,7 +45,7 @@ namespace Fragsurf.Shared
             Game.Network.BroadcastPacket(cp);
         }
 
-        protected override void OnPlayerIntroduced(IPlayer player)
+        protected override void OnPlayerIntroduced(BasePlayer player)
         {
             if(!Game.IsHost)
             {
@@ -73,7 +73,7 @@ namespace Fragsurf.Shared
             Game.Network.SendPacket(player.ClientIndex, cp);
         }
 
-        protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             if(Game.IsHost
                 || !(packet is CustomPacket cp)

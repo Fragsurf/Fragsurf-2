@@ -41,7 +41,7 @@ namespace Fragsurf.Shared
             SetProp(clientIndex, key, val + value);
         }
 
-        protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             if(Game.IsHost 
                 || !(packet is CustomPacket cp) 
@@ -57,7 +57,7 @@ namespace Fragsurf.Shared
             SetProp(client, key, value);
         }
 
-        protected override void OnPlayerIntroduced(IPlayer player)
+        protected override void OnPlayerIntroduced(BasePlayer player)
         {
             foreach(var kvp in _playerProps)
             {
@@ -77,7 +77,7 @@ namespace Fragsurf.Shared
             Game.Network.BroadcastPacket(packet);
         }
 
-        private void SendProp(IPlayer player, int clientIndex, string key, float value)
+        private void SendProp(BasePlayer player, int clientIndex, string key, float value)
         {
             var packet = GetPacket(clientIndex, key, value);
             Game.Network.SendPacket(player.ClientIndex, packet);

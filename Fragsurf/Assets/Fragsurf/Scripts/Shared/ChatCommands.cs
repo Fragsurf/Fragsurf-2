@@ -44,7 +44,7 @@ namespace Fragsurf.Shared
             return result;
         }
 
-        protected override void OnPlayerChatCommand(IPlayer player, string[] args)
+        protected override void OnPlayerChatCommand(BasePlayer player, string[] args)
         {
             if(args == null || args.Length == 0)
             {
@@ -101,7 +101,7 @@ namespace Fragsurf.Shared
                 Parameters = methodInfo.GetParameters();
             }
 
-            public void Execute(IPlayer player, string[] args)
+            public void Execute(BasePlayer player, string[] args)
             {
                 if (Parameters.Length == 0)
                 {

@@ -81,7 +81,7 @@ namespace Fragsurf.Shared
             return idx;
         }
 
-        protected override void OnPlayerDisconnected(IPlayer player)
+        protected override void OnPlayerDisconnected(BasePlayer player)
         {
             _specTargets.Remove(player.ClientIndex);
 
@@ -91,7 +91,7 @@ namespace Fragsurf.Shared
             }
         }
 
-        protected override void OnPlayerConnected(IPlayer player)
+        protected override void OnPlayerConnected(BasePlayer player)
         {
             _specTargets[player.ClientIndex] = 0;
 
@@ -148,7 +148,7 @@ namespace Fragsurf.Shared
             _targetHuman?.CameraController?.Update();
         }
 
-        protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             if(!(packet is SpecIdPacket spec))
             {

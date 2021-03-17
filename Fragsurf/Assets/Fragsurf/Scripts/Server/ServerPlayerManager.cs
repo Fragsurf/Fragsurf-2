@@ -8,13 +8,13 @@ namespace Fragsurf.Server
 {
     public class ServerPlayerManager : FSServerScript
     {
-        protected override void OnPlayerIntroduced(IPlayer player)
+        protected override void OnPlayerIntroduced(BasePlayer player)
         {
             BroadcastPlayerIntroduced(player);
             Game.PlayerManager.SetPlayerTeam(player, 0);
         }
 
-        private void ProcessPlayerIntroduction(IPlayer player, PlayerIntroduction intro)
+        private void ProcessPlayerIntroduction(BasePlayer player, PlayerIntroduction intro)
         {
             switch (intro.Step)
             {
@@ -25,7 +25,7 @@ namespace Fragsurf.Server
             }
         }
 
-        protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             switch (packet)
             {
@@ -36,12 +36,12 @@ namespace Fragsurf.Server
                     switch (fileSync.SyncType)
                     {
                         case FileSync.FileSyncType.Initiate:
-                            SendFileSync((ServerPlayer)player);
+                            SendFileSync(player);
                             break;
                     }
                     break;
                 case MapChange mapChange:
-                    SendMapChange((ServerPlayer)player);
+                    SendMapChange(player);
                     break;
                 case ChooseTeam chooseTeam:
                     Game.PlayerManager.SetPlayerTeam(player, chooseTeam.TeamNumber);
@@ -56,7 +56,7 @@ namespace Fragsurf.Server
             }
         }
 
-        protected override void OnPlayerSpectate(IPlayer spectator, IPlayer target)
+        protected override void OnPlayerSpectate(BasePlayer spectator, BasePlayer target)
         {
             var ev = PacketUtility.TakePacket<PlayerEvent>();
             ev.EventType = PlayerEventType.Spectate;
@@ -65,7 +65,7 @@ namespace Fragsurf.Server
             Game.GetFSComponent<SocketManager>().BroadcastPacket(ev);
         }
 
-        protected override void OnPlayerDisconnected(IPlayer player)
+        protected override void OnPlayerDisconnected(BasePlayer player)
         {
             var ev = PacketUtility.TakePacket<PlayerEvent>();
             ev.EventType = PlayerEventType.Disconnected;
@@ -73,7 +73,7 @@ namespace Fragsurf.Server
             Game.GetFSComponent<SocketManager>().BroadcastPacket(ev);
         }
 
-        protected override void OnPlayerChangedTeam(IPlayer player)
+        protected override void OnPlayerChangedTeam(BasePlayer player)
         {
             var ev = PacketUtility.TakePacket<PlayerEvent>();
             ev.EventType = PlayerEventType.ChangedTeam;
@@ -82,7 +82,7 @@ namespace Fragsurf.Server
             Game.GetFSComponent<SocketManager>().BroadcastPacket(ev);
         }
 
-        protected override void OnPlayerChangedName(IPlayer player)
+        protected override void OnPlayerChangedName(BasePlayer player)
         {
             var ev = PacketUtility.TakePacket<PlayerEvent>();
             ev.EventType = PlayerEventType.ChangedName;
@@ -91,7 +91,7 @@ namespace Fragsurf.Server
             Game.GetFSComponent<SocketManager>().BroadcastPacket(ev);
         }
 
-        protected override void OnPlayerLatencyUpdated(IPlayer player)
+        protected override void OnPlayerLatencyUpdated(BasePlayer player)
         {
             var ev = PacketUtility.TakePacket<PlayerEvent>();
             ev.Sc = SendCategory.Unreliable;
@@ -101,7 +101,7 @@ namespace Fragsurf.Server
             Game.GetFSComponent<SocketManager>().BroadcastPacket(ev);
         }
 
-        private void SendFileSync(ServerPlayer player)
+        private void SendFileSync(BasePlayer player)
         {
             var fileSync = PacketUtility.TakePacket<FileSync>();
             fileSync.SyncType = FileSync.FileSyncType.Manifest;
@@ -110,7 +110,7 @@ namespace Fragsurf.Server
             Game.GetFSComponent<SocketManager>().SendPacketBrute(player, fileSync);
         }
 
-        private void SendMapChange(ServerPlayer player)
+        private void SendMapChange(BasePlayer player)
         {
             var mapChange = PacketUtility.TakePacket<MapChange>();
             mapChange.MapName = Map.Current.Name;
@@ -119,7 +119,7 @@ namespace Fragsurf.Server
             Game.GetFSComponent<SocketManager>().SendPacketBrute(player, mapChange);
         }
 
-        public void SendPlayerBackfill(IPlayer player)
+        public void SendPlayerBackfill(BasePlayer player)
         {
             foreach(var playerToSend in Game.PlayerManager.Players)
             {
@@ -151,7 +151,7 @@ namespace Fragsurf.Server
             }
         }
 
-        private void BroadcastPlayerIntroduced(IPlayer player)
+        private void BroadcastPlayerIntroduced(BasePlayer player)
         {
             var ev = PacketUtility.TakePacket<PlayerEvent>();
             ev.EventType = PlayerEventType.Introduced;

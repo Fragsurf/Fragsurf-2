@@ -35,7 +35,7 @@ namespace Fragsurf.Server.ServerScripts
             }, this);
         }
 
-        protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             if (packet is FileSync fileSync
                 && fileSync.SyncType == FileSync.FileSyncType.Request)
@@ -55,18 +55,17 @@ namespace Fragsurf.Server.ServerScripts
                 fu.InputStream = new FileStream(file.FullPath, FileMode.Open, FileAccess.Read);
                 fu.File = file.RelativePath;
                 fu.ClientIndex = player.ClientIndex;
-                fu.ChunkLength = ((ServerPlayer)player).MTU - 20;
+                fu.ChunkLength = player.MTU - 20;
                 fu.SentOffset = 0;
                 _uploads.Add(fu);
             }
         }
 
-        protected override void OnPlayerDisconnected(IPlayer player)
+        protected override void OnPlayerDisconnected(BasePlayer player)
         {
-            var serverPlayer = (ServerPlayer)player;
             for(int i = _uploads.Count - 1; i >= 0; i--)
             {
-                if(_uploads[i].ClientIndex == serverPlayer.ClientIndex)
+                if(_uploads[i].ClientIndex == player.ClientIndex)
                 {
                     _uploads[i].InputStream?.Close();
                     _uploads[i].InputStream?.Dispose();

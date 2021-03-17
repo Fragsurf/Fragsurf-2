@@ -37,12 +37,12 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private Dictionary<int, SSJData> _ssjDatas = new Dictionary<int, SSJData>();
 
-        protected override void OnPlayerDisconnected(IPlayer player)
+        protected override void OnPlayerDisconnected(BasePlayer player)
         {
             _ssjDatas.Remove(player.ClientIndex);
         }
 
-        protected override void OnPlayerRunCommand(IPlayer player)
+        protected override void OnPlayerRunCommand(BasePlayer player)
         {
             if(!(player.Entity is Human hu)
                 || !(hu.Timeline is BunnyhopTimeline bhop)

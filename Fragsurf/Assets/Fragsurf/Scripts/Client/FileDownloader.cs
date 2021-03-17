@@ -93,7 +93,7 @@ namespace Fragsurf.Client
             return SyncState.Completed;
         }
 
-        protected override void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             if(packet is FileSync fileSync)
             {

@@ -165,5 +165,18 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
+        public void SetColor(Color color)
+        {
+            if(Renderers == null)
+            {
+                return;
+            }
+
+            foreach(var r in Renderers)
+            {
+                r.material.color = color;
+            }
+        }
+
     }
 }

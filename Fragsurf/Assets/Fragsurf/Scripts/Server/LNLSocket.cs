@@ -1,4 +1,5 @@
 using Fragsurf.Shared.Packets;
+using Fragsurf.Shared.Player;
 using LiteNetLib;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace Fragsurf.Server
             _server?.PollEvents();
         }
 
-        private bool FindPeer(ServerPlayer player, out NetPeer result)
+        private bool FindPeer(BasePlayer player, out NetPeer result)
         {
             result = null;
             foreach(var peer in _server.ConnectedPeerList)
@@ -41,7 +42,7 @@ namespace Fragsurf.Server
             return false;
         }
 
-        public override void DisconnectPlayer(ServerPlayer player, string reason)
+        public override void DisconnectPlayer(BasePlayer player, string reason)
         {
             if(FindPeer(player, out NetPeer peer))
             {
@@ -49,7 +50,7 @@ namespace Fragsurf.Server
             }
         }
 
-        public override void SendPacket(ServerPlayer player, IBasePacket packet)
+        public override void SendPacket(BasePlayer player, IBasePacket packet)
         {
             if(FindPeer(player, out NetPeer peer))
             {
@@ -57,7 +58,7 @@ namespace Fragsurf.Server
             }
         }
 
-        public override void SendPacket(List<ServerPlayer> players, IBasePacket packet)
+        public override void SendPacket(List<BasePlayer> players, IBasePacket packet)
         {
             foreach(var player in players)
             {
@@ -100,10 +101,10 @@ namespace Fragsurf.Server
 
         private void Listener_PeerDisconnectedEvent(NetPeer peer, DisconnectInfo disconnectInfo)
         {
-            var pl = peer.Tag as ServerPlayer;
+            var pl = peer.Tag as BasePlayer;
             if(pl == null)
             {
-                throw new Exception("ServerPlayer tag undefined on disconnect");
+                throw new Exception("BasePlayer tag undefined on disconnect");
             }
             SocketMan.HandlePlayerDisconnected(pl.ClientIndex);
         }
@@ -127,10 +128,10 @@ namespace Fragsurf.Server
 
         private void Listener_NetworkReceiveEvent(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
         {
-            var pl = peer.Tag as ServerPlayer;
+            var pl = peer.Tag as BasePlayer;
             if(pl == null)
             {
-                Debug.LogError("ServerPlayer tag is undefined on receive event, disconnecting peer.");
+                Debug.LogError("BasePlayer tag is undefined on receive event, disconnecting peer.");
                 peer.Disconnect();
                 return;
             }

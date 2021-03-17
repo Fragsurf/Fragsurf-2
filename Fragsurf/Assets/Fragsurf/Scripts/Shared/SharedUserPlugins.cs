@@ -225,34 +225,34 @@ namespace Fragsurf.Shared
             InvokeEventSubscriptions("OnHumanTrigger", human, trigger, type, offset);
         }
 
-        private void OnPlayerChangedTeam(IPlayer player)
+        private void OnPlayerChangedTeam(BasePlayer player)
         {
             InvokeEventSubscriptions("OnPlayerChangedTeam", player);
         }
 
-        private void OnPlayerChatCommand(IPlayer player, string[] args)
+        private void OnPlayerChatCommand(BasePlayer player, string[] args)
         {
             InvokeEventSubscriptions("OnPlayerChatCommand", player, args);
         }
 
-        private void OnPlayerConnected(IPlayer player)
+        private void OnPlayerConnected(BasePlayer player)
         {
             InvokeEventSubscriptions("OnPlayerConnected", player);
         }
 
-        private void OnPlayerDisconnected(IPlayer player)
+        private void OnPlayerDisconnected(BasePlayer player)
         {
             InvokeEventSubscriptions("OnPlayerDisconnected", player);
         }
 
-        private void OnPlayerIntroduced(IPlayer player)
+        private void OnPlayerIntroduced(BasePlayer player)
         {
             InvokeEventSubscriptions("OnPlayerIntroduced", player);
 
             SynchronizeWithPlayer(player);
         }
 
-        private void OnPlayerRunCommand(IPlayer player)
+        private void OnPlayerRunCommand(BasePlayer player)
         {
             InvokeEventSubscriptions("OnPlayerRunCommand", player);
         }
@@ -292,7 +292,7 @@ namespace Fragsurf.Shared
             }
         }
 
-        private async void SynchronizeWithPlayer(IPlayer player)
+        private async void SynchronizeWithPlayer(BasePlayer player)
         {
             var cp1 = PacketUtility.TakePacket<CustomPacket>();
             cp1.Label = _clearTempPacketLabel;
@@ -317,7 +317,7 @@ namespace Fragsurf.Shared
             Game.Network.SendPacket(player.ClientIndex, cp);
         }
 
-        private void OnPlayerPacketReceived(IPlayer player, IBasePacket packet)
+        private void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
             if(Game.IsHost || !(packet is CustomPacket cp))
             {

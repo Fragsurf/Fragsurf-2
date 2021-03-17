@@ -64,17 +64,17 @@ namespace Fragsurf.Shared
         protected virtual void OnEntityDestroyed(NetEntity entity) { }
         protected virtual void OnEntityUpdated(NetEntity entity, int remoteTick, double remoteTime) { }
         protected virtual void OnHumanTrigger(NetEntity entity, Actors.FSMTrigger trigger, TriggerEventType type, float offset = 0f) { }
-        protected virtual void OnPlayerPacketReceived(IPlayer player, IBasePacket packet) { }
-        protected virtual void OnPlayerConnected(IPlayer player) { }
-        protected virtual void OnPlayerApprovedToJoin(IPlayer player) { }
-        protected virtual void OnPlayerIntroduced(IPlayer player) { }
-        protected virtual void OnPlayerDisconnected(IPlayer player) { }
-        protected virtual void OnPlayerChangedTeam(IPlayer player) { }
-        protected virtual void OnPlayerChangedName(IPlayer player) { }
-        protected virtual void OnPlayerLatencyUpdated(IPlayer player) { }
-        protected virtual void OnPlayerRunCommand(IPlayer player) { }
-        protected virtual void OnPlayerSpectate(IPlayer spectator, IPlayer target) { }
-        protected virtual void OnPlayerChatCommand(IPlayer player, string[] args) { }
+        protected virtual void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet) { }
+        protected virtual void OnPlayerConnected(BasePlayer player) { }
+        protected virtual void OnPlayerApprovedToJoin(BasePlayer player) { }
+        protected virtual void OnPlayerIntroduced(BasePlayer player) { }
+        protected virtual void OnPlayerDisconnected(BasePlayer player) { }
+        protected virtual void OnPlayerChangedTeam(BasePlayer player) { }
+        protected virtual void OnPlayerChangedName(BasePlayer player) { }
+        protected virtual void OnPlayerLatencyUpdated(BasePlayer player) { }
+        protected virtual void OnPlayerRunCommand(BasePlayer player) { }
+        protected virtual void OnPlayerSpectate(BasePlayer spectator, BasePlayer target) { }
+        protected virtual void OnPlayerChatCommand(BasePlayer player, string[] args) { }
 
     }
 }

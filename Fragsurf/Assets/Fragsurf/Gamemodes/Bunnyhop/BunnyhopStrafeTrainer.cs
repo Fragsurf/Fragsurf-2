@@ -40,7 +40,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private int[] _percentages;
         private Modal_StrafeTrainer _modal;
 
-        protected override void OnPlayerRunCommand(IPlayer player)
+        protected override void OnPlayerRunCommand(BasePlayer player)
         {
             if (!_modal)
             {

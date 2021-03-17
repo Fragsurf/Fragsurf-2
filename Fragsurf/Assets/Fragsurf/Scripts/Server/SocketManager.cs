@@ -20,7 +20,7 @@ namespace Fragsurf.Server
 
     public class PlayerJoiningEventArgs : EventArgs
     {
-        public ServerPlayer Player;
+        public BasePlayer Player;
         public PlayerJoiningState JoiningState;
         public string DenyReason;
     }
@@ -31,9 +31,9 @@ namespace Fragsurf.Server
         public event Action<ServerStatus> OnServerStatusChanged;
         public event Action<NetIncomingMessage> OnIncomingUnconnectedData;
 
-        private List<ServerPlayer> _players = new List<ServerPlayer>();
+        private List<BasePlayer> _players = new List<BasePlayer>();
         private List<BaseSocket> _sockets = new List<BaseSocket>();
-        private List<ServerPlayer> _playerCache = new List<ServerPlayer>(256);
+        private List<BasePlayer> _playerCache = new List<BasePlayer>(256);
         private bool _started;
         private bool _socketsAllGood;
         private int _clientIndex;
@@ -97,7 +97,7 @@ namespace Fragsurf.Server
         {
             for(int i = Game.PlayerManager.Players.Count - 1; i >= 0; i--)
             {
-                var player = Game.PlayerManager.Players[i] as ServerPlayer;
+                var player = Game.PlayerManager.Players[i];
                 if (player.IsFake)
                 {
                     continue;
@@ -171,7 +171,7 @@ namespace Fragsurf.Server
             }
         }
 
-        public void RaisePlayerPacketReceivedEvent(ServerPlayer player, IBasePacket packet)
+        public void RaisePlayerPacketReceivedEvent(BasePlayer player, IBasePacket packet)
         {
             Game.PlayerManager.RaisePlayerPacketReceived(player, packet);
         }
@@ -180,7 +180,7 @@ namespace Fragsurf.Server
         {
             for(int i = Game.PlayerManager.Players.Count - 1; i >= 0; i--)
             {
-                DisconnectPlayer(Game.PlayerManager.Players[i] as ServerPlayer, reason);
+                DisconnectPlayer(Game.PlayerManager.Players[i], reason);
             }
         }
 
@@ -193,7 +193,7 @@ namespace Fragsurf.Server
             }
         }
 
-        public void DisconnectPlayer(ServerPlayer player, string reason = "Disconnected")
+        public void DisconnectPlayer(BasePlayer player, string reason = "Disconnected")
         {
             foreach(var socket in _sockets)
             {
@@ -234,7 +234,7 @@ namespace Fragsurf.Server
             }
         }
 
-        public void SendPacketBrute(ServerPlayer player, IBasePacket packet)
+        public void SendPacketBrute(BasePlayer player, IBasePacket packet)
         {
             if(player.IsFake)
             {
@@ -253,7 +253,7 @@ namespace Fragsurf.Server
             PacketUtility.PutPacket(packet);
         }
 
-        public void SendPacket(ServerPlayer player, IBasePacket packet)
+        public void SendPacket(BasePlayer player, IBasePacket packet)
         {
             if(!player.Introduced || player.IsFake)
             {
@@ -272,16 +272,15 @@ namespace Fragsurf.Server
             PacketUtility.PutPacket(packet);
         }
 
-        public void SendPacket(List<IPlayer> players, IBasePacket packet)
+        public void SendPacket(List<BasePlayer> players, IBasePacket packet)
         {
             _playerCache.Clear();
 
             foreach(var player in players)
             {
-                var svp = (ServerPlayer)player;
                 if(player.Introduced && !player.IsFake)
                 {
-                    _playerCache.Add(svp);
+                    _playerCache.Add(player);
                 }
             }
 
@@ -302,9 +301,14 @@ namespace Fragsurf.Server
             buffer.Write(PacketUtility.GetPacketTypeId(packet.GetType()));
         }
 
-        public ServerPlayer CreatePlayer()
+        public BasePlayer CreatePlayer()
         {
-            var player = new ServerPlayer(0, NextClientIndex, Game.ElapsedTime);
+            var player = new BasePlayer
+            {
+                SteamId = 0,
+                ClientIndex = NextClientIndex,
+                ConnectionTime = Game.ElapsedTime
+            };
             _players.Add(player);
             Game.PlayerManager.RaisePlayerConnected(player);
             return player;
@@ -377,7 +381,7 @@ namespace Fragsurf.Server
             }
         }
 
-        private void ProcessPacket(ServerPlayer player, IBasePacket packet, NetBuffer data)
+        private void ProcessPacket(BasePlayer player, IBasePacket packet, NetBuffer data)
         {
             packet?.Read(data);
 
@@ -433,7 +437,7 @@ namespace Fragsurf.Server
             RaisePlayerPacketReceivedEvent(player, packet);
         }
 
-        public ServerPlayer FindPlayer(int clientIndex)
+        public BasePlayer FindPlayer(int clientIndex)
         {
             foreach (var player in _players)
             {

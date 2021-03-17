@@ -7,6 +7,7 @@ using Steamworks;
 using Steamworks.Data;
 using Lidgren.Network;
 using System.Net;
+using Fragsurf.Shared.Player;
 
 namespace Fragsurf.Server
 {
@@ -111,18 +112,18 @@ namespace Fragsurf.Server
 
         private NetBuffer _buffer = new NetBuffer();
 
-        public override void DisconnectPlayer(ServerPlayer player, string reason)
+        public override void DisconnectPlayer(BasePlayer player, string reason)
         {
             Enum.TryParse(reason, out DenyReason dr);
             _socket.Disconnect(player.SteamId, (int)dr);
         }
 
-        public override void SendPacket(ServerPlayer player, IBasePacket packet)
+        public override void SendPacket(BasePlayer player, IBasePacket packet)
         {
             SendPacket(player.SteamId, packet);
         }
 
-        public override void SendPacket(List<ServerPlayer> players, IBasePacket packet)
+        public override void SendPacket(List<BasePlayer> players, IBasePacket packet)
         {
             GetP2PPacket(packet, out byte[] data, out int dataLength, out int channel, out SendType type);
 

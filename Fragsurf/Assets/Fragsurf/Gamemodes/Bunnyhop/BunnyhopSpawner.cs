@@ -9,7 +9,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     public class BunnyhopSpawner : FSSharedScript
     {
 
-        protected override void OnPlayerIntroduced(IPlayer player)
+        protected override void OnPlayerIntroduced(BasePlayer player)
         {
             if (!Game.IsHost)
             {
@@ -20,7 +20,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         }
 
         [ChatCommand("Teleport to the beginning", "r", "spawn", "restart")]
-        public void SpawnPlayer(IPlayer player)
+        public void SpawnPlayer(BasePlayer player)
         {
             if (!Game.IsHost)
             {
@@ -43,7 +43,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         }
 
         [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]
-        public void Give(IPlayer player, string item)
+        public void Give(BasePlayer player, string item)
         {
             if (!Game.IsHost || !(player.Entity is Human hu))
             {

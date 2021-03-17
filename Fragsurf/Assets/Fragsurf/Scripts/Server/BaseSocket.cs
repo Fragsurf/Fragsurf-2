@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using Fragsurf.Shared.Packets;
+using Fragsurf.Shared.Player;
 
 namespace Fragsurf.Server
 {
@@ -20,9 +21,9 @@ namespace Fragsurf.Server
 
         //public virtual void Update() { }
         public abstract void Tick();
-        public abstract void DisconnectPlayer(ServerPlayer player, string reason);
-        public abstract void SendPacket(ServerPlayer player, IBasePacket packet);
-        public abstract void SendPacket(List<ServerPlayer> players, IBasePacket packet);
+        public abstract void DisconnectPlayer(BasePlayer player, string reason);
+        public abstract void SendPacket(BasePlayer player, IBasePacket packet);
+        public abstract void SendPacket(List<BasePlayer> players, IBasePacket packet);
         public abstract void StartSocket();
         public abstract void StopSocket(string reason);
         public abstract void SendUnconnectedData(byte[] data, IPEndPoint endpoint);
