@@ -28,6 +28,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return;
             }
 
+            Game.PlayerManager.SetPlayerTeam(player, 1);
+
             if(!(player.Entity is Human hu))
             {
                 if(player.Entity != null)
