@@ -150,7 +150,7 @@ namespace Fragsurf.Shared.Entity
 
         public virtual void RunCommand(UserCmd cmd, bool prediction)
         {
-            if (OutOfGame)
+            if (OutOfGame || Dead)
             {
                 return;
             }
