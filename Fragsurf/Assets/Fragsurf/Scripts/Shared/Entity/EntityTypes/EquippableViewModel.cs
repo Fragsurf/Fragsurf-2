@@ -22,11 +22,13 @@ namespace Fragsurf.Shared.Entity
             if (!_animator)
             {
                 _animator = GetComponentInChildren<Animator>();
-                if (_animator)
-                {
-                    _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-                }
             }
+
+            if (_animator)
+            {
+                _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+            }
+
             Camera = GetComponentInChildren<Camera>();
             _originalPosition = _animator.transform.localPosition;
             _originalRotation = _animator.transform.localEulerAngles;
