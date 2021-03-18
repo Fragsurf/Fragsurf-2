@@ -110,6 +110,55 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 {
                     MoveToNextState();
                 }
+
+                if(MatchState == MatchStates.Live 
+                    && RoundState == RoundStates.Live)
+                {
+                    CheckRoundWinConditions();
+                }
+            }
+        }
+
+        private void CheckRoundWinConditions()
+        {
+            var t1Dead = 0;
+            var t2Dead = 0;
+            var t1Total = 0;
+            var t2Total = 0;
+
+            foreach (var player in Game.PlayerManager.Players)
+            {
+                if(!(player.Entity is Human hu)
+                    || !hu.Enabled
+                    || player.Team == 0)
+                {
+                    continue;
+                }
+                if(player.Team == 1)
+                {
+                    t1Total++;
+                    if (hu.Dead)
+                    {
+                        t1Dead++;
+                    }
+                }
+                else
+                {
+                    t2Total++;
+                    if (hu.Dead)
+                    {
+                        t2Dead++;
+                    }
+                }
+            }
+
+            if(t1Total == t1Dead)
+            {
+                DoRoundEnd(2);
+            }
+            else if(t2Total == t2Dead)
+            {
+                DoRoundEnd(1);
             }
         }
 
