@@ -43,7 +43,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 // Victim
                 if (dmgInfo.ResultedInDeath)
                 {
-                    _props.IncrementProp(hu.OwnerId, _deathsLabel, -1);
+                    _props.IncrementProp(hu.OwnerId, _deathsLabel, 1);
                 }
             }
         }
