@@ -1,6 +1,8 @@
 using Fragsurf.Shared;
 using Fragsurf.Shared.Packets;
+using Fragsurf.Shared.Player;
 using Fragsurf.UI;
+using Fragsurf.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,9 +30,10 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         public override void LoadData(Data data)
         {
+            var color = PlayerManager.GetTeamColor(data.TeamNumber);
             _playerTemplate = gameObject.GetComponentInChildren<Modal_CombatSurfScoreboardPlayerEntry>(true);
             _playerTemplate.gameObject.SetActive(false);
-            _teamName.text = $"Team {data.TeamNumber}";
+            _teamName.text = $"<color={color.HashRGBA()}>Team {data.TeamNumber}</color>";
             LoadPlayers(data.TeamNumber);
 
             _joinButton.onClick.AddListener(() =>

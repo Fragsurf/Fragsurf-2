@@ -3,7 +3,11 @@ using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
 using Lidgren.Network;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
+using Fragsurf.UI;
+using Fragsurf.Utility;
 
 namespace Fragsurf.Shared
 {
@@ -12,7 +16,7 @@ namespace Fragsurf.Shared
     {
 
         private Human _targetHuman;
-        // todo: a netprop for scripts and dictionaries would be nice.
+        // todo: a netprop for dictionaries would be nice.
         private Dictionary<int, int> _specTargets = new Dictionary<int, int>();
 
         public static event Action ScoreboardUpdateNotification;
@@ -25,18 +29,27 @@ namespace Fragsurf.Shared
 
         public bool IsSpectating(int clientIndex)
         {
-            if (!_specTargets.ContainsKey(clientIndex)
-                || _specTargets[clientIndex] <= 0)
-            {
-                return true;
-            }
-            var entId = _specTargets[clientIndex];
-            var ent = Game.EntityManager.FindEntity(entId);
-            if(ent == null || !(ent is Human hu))
-            {
-                return true;
-            }
-            return hu.OwnerId != clientIndex;
+            var pl = Game.PlayerManager.FindPlayer(clientIndex);
+            return pl == null || pl.Team == 0;
+            //if(pl != null)
+            //{
+            //    return pl.Team == 0;
+            //}
+
+            //if (!_specTargets.ContainsKey(clientIndex)
+            //    || _specTargets[clientIndex] <= 0)
+            //{
+            //    return true;
+            //}
+
+            //var entId = _specTargets[clientIndex];
+            //var ent = Game.EntityManager.FindEntity(entId);
+            //if(ent == null || !(ent is Human hu))
+            //{
+            //    return true;
+            //}
+
+            //return hu.OwnerId != clientIndex;
         }
 
         public bool CanSpectate(Human hu)
@@ -87,6 +100,20 @@ namespace Fragsurf.Shared
 
             if (!Game.IsHost)
             {
+                ScoreboardUpdateNotification?.Invoke();
+            }
+        }
+
+        protected override void OnPlayerChangedTeam(BasePlayer player)
+        {
+            if (!Game.IsHost)
+            {
+                if(player.ClientIndex == Game.ClientIndex
+                    && player.Team > 0
+                    && player.Entity is Human hu)
+                {
+                    Spectate(hu);
+                }
                 ScoreboardUpdateNotification?.Invoke();
             }
         }
@@ -145,7 +172,71 @@ namespace Fragsurf.Shared
             {
                 return;
             }
+
             _targetHuman?.CameraController?.Update();
+
+            if (IsSpectating(Game.ClientIndex))
+            {
+                UpdateSpectateCycle();
+            }
+        }
+
+        private bool _guiHadFocus;
+        private void UpdateSpectateCycle()
+        {
+            if (!UGuiManager.Instance.HasCursor()
+                && !UGuiManager.Instance.HasFocusedInput())
+            {
+                // do this to skip the first click after toying around in menus
+                // it's a better ux imo
+                if (_guiHadFocus)
+                {
+                    _guiHadFocus = false;
+                }
+                else
+                {
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        SpectateNext();
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Mouse1))
+                    {
+                        SpectateNext(true);
+                    }
+                }
+            }
+            else
+            {
+                _guiHadFocus = true;
+            }
+        }
+
+        public void SpectateNext(bool backwards = false)
+        {
+            var spectatable = Game.EntityManager
+                .OfType<Human>()
+                .Where(x => CanSpectate(x) && x != Human.Local)
+                .ToList();
+
+            if(spectatable.Count == 0)
+            {
+                return;
+            }
+
+            if(spectatable.Count == 1)
+            {
+                Spectate(spectatable[0]);
+                return;
+            }
+
+            var nextTarget = backwards
+                ? spectatable.PreviousOf(_targetHuman)
+                : spectatable.NextOf(_targetHuman);
+
+            if(nextTarget != null)
+            {
+                Spectate(nextTarget);
+            }
         }
 
         protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
@@ -159,6 +250,10 @@ namespace Fragsurf.Shared
 
             if (Game.IsHost)
             {
+                if (player.Entity != null && spec.TargetEntityId != player.Entity.EntityId)
+                {
+                    Game.PlayerManager.SetPlayerTeam(player, 0);
+                }
                 BroadcastSpecId(spec.ClientIndex, spec.TargetEntityId);
             }
             else

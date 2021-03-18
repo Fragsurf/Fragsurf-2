@@ -32,7 +32,8 @@ namespace Fragsurf.Shared.Player
         {
             foreach (NetEntity ent in _human.Game.EntityManager.Entities)
             {
-                if (ent.DisableLagCompensation)
+                if (ent.DisableLagCompensation
+                    || !ent.EntityGameObject)
                 {
                     continue;
                 }

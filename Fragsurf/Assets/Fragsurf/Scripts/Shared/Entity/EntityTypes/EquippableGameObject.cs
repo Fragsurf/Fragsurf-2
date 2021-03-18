@@ -357,7 +357,7 @@ namespace Fragsurf.Shared.Entity
             if(Equippable.Human != null)
             {
                 var player = Equippable.Game.PlayerManager.FindPlayer(Equippable.Human);
-                latency = player != null ? player.LatencyMs / 1000f : 0;
+                latency = player != null ? (player.LatencyMs / 1000f) : 0;
                 Equippable.Human.DisableLagCompensation = true;
             }
 
@@ -380,7 +380,8 @@ namespace Fragsurf.Shared.Entity
         {
             foreach (NetEntity ent in Entity.Game.EntityManager.Entities)
             {
-                if (ent.DisableLagCompensation)
+                if (ent.DisableLagCompensation 
+                    || !ent.EntityGameObject)
                 {
                     continue;
                 }

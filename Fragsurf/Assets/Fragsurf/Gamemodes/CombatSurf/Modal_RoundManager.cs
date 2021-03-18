@@ -1,4 +1,5 @@
 using Fragsurf.Shared;
+using Fragsurf.Shared.Player;
 using Fragsurf.UI;
 using System;
 using System.Collections;
@@ -49,6 +50,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 return;
             }
             _rm = cl.Get<RoundManager>();
+            _team1Name.color = PlayerManager.GetTeamColor(1);
+            _team2Name.color = PlayerManager.GetTeamColor(2);
         }
 
         public void FlashScreenBorder(Color color)
@@ -100,12 +103,12 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 switch (_rm.DefaultWinner)
                 {
                     case 1:
-                        _team1Name.color = Color.green;
-                        _team2Name.color = Color.white;
+                        _team1Name.fontStyle |= FontStyles.Underline;
+                        _team2Name.fontStyle &= ~FontStyles.Underline;
                         break;
                     case 2:
-                        _team1Name.color = Color.white;
-                        _team2Name.color = Color.green;
+                        _team2Name.fontStyle |= FontStyles.Underline;
+                        _team1Name.fontStyle &= ~FontStyles.Underline;
                         break;
                 }
                 _prevDefaultWinner = _rm.DefaultWinner;

@@ -24,7 +24,6 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
             if (!Game.IsHost)
             {
-                Game.Get<SpectateController>().Spectate(Human.Local);
                 return;
             }
 

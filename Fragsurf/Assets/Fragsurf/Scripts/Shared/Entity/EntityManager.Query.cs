@@ -64,7 +64,7 @@ namespace Fragsurf.Shared.Entity
             return null;
         }
 
-        public IEnumerable OfType<T>()
+        public IEnumerable<T> OfType<T>()
             where T : NetEntity
         {
             for (int i = 0; i < Entities.Count; i++)

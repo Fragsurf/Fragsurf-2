@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
@@ -6,6 +7,26 @@ using System.Threading.Tasks;
 
 public static class ArrayExtensions
 {
+    public static T NextOf<T>(this List<T> list, T item)
+    {
+        if (list.Count == 0)
+        {
+            return default;
+        }
+        var indexOf = list.IndexOf(item);
+        return list[indexOf == list.Count - 1 ? 0 : indexOf + 1];
+    }
+
+    public static T PreviousOf<T>(this List<T> list, T item)
+    {
+        if (list.Count == 0)
+        {
+            return default;
+        }
+        var indexOf = list.IndexOf(item);
+        return list[indexOf <= 0 ? list.Count - 1 : indexOf - 1];
+    }
+
     public static void ShiftRight<T>(this T[] arr)
     {
         for (int i = arr.Length - 1; i > 0; i--)

@@ -115,7 +115,7 @@ namespace Fragsurf.UI
             {
                 return;
             }
-            ReceiveMessage(friend.Name, msg, "Clan");
+            ReceiveMessage(friend.Name, msg, -1, "Clan");
         }
 
         protected override void OnClose()
@@ -193,15 +193,19 @@ namespace Fragsurf.UI
         private void TextChat_OnMessageReceived(ChatMessage chatPacket)
         {
             var name = chatPacket.Name;
-            if (string.IsNullOrWhiteSpace(name))
+            var team = -1;
+
+            var pl = FSGameLoop.GetGameInstance(false).PlayerManager.FindPlayer(chatPacket.ClientIndex);
+            if(pl != null)
             {
-                var pl = FSGameLoop.GetGameInstance(false).PlayerManager.FindPlayer(chatPacket.ClientIndex);
-                if (pl != null)
+                team = pl.Team;
+                if (string.IsNullOrWhiteSpace(name))
                 {
                     name = pl.DisplayName;
                 }
             }
-            ReceiveMessage(name, chatPacket.Message);
+
+            ReceiveMessage(name, chatPacket.Message, team);
         }
 
         private void OnSubmit(string value)
@@ -228,13 +232,14 @@ namespace Fragsurf.UI
             }
         }
 
-        private void ReceiveMessage(string playerName, string message, string clanTag = null)
+        private void ReceiveMessage(string playerName, string message, int team = -1, string clanTag = null)
         {
             _chatTemplate.Append(new Modal_ChatboxChatEntryData()
             {
                 PlayerName = playerName,
                 Message = message,
-                ClanTag = clanTag
+                ClanTag = clanTag,
+                Team = team
             });
 
             if (_gameSrc)

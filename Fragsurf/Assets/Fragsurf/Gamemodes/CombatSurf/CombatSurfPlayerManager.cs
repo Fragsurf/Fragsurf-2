@@ -1,6 +1,7 @@
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
+using Fragsurf.Utility;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,13 +10,6 @@ namespace Fragsurf.Gamemodes.CombatSurf
     [Inject(InjectRealm.Shared, typeof(CombatSurf))]
     public class CombatSurfPlayerManager : FSSharedScript
     {
-
-        private Dictionary<int, Color> _teamColors = new Dictionary<int, Color>()
-        {
-            { 0, Color.white },
-            { 1, Color.red },
-            { 2, Color.blue }
-        };
 
         protected override void OnHumanSpawned(Human hu)
         {
@@ -67,9 +61,10 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 return;
             }
 
+            var teamColor = PlayerManager.GetTeamColor(player.Team);
             var teamName = player.Team == 0
-                ? "<color=#c0c2c0>Spectators</color>"
-                : "<color=green>Team " + player.Team + "</color>";
+                ? $"<color={teamColor.HashRGBA()}>Spectators</color>"
+                : $"<color={teamColor.HashRGBA()}>Team " + player.Team + "</color>";
 
             Game.TextChat.MessageAll($"<color=yellow>{player.DisplayName}</color> has joined {teamName}");
 
@@ -150,13 +145,6 @@ namespace Fragsurf.Gamemodes.CombatSurf
             }
 
             Game.PlayerManager.CreateFakePlayer("Fake Player");
-
-            //var bot = new Human(Game);
-            //Game.EntityManager.AddEntity(bot);
-            //bot.BotController = new BotController(bot);
-            //bot.Spawn(1);
-            //bot.Give("Knife");
-            //bot.Give("AK47");
         }
 
         private void SetTeamColor(Human hu)
@@ -170,27 +158,10 @@ namespace Fragsurf.Gamemodes.CombatSurf
             {
                 return;
             }
-            var color = _teamColors[0];
-            if (_teamColors.ContainsKey(owner.Team))
-            {
-                color = _teamColors[owner.Team];
-            }
+            var color = PlayerManager.GetTeamColor(owner.Team);
             hu.HumanGameObject.SetColor(color);
         }
 
-    }
-
-    public class FakePlayer : BasePlayer
-    {
-        public int ClientIndex { get; set; }
-        public ulong SteamId { get; set; } = 5001;
-        public string DisplayName { get; set; }
-        public bool Introduced { get; set; }
-        public byte Team { get; set; }
-        public int LatencyMs { get; set; }
-        public bool IsFake => true;
-        public bool Disconnected { get; set; }
-        public NetEntity Entity { get; set; }
     }
 
 }

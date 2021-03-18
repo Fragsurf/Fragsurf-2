@@ -1,8 +1,5 @@
 using Fragsurf.Shared;
 using Fragsurf.UI;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Fragsurf.Gamemodes.CombatSurf
 {
@@ -16,30 +13,19 @@ namespace Fragsurf.Gamemodes.CombatSurf
             _teamTemplate = gameObject.GetComponentInChildren<Modal_CombatSurfScoreboardTeamEntry>(true);
             _teamTemplate.gameObject.SetActive(false);
 
-            var cl = FSGameLoop.GetGameInstance(false);
-            if (cl)
-            {
-                cl.PlayerManager.OnPlayerChangedTeam += PlayerManager_OnPlayerChangedTeam;
-            }
+            SpectateController.ScoreboardUpdateNotification += SpectateController_ScoreboardUpdateNotification;
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
 
-            var cl = FSGameLoop.GetGameInstance(false);
-            if (cl)
-            {
-                cl.PlayerManager.OnPlayerChangedTeam -= PlayerManager_OnPlayerChangedTeam;
-            }
+            SpectateController.ScoreboardUpdateNotification -= SpectateController_ScoreboardUpdateNotification;
         }
 
-        private void PlayerManager_OnPlayerChangedTeam(Shared.Player.BasePlayer obj)
+        private void SpectateController_ScoreboardUpdateNotification()
         {
-            if (IsOpen)
-            {
-                BuildTeams();
-            }
+            BuildTeams();
         }
 
         protected override void OnOpen()

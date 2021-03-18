@@ -110,6 +110,7 @@ namespace Fragsurf.Shared.Entity
                 return;
             }
 
+            DisableLagCompensation = true;
             Human.Equippables.Add(this);
             if (Human.Equippables.Equipped == null)
             {
@@ -147,6 +148,7 @@ namespace Fragsurf.Shared.Entity
                 {
                     Equipped = false;
                 }
+                DisableLagCompensation = false;
                 Human.Equippables.Remove(this);
                 Human = null;
             }

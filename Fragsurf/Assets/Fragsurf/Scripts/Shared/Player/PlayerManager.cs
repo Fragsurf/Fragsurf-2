@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Packets;
+using UnityEngine;
 
 namespace Fragsurf.Shared.Player
 {
@@ -207,6 +208,22 @@ namespace Fragsurf.Shared.Player
         public void RaiseChatCommand(BasePlayer player, string[] args)
         {
             OnChatCommand?.Invoke(player, args);
+        }
+
+        public static Dictionary<int, Color> TeamColors = new Dictionary<int, Color>()
+        {
+            { 0, new Color32(192, 194, 192, 255) },
+            { 1, new Color32(245, 122, 15, 255) },
+            { 2, new Color32(15, 195, 245, 255) }
+        };
+
+        public static Color GetTeamColor(int team)
+        {
+            if (TeamColors.ContainsKey(team))
+            {
+                return TeamColors[team];
+            }
+            return Color.white;
         }
 
     }

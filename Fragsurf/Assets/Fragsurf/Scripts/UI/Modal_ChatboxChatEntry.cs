@@ -1,3 +1,5 @@
+using Fragsurf.Shared.Player;
+using Fragsurf.Utility;
 using System.Collections;
 using System.Text;
 using TMPro;
@@ -10,6 +12,7 @@ namespace Fragsurf.UI
         public string PlayerName;
         public string Message;
         public string ClanTag;
+        public int Team = -1;
     }
     public class Modal_ChatboxChatEntry : EntryElement<Modal_ChatboxChatEntryData>
     {
@@ -27,13 +30,19 @@ namespace Fragsurf.UI
 
         private float _originalFadeDuration;
         private StringBuilder _sb = new StringBuilder();
-        private const string _sbFormat = "{0}<color=orange>{1} |</color> {2}";
+        private const string _sbFormat = "{0}<color={1}>{2} |</color> {3}";
 
         protected override bool AutoRebuildLayout => false;
 
         public override void LoadData(Modal_ChatboxChatEntryData data)
         {
-            _sb.AppendFormat(_sbFormat, !string.IsNullOrEmpty(data.ClanTag) ? data.ClanTag : string.Empty, data.PlayerName, data.Message);
+            var clanTag = !string.IsNullOrEmpty(data.ClanTag) ? data.ClanTag : string.Empty;
+            Color teamColor = new Color32(245, 157, 15, 255);
+            if(data.Team != -1)
+            {
+                teamColor = PlayerManager.GetTeamColor(data.Team);
+            }
+            _sb.AppendFormat(_sbFormat, clanTag, teamColor.HashRGBA(), data.PlayerName, data.Message);
             _originalFadeDuration = _fadeDuration;
             _message.text = _sb.ToString();
             _chatbox.OnOpened.AddListener(OnChatboxOpened);
