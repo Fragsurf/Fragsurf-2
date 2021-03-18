@@ -108,8 +108,7 @@ namespace Fragsurf.Client
 
             if (!Game.Live
                 || Human.Local == null
-                || localPlayer == null
-                || Blocked)
+                || localPlayer == null)
             {
                 UserCmd.Buttons = 0;
                 _actionsRequiringRelease.Clear();
@@ -124,6 +123,11 @@ namespace Fragsurf.Client
             UserCmd.PacketId = _moveTick;
             UserCmd.Angles = Human.Local.Angles;
             _moveTick++;
+
+            if (Blocked)
+            {
+                UserCmd.Buttons = 0;
+            }
 
             TickUserCmd();
 
