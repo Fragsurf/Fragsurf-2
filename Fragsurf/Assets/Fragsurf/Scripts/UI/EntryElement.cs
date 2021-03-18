@@ -14,11 +14,14 @@ namespace Fragsurf.UI
         public abstract void LoadData(T data);
         protected virtual bool ContainsSearch(string input) { return true; }
 
+        // todo: probably don't need 2 children lists..
         private List<GameObject> _children = new List<GameObject>();
+        private List<EntryElement<T>> _childrenElements = new List<EntryElement<T>>();
         private bool _searchIsHooked;
         protected EntryElement<T> _parent;
 
         public List<GameObject> Children => _children;
+        public List<EntryElement<T>> ChildrenElements => _childrenElements;
 
         protected virtual bool AutoRebuildLayout => true;
 
@@ -51,6 +54,7 @@ namespace Fragsurf.UI
                 GameObject.Destroy(obj);
             }
             _children.Clear();
+            _childrenElements.Clear();
 
             if (AutoRebuildLayout)
             {
@@ -64,6 +68,7 @@ namespace Fragsurf.UI
             clone._parent = this;
             clone.SearchField = null;
             _children.Add(clone.gameObject);
+            _childrenElements.Add(clone);
             clone.gameObject.SetActive(true);
             clone.LoadData(data);
 
@@ -111,6 +116,7 @@ namespace Fragsurf.UI
 
         public void Remove(EntryElement<T> child)
         {
+            _childrenElements.Remove(child);
             if (child && child.gameObject)
             {
                 _children.Remove(child.gameObject);
