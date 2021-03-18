@@ -61,6 +61,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 return;
             }
 
+            var rm = Game.Get<RoundManager>();
             var teamColor = PlayerManager.GetTeamColor(player.Team);
             var teamName = player.Team == 0
                 ? $"<color={teamColor.HashRGBA()}>Spectators</color>"
@@ -74,24 +75,11 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 hu = player.Entity as Human;
             }
 
-            if(player.Team <= 0)
-            {
-                hu.Dead = true;
-                hu.Enabled = false;
-                return;
-            }
+            hu.Enabled = player.Team > 0;
 
-            hu.Enabled = true;
-
-            var rm = Game.Get<RoundManager>();
-            if(rm == null
-                || rm.MatchState != MatchStates.Live)
-            {
-                hu.Spawn(player.Team);
-                return;
-            }
-
-            if(rm.RoundState == RoundStates.Freeze)
+            if(player.Team > 0
+                && (rm.MatchState != MatchStates.Live
+                || rm.RoundState == RoundStates.Freeze))
             {
                 hu.Spawn(player.Team);
             }

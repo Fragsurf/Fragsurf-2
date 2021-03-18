@@ -178,13 +178,6 @@ namespace Fragsurf.Shared.Entity
             {
                 Dead = false;
             }
-            else
-            {
-                if(Local == this)
-                {
-                    Game.Get<SpectateController>().Spectate(this);
-                }
-            }
         }
 
         public void Give(string itemName)
@@ -370,11 +363,6 @@ namespace Fragsurf.Shared.Entity
         protected override void OnEnabled()
         {
             SetOutOfGame(false);
-
-            if (!Game.IsHost && !Dead && Local == this)
-            {
-                Game.Get<SpectateController>().Spectate(this);
-            }
         }
 
         protected override void OnDisabled()

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using Fragsurf.UI;
-using Fragsurf.Utility;
 
 namespace Fragsurf.Shared
 {
@@ -30,26 +29,27 @@ namespace Fragsurf.Shared
         public bool IsSpectating(int clientIndex)
         {
             var pl = Game.PlayerManager.FindPlayer(clientIndex);
-            return pl == null || pl.Team == 0;
-            //if(pl != null)
-            //{
-            //    return pl.Team == 0;
-            //}
+            if (pl != null 
+                && (pl.Team == 0
+                || pl.Entity is Human hu && hu.Dead))
+            {
+                return true;
+            }
 
-            //if (!_specTargets.ContainsKey(clientIndex)
-            //    || _specTargets[clientIndex] <= 0)
-            //{
-            //    return true;
-            //}
+            if (!_specTargets.ContainsKey(clientIndex)
+                || _specTargets[clientIndex] <= 0)
+            {
+                return true;
+            }
 
-            //var entId = _specTargets[clientIndex];
-            //var ent = Game.EntityManager.FindEntity(entId);
-            //if(ent == null || !(ent is Human hu))
-            //{
-            //    return true;
-            //}
+            var entId = _specTargets[clientIndex];
+            var targetEnt = Game.EntityManager.FindEntity(entId);
+            if (targetEnt == null || !(targetEnt is Human targetHu))
+            {
+                return true;
+            }
 
-            //return hu.OwnerId != clientIndex;
+            return targetHu.OwnerId != clientIndex;
         }
 
         public bool CanSpectate(Human hu)
@@ -142,9 +142,28 @@ namespace Fragsurf.Shared
                 return;
             }
 
+            //if(Human.Local != null 
+            //    && _targetHuman != Human.Local
+            //    && !Human.Local.Dead
+            //    && CanSpectate(Human.Local))
+            //{
+            //    Spectate(Human.Local);
+            //}
             if (!CanSpectate(_targetHuman))
             {
                 Spectate(FirstSpectatableHuman());
+            }
+        }
+
+        protected override void OnHumanSpawned(Human hu)
+        {
+            if (Game.IsHost)
+            {
+                return;
+            }
+            if(hu == Human.Local)
+            {
+                Spectate(hu);
             }
         }
 
@@ -250,10 +269,6 @@ namespace Fragsurf.Shared
 
             if (Game.IsHost)
             {
-                if (player.Entity != null && spec.TargetEntityId != player.Entity.EntityId)
-                {
-                    Game.PlayerManager.SetPlayerTeam(player, 0);
-                }
                 BroadcastSpecId(spec.ClientIndex, spec.TargetEntityId);
             }
             else
