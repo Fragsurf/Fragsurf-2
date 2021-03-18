@@ -1,4 +1,5 @@
 using Fragsurf.Shared;
+using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
 using Fragsurf.UI;
 using System.Collections;
@@ -24,9 +25,14 @@ namespace Fragsurf.Gamemodes.CombatSurf
         private SteamAvatar _steamAvatar;
         [SerializeField]
         private GameObject _isPlayerObject;
+        [SerializeField]
+        private GameObject _isDeadObject;
+
+        private BasePlayer _player;
 
         public override void LoadData(Data data)
         {
+            _player = data.Player;
             var localClient = -1;
             var cl = FSGameLoop.GetGameInstance(false);
             if (cl)
@@ -59,6 +65,16 @@ namespace Fragsurf.Gamemodes.CombatSurf
             var latency = data.Player.LatencyMs;
             _score.text = $"{latency}ms | <color=yellow>{damage}</color> dmg | <color=green>{kills}</color> kills | <color=red>{deaths}</color> deaths";
 
+        }
+
+        private void Update()
+        {
+            if (!_isDeadObject)
+            {
+                return;
+            }
+            var isDeadObject = _player != null && _player.Entity is Human hu && hu.Dead;
+            _isDeadObject.SetActive(isDeadObject);
         }
 
     }
