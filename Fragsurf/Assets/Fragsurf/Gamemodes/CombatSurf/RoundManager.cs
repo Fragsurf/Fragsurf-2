@@ -116,7 +116,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ChatCommand("Restarts the match", "warmup", "startmatch")]
         public void ForceStartMatch(BasePlayer player)
         {
-            if (!Game.IsHost)
+            if (!Game.IsHost || !Game.IsLocalServer)
             {
                 return;
             }
@@ -126,7 +126,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ChatCommand("Forces the match to end", "endmatch")]
         public void ForceEndMatch(BasePlayer player)
         {
-            if (!Game.IsHost)
+            if (!Game.IsHost || !Game.IsLocalServer)
             {
                 return;
             }
@@ -136,7 +136,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ChatCommand("Forces the round to end", "endround")]
         public void ForceEndRound(BasePlayer player)
         {
-            if (!Game.IsHost)
+            if (!Game.IsHost || !Game.IsLocalServer)
             {
                 return;
             }
