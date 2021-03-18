@@ -364,7 +364,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 else if (ent is Human hu)
                 {
                     var owner = Game.PlayerManager.FindPlayer(hu.OwnerId);
-                    if (owner == null || owner.Team == 0)
+                    if (owner == null || owner.Team == 0 || !hu.Enabled)
                     {
                         continue;
                     }

@@ -29,9 +29,7 @@ namespace Fragsurf.Shared
         public bool IsSpectating(int clientIndex)
         {
             var pl = Game.PlayerManager.FindPlayer(clientIndex);
-            if (pl != null 
-                && (pl.Team == 0
-                || pl.Entity is Human hu && hu.Dead))
+            if (pl != null && pl.Team == 0)
             {
                 return true;
             }
@@ -55,8 +53,12 @@ namespace Fragsurf.Shared
         public bool CanSpectate(Human hu)
         {
             if(hu == null
-                || !hu.IsLive
-                || !hu.Enabled)
+                || !hu.IsLive)
+            {
+                return false;
+            }
+
+            if (!hu.Enabled && hu != Human.Local)
             {
                 return false;
             }
@@ -142,13 +144,6 @@ namespace Fragsurf.Shared
                 return;
             }
 
-            //if(Human.Local != null 
-            //    && _targetHuman != Human.Local
-            //    && !Human.Local.Dead
-            //    && CanSpectate(Human.Local))
-            //{
-            //    Spectate(Human.Local);
-            //}
             if (!CanSpectate(_targetHuman))
             {
                 Spectate(FirstSpectatableHuman());
@@ -161,6 +156,7 @@ namespace Fragsurf.Shared
             {
                 return;
             }
+
             if(hu == Human.Local)
             {
                 Spectate(hu);
@@ -194,7 +190,8 @@ namespace Fragsurf.Shared
 
             _targetHuman?.CameraController?.Update();
 
-            if (IsSpectating(Game.ClientIndex))
+            if (IsSpectating(Game.ClientIndex)
+                || (Human.Local != null && (Human.Local.Dead || !Human.Local.Enabled)))
             {
                 UpdateSpectateCycle();
             }
