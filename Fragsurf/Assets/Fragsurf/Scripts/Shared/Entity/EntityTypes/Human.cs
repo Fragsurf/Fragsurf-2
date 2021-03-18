@@ -350,6 +350,19 @@ namespace Fragsurf.Shared.Entity
         {
             if (Game.IsServer)
             {
+                if (!Game.EntityManager.FriendlyFire)
+                {
+                    var attacker = Game.EntityManager.FindEntity<Human>(dmgInfo.AttackerEntityId);
+                    if(attacker != null)
+                    {
+                        var p1 = Game.PlayerManager.FindPlayer(this);
+                        var p2 = Game.PlayerManager.FindPlayer(attacker);
+                        if(p1 != null && p2 != null && p1.Team == p2.Team)
+                        {
+                            dmgInfo.Amount = 0;
+                        }
+                    }
+                }
                 var wasDead = Dead;
                 Health -= dmgInfo.Amount;
                 Dead = Health <= 0;
