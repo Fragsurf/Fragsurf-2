@@ -13,7 +13,7 @@ namespace Fragsurf.Shared
 
         protected override void _Initialize()
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 DevConsole.RegisterVariable("volume.master", "", () => _masterVolume, (v) =>
                 {
@@ -34,7 +34,7 @@ namespace Fragsurf.Shared
 
         public void Play(GameAudioSource src, bool stop = false)
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 // network the sound?
                 return;
@@ -53,7 +53,7 @@ namespace Fragsurf.Shared
 
         public void PlayClip(GameAudioSource src, AudioClip clip, float volume, bool stop = false)
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 // network the sound?
                 return;

@@ -40,7 +40,7 @@ namespace Fragsurf.Shared.Entity
 
         protected override void OnTick()
         {
-            if (Game.IsHost && _targetObject == null)
+            if (Game.IsServer && _targetObject == null)
             {
                 Delete();
             }

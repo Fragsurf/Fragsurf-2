@@ -41,7 +41,7 @@ namespace Fragsurf.Shared.Player
 
         protected override void _Update()
         {
-            if(Game.IsHost || !SteamUser.VoiceRecord)
+            if(Game.IsServer || !SteamUser.VoiceRecord)
             {
                 return;
             }
@@ -76,7 +76,7 @@ namespace Fragsurf.Shared.Player
                 return;
             }
 
-            if(Game.IsHost)
+            if(Game.IsServer)
             {
                 var packetToSend = PacketUtility.TakePacket<CompressedVoiceData>();
                 packetToSend.SetData(voicePacket.Data, voicePacket.DataLength);

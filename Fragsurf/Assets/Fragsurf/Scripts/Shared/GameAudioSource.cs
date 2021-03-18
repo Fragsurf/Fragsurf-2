@@ -23,7 +23,7 @@ namespace Fragsurf.Shared
             var ent = GetComponentInParent<EntityGameObject>();
             if (ent && ent.Entity != null)
             {
-                IsHost = ent.Entity.Game.IsHost;
+                IsHost = ent.Entity.Game.IsServer;
             }
         }
 

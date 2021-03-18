@@ -29,7 +29,7 @@ namespace Fragsurf.Shared
             }
             _playerProps[clientIndex][key] = value;
 
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 BroadcastProp(clientIndex, key, value);
             }
@@ -43,7 +43,7 @@ namespace Fragsurf.Shared
 
         protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
-            if(Game.IsHost 
+            if(Game.IsServer 
                 || !(packet is CustomPacket cp) 
                 || !cp.Label.Equals(_cpLabel))
             {

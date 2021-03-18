@@ -43,10 +43,10 @@ namespace Fragsurf.Shared.Entity
                     {
                         hb.EntityId = _entity.EntityId;
                     }
-                    SetAudioSourceRealms(_entity.Game.IsHost);
+                    SetAudioSourceRealms(_entity.Game.IsServer);
                     if (_animator)
                     {
-                        _animator.cullingMode = _entity.Game.IsHost
+                        _animator.cullingMode = _entity.Game.IsServer
                             ? AnimatorCullingMode.AlwaysAnimate
                             : AnimatorCullingMode.CullCompletely;
                     }
@@ -99,7 +99,7 @@ namespace Fragsurf.Shared.Entity
 
         protected void CleanRealm()
         {
-            if (_entity != null && _entity.Game.IsHost)
+            if (_entity != null && _entity.Game.IsServer)
             {
                 foreach (Object component in GetComponentsInChildren<IClientComponent>(true))
                 {
@@ -140,7 +140,7 @@ namespace Fragsurf.Shared.Entity
             result.Src.minDistance = minDistance;
             if(Entity != null)
             {
-                result.IsHost = Entity.Game.IsHost;
+                result.IsHost = Entity.Game.IsServer;
             }
             if (customRolloff != null)
             {

@@ -180,7 +180,7 @@ namespace Fragsurf.Shared.Entity
             _equipTimer = Data.TimeToEquip;
             _unequipTimer = 0f;
 
-            if (!Entity.Game.IsHost && ViewModel)
+            if (!Entity.Game.IsServer && ViewModel)
             {
                 GameCamera.Instance.Stack(ViewModel.Camera);
                 SetVisibility();
@@ -204,7 +204,7 @@ namespace Fragsurf.Shared.Entity
             _equipped = false;
             _unequipTimer = Data.TimeToUnequip;
 
-            if (!Entity.Game.IsHost && ViewModel)
+            if (!Entity.Game.IsServer && ViewModel)
             {
                 GameCamera.Instance.Unstack(ViewModel.Camera);
                 SetVisibility();
@@ -261,7 +261,7 @@ namespace Fragsurf.Shared.Entity
         private void SetVisibility()
         {
             var isFirstPerson = Equippable.Human != null && Equippable.Human.IsFirstPerson;
-            var viewModelVisible = !Entity.Game.IsHost
+            var viewModelVisible = !Entity.Game.IsServer
                 && _equipped
                 && Equippable.Human != null
                 && isFirstPerson
@@ -300,7 +300,7 @@ namespace Fragsurf.Shared.Entity
 
         public void PlayClip(AudioSource src, AudioClip clip, bool stop = false)
         {
-            if (!clip || !src || Entity.Game.IsHost)
+            if (!clip || !src || Entity.Game.IsServer)
             {
                 return;
             }
@@ -315,7 +315,7 @@ namespace Fragsurf.Shared.Entity
 
         protected virtual void ImpactEffect(RaycastHit hit)
         {
-            if (Entity.Game.IsHost)
+            if (Entity.Game.IsServer)
             {
                 // could network impact effects but I'm not sure it's necessary.
                 // just do it on client for now
@@ -342,7 +342,7 @@ namespace Fragsurf.Shared.Entity
         {
             var testlag = DevConsole.GetVariable<bool>("net.testlag");
 
-            if (!Entity.Game.IsHost)
+            if (!Entity.Game.IsServer)
             {
                 if (testlag)
                 {
@@ -391,7 +391,7 @@ namespace Fragsurf.Shared.Entity
 
         protected void RestoreLagCompensator()
         {
-            if (!Entity.Game.IsHost)
+            if (!Entity.Game.IsServer)
             {
                 return;
             }

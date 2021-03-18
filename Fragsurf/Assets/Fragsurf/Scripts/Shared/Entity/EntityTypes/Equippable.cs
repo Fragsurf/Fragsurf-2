@@ -45,7 +45,7 @@ namespace Fragsurf.Shared.Entity
             get { return Random != null ? Random.NumberOfInvokes : 0; }
             set
             {
-                if (!Game.IsHost && RandomAccumulator != value)
+                if (!Game.IsServer && RandomAccumulator != value)
                 {
                     Random = new StateRandom(EntityId, value);
                 }
@@ -77,7 +77,7 @@ namespace Fragsurf.Shared.Entity
         {
             base.OnTick();
 
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 InterpolationMode = Human == null
                     ? InterpolationMode.Network
@@ -123,7 +123,7 @@ namespace Fragsurf.Shared.Entity
             _itemName = itemName;
             if (!GameData.Instance.TryGetEquippable(itemName, out BaseEquippableData data)) 
             {
-                if (Game.IsHost)
+                if (Game.IsServer)
                 {
                     Delete();
                 }
@@ -251,7 +251,7 @@ namespace Fragsurf.Shared.Entity
                 }
                 rb.AddForceAtPosition(dir * 1.5f, dmgInfo.HitPoint, ForceMode.Impulse);
 
-                if (!Game.IsHost
+                if (!Game.IsServer
                     && GameData.Instance.TryGetImpactPrefab(ImpactType.Bullet, SurfaceType.Metal, out GameObject prefab))
                 {
                     var effect = Game.Pool.Get(prefab, 1f);

@@ -52,7 +52,7 @@ namespace Fragsurf.Shared
 
         protected override void _Start()
         {
-            if(!Game.IsHost)
+            if(!Game.IsServer)
             {
                 (Game.Network as ClientSocketManager).OnStatusChanged += Socket_OnStatusChanged;
             }
@@ -88,7 +88,7 @@ namespace Fragsurf.Shared
         {
             if(State != GameLoaderState.Playing)
             {
-                Debug.LogError($"{Game.IsHost} Can't change map while state is: {State}");
+                Debug.LogError($"{Game.IsServer} Can't change map while state is: {State}");
                 return;
             }
 
@@ -101,7 +101,7 @@ namespace Fragsurf.Shared
 
         private void Socket_OnStatusChanged(ClientSocketStatus status, string reason = null)
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 return;
             }
@@ -138,7 +138,7 @@ namespace Fragsurf.Shared
         {
             if(State != GameLoaderState.None)
             {
-                Debug.LogError($"{Game.IsHost} Can't join while state is: {State}");
+                Debug.LogError($"{Game.IsServer} Can't join while state is: {State}");
                 return GameLoadResult.None;
             }
 
@@ -166,7 +166,7 @@ namespace Fragsurf.Shared
 
         private async Task<GameLoadResult> _JoinGameAsync(string address, int port = 0, string password = null)
         {
-            if(Game.IsHost)
+            if(Game.IsServer)
             {
                 return GameLoadResult.None;
             }
@@ -279,7 +279,7 @@ namespace Fragsurf.Shared
             {
                 Debug.LogError("Fucked: " + result);
                 server.Destroy();
-                if (!Game.IsHost)
+                if (!Game.IsServer)
                 {
                     Game.Destroy();
                     UGuiManager.Instance.Popup("Couldn't load that map, something went wrong.");
@@ -294,7 +294,7 @@ namespace Fragsurf.Shared
         {
             if (State != GameLoaderState.None)
             {
-                Debug.LogError($"{Game.IsHost} Can't create game while state is: {State}");
+                Debug.LogError($"{Game.IsServer} Can't create game while state is: {State}");
                 return GameLoadResult.None;
             }
 

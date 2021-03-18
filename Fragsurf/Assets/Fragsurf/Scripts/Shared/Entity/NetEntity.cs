@@ -103,11 +103,11 @@ namespace Fragsurf.Shared.Entity
                 return;
             }
 
-            InterpolationMode = Game.IsHost
+            InterpolationMode = Game.IsServer
                 ? InterpolationMode.Snap
                 : InterpolationMode.Network;
 
-            HasAuthority = Game.IsHost;
+            HasAuthority = Game.IsServer;
             UniqueId = EntityId;
             TypeId = GetEntityTypeId(GetType());
 
@@ -195,14 +195,14 @@ namespace Fragsurf.Shared.Entity
         {
             var type = GetType().Name;
             return '[' + EntityId + ']'
-                + '[' + (Game.IsHost ? "HOST" : "CLIENT") + ']'
+                + '[' + (Game.IsServer ? "HOST" : "CLIENT") + ']'
                 + type.ToString();
         }
 
 #if UNITY_EDITOR
         public virtual void OnDrawGizmos()
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 Gizmos.color = Color.red;
                 Gizmos.DrawCube(Origin, Vector3.one * .15f);

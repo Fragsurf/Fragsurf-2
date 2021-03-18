@@ -6,7 +6,7 @@ namespace Fragsurf.Server
     public class GameServer : FSGameLoop
     {
         public static GameServer Instance { get; private set; }
-        public override bool IsHost => true;
+        public override bool IsServer => true;
         public SocketManager Socket => GetFSComponent<SocketManager>();
 
         protected override void RegisterComponents()

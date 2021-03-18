@@ -63,7 +63,7 @@ namespace Fragsurf.Shared.Entity
 
         private void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 switch (packet)
                 {
@@ -163,7 +163,7 @@ namespace Fragsurf.Shared.Entity
 
                 // do this so clients can create their own client-side entities
                 // and its id wont overlap with server-side entities
-                if (!Game.IsHost)
+                if (!Game.IsServer)
                 {
                     entity.EntityId *= -1;
                 }
@@ -232,7 +232,7 @@ namespace Fragsurf.Shared.Entity
 
             OnHumanDamaged?.Invoke(hu, dmgInfo);
 
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 var packet = PacketUtility.TakePacket<DamageInfoPacket>();
                 packet.DamageInfo = dmgInfo;

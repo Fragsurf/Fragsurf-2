@@ -66,7 +66,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         {
             _matchState = state;
 
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 switch (state)
                 {
@@ -84,7 +84,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         {
             _roundState = state;
 
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 switch (RoundState)
                 {
@@ -103,7 +103,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         protected override void _Tick()
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 Timer -= Time.fixedDeltaTime;
                 if (Timer <= 0)
@@ -116,7 +116,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ChatCommand("Restarts the match", "warmup", "startmatch")]
         public void ForceStartMatch(BasePlayer player)
         {
-            if (!Game.IsHost || !Game.IsLocalServer)
+            if (!Game.IsServer || !Game.IsServerHost(player.ClientIndex))
             {
                 return;
             }
@@ -126,7 +126,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ChatCommand("Forces the match to end", "endmatch")]
         public void ForceEndMatch(BasePlayer player)
         {
-            if (!Game.IsHost || !Game.IsLocalServer)
+            if (!Game.IsServer || !Game.IsServerHost(player.ClientIndex))
             {
                 return;
             }
@@ -136,7 +136,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ChatCommand("Forces the round to end", "endround")]
         public void ForceEndRound(BasePlayer player)
         {
-            if (!Game.IsHost || !Game.IsLocalServer)
+            if (!Game.IsServer || !Game.IsServerHost(player.ClientIndex))
             {
                 return;
             }
@@ -146,7 +146,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ChatCommand("Changes your team (0-2), 0 = spec", "team")]
         public void ChatPickTeam(BasePlayer player, int teamNumber)
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 return;
             }
@@ -344,7 +344,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         private void CleanRound()
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 return;
             }

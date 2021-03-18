@@ -100,7 +100,7 @@ namespace Fragsurf.Shared
         {
             _specTargets.Remove(player.ClientIndex);
 
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 ScoreboardUpdateNotification?.Invoke();
             }
@@ -108,7 +108,7 @@ namespace Fragsurf.Shared
 
         protected override void OnPlayerChangedTeam(BasePlayer player)
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 if(player.ClientIndex == Game.ClientIndex
                     && player.Team > 0
@@ -124,7 +124,7 @@ namespace Fragsurf.Shared
         {
             _specTargets[player.ClientIndex] = 0;
 
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 foreach (var kvp in _specTargets)
                 {
@@ -139,7 +139,7 @@ namespace Fragsurf.Shared
 
         protected override void _Tick()
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 return;
             }
@@ -152,7 +152,7 @@ namespace Fragsurf.Shared
 
         protected override void OnHumanSpawned(Human hu)
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 return;
             }
@@ -183,7 +183,7 @@ namespace Fragsurf.Shared
 
         protected override void _Update()
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 return;
             }
@@ -264,7 +264,7 @@ namespace Fragsurf.Shared
 
             _specTargets[spec.ClientIndex] = spec.TargetEntityId;
 
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 BroadcastSpecId(spec.ClientIndex, spec.TargetEntityId);
             }
@@ -276,7 +276,7 @@ namespace Fragsurf.Shared
 
         public void Spectate(Human hu)
         {
-            if (Game.IsHost
+            if (Game.IsServer
                 || hu == null
                 || !CanSpectate(hu)
                 || _targetHuman == hu)

@@ -29,7 +29,7 @@ namespace Fragsurf.Shared.Entity
                 return;
             }
 
-            if (Human.Game.IsHost && MouseControlsRotation)
+            if (Human.Game.IsServer && MouseControlsRotation)
             {
                 Human.Angles = userCmd.Angles;
             }

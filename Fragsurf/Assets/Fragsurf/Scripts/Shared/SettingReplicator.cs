@@ -31,7 +31,7 @@ namespace Fragsurf.Shared
 
         private void FSConsole_OnVariableChanged(string varName)
         {
-            if (!Game.IsHost 
+            if (!Game.IsServer 
                 || !DevConsole.VariableHasFlags(varName, ConVarFlags.Replicator))
             {
                 return;
@@ -47,7 +47,7 @@ namespace Fragsurf.Shared
 
         protected override void OnPlayerIntroduced(BasePlayer player)
         {
-            if(!Game.IsHost)
+            if(!Game.IsServer)
             {
                 return;
             }
@@ -75,7 +75,7 @@ namespace Fragsurf.Shared
 
         protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
-            if(Game.IsHost
+            if(Game.IsServer
                 || !(packet is CustomPacket cp)
                 || !cp.Label.Equals("Replicate"))
             {

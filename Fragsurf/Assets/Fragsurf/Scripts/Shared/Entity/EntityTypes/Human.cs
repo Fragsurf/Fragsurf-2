@@ -143,7 +143,7 @@ namespace Fragsurf.Shared.Entity
             MovementController?.ProcessInput(cmd);
             MovementController?.RunCommand(cmd.Fields, prediction);
 
-            if(Game.IsHost || prediction)
+            if(Game.IsServer || prediction)
             {
                 if (cmd.Buttons.HasFlag(InputActions.Flashlight))
                 {
@@ -174,7 +174,7 @@ namespace Fragsurf.Shared.Entity
             BaseVelocity = Vector3.zero;
             Health = 100;
 
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 Dead = false;
             }
@@ -182,7 +182,7 @@ namespace Fragsurf.Shared.Entity
 
         public void Give(string itemName)
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 return;
             }
@@ -198,7 +198,7 @@ namespace Fragsurf.Shared.Entity
                 HumanGameObject.OnKilled(default);
             }
 
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 Equippables.DropAllItems();
             }
@@ -348,7 +348,7 @@ namespace Fragsurf.Shared.Entity
 
         public void Damage(DamageInfo dmgInfo)
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 var wasDead = Dead;
                 Health -= dmgInfo.Amount;
@@ -374,7 +374,7 @@ namespace Fragsurf.Shared.Entity
         {
             DisableLagCompensation = outOfGame;
 
-            if(outOfGame && Game.IsHost)
+            if(outOfGame && Game.IsServer)
             {
                 Equippables.DropAllItems();
             }

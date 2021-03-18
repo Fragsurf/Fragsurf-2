@@ -29,7 +29,7 @@ namespace Fragsurf.Shared
 
             LoadConfig();
 
-            if (game.IsHost || Server.GameServer.Instance == null)
+            if (game.IsServer || Server.GameServer.Instance == null)
             {
                 ExecuteGameConfig();
             }
@@ -44,7 +44,7 @@ namespace Fragsurf.Shared
                 c.OnStart();
             }
 
-            if (!game.IsHost)
+            if (!game.IsServer)
             {
                 foreach(var obj in Data.InstantiateOnLoad)
                 {
@@ -99,7 +99,7 @@ namespace Fragsurf.Shared
 
         private void InjectComponents()
         {
-            var realm = InjectRealm.Shared | (_game.IsHost ? InjectRealm.Server : InjectRealm.Client);
+            var realm = InjectRealm.Shared | (_game.IsServer ? InjectRealm.Server : InjectRealm.Client);
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (Type type in asm.GetTypes().Where(x => x.IsSubclassOf(typeof(FSComponent))))

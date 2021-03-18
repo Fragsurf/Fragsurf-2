@@ -34,7 +34,7 @@ namespace Fragsurf.Gamemodes.Playtest
 
         protected override void OnPlayerIntroduced(BasePlayer player)
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 return;
             }
@@ -47,7 +47,7 @@ namespace Fragsurf.Gamemodes.Playtest
         [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]
         public void Give(BasePlayer player, string item)
         {
-            if (!Game.IsHost || !(player.Entity is Human hu))
+            if (!Game.IsServer || !(player.Entity is Human hu))
             {
                 return;
             }
@@ -57,7 +57,7 @@ namespace Fragsurf.Gamemodes.Playtest
         [ChatCommand("Spawns a bot", "bot")]
         public void SpawnBot(BasePlayer player)
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 return;
             }
@@ -72,7 +72,7 @@ namespace Fragsurf.Gamemodes.Playtest
         [ChatCommand("Teleport to the beginning", "r", "spawn", "restart")]
         public void SpawnPlayer(BasePlayer player)
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 Game.Get<SpectateController>().Spectate(Human.Local);
                 return;
@@ -94,17 +94,17 @@ namespace Fragsurf.Gamemodes.Playtest
 
         protected override void OnHumanSpawned(Human hu)
         {
-            Debug.Log(Game.IsHost + "human spawned");
+            Debug.Log(Game.IsServer + "human spawned");
         }
 
         protected override void OnHumanKilled(Human hu)
         {
-            Debug.Log(Game.IsHost + "human killed");
+            Debug.Log(Game.IsServer + "human killed");
         }
 
         protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 var pp = Game.Get<PlayerProps>();
                 var dmg = pp.GetProp(dmgInfo.AttackerEntityId, "Damage");

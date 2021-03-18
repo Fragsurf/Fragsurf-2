@@ -58,7 +58,7 @@ namespace Fragsurf.Shared.Player
         {
             _defaultLayer = gameObject.layer;
 
-            if(Game != null && Game.IsHost)
+            if(Game != null && Game.IsServer)
             {
                 SetVis(false);
             }
@@ -129,7 +129,7 @@ namespace Fragsurf.Shared.Player
 
         public void SetVisible(bool visible)
         {
-            if (Game != null && Game.IsHost)
+            if (Game != null && Game.IsServer)
             {
                 return;
             }
@@ -148,7 +148,7 @@ namespace Fragsurf.Shared.Player
 
         public void ResetLayers()
         {
-            gameObject.layer = Game.IsHost
+            gameObject.layer = Game.IsServer
                 ? Layers.Host
                 : Layers.Client;
         }
@@ -223,7 +223,7 @@ namespace Fragsurf.Shared.Player
 
                 r.enabled = visible;
             }
-            if(!Game.IsHost)
+            if(!Game.IsServer)
             {
                 SetAnimator(visible);
             }

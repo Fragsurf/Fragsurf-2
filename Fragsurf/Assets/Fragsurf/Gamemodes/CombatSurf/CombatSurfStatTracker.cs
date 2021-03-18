@@ -26,7 +26,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
         {
-            if (Game.IsHost)
+            if (Game.IsServer)
             {
                 var killer = Game.EntityManager.FindEntity<Human>(dmgInfo.AttackerEntityId);
 

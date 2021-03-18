@@ -43,7 +43,7 @@ namespace Fragsurf.Shared.Entity
 
         private void TrySendEntities()
         {
-            if (!Game.Live || !Game.IsHost)
+            if (!Game.Live || !Game.IsServer)
             {
                 return;
             }
@@ -71,7 +71,7 @@ namespace Fragsurf.Shared.Entity
 
         private void BroadcastEntityDeleted(NetEntity entity)
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 return;
             }

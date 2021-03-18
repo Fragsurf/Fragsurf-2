@@ -17,7 +17,7 @@ namespace Fragsurf.Shared
         public Action PostExecConfig;
 
 
-        public abstract bool IsHost { get; }
+        public abstract bool IsServer { get; }
         protected abstract void RegisterComponents();
         protected abstract void Initialize();
 
@@ -49,7 +49,7 @@ namespace Fragsurf.Shared
         public GameObjectPool Pool => GetFSComponent<GameObjectPool>(true);
         public GameAudioManager Audio => GetFSComponent<GameAudioManager>(true);
 
-        public int ScopeLayer => IsHost ? Layers.Host : Layers.Client;
+        public int ScopeLayer => IsServer ? Layers.Host : Layers.Client;
         public GameObject ObjectContainer { get; private set; }
 
         public ConfigDirectory DefaultConfig { get; } = new ConfigDirectory();
@@ -123,7 +123,7 @@ namespace Fragsurf.Shared
 
             _destroyed = true;
 
-            UnityEngine.Debug.Log("Destroying " + (IsHost ? "Host" : "Client"));
+            UnityEngine.Debug.Log("Destroying " + (IsServer ? "Host" : "Client"));
 
             // unhook then destroy, to make sure we don't lose references
             foreach (var fsc in FSComponents)
@@ -341,7 +341,7 @@ namespace Fragsurf.Shared
 
         private void InjectComponents()
         {
-            var realm = InjectRealm.Shared | (IsHost ? InjectRealm.Server : InjectRealm.Client);
+            var realm = InjectRealm.Shared | (IsServer ? InjectRealm.Server : InjectRealm.Client);
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (Type type in asm.GetTypes().Where(x => x.IsSubclassOf(typeof(FSComponent))))
@@ -362,12 +362,22 @@ namespace Fragsurf.Shared
         {
             foreach (var inst in _gameInstances)
             {
-                if (inst.IsHost == host)
+                if (inst.IsServer == host)
                 {
                     return inst;
                 }
             }
             return null;
+        }
+
+        public bool IsServerHost(int clientIndex)
+        {
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (!cl)
+            {
+                return false;
+            }
+            return cl.ClientIndex == clientIndex;
         }
 
         private static List<FSGameLoop> _gameInstances = new List<FSGameLoop>();

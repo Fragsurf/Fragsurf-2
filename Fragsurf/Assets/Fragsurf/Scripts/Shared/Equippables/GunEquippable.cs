@@ -221,7 +221,7 @@ namespace Fragsurf.Shared
 
             _fireSrc.PlayClip(GunData.FireSound);
 
-            if (Entity.Game.IsHost)
+            if (Entity.Game.IsServer)
             {
                 return;
             }
@@ -266,7 +266,7 @@ namespace Fragsurf.Shared
         protected virtual void ProcessHit(RaycastHit hit)
         {
             var ent = Entity.Game.EntityManager.FindEntity(hit.collider.gameObject);
-            if(ent == null && !Entity.Game.IsHost)
+            if(ent == null && !Entity.Game.IsServer)
             {
                 ImpactEffect(hit);
                 return;

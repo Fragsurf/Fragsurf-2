@@ -11,7 +11,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         protected override void OnPlayerIntroduced(BasePlayer player)
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 return;
             }
@@ -22,7 +22,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [ChatCommand("Teleport to the beginning", "r", "spawn", "restart")]
         public void SpawnPlayer(BasePlayer player)
         {
-            if (!Game.IsHost)
+            if (!Game.IsServer)
             {
                 return;
             }
@@ -46,7 +46,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]
         public void Give(BasePlayer player, string item)
         {
-            if (!Game.IsHost || !(player.Entity is Human hu))
+            if (!Game.IsServer || !(player.Entity is Human hu))
             {
                 return;
             }
