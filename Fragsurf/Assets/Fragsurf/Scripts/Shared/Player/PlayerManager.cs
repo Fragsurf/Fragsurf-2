@@ -141,11 +141,17 @@ namespace Fragsurf.Shared.Player
 
         public void SetPlayerTeam(BasePlayer player, byte teamNumber)
         {
+            if(player.Team == teamNumber)
+            {
+                return;
+            }
+
             player.Team = teamNumber;
             if(teamNumber > 0)
             {
                 SetPlayerSpectateTarget(player, null);
             }
+
             OnPlayerChangedTeam?.Invoke(player);
         }
 
