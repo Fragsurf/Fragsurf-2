@@ -371,8 +371,6 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 SetTeamScore(i, 0);
             }
 
-            DoRoundFreeze();
-
             try
             {
                 OnMatchStart?.Invoke();
@@ -381,6 +379,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
             {
                 Debug.LogError(e.Message);
             }
+
+            DoRoundFreeze();
         }
 
         private void DoMatchWarmup()
@@ -398,7 +398,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 return;
             }
 
-            // Delete guns on ground and equip/respawn players
+            // Delete guns on ground and respawn players
             for(int i = Game.EntityManager.Entities.Count - 1; i >= 0; i--)
             {
                 var ent = Game.EntityManager.Entities[i];
@@ -420,26 +420,6 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
                     hu.Spawn(owner.Team);
                     hu.Health = 100;
-
-                    if (!hu.Equippables.HasItemInSlot(ItemSlot.Melee))
-                    {
-                        hu.Give("Knife");
-                    }
-
-                    if (!hu.Equippables.HasItemInSlot(ItemSlot.Light))
-                    {
-                        hu.Give("M1911");
-                    }
-
-                    foreach (var item in hu.Equippables.Items)
-                    {
-                        if (!(item.EquippableGameObject is GunEquippable gun))
-                        {
-                            continue;
-                        }
-                        gun.RoundsInClip = gun.GunData.RoundsPerClip;
-                        gun.ExtraRounds = gun.GunData.RoundsPerClip * gun.GunData.MaxClips;
-                    }
                 }
             }
 

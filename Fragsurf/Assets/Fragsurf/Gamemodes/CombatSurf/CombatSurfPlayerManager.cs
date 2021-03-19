@@ -2,8 +2,6 @@ using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
 using Fragsurf.Utility;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Fragsurf.Gamemodes.CombatSurf
 {
@@ -11,12 +9,50 @@ namespace Fragsurf.Gamemodes.CombatSurf
     public class CombatSurfPlayerManager : FSSharedScript
     {
 
+        protected override void _Start()
+        {
+            if (!Game.IsServer)
+            {
+                return;
+            }
+            Game.Get<RoundManager>().OnMatchStart += CombatSurfPlayerManager_OnMatchStart;
+            Game.Get<RoundManager>().OnRoundFreeze += CombatSurfPlayerManager_OnRoundFreeze;
+        }
+
+        private void CombatSurfPlayerManager_OnRoundFreeze(int roundNumber)
+        {
+            foreach(var player in Game.PlayerManager.Players)
+            {
+                if(player.Team > 0 && player.Entity is Human hu)
+                {
+                    EquipHuman(hu);
+                }
+            }
+        }
+
+        private void CombatSurfPlayerManager_OnMatchStart()
+        {
+            foreach (var ent in Game.EntityManager.Entities)
+            {
+                if (!(ent is Human hu))
+                {
+                    continue;
+                }
+                for(int i = hu.Equippables.Items.Count - 1; i >= 0; i--)
+                {
+                    hu.Equippables.Items[i].Delete();
+                }
+            }
+        }
+
         protected override void OnHumanSpawned(Human hu)
         {
             if (!Game.IsServer)
             {
                 SetTeamColor(hu);
+                return;
             }
+            EquipHuman(hu);
         }
 
         protected override void OnPlayerIntroduced(BasePlayer player)
@@ -148,6 +184,29 @@ namespace Fragsurf.Gamemodes.CombatSurf
             }
             var color = PlayerManager.GetTeamColor(owner.Team);
             hu.HumanGameObject.SetColor(color);
+        }
+
+        private void EquipHuman(Human hu)
+        {
+            if (!hu.Equippables.HasItemInSlot(ItemSlot.Light))
+            {
+                hu.Give("M1911");
+            }
+
+            if (!hu.Equippables.HasItemInSlot(ItemSlot.Melee))
+            {
+                hu.Give("Knife");
+            }
+
+            foreach (var item in hu.Equippables.Items)
+            {
+                if (!(item.EquippableGameObject is GunEquippable gun))
+                {
+                    continue;
+                }
+                gun.RoundsInClip = gun.GunData.RoundsPerClip;
+                gun.ExtraRounds = gun.GunData.RoundsPerClip * gun.GunData.MaxClips;
+            }
         }
 
     }
