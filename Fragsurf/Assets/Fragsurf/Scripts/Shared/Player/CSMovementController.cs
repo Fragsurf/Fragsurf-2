@@ -35,6 +35,7 @@ namespace Fragsurf.Shared.Player
 
         public override void ExecuteMovement(UserCmd.CmdFields cmd)
         {
+            //MoveData.LimitedExecution = !Human.Game.IsServer && Human != Human.Local;
             MoveData.OldButtons = MoveData.Buttons;
 
             Right = Quaternion.Euler(cmd.Angles) * Vector3.right;

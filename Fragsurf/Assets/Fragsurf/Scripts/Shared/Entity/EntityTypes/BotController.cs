@@ -50,7 +50,18 @@ namespace Fragsurf.Shared.Entity
 
             //Command.Angles = Human.Angles + new Vector3(0, 1, 0);
 
-            Human.RunCommand(Command, false);
+            if (Human.Game.IsServer)
+            {
+                var player = Human.Game.PlayerManager.FindPlayer(Human.OwnerId);
+                if(player == null)
+                {
+                    Human.RunCommand(Command, false);
+                }
+                else
+                {
+                    Human.Game.Get<UserCmdHandler>().HandleUserCommand(player, Command);
+                }
+            }
         }
 
         protected virtual void _Tick() { }

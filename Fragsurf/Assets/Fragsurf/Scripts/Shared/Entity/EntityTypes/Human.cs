@@ -143,14 +143,21 @@ namespace Fragsurf.Shared.Entity
             MovementController?.ProcessInput(cmd);
             MovementController?.RunCommand(cmd.Fields, prediction);
 
-            if(Game.IsServer || prediction)
+            if(Game.IsServer 
+                || (!Game.IsServer && prediction)
+                || (!Game.IsServer && this != Local))
+            {
+                Equippables?.RunCommand(cmd.Fields);
+            }
+
+            if (Game.IsServer || prediction)
             {
                 if (cmd.Buttons.HasFlag(InputActions.Flashlight))
                 {
                     FlashlightOn = !FlashlightOn;
                 }
 
-                Equippables?.RunCommand(cmd.Fields);
+                //Equippables?.RunCommand(cmd.Fields);
                 _interactor?.RunCommand(cmd.Fields);
 
                 if(Timeline != null && Timeline.Mode == TimelineMode.Record)

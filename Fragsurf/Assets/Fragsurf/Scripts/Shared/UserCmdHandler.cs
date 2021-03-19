@@ -2,6 +2,7 @@
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
+using UnityEngine;
 
 namespace Fragsurf.Shared
 {
@@ -36,7 +37,14 @@ namespace Fragsurf.Shared
         {
             if(packet is UserCmd cmd)
             {
-                HandleUserCommand(player, cmd);
+                if (!Game.IsServer)
+                {
+                    player = Game.PlayerManager.FindPlayer(cmd.ClientIndex);
+                }
+                if(player != null)
+                {
+                    HandleUserCommand(player, cmd);
+                }
             }
         }
 
@@ -138,7 +146,7 @@ namespace Fragsurf.Shared
                 newCmd.Sc = SendCategory.Gameplay;
 
                 // broadcast
-                //ServerLoop.Instance.BetterGameServer.BroadcastPacketEnqueue(newCmd);
+                //Game.Network.BroadcastPacket(newCmd);
             }
             else if(!Game.IsServer && isPrediction)
             {
