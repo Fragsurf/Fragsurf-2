@@ -2,6 +2,9 @@ using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
 using Fragsurf.Utility;
+using System.Collections;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Fragsurf.Gamemodes.CombatSurf
 {
@@ -53,6 +56,34 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 return;
             }
             EquipHuman(hu);
+        }
+
+        protected override void OnHumanKilled(Human hu)
+        {
+            var rm = Game.Get<RoundManager>();
+            if(!rm || rm.MatchState != MatchStates.Live)
+            {
+                StartCoroutine(RespawnIn(hu, 5f));
+            }
+        }
+
+        private IEnumerator RespawnIn(Human hu, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            var player = Game.PlayerManager.FindPlayer(hu.OwnerId);
+            var rm = Game.Get<RoundManager>();
+
+            if (!hu.Dead
+                || !hu.Enabled
+                || player == null
+                || player.Team == 0
+                || (rm && rm.MatchState == MatchStates.Live))
+            {
+                yield break;
+            }
+
+            hu.Spawn(player.Team);
         }
 
         protected override void OnPlayerIntroduced(BasePlayer player)
@@ -169,6 +200,15 @@ namespace Fragsurf.Gamemodes.CombatSurf
             }
 
             Game.PlayerManager.CreateFakePlayer("Fake Player");
+        }
+
+        [ChatCommand("Kill yourself", "suicide", "kill")]
+        public void Suicide(BasePlayer player)
+        {
+            if (Game.IsServer && player.Entity is Human hu)
+            {
+                hu.Dead = true;
+            }
         }
 
         private void SetTeamColor(Human hu)
