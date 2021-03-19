@@ -143,6 +143,10 @@ namespace Fragsurf.Shared.Entity
             MovementController?.ProcessInput(cmd);
             MovementController?.RunCommand(cmd.Fields, prediction);
 
+            // Execute equippables now if:
+            // 1. is server
+            // 2. isn't server, but predicting
+            // 3. isn't server, but is a networked client to simulate gunshots etc
             if(Game.IsServer 
                 || (!Game.IsServer && prediction)
                 || (!Game.IsServer && this != Local))
