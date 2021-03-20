@@ -31,6 +31,7 @@ namespace Fragsurf.Shared
 
         protected override IEnumerator ReloadOverride()
         {
+            AudioSource.PlayClip(ShotgunData.BeginReloadSound);
             ViewModel.PlayAnimation("BeginReload");
             yield return new WaitForSeconds(.5f);
             while (RoundsInClip < ShotgunData.RoundsPerClip

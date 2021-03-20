@@ -9,6 +9,7 @@ namespace Fragsurf.Shared
     {
 
         [Header("Shotgun Sounds")]
+        public AudioClip BeginReloadSound;
         public AudioClip InsertShellSound;
         public AudioClip PumpSound;
 
