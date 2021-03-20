@@ -1,5 +1,6 @@
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
+using Fragsurf.Shared.Player;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -52,10 +53,12 @@ namespace Fragsurf.UI
                 if (player != null)
                 {
                     _name.text = player.DisplayName;
+                    _name.color = PlayerManager.GetTeamColor(player.Team);
                 }
                 else
                 {
                     _name.text = entObj.Entity.GetType().Name;
+                    _name.color = Color.white;
                 }
                 isHovering = true;
             }
