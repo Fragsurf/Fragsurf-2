@@ -8,7 +8,7 @@ namespace Fragsurf.Shared
     public class ShotgunEquippable : GunEquippable
     {
 
-        protected override bool CustomReload => true;
+        protected override bool CustomReload => ShotgunData.Pump;
 
         public ShotgunEquippableData ShotgunData => Data as ShotgunEquippableData;
 
@@ -16,11 +16,16 @@ namespace Fragsurf.Shared
         {
             base.FireEffects();
 
-            StartCoroutine(Pump());
+            if (ShotgunData.Pump)
+            {
+                StartCoroutine(Pump());
+            }
 
             var hu = Equippable.Human;
             var huRay = hu.GetEyeRay();
-            foreach (var pelletRay in CalculateRays(huRay.origin, huRay.direction, hu.HumanGameObject.transform.up, hu.HumanGameObject.transform.right, Equippable.Random))
+            var right = Quaternion.Euler(hu.Angles) * Vector3.right;
+            var up = Quaternion.Euler(hu.Angles) * Vector3.up;
+            foreach (var pelletRay in CalculateRays(huRay.origin, huRay.direction, up, right, Equippable.Random))
             {
                 if (TraceNearestHit(pelletRay, GunData.BulletRadius, GunData.BulletRange, out RaycastHit hit))
                 {

@@ -14,6 +14,7 @@ namespace Fragsurf.Shared
         public AudioClip PumpSound;
 
         [Header("Shotgun")]
+        public bool Pump = true;
         public int PelletCount = 5;
         public float ZeroDamageDistance = 20;
         public float SpreadMin = .01f;
