@@ -34,25 +34,30 @@ namespace Fragsurf.Shared.Entity
             _originalRotation = _animator.transform.localEulerAngles;
         }
 
-        private void OnDisable()
+        private void OnEnable()
         {
-            _swayPosition = Vector3.zero;
             _kick = Vector3.zero;
+            _swayPosition = Vector3.zero;
             _animator.transform.localPosition = _originalPosition;
             _animator.transform.localEulerAngles = _originalRotation;
         }
 
         private void Update()
         {
-            // todo: more robust weapon sway
-            var mdelta = new Vector3(-Input.GetAxis("Mouse X"), -Input.GetAxisRaw("Mouse Y"), 0) / 35f;
-            _swayPosition += mdelta * Time.deltaTime;
-            _swayPosition = Vector3.ClampMagnitude(_swayPosition, .06f);
-            _swayPosition = Mathfx.Berp(_swayPosition, Vector3.zero, Time.deltaTime);
-            _kick = Vector3.MoveTowards(_kick, Vector3.zero, 10f * Time.deltaTime);
+            var cl = FSGameLoop.GetGameInstance(false);
+            var sway = cl && cl.Get<SpectateController>().TargetHuman == Human.Local;
+            if (sway)
+            {
+                // todo: more robust weapon sway
+                var mdelta = new Vector3(-Input.GetAxis("Mouse X"), -Input.GetAxisRaw("Mouse Y"), 0) / 35f;
+                _swayPosition += mdelta * Time.deltaTime;
+                _swayPosition = Vector3.ClampMagnitude(_swayPosition, .06f);
+                _swayPosition = Mathfx.Berp(_swayPosition, Vector3.zero, Time.deltaTime);
+                _kick = Vector3.MoveTowards(_kick, Vector3.zero, 10f * Time.deltaTime);
 
-            _animator.transform.localPosition = _originalPosition + _swayPosition + new Vector3(0, 0, _kick.z);
-            _animator.transform.localEulerAngles = _originalRotation + new Vector3(_kick.x, 0, 0);
+                _animator.transform.localPosition = _originalPosition + _swayPosition + new Vector3(0, 0, _kick.z);
+                _animator.transform.localEulerAngles = _originalRotation + new Vector3(_kick.x, 0, 0);
+            }
         }
 
         public void Kick(float strength = 1f)
