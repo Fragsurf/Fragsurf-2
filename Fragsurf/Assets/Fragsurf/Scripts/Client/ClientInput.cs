@@ -264,8 +264,9 @@ namespace Fragsurf.Client
 
         private Vector3 ProcessMouseLook(Vector3 start, float x, float y)
         {
-            var mx = x * Sensitivity/* * .022f*/;
-            var my = y * Sensitivity * PitchModifier/* * .022f*/;
+            var cameraSensModifier = Human.Local.CameraController.SensitivityModifier;
+            var mx = x * Sensitivity/* * .022f*/ * cameraSensModifier;
+            var my = y * Sensitivity * PitchModifier/* * .022f*/ * cameraSensModifier;
             var rotDelta = new Vector3(-my, mx, 0f);
             var finalRot = start + rotDelta;
             finalRot.x = ClampAngle(finalRot.x, -89f, 89f);

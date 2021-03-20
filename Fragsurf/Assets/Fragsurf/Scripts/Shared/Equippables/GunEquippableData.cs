@@ -44,6 +44,8 @@ namespace Fragsurf.Shared
         public int RoundsPerMinute = 400;
         public float ReloadTime = 4f;
         public float BoltActionTime = .65f;
+        public float BoltActionDelay = .3f;
+        public bool BoltActionAfterReload = false;
         public float ViewModelKickStrength = 1f;
         public bool FiringInterruptsReload = false;
         [Header("Scope")]

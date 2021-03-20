@@ -40,6 +40,7 @@ namespace Fragsurf.Gamemodes.Playtest
             }
 
             SpawnPlayer(player);
+            Give(player, "Bolty");
             Give(player, "Knife");
             Give(player, "AK47");
         }
@@ -54,6 +55,16 @@ namespace Fragsurf.Gamemodes.Playtest
             hu.Give(item);
         }
 
+        [ChatCommand("Change team", "team")]
+        public void Team(BasePlayer player, int team)
+        {
+            if (!Game.IsServer)
+            {
+                return;
+            }
+            Game.PlayerManager.SetPlayerTeam(player, (byte)team);
+        }
+
         [ChatCommand("Spawns a bot", "bot")]
         public void SpawnBot(BasePlayer player)
         {
@@ -62,11 +73,7 @@ namespace Fragsurf.Gamemodes.Playtest
                 return;
             }
 
-            var bot = new Human(Game);
-            Game.EntityManager.AddEntity(bot);
-            bot.BotController = new BotController(bot);
-            bot.Spawn(1);
-            bot.Give("Knife");
+            Game.PlayerManager.CreateFakePlayer("Bot");
         }
 
         [ChatCommand("Teleport to the beginning", "r", "spawn", "restart")]
@@ -89,6 +96,11 @@ namespace Fragsurf.Gamemodes.Playtest
                 hu = new Human(Game);
                 Game.EntityManager.AddEntity(hu);
                 hu.OwnerId = player.ClientIndex;
+            }
+
+            if (player.IsFake)
+            {
+                hu.BotController = new BotController(hu);
             }
 
             hu.Spawn();

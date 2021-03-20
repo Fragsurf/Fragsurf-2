@@ -1,3 +1,4 @@
+using Fragsurf.Shared;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +10,15 @@ namespace Fragsurf.UI
         public const string Identifier = "Crosshair";
 
         [SerializeField]
+        private GameObject _scopeOverlay;
+        [SerializeField]
         private Image[] _crosshairImages;
 
+        private SpectateController _spec;
         private Color _color;
         private float _alpha = 1;
         private float _outlineAlpha = 1;
+        private bool _scoped;
 
         [ConVar("crosshair.color", "", ConVarFlags.UserSetting)]
         public Color Color
@@ -34,6 +39,14 @@ namespace Fragsurf.UI
         {
             get => _outlineAlpha;
             set => SetOutlineAlpha(value);
+        }
+
+        private void Start()
+        {
+            if (_scopeOverlay)
+            {
+                _scopeOverlay.gameObject.SetActive(false);
+            }
         }
 
         private void SetColor(Color color)
@@ -64,6 +77,48 @@ namespace Fragsurf.UI
                     outline.effectColor = new Color(outline.effectColor.r, outline.effectColor.g, outline.effectColor.b, _outlineAlpha);
                 }
             }
+        }
+
+        private void Update()
+        {
+            if (!_scopeOverlay)
+            {
+                return;
+            }
+
+            var scoped = IsScopedIn();
+            if(scoped != _scoped)
+            {
+                foreach(var img in _crosshairImages)
+                {
+                    img.gameObject.SetActive(!scoped);
+                }
+                _scopeOverlay.gameObject.SetActive(scoped);
+                _scoped = scoped;
+            }
+        }
+
+        private bool IsScopedIn()
+        {
+            if (!_spec)
+            {
+                var cl = FSGameLoop.GetGameInstance(false);
+                if (cl)
+                {
+                    _spec = cl.Get<SpectateController>();
+                }
+            }
+
+            if (!_spec 
+                || _spec.TargetHuman == null
+                || _spec.TargetHuman.Equippables.Equipped == null
+                || !(_spec.TargetHuman.Equippables.Equipped.EquippableGameObject is GunEquippable gun)
+                || Mathf.Approximately(gun.GetMagnification(), 1f))
+            {
+                return false;
+            }
+
+            return true;
         }
 
     }

@@ -12,10 +12,13 @@ namespace Fragsurf.Shared.Entity
 
         protected abstract bool HideViewer { get; }
 
+        public float SensitivityModifier { get; protected set; } = 1f;
         public NetEntity Viewer { get; private set; }
         public Camera Camera { get; private set; }
 
         public abstract void Update();
+        protected virtual void OnActivate() { }
+        protected virtual void OnDeactivate() { }
 
         public void Activate(Camera camera)
         {
@@ -27,6 +30,8 @@ namespace Fragsurf.Shared.Entity
             {
                 Viewer.EntityGameObject.SetVisible(false);
             }
+
+            OnActivate();
         }
 
         public void Deactivate()
@@ -35,6 +40,8 @@ namespace Fragsurf.Shared.Entity
             {
                 Viewer.EntityGameObject.SetVisible(true);
             }
+
+            OnDeactivate();
         }
 
     }

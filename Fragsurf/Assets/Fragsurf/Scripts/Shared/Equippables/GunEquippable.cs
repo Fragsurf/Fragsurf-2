@@ -110,9 +110,26 @@ namespace Fragsurf.Shared
             SetZoomLevel(_zoomLevel + 1);
         }
 
+        public float GetMagnification()
+        {
+            if(GunData.ZoomLevels == null
+                || GunData.ZoomLevels.Length == 0
+                || ZoomLevel < 0 
+                || ZoomLevel >= GunData.ZoomLevels.Length)
+            {
+                return 1f;
+            }
+            return GunData.ZoomLevels[ZoomLevel];
+        }
+
         private void SetZoomLevel(int zoom)
         {
-            if(zoom >= GunData.ZoomLevels.Length)
+            if (_zoomLevel == zoom)
+            {
+                return;
+            }
+
+            if (zoom >= GunData.ZoomLevels.Length)
             {
                 zoom = 0;
             }
@@ -123,7 +140,7 @@ namespace Fragsurf.Shared
 
             _zoomLevel = zoom;
 
-            _foley.PlayClip(GunData.ScopeSound);
+            _foley.PlayClip(GunData.ScopeSound, Random.Range(0.7f, .92f));
 
             var vmLayer = _zoomLevel == 0
                 ? Layers.Viewmodel
@@ -212,7 +229,8 @@ namespace Fragsurf.Shared
                 var delta = Mathf.Min(ExtraRounds, GunData.RoundsPerClip - RoundsInClip);
                 ExtraRounds -= delta;
                 RoundsInClip += delta;
-                if (GunData.FiringMode == GunFiringMode.BoltAction)
+
+                if (GunData.FiringMode == GunFiringMode.BoltAction && GunData.BoltActionAfterReload)
                 {
                     _foley.PlayClip(GunData.BoltActionSound);
                     ViewModel.PlayAnimation("BoltAction");
@@ -269,13 +287,28 @@ namespace Fragsurf.Shared
 
             FireEffects(hit);
 
+            OnFire?.Invoke();
+
             if (GunData.FiringMode == GunFiringMode.BoltAction)
             {
-                _foley.PlayClip(GunData.BoltActionSound);
-                ViewModel.PlayAnimation("BoltAction");
+                if(RoundsInClip > 0)
+                {
+                    StartCoroutine(DoBoltAction());
+                }
+                else
+                {
+                    // if clip is empty just subtract bolt action time from fire timer so there's no delay
+                    _fireTimer -= GunData.BoltActionTime;
+                    _fireTimer = Mathf.Max(_fireTimer, .1f);
+                }
             }
+        }
 
-            OnFire?.Invoke();
+        private IEnumerator DoBoltAction()
+        {
+            yield return new WaitForSeconds(GunData.BoltActionDelay);
+            _foley.PlayClip(GunData.BoltActionSound);
+            ViewModel.PlayAnimation("BoltAction");
         }
 
         protected virtual void ProcessHit(RaycastHit hit)

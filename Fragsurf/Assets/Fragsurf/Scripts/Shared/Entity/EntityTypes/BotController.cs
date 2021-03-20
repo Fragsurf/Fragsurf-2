@@ -44,8 +44,12 @@ namespace Fragsurf.Shared.Entity
 
             if(Random.value >= .98f)
             {
-                Command.Buttons |= InputActions.Jump;
                 Command.Buttons |= InputActions.HandAction;
+
+                if(Random.value <= .5f)
+                {
+                    Command.Buttons |= InputActions.Jump;
+                }
             }
 
             //Command.Angles = Human.Angles + new Vector3(0, 1, 0);

@@ -9,6 +9,7 @@ namespace Fragsurf.Shared.Player
         private Vector3 _eyeOffset;
         private Vector3 _targetEyeOffset;
         private Vector3 _offsetVelocity;
+        private float _defaultFov;
 
         protected override bool HideViewer => true;
 
@@ -16,6 +17,11 @@ namespace Fragsurf.Shared.Player
             : base(viewer)
         {
 
+        }
+
+        protected override void OnActivate()
+        {
+            _defaultFov = Camera.fieldOfView;
         }
 
         public override void Update()
@@ -52,11 +58,25 @@ namespace Fragsurf.Shared.Player
                 _targetEyeOffset = human.Ducked 
                     ? human.HumanGameObject.DuckedEyeOffset
                     : human.HumanGameObject.EyeOffset;
+
                 if (Viewer == Human.Local)
                 {
                     targetAngles = Viewer.Angles;
                 }
+
                 targetAngles += human.TotalViewPunch();
+
+                var magnification = 1f;
+                if(human.Equippables.Equipped != null
+                    && human.Equippables.Equipped.EquippableGameObject is GunEquippable gun)
+                {
+                    magnification = gun.GetMagnification();
+                }
+
+                var diff = _defaultFov * magnification - _defaultFov;
+                var fov = Mathf.Clamp(_defaultFov - diff, 1, 100);
+                SensitivityModifier = fov / _defaultFov;
+                Camera.fieldOfView = fov;
             }
 
             _eyeOffset = Vector3.SmoothDamp(_eyeOffset, _targetEyeOffset, ref _offsetVelocity, .07f);
