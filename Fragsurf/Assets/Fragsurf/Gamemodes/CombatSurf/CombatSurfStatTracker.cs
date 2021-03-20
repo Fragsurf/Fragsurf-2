@@ -18,6 +18,32 @@ namespace Fragsurf.Gamemodes.CombatSurf
         protected override void _Start()
         {
             _props = Game.Get<PlayerProps>();
+
+            var rm = Game.Get<RoundManager>();
+            rm.OnMatchStart += Rm_OnMatchStart;
+        }
+
+        protected override void _Destroy()
+        {
+            base._Destroy();
+
+            var rm = Game.Get<RoundManager>();
+            if(rm) rm.OnMatchStart -= Rm_OnMatchStart;
+        }
+
+        private void Rm_OnMatchStart()
+        {
+            if (!Game.IsServer)
+            {
+                return;
+            }
+
+            foreach(var player in Game.PlayerManager.Players)
+            {
+                _props.SetProp(player.ClientIndex, _killsLabel, 0);
+                _props.SetProp(player.ClientIndex, _deathsLabel, 0);
+                _props.SetProp(player.ClientIndex, _damageLabel, 0);
+            }
         }
 
         public int GetKills(int clientIndex) => (int)_props.GetProp(clientIndex, _killsLabel);
