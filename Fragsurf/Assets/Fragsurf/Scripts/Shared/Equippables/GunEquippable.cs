@@ -50,6 +50,21 @@ namespace Fragsurf.Shared
             AudioSource = _foley;
         }
 
+        protected override void _Update()
+        {
+            base._Update();
+
+#if UNITY_EDITOR
+            if (Equippable.Equipped && Input.GetKeyDown(KeyCode.U))
+            {
+                ViewModel.PlayAnimation("Idle");
+                ViewModel.PlayAnimation("Reload");
+                AudioSource.Src.Stop();
+                AudioSource.PlayClip(GunData.ReloadSound);
+            }
+#endif
+        }
+
         protected override void OnActionDown(int actionId)
         {
             if(actionId == 0)
@@ -194,7 +209,7 @@ namespace Fragsurf.Shared
                 ViewModel.PlayAnimation("Reload");
                 _foley.PlayClip(GunData.ReloadSound, 1f, true);
                 yield return new WaitForSeconds(GunData.ReloadTime);
-                var delta = Mathf.Min(ExtraRounds, GunData.RoundsPerClip) - RoundsInClip;
+                var delta = Mathf.Min(ExtraRounds, GunData.RoundsPerClip - RoundsInClip);
                 ExtraRounds -= delta;
                 RoundsInClip += delta;
                 if (GunData.FiringMode == GunFiringMode.BoltAction)
