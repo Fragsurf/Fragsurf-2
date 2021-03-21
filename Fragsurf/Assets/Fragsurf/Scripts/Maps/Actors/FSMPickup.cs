@@ -8,8 +8,10 @@ namespace Fragsurf.Actors
     public class FSMPickup : FSMTrigger
     {
 
-        private int _remaining;
+        private int _given;
+        private GameObject _wm;
         private BaseEquippableData _data;
+        private GameAudioSource _src;
 
         [Header("FSMPickup Options")]
 
@@ -19,10 +21,10 @@ namespace Fragsurf.Actors
         public int Quantity = 1;
 
         [NetProperty]
-        public int Remaining
+        public int Given
         {
-            get => _remaining;
-            set => SetRemaining(value);
+            get => _given;
+            set => SetGiven(value);
         }
 
         protected override void _Start()
@@ -32,27 +34,32 @@ namespace Fragsurf.Actors
                 return;
             }
 
-            Remaining = Quantity;
+            if(!gameObject.TryGetComponent(out _src))
+            {
+                _src = gameObject.AddComponent<GameAudioSource>();
+            }
+            _src.Src.spatialBlend = 1f;
+            _src.Category = SoundCategory.Equippable;
 
             if (GameData.Instance.TryGetEquippable(Item.ToString(), out _data))
             {
-                var wm = _data.WorldModelPrefab
+                _wm = _data.WorldModelPrefab
                     ? GameObject.Instantiate(_data.WorldModelPrefab).gameObject
                     : GameObject.CreatePrimitive(PrimitiveType.Cube);
-                if(wm.TryGetComponent(out Rigidbody rb))
+                if(_wm.TryGetComponent(out Rigidbody rb))
                 {
                     GameObject.Destroy(rb);
                 }
-                wm.transform.position = transform.position;
-                wm.transform.SetParent(transform);
-                foreach(var r in wm.GetComponentsInChildren<Renderer>())
+                _wm.transform.position = transform.position;
+                _wm.transform.SetParent(transform);
+                foreach(var r in _wm.GetComponentsInChildren<Renderer>())
                 {
                     r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     r.rendererPriority = 10;
                 }
-                foreach(var lg in wm.GetComponentsInChildren<LODGroup>())
+                foreach(var lg in _wm.GetComponentsInChildren<LODGroup>())
                 {
-                    lg.ForceLOD(lg.lodCount - 1);
+                    lg.ForceLOD(lg.lodCount);
                 }
             }
 
@@ -91,18 +98,22 @@ namespace Fragsurf.Actors
 
             hu.Give(_data.Name);
 
-            if (Quantity > 0)
-            {
-                Remaining--;
-            }
+            Given++;
         }
 
-        private void SetRemaining(int newLimit)
+        private void SetGiven(int newGiven)
         {
-            _remaining = newLimit;
-            if(_remaining <= 0)
+            _given = newGiven;
+
+            if(_src && _data && _data.EquipSound)
             {
-                gameObject.SetActive(false);
+                _src.PlayClip(_data.EquipSound);
+            }
+
+            if (Quantity > 0 && _given >= Quantity)
+            {
+                _wm.SetActive(false);
+                GameObject.Destroy(gameObject, 1f);
             }
         }
 
