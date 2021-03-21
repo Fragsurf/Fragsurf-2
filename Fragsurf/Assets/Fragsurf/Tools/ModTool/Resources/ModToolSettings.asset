@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ModToolSettings
   m_EditorClassIdentifier: 
   _productName: Fragsurf
-  _unityVersion: 2020.2.3f1
+  _unityVersion: 2020.3.0f1
   _supportedPlatforms: 15
   _supportedContent: 7
   _logLevel: 3
