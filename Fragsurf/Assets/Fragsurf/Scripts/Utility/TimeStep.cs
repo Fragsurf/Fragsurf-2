@@ -74,10 +74,10 @@ namespace Fragsurf.Utility
 			DeltaTime = Time.deltaTime;
 			FixedDeltaTime = (1f / TickRate) * (1f / Time.timeScale);
 
-			var newTime = Time.realtimeSinceStartup;
-			var frameTime = Mathf.Min(newTime - ElapsedTime, FixedDeltaTime);
+			//var frameTime = /*Mathf.Min(*/Time.realtimeSinceStartup - ElapsedTime/*, FixedDeltaTime)*/;
+			var frameTime = Time.deltaTime;
 
-			ElapsedTime = newTime;
+			ElapsedTime = Time.realtimeSinceStartup;
 			_accumulator += frameTime;
 
 			while (_accumulator >= FixedDeltaTime)
