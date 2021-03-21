@@ -45,6 +45,11 @@ namespace Fragsurf.Actors
                 }
                 wm.transform.position = transform.position;
                 wm.transform.SetParent(transform);
+                foreach(var r in wm.GetComponentsInChildren<Renderer>())
+                {
+                    r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                    r.rendererPriority = 10;
+                }
             }
 
             gameObject.SetChildrenCollidersToConvexTrigger(true);
