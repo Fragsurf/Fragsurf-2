@@ -877,6 +877,46 @@ namespace InternalRealtimeCSG
             return false;
         }
 
+        public static void GenerateSurfaceDataForModel(CSGModel model, List<SurfaceDatabase> dbs)
+        {
+            if(dbs == null || dbs.Count == 0)
+            {
+                return;
+            }
+
+            var container = model.generatedMeshes;
+            if (!container || !container.owner)
+                return;
+
+            if (!container.HasMeshInstances)
+                return;
+
+            foreach (var instance in container.MeshInstances)
+            {
+                if (instance.RenderSurfaceType == RenderSurfaceType.Normal)
+                {
+                    if (!instance.gameObject.TryGetComponent(out SurfaceTypeIdentifier id))
+                    {
+                        id = instance.gameObject.AddComponent<SurfaceTypeIdentifier>();
+                    }
+                    var cfg = dbs[0].FindSurfaceConfig(instance.RenderMaterial);
+                    if (cfg != null)
+                    {
+                        id.SurfaceType = cfg.SurfaceType;
+                    }
+                    if (!instance.gameObject.TryGetComponent(out SteamAudio.SteamAudioGeometry geo))
+                    {
+                        geo = instance.gameObject.AddComponent<SteamAudio.SteamAudioGeometry>();
+                    }
+                    if (!instance.gameObject.TryGetComponent(out SteamAudio.SteamAudioMaterial audiomat))
+                    {
+                        audiomat = instance.gameObject.AddComponent<SteamAudio.SteamAudioMaterial>();
+                    }
+                    audiomat.Preset = SurfaceTypeToMaterialPreset(id.SurfaceType);
+                }
+            }
+        }
+
         public static void GenerateLightmapUVsForModel(CSGModel model)
         {
             if (!ModelTraits.IsModelEditable(model))
@@ -1121,32 +1161,6 @@ namespace InternalRealtimeCSG
             var oldRenderSurfaceType = instance.RenderSurfaceType;
             instance.RenderSurfaceType = GetSurfaceType(instance.MeshDescription, owner.Settings);
             instance.Dirty = instance.Dirty || (oldRenderSurfaceType != instance.RenderSurfaceType);
-
-            if (instance.Dirty && instance.RenderSurfaceType == RenderSurfaceType.Normal)
-            {
-                if(!instance.gameObject.TryGetComponent(out SurfaceTypeIdentifier id))
-                {
-                    id = instance.gameObject.AddComponent<SurfaceTypeIdentifier>();
-                }
-                var dbs = ChiselMaterialBrowserUtilities.FindAssetsByType<SurfaceDatabase>();
-                if (dbs.Count > 0)
-                {
-                    var cfg = dbs[0].FindSurfaceConfig(instance.RenderMaterial);
-                    if(cfg != null)
-                    {
-                        id.SurfaceType = cfg.SurfaceType;
-                    }
-                }
-                if(!instance.gameObject.TryGetComponent(out SteamAudio.SteamAudioGeometry geo))
-                {
-                    geo = instance.gameObject.AddComponent<SteamAudio.SteamAudioGeometry>();
-                }
-                if(!instance.gameObject.TryGetComponent(out SteamAudio.SteamAudioMaterial audiomat))
-                {
-                    audiomat = instance.gameObject.AddComponent<SteamAudio.SteamAudioMaterial>();
-                }
-                audiomat.Preset = SurfaceTypeToMaterialPreset(id.SurfaceType);
-            }
 
             // Update the transform, if incorrect
             var gameObject = instance.gameObject;

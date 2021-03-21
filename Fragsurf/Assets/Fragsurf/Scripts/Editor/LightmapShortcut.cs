@@ -48,6 +48,12 @@ public class LightmapShortcut
         }
     }
 
+    [MenuItem("Fragsurf/Level Editor/Build Surfaces")]
+    public static void BuildSurfaces()
+    {
+        CSGModelManager.BuildSurfaces();
+    }
+
     private static void StartLightmapping(LightingSettings settings)
     {
         Lightmapping.Clear();

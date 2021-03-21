@@ -2,6 +2,8 @@
 using UnityEngine;
 using InternalRealtimeCSG;
 using RealtimeCSG.Components;
+using Chisel.Editors;
+using SurfaceConfigurator;
 
 namespace RealtimeCSG
 {
@@ -21,6 +23,25 @@ namespace RealtimeCSG
 			InternalCSGModelManager.UpdateMeshes(forceUpdate: true);
 		}
 
+		public static void BuildSurfaces()
+        {
+			var dbs = ChiselMaterialBrowserUtilities.FindAssetsByType<SurfaceDatabase>();
+            if (dbs == null || dbs.Count == 0)
+            {
+				return;
+            }
+
+			for(int m = 0; m < InternalCSGModelManager.Models.Length; m++)
+            {
+                if (!InternalCSGModelManager.Models[m])
+                {
+					continue;
+                }
+
+				MeshInstanceManager.GenerateSurfaceDataForModel(InternalCSGModelManager.Models[m], dbs);
+            }
+        }
+
         public static void BuildLightmapUvs(bool force = false)
 		{
 			for (int m = 0; m < InternalCSGModelManager.Models.Length; m++)
@@ -33,6 +54,7 @@ namespace RealtimeCSG
 
 				MeshInstanceManager.GenerateLightmapUVsForModel(InternalCSGModelManager.Models[m]);
 			}
+			BuildSurfaces();
 		}
 
 		public static void EnsureBuildFinished() { InternalCSGModelManager.CheckForChanges(true); }
