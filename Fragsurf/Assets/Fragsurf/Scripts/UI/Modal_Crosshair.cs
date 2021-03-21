@@ -41,6 +41,20 @@ namespace Fragsurf.UI
             set => SetOutlineAlpha(value);
         }
 
+        private bool _crosshairDisabled;
+        private void DisableCrosshair(bool disabled)
+        {
+            if(_crosshairDisabled == disabled)
+            {
+                return;
+            }
+            foreach (var img in _crosshairImages)
+            {
+                img.gameObject.SetActive(!disabled);
+            }
+            _crosshairDisabled = disabled;
+        }
+
         private void Start()
         {
             if (_scopeOverlay)
@@ -86,20 +100,22 @@ namespace Fragsurf.UI
                 return;
             }
 
-            var scoped = IsScopedIn();
-            if(scoped != _scoped)
+            CheckScope(out bool scopedIn, out bool disableCrosshair);
+
+            if(scopedIn != _scoped)
             {
-                foreach(var img in _crosshairImages)
-                {
-                    img.gameObject.SetActive(!scoped);
-                }
-                _scopeOverlay.gameObject.SetActive(scoped);
-                _scoped = scoped;
+                _scopeOverlay.gameObject.SetActive(scopedIn);
+                _scoped = scopedIn;
             }
+
+            DisableCrosshair(scopedIn || disableCrosshair);
         }
 
-        private bool IsScopedIn()
+        private void CheckScope(out bool scopedIn, out bool disableCrosshair)
         {
+            scopedIn = false;
+            disableCrosshair = false;
+
             if (!_spec)
             {
                 var cl = FSGameLoop.GetGameInstance(false);
@@ -109,16 +125,16 @@ namespace Fragsurf.UI
                 }
             }
 
-            if (!_spec 
+            if (!_spec
                 || _spec.TargetHuman == null
                 || _spec.TargetHuman.Equippables.Equipped == null
-                || !(_spec.TargetHuman.Equippables.Equipped.EquippableGameObject is GunEquippable gun)
-                || Mathf.Approximately(gun.GetMagnification(), 1f))
+                || !(_spec.TargetHuman.Equippables.Equipped.EquippableGameObject is GunEquippable gun))
             {
-                return false;
+                return;
             }
 
-            return true;
+            scopedIn = !Mathf.Approximately(gun.GetMagnification(), 1f);
+            disableCrosshair = gun.GunData.DisableCrosshair;
         }
 
     }

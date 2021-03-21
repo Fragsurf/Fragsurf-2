@@ -51,6 +51,7 @@ namespace Fragsurf.Shared
         [Header("Scope")]
         public float[] ZoomLevels;
         public Texture2D ScopeTexture;
+        public bool DisableCrosshair;
         [Header("Damage")]
         public int BaseDamage = 20;
         public List<AreaDamageDefinition> DamagePercents = new List<AreaDamageDefinition>()
