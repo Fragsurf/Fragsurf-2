@@ -50,6 +50,10 @@ namespace Fragsurf.Actors
                     r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     r.rendererPriority = 10;
                 }
+                foreach(var lg in wm.GetComponentsInChildren<LODGroup>())
+                {
+                    lg.ForceLOD(lg.lodCount - 1);
+                }
             }
 
             gameObject.SetChildrenCollidersToConvexTrigger(true);
