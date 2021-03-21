@@ -67,21 +67,22 @@ namespace Fragsurf.Actors
 
         protected override void _TriggerInteract(NetEntity entity)
         {
-            TryGive(entity);
+            TryGive(entity, true);
         }
 
-        private void TryGive(NetEntity entity)
+        private void TryGive(NetEntity entity, bool forced = false)
         {
             if (!_data 
                 || !entity.Game.IsServer
-                || !(entity is Human hu))
+                || !(entity is Human hu)
+                || (!forced && hu.Equippables.HasItemInSlot(_data.Slot)))
             {
                 return;
             }
 
             hu.Give(_data.Name);
 
-            if(Quantity > 0)
+            if (Quantity > 0)
             {
                 Remaining--;
             }
