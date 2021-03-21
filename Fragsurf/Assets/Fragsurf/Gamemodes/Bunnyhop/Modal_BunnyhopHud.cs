@@ -62,6 +62,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private void SetCenterHudText(string text)
         {
             var tracks = FSGameLoop.GetGameInstance(false).Get<BunnyhopTracks>();
+            if (!tracks)
+            {
+                return;
+            }
             _centerHud.text = $"<color={tracks.MessageColor.HashRGBA()}>{text}</color>";
         }
 
