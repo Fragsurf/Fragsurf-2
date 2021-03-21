@@ -197,6 +197,7 @@ namespace Fragsurf.Shared.Entity
             {
                 return;
             }
+
             var equippable = Game.EntityManager.SpawnEquippable();
             equippable.ItemName = itemName;
             equippable.HumanId = EntityId;

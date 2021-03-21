@@ -89,7 +89,25 @@ namespace Fragsurf.Shared.Entity
                 Debug.LogError("Adding Equippable twice..");
                 return;
             }
+
             _equippables.Add(item);
+
+            if (!item.EquippableGameObject)
+            {
+                return;
+            }
+
+            for(int i = Items.Count - 1; i >= 0; i--)
+            {
+                var itm = Items[i];
+                if(itm == item 
+                    || !itm.EquippableGameObject
+                    || itm.EquippableGameObject.Data.Slot != item.EquippableGameObject.Data.Slot)
+                {
+                    continue;
+                }
+                itm.Drop();
+            }
         }
 
         public void DropAllItems()
