@@ -6,10 +6,11 @@ namespace Fragsurf.Shared
 {
     public enum EquippableAnimationLayer
     {
-        Unequipped = 0,
+        Unarmed = 0,
         Pistol = 1,
         Rifle = 2,
-        Knife = 3
+        OneHandMelee = 3,
+        TwoHandMelee = 4
     }
     public abstract class BaseEquippableData : ScriptableObject
     {

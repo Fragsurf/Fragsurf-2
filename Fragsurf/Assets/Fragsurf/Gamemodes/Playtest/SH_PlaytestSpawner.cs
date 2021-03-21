@@ -40,9 +40,9 @@ namespace Fragsurf.Gamemodes.Playtest
             }
 
             SpawnPlayer(player);
-            Give(player, "Bolty");
-            Give(player, "Knife");
             Give(player, "AK47");
+            Give(player, "M1911");
+            Give(player, "Knife");
         }
 
         [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]

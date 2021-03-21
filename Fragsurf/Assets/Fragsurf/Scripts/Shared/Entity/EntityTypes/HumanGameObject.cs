@@ -254,6 +254,7 @@ namespace Fragsurf.Shared.Entity
         private Vector3 _desiredMoveBlend;
         private Vector3 _currentMoveBlend;
         private Vector3 _moveBlendVelocity;
+        private EquippableAnimationLayer _animLayer = EquippableAnimationLayer.Unarmed;
 
         protected override void _Update()
         {
@@ -279,6 +280,28 @@ namespace Fragsurf.Shared.Entity
                 _currentMoveBlend = Vector3.SmoothDamp(_currentMoveBlend, _desiredMoveBlend, ref _moveBlendVelocity, .1f);
                 Animator.SetFloat("sideways", _currentMoveBlend.x);
                 Animator.SetFloat("forward", _currentMoveBlend.z);
+
+                var newAnimLayer = GetAnimationLayer();
+                if (newAnimLayer != _animLayer
+                    || Animator.GetLayerWeight((int)newAnimLayer) != 1)
+                {
+                    Animator.SetLayerWeight((int)_animLayer, 0);
+                    Animator.SetLayerWeight((int)newAnimLayer, 1);
+                    _animLayer = newAnimLayer;
+                }
+            }
+        }
+
+        private EquippableAnimationLayer GetAnimationLayer()
+        {
+            if (Human.Equippables.Equipped == null
+                || !Human.Equippables.Equipped.EquippableGameObject)
+            {
+                return EquippableAnimationLayer.Unarmed;
+            }
+            else
+            {
+                return Human.Equippables.Equipped.EquippableGameObject.Data.PlayerAnimationLayer;
             }
         }
 
