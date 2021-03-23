@@ -4,7 +4,7 @@ using Fragsurf.Movement;
 using Lidgren.Network;
 using MessagePack;
 
-namespace Game.Tricksurf
+namespace Fragsurf.Gamemodes.Tricksurf
 {
     [MessagePackObject]
     public struct TrickCompletion : IBasePacket

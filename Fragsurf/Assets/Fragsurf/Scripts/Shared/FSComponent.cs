@@ -14,7 +14,7 @@ namespace Fragsurf.Shared
         public bool Destroyed { get; private set; }
         public int UniqueId { get; set; }
         public virtual bool HasNetProps => false;
-        public virtual bool HasAuthority => Game.IsServer;
+        public virtual bool HasAuthority => Game.IsHost;
 
         public void Initialize(FSGameLoop game)
         {
@@ -120,7 +120,7 @@ namespace Fragsurf.Shared
 
         private void BuildNetProps()
         {
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 var actor = new FSComponentSync(Game, UniqueId);
                 Game.EntityManager.AddEntity(actor);

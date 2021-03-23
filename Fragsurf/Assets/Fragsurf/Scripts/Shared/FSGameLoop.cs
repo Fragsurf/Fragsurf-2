@@ -17,7 +17,7 @@ namespace Fragsurf.Shared
         public Action PostExecConfig;
 
 
-        public abstract bool IsServer { get; }
+        public abstract bool IsHost { get; }
         protected abstract void RegisterComponents();
         protected abstract void Initialize();
 
@@ -49,7 +49,7 @@ namespace Fragsurf.Shared
         public GameObjectPool Pool => GetFSComponent<GameObjectPool>(true);
         public GameAudioManager Audio => GetFSComponent<GameAudioManager>(true);
 
-        public int ScopeLayer => IsServer ? Layers.Host : Layers.Client;
+        public int ScopeLayer => IsHost ? Layers.Host : Layers.Client;
         public GameObject ObjectContainer { get; private set; }
 
         public ConfigDirectory DefaultConfig { get; } = new ConfigDirectory();
@@ -123,7 +123,7 @@ namespace Fragsurf.Shared
 
             _destroyed = true;
 
-            UnityEngine.Debug.Log("Destroying " + (IsServer ? "Host" : "Client"));
+            UnityEngine.Debug.Log("Destroying " + (IsHost ? "Host" : "Client"));
 
             // unhook then destroy, to make sure we don't lose references
             foreach (var fsc in FSComponents)
@@ -341,7 +341,7 @@ namespace Fragsurf.Shared
 
         private void InjectComponents()
         {
-            var realm = InjectRealm.Shared | (IsServer ? InjectRealm.Server : InjectRealm.Client);
+            var realm = InjectRealm.Shared | (IsHost ? InjectRealm.Server : InjectRealm.Client);
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (Type type in asm.GetTypes().Where(x => x.IsSubclassOf(typeof(FSComponent))))
@@ -362,7 +362,7 @@ namespace Fragsurf.Shared
         {
             foreach (var inst in _gameInstances)
             {
-                if (inst.IsServer == host)
+                if (inst.IsHost == host)
                 {
                     return inst;
                 }

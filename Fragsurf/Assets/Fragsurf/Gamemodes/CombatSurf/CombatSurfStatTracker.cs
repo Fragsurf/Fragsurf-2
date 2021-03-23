@@ -33,7 +33,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         private void Rm_OnMatchStart()
         {
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 return;
             }
@@ -52,7 +52,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
         {
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 var killer = Game.EntityManager.FindEntity<Human>(dmgInfo.AttackerEntityId);
 

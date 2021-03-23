@@ -56,7 +56,7 @@ namespace Fragsurf.Shared
         {
             _swingTimer = MeleeData.TimeToSwing;
 
-            if (!Entity.Game.IsServer)
+            if (!Entity.Game.IsHost)
             {
                 var swingAnim = "Swing";
 

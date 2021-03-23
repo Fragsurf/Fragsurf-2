@@ -7,7 +7,7 @@ namespace Fragsurf.Client
 {
     public class GameClient : FSGameLoop
     {
-        public override bool IsServer => false;
+        public override bool IsHost => false;
         public ClientSocketManager Socket => GetFSComponent<ClientSocketManager>();
 
         protected override void RegisterComponents()

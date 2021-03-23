@@ -35,7 +35,7 @@ namespace Fragsurf.Shared
 
         protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
-            if(Game.IsServer || !(packet is FileChunk chunk))
+            if(Game.IsHost || !(packet is FileChunk chunk))
             {
                 return;
             }

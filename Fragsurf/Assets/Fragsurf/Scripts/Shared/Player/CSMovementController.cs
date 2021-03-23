@@ -73,7 +73,7 @@ namespace Fragsurf.Shared.Player
 
             _surfController.CalculateMovement(this, Human.Game.GameMovement.Config, Time.fixedDeltaTime);
 
-            if (Human.Game.IsServer || Human.Local == Human)
+            if (Human.Game.IsHost || Human.Local == Human)
             {
                 Human.Velocity = MoveData.Velocity;
                 Human.BaseVelocity = MoveData.BaseVelocity;
@@ -159,11 +159,13 @@ namespace Fragsurf.Shared.Player
             {
                 if (!_lastTickTriggers.Contains(trigger))
                 {
-                    trigger.OnStartTouch(Human.EntityId, Human.Game.IsServer);
+                    trigger.OnStartTouch(Human.EntityId, Human.Game.IsHost);
+                    Human.Game.EntityManager.RaiseHumanTrigger(Human, trigger, TriggerEventType.Enter, 0f);
                 }
                 else
                 {
-                    trigger.OnTouch(Human.EntityId, Human.Game.IsServer);
+                    trigger.OnTouch(Human.EntityId, Human.Game.IsHost);
+                    Human.Game.EntityManager.RaiseHumanTrigger(Human, trigger, TriggerEventType.Stay, 0f);
                 }
             }
 
@@ -171,7 +173,8 @@ namespace Fragsurf.Shared.Player
             {
                 if (!_touchingTriggers.Contains(trigger))
                 {
-                    trigger.OnEndTouch(Human.EntityId, Human.Game.IsServer);
+                    trigger.OnEndTouch(Human.EntityId, Human.Game.IsHost);
+                    Human.Game.EntityManager.RaiseHumanTrigger(Human, trigger, TriggerEventType.Exit, 0f);
                 }
             }
 

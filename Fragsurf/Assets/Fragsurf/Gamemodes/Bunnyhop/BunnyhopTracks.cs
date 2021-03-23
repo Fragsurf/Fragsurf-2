@@ -77,7 +77,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             bhopTimeline.RecordTick();
 
-            if (!Game.IsServer && hu.OwnerId == Game.ClientIndex && track.TrackType != FSMTrackType.Staged)
+            if (!Game.IsHost && hu.OwnerId == Game.ClientIndex && track.TrackType != FSMTrackType.Staged)
             {
                 var frame = bhopTimeline.LastFrame;
                 var name = track.TrackName;
@@ -107,7 +107,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             }
             bhopTimeline.SetSegment(stage);
 
-            if (!Game.IsServer && hu.OwnerId == Game.ClientIndex)
+            if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
             {
                 var frame = bhopTimeline.LastFrame;
                 var msg = $"<color={MessageColor.HashRGBA()}><color={MiscColor.HashRGBA()}>Stage {stage}</color> started, <color={SpeedColor.HashRGBA()}>{frame.Velocity} u/s</color></color>";
@@ -124,7 +124,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             bhopTimeline.RunIsLive = false;
 
-            if (!Game.IsServer && hu.OwnerId == Game.ClientIndex)
+            if (!Game.IsHost && hu.OwnerId == Game.ClientIndex)
             {
                 var tlCopy = new BunnyhopTimeline()
                 {
@@ -149,7 +149,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
             bhopTimeline.Stage = stage;
 
-            if(!Game.IsServer
+            if(!Game.IsHost
                 && hu.OwnerId == Game.ClientIndex
                 && bhopTimeline.GetSegment(stage, out BunnyhopTimelineFrame frame, out BunnyhopTimeline newTimeline))
             {
@@ -221,7 +221,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [ChatCommand("Open the Replay Tools modal", "replaytools")]
         public void OpenReplayTools()
         {
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 return;
             }
@@ -231,7 +231,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [ChatCommand("Open the Replay List modal", "replays")]
         public void OpenReplays()
         {
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 return;
             }
@@ -241,7 +241,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [ChatCommand("Open the Ranks modal", "ranks", "top", "leaderboard", "ldb")]
         public void OpenRanks()
         {
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 return;
             }

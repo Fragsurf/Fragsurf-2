@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Tricksurf
+namespace Fragsurf.Gamemodes.Tricksurf
 {
 
     public class TrickTreeNode

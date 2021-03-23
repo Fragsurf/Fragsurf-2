@@ -75,7 +75,7 @@ namespace Fragsurf.Shared.Player
             SpecList.Remove(player);
 
             if(player.Entity != null
-                && Game.IsServer)
+                && Game.IsHost)
             {
                 player.Entity.Delete();
             }

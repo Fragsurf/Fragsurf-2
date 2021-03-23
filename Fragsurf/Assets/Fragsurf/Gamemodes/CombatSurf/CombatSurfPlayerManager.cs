@@ -14,7 +14,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         protected override void _Start()
         {
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 return;
             }
@@ -50,7 +50,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         protected override void OnHumanSpawned(Human hu)
         {
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 SetTeamColor(hu);
                 return;
@@ -88,7 +88,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         protected override void OnPlayerIntroduced(BasePlayer player)
         {
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 return;
             }
@@ -122,7 +122,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         protected override void OnPlayerChangedTeam(BasePlayer player)
         {
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 SetTeamColor(player.Entity as Human);
                 return;
@@ -179,7 +179,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]
         public void Give(BasePlayer player, string item)
         {
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 return;
             }
@@ -194,7 +194,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ChatCommand("Spawns a bot", "bot")]
         public void SpawnBot(BasePlayer player)
         {
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 return;
             }
@@ -205,7 +205,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
         [ChatCommand("Kill yourself", "suicide", "kill")]
         public void Suicide(BasePlayer player)
         {
-            if (Game.IsServer && player.Entity is Human hu)
+            if (Game.IsHost && player.Entity is Human hu)
             {
                 hu.Dead = true;
             }

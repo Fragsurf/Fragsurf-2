@@ -17,9 +17,7 @@ namespace Fragsurf.Actors
 
         protected override void _TriggerEnter(NetEntity entity)
         {
-            if (!(entity is Human hu)
-                || !(hu.MovementController is ISurfControllable character)
-                || character.MoveType == MoveType.Noclip)
+            if (!(entity is Human hu))
             {
                 return;
             }
@@ -30,21 +28,17 @@ namespace Fragsurf.Actors
                 var target = FindObjectsOfType<FSMActor>().FirstOrDefault(x => x.ActorName.Equals(TargetActor, System.StringComparison.OrdinalIgnoreCase));
                 if (target)
                 {
-                    character.MoveData.Origin = target.transform.position;
+                    entity.Origin = target.transform.position;
+
                     if (!MaintainAngles)
                     {
-                        character.MoveData.ViewAngles = target.transform.rotation.eulerAngles;
+                        entity.Angles = target.transform.rotation.eulerAngles;
                     }
-                }
-            }
 
-            if(ClearVelocity)
-            {
-                character.MoveData.Velocity = Vector3.zero;
-
-                if (!MaintainAngles)
-                {
-                    character.MoveData.BaseVelocity = Vector3.zero;
+                    if (ClearVelocity)
+                    {
+                        hu.Velocity = Vector3.zero;
+                    }
                 }
             }
         }

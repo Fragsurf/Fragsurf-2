@@ -150,7 +150,7 @@ namespace Fragsurf.Shared.Entity
 
         public void ResetLayers()
         {
-            var layer = Entity.Game.IsServer
+            var layer = Entity.Game.IsHost
                 ? Layers.Host
                 : Layers.Client;
             gameObject.layer = layer;
@@ -164,7 +164,7 @@ namespace Fragsurf.Shared.Entity
         {
             ResetLayers();
 
-            if (!Entity.Game.IsServer)
+            if (!Entity.Game.IsHost)
             {
                 DestroyRagdoll();
                 SetVisible(!Human.IsFirstPerson);
@@ -176,7 +176,7 @@ namespace Fragsurf.Shared.Entity
             SetLayersToIgnore();
 
             // todo: dmgInfo on client isn't the networked dmgInfo
-            if (!Entity.Game.IsServer)
+            if (!Entity.Game.IsHost)
             {
                 SetVisible(false);
 
@@ -262,7 +262,7 @@ namespace Fragsurf.Shared.Entity
 
             if (_flashlight)
             {
-                var flashlightOn = !Human.Game.IsServer && Human.FlashlightOn;
+                var flashlightOn = !Human.Game.IsHost && Human.FlashlightOn;
                 if(_flashlight.enabled != flashlightOn)
                 {
                     _flashlight.enabled = flashlightOn;

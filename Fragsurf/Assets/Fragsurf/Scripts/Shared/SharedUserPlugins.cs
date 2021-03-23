@@ -62,7 +62,7 @@ namespace Fragsurf.Shared
                 OpenInFileBrowser.Open(Structure.PluginsPath);
             });
 
-            if(Game.IsServer)
+            if(Game.IsHost)
             {
                 DevConsole.RegisterCommand("plugins.reload", "Reloads all plugins", this, delegate (string[] args)
                 {
@@ -105,7 +105,7 @@ namespace Fragsurf.Shared
                 LoadPlugins(PluginSpace.InGame);
             }
 
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 SynchronizeWithPlayers();
             }
@@ -197,7 +197,7 @@ namespace Fragsurf.Shared
             LoadPlugins(PluginSpace.InGame);
             //
 
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 LoadLoaders(Structure.PluginsPath);
             }
@@ -319,7 +319,7 @@ namespace Fragsurf.Shared
 
         private void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
-            if(Game.IsServer || !(packet is CustomPacket cp))
+            if(Game.IsHost || !(packet is CustomPacket cp))
             {
                 return;
             }

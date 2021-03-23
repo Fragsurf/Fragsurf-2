@@ -9,7 +9,7 @@ using Fragsurf.Movement;
 using MessagePack;
 using Fragsurf.Shared.Entity;
 
-namespace Game.Tricksurf
+namespace Fragsurf.Gamemodes.Tricksurf
 {
 
     [MessagePackObject]

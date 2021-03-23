@@ -11,7 +11,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
         {
             LockVars = true;
 
-            if(game.IsServer)
+            if(game.IsHost)
             {
                 game.LagCompensator.Enabled = false;
             }

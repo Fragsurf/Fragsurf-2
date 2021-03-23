@@ -54,7 +54,7 @@ namespace Fragsurf.Shared.Entity
 
             //Command.Angles = Human.Angles + new Vector3(0, 1, 0);
 
-            if (Human.Game.IsServer)
+            if (Human.Game.IsHost)
             {
                 var player = Human.Game.PlayerManager.FindPlayer(Human.OwnerId);
                 if(player == null)

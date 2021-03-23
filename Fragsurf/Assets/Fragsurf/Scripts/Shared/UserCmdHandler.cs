@@ -27,7 +27,7 @@ namespace Fragsurf.Shared
         {
             HandleRunCommand(player, cmd, isPrediction);
 
-            if (Game.IsServer || isPrediction)
+            if (Game.IsHost || isPrediction)
             {
                 HandleInteractables(player, cmd);
             }
@@ -37,7 +37,7 @@ namespace Fragsurf.Shared
         {
             if(packet is UserCmd cmd)
             {
-                if (!Game.IsServer)
+                if (!Game.IsHost)
                 {
                     player = Game.PlayerManager.FindPlayer(cmd.ClientIndex);
                 }
@@ -55,7 +55,7 @@ namespace Fragsurf.Shared
                 _hoveredEnts.Remove(player.ClientIndex);
             }
 
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 return;
             }
@@ -68,7 +68,7 @@ namespace Fragsurf.Shared
 
         protected override void _Tick()
         {
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 return;
             }
@@ -119,12 +119,12 @@ namespace Fragsurf.Shared
 
             human.RunCommand(cmd, isPrediction);
 
-            if(Game.IsServer || isPrediction)
+            if(Game.IsHost || isPrediction)
             {
                 Game.PlayerManager.RaiseRunCommand(player);
             }
 
-            if (Game.IsServer && !isPrediction)
+            if (Game.IsHost && !isPrediction)
             {
                 UserCmd newCmd;
                 if (_finalCmds.ContainsKey(player))
@@ -148,7 +148,7 @@ namespace Fragsurf.Shared
                 // broadcast
                 //Game.Network.BroadcastPacket(newCmd);
             }
-            else if(!Game.IsServer && isPrediction)
+            else if(!Game.IsHost && isPrediction)
             {
                 cmd.Origin = human.Origin;
                 cmd.Velocity = human.Velocity;

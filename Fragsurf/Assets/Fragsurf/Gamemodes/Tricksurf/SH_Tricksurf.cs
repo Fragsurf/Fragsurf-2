@@ -15,8 +15,9 @@ using Newtonsoft.Json;
 using Fragsurf.Maps;
 using Fragsurf.Movement;
 
-namespace Game.Tricksurf
+namespace Fragsurf.Gamemodes.Tricksurf
 {
+    [Inject(InjectRealm.Shared, typeof(Tricksurf))]
     public class SH_Tricksurf : FSSharedScript
     {
 
@@ -184,7 +185,7 @@ namespace Game.Tricksurf
 
             LoadTrickData();
 
-            if(!Game.IsServer)
+            if(!Game.IsHost)
             {
                 DevConsole.RegisterCommand("trick.test", "", this, (args) =>
                 {
@@ -290,7 +291,7 @@ namespace Game.Tricksurf
 
         protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
-            if(Game.IsServer || player != null)
+            if(Game.IsHost || player != null)
             {
                 return;
             }
@@ -318,6 +319,8 @@ namespace Game.Tricksurf
                     //    Fragsurf.Client.Surface.SurfaceManager.Toast($"Nice, you've completed a new trick! <span class='green'>{tl.CompletionCount + 1}</span> out of <span class='green'>{TrickData.tricks.Count}</span>");
                     //}
                 }
+
+                Debug.Log("DONE: " + tc.TrickName);
 
                 OnTrickCompleted?.Invoke(playerRef, tc);
             }
@@ -350,7 +353,11 @@ namespace Game.Tricksurf
 
         protected override void OnHumanSpawned(Human hu)
         {
-            InvalidateTrack(null);
+            var player = Game.PlayerManager.FindPlayer(hu);
+            if(player != null)
+            {
+                InvalidateTrack(player);
+            }
         }
 
         protected override void OnHumanTrigger(NetEntity ent, FSMTrigger trigger, TriggerEventType type, float offset = 0)
@@ -423,7 +430,7 @@ namespace Game.Tricksurf
                 }
                 if(type == TriggerEventType.Enter)
                 {
-                    if(Game.IsServer)
+                    if(Game.IsHost)
                     {
                         RegisterTouch(player, trigger, touchInfo);
                     }

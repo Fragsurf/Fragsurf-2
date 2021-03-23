@@ -147,14 +147,14 @@ namespace Fragsurf.Shared.Entity
             // 1. is server
             // 2. isn't server, but predicting
             // 3. isn't server, but is a networked client to simulate gunshots etc
-            if(Game.IsServer 
-                || (!Game.IsServer && prediction)
-                || (!Game.IsServer && this != Local))
+            if(Game.IsHost 
+                || (!Game.IsHost && prediction)
+                || (!Game.IsHost && this != Local))
             {
                 Equippables?.RunCommand(cmd.Fields);
             }
 
-            if (Game.IsServer || prediction)
+            if (Game.IsHost || prediction)
             {
                 if (cmd.Buttons.HasFlag(InputActions.Flashlight))
                 {
@@ -185,7 +185,7 @@ namespace Fragsurf.Shared.Entity
             BaseVelocity = Vector3.zero;
             Health = 100;
 
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 Dead = false;
             }
@@ -193,7 +193,7 @@ namespace Fragsurf.Shared.Entity
 
         public void Give(string itemName)
         {
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 return;
             }
@@ -210,7 +210,7 @@ namespace Fragsurf.Shared.Entity
                 HumanGameObject.OnKilled(default);
             }
 
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 Equippables.DropAllItems();
             }
@@ -360,7 +360,7 @@ namespace Fragsurf.Shared.Entity
 
         public void Damage(DamageInfo dmgInfo)
         {
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 if (!Game.EntityManager.FriendlyFire)
                 {
@@ -399,7 +399,7 @@ namespace Fragsurf.Shared.Entity
         {
             DisableLagCompensation = outOfGame;
 
-            if(outOfGame && Game.IsServer)
+            if(outOfGame && Game.IsHost)
             {
                 Equippables.DropAllItems();
             }

@@ -19,7 +19,7 @@ namespace Fragsurf.Shared.Entity
     }
 
     public delegate void TimedEntityEventHandler(NetEntity entity, int remoteTick, double remoteTime);
-    public delegate void HumanTriggerHandler(NetEntity human, FSMTrigger trigger, TriggerEventType type, float offset = 0f);
+    public delegate void HumanTriggerHandler(Human hu, FSMTrigger trigger, TriggerEventType type, float offset = 0f);
 
     public partial class EntityManager : FSComponent
     {
@@ -63,7 +63,7 @@ namespace Fragsurf.Shared.Entity
 
         private void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
-            if (!Game.IsServer)
+            if (!Game.IsHost)
             {
                 switch (packet)
                 {
@@ -163,7 +163,7 @@ namespace Fragsurf.Shared.Entity
 
                 // do this so clients can create their own client-side entities
                 // and its id wont overlap with server-side entities
-                if (!Game.IsServer)
+                if (!Game.IsHost)
                 {
                     entity.EntityId *= -1;
                 }
@@ -205,6 +205,15 @@ namespace Fragsurf.Shared.Entity
             }
         }
 
+        public void RaiseHumanTrigger(Human hu, FSMTrigger trigger, TriggerEventType evType, float offset = 0f)
+        {
+            if(hu == null)
+            {
+                return;
+            }
+            OnHumanTrigger?.Invoke(hu, trigger, evType, 0f);
+        }
+
         public void RaiseHumanKilled(Human hu)
         {
             if(hu == null)
@@ -232,7 +241,7 @@ namespace Fragsurf.Shared.Entity
 
             OnHumanDamaged?.Invoke(hu, dmgInfo);
 
-            if (Game.IsServer)
+            if (Game.IsHost)
             {
                 var packet = PacketUtility.TakePacket<DamageInfoPacket>();
                 packet.DamageInfo = dmgInfo;

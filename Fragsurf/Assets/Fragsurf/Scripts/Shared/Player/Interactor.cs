@@ -45,7 +45,7 @@ namespace Fragsurf.Shared.Player
         {
             var testlag = DevConsole.GetVariable<bool>("net.testlag");
 
-            if (!_human.Game.IsServer)
+            if (!_human.Game.IsHost)
             {
                 if (testlag)
                 {
@@ -88,7 +88,7 @@ namespace Fragsurf.Shared.Player
 
                 if (trigger != null)
                 {
-                    trigger.OnInteract(_human.EntityId, _human.Game.IsServer);
+                    trigger.OnInteract(_human.EntityId, _human.Game.IsHost);
                     return;
                 }
 

@@ -37,7 +37,7 @@ namespace Fragsurf.Shared.Entity
 
         private void Initialize()
         {
-            Animator.cullingMode = Human.Game.IsServer
+            Animator.cullingMode = Human.Game.IsHost
                 ? AnimatorCullingMode.AlwaysAnimate
                 : AnimatorCullingMode.CullCompletely;
             _initialized = true;
