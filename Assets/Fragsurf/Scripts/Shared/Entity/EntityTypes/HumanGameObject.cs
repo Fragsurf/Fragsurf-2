@@ -282,8 +282,9 @@ namespace Fragsurf.Shared.Entity
                 Animator.SetFloat("forward", _currentMoveBlend.z);
 
                 var newAnimLayer = GetAnimationLayer();
-                if (newAnimLayer != _animLayer
+                if ((newAnimLayer != _animLayer
                     || Animator.GetLayerWeight((int)newAnimLayer) != 1)
+                    && (int)newAnimLayer < Animator.layerCount)
                 {
                     Animator.SetLayerWeight((int)_animLayer, 0);
                     Animator.SetLayerWeight((int)newAnimLayer, 1);
