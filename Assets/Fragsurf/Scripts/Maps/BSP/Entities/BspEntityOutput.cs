@@ -19,7 +19,7 @@ namespace Fragsurf.BSP
         {
             try
             {
-                var split = input.Split(',');
+                var split = input.Split(',', '\u001b');
                 var result = new BspEntityOutput()
                 {
                     MyOutput = myOutput,
