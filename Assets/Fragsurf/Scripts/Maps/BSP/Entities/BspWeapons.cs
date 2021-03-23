@@ -25,7 +25,7 @@ namespace Fragsurf.BSP
 
         private bool GetItem(string csWeaponName, out FSMPickup.ItemNames item)
         {
-            item = FSMPickup.ItemNames.Bat;
+            item = FSMPickup.ItemNames.R870;
 
             switch (csWeaponName)
             {
@@ -91,6 +91,7 @@ namespace Fragsurf.BSP
 
                 // shotgun
                 case "m3":
+                case "nova":
                 case "xm1014":
                     item = FSMPickup.ItemNames.R870;
                     break;
