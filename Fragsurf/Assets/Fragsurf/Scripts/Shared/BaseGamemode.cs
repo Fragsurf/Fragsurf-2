@@ -44,10 +44,14 @@ namespace Fragsurf.Shared
                 c.OnStart();
             }
 
-            if (!game.IsServer)
+            if (!game.IsServer && Data.InstantiateOnLoad != null)
             {
-                foreach(var obj in Data.InstantiateOnLoad)
+                foreach (var obj in Data.InstantiateOnLoad)
                 {
+                    if (!obj)
+                    {
+                        continue;
+                    }
                     var clone = GameObject.Instantiate(obj);
                     _objectsInstantiated.Add(clone);
                     Modals.AddRange(clone.GetComponentsInChildren<UGuiModal>(true));

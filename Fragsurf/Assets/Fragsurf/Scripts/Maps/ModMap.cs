@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Fragsurf.Maps
 {
@@ -33,7 +34,39 @@ namespace Fragsurf.Maps
                 await Task.Delay(100);
             }
 
-            if(_mod.loadState == ResourceLoadState.Loaded)
+            if(_mod.loadState != ResourceLoadState.Loaded)
+            {
+                Debug.LogError("Failed to load mod: " + _mod.loadState);
+                return MapLoadState.Failed;
+            }
+
+            if(_mod.scenes == null || _mod.scenes.Count == 0)
+            {
+                Debug.LogError("Mod doesn't contain any scenes");
+                return MapLoadState.Failed;
+            }
+
+            { } { } { }
+            ;
+            ; ;
+            ;
+            {
+                ;    ; ; ; ; ; ; ;
+            }
+            ;
+            ; ;
+            ;
+            { } { } { }
+
+            SceneManager.LoadScene("ModMap", LoadSceneMode.Single);
+            _mod.scenes[0].LoadAsync();
+
+            while(_mod.scenes[0].loadState == ResourceLoadState.Loading)
+            {
+                await Task.Delay(100);
+            }
+
+            if(_mod.scenes[0].loadState == ResourceLoadState.Loaded)
             {
                 return MapLoadState.Loaded;
             }
@@ -43,6 +76,7 @@ namespace Fragsurf.Maps
 
         protected override async Task _UnloadAsync()
         {
+            SceneManager.UnloadScene("ModMap");
             _mod.Unload();
         }
 

@@ -63,7 +63,8 @@ namespace ModTool
         /// </summary>
         public void Refresh()
         {
-            refreshEvent.Set();
+            //refreshEvent.Set();
+            DoRefresh();
         }
 
         private void BackgroundRefresh()

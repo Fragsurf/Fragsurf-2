@@ -232,8 +232,9 @@ namespace ModTool
 
         private void OnModFound(string path)
         {
+            AddMod(new Mod(path));
             //AddMod(path);
-            ThreadPool.QueueUserWorkItem(o => AddMod(path));
+            //ThreadPool.QueueUserWorkItem(o => AddMod(path));
         }
 
         private void OnModRemoved(string path)

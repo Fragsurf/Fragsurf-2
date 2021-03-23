@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Fragsurf/Content/Scenes/BSPMap.unity
     guid: d1d52a09da4569a498a83749d76a7181
+  - enabled: 1
+    path: Assets/Fragsurf/Content/Scenes/ModMap.unity
+    guid: 4ca52e461fc53e547b6847367633a264
   m_configObjects: {}

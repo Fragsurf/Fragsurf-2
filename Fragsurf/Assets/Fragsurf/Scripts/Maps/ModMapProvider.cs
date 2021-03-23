@@ -20,7 +20,7 @@ namespace Fragsurf.Maps
             {
                 if (Directory.Exists(Structure.MapsFolder))
                 {
-                    ModManager.instance.AddSearchDirectory(Structure.MapsFolder, true);
+                    ModManager.instance.AddSearchDirectory(Structure.MapsFolder);
                 }
 
                 _searchDirsAdded = true;
