@@ -46,7 +46,7 @@ namespace Fragsurf.BSP
 							var pos = br.BaseStream.Position;
 							var vertexOffset = (int)(pos + br.ReadUInt32());
 
-							cc.idk1 = br.ReadInt32();
+							cc.BrushIndex = br.ReadInt32();
 							cc.idk2 = br.ReadByte();
 							cc.idk3 = br.ReadByte();
 							cc.idk4 = br.ReadUInt16();
@@ -114,7 +114,7 @@ namespace Fragsurf.BSP
 	{
 		public List<int> Triangles = new List<int>();
 		public List<UnityEngine.Vector3> Verts = new List<UnityEngine.Vector3>();
-		public int idk1;
+		public int BrushIndex;
 		public byte idk2;
 		public byte idk3;
 		public ushort idk4;
@@ -125,7 +125,7 @@ namespace Fragsurf.BSP
 
 		public override string ToString()
 		{
-			return $"#{idk1} - {idk2} - {idk3} - {idk4} - {idk5}";
+			return $"#{BrushIndex} - {idk2} - {idk3} - {idk4} - {idk5}";
 		}
 	}
 

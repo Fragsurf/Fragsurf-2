@@ -49,37 +49,30 @@ namespace Fragsurf.BSP
 				var modelParent = _models[pm.ModelIndex];
 				var solidData = new Dictionary<int, string>();
 
+				// this is wrong
 				foreach (var kvp in pm.KeyValues)
 				{
-					if (int.TryParse(kvp.Value["index"], out int indx))
-					{
-						solidData.Add(indx, kvp.Key);
-					}
-				}
-
-                foreach (var kvp in pm.KeyValues)
-                {
-                    //if (string.Equals(kvp.Key, "fluid"))
-                    //{
-                    //    var idx = int.Parse(kvp.Value["index"]);
-                    //    Debug.Log(idx, pm.Solids[idx].Collider.gameObject);
-                    //    pm.Solids[idx].Collider.gameObject.layer = LayerMask.NameToLayer("Water");
-                    //}
+                    if (int.TryParse(kvp.Value["index"], out int indx))
+                    {
+                        solidData.Add(indx, kvp.Key);
+                    }
                 }
 
                 var physModelContainer = CreateGameObject($"PhysModel #{pm.ModelIndex}", modelParent);
-				var solidIdx = 0;
+				var solidIdx = -1;
 
 				foreach (var solid in pm.Solids)
 				{
-					var isLadder = BrushHasFlag(pm.ModelIndex, solidIdx, BrushContents.LADDER);
-					var isWater = BrushHasFlag(pm.ModelIndex, solidIdx, BrushContents.WATER) || solidData.ContainsKey(solidIdx) && solidData[solidIdx] == "fluid";
 					solidIdx++;
-
+					// i don't think this was right
+					//var contents = GetBrushContents(pm.ModelIndex, solidIdx);
+					//var isWater = contents.HasFlag(BrushContents.WATER) || solidData.ContainsKey(solidIdx) && solidData[solidIdx] == "fluid";
 					solid.ConvexContainer = CreateGameObject($"Solid #{solidIdx}", physModelContainer);
 
+					var convexIdx = -1;
 					foreach (var cc in solid.Convexes)
 					{
+						convexIdx++;
 						if (cc.Skip || cc.Verts.Count < 4)
 						{
 							if (cc.Verts.Count < 4)
@@ -90,7 +83,6 @@ namespace Fragsurf.BSP
 						}
 
 						var solidObj = CreateGameObject($"Convex {cc}", solid.ConvexContainer);
-
 						var tris = cc.Triangles;
 						var verts = new UVector3[cc.Verts.Count];
 						var pivot = new UVector3(cc.Verts[0].x, -cc.Verts[0].y, cc.Verts[0].z);
@@ -109,16 +101,16 @@ namespace Fragsurf.BSP
 						mc.sharedMesh = mf.mesh;
 						mc.convex = true;
 
-						if (isWater)
+						if (_bsp.Brushes[cc.BrushIndex].Contents.HasFlag(BrushContents.LADDER))
+						{
+							mc.gameObject.tag = "Ladder";
+						}
+
+						if (_bsp.Brushes[cc.BrushIndex].Contents.HasFlag(BrushContents.WATER))
 						{
 							mc.gameObject.layer = LayerMask.NameToLayer("Water");
 							mc.convex = true;
 							mc.isTrigger = true;
-						}
-
-						if (isLadder)
-						{
-							mc.gameObject.tag = "Ladder";
 						}
 
 						solidObj.transform.position = pivot;

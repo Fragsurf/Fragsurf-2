@@ -188,6 +188,7 @@ namespace Fragsurf.BSP
 		public float Alpha;
 		public float RefractAmount;
 		public int CompileSky;
+		public int CompileLadder;
 		public int VertexColor;
 		public SourceUtils.Color32 Color;
 		public SourceUtils.Color32 RefractTint;
