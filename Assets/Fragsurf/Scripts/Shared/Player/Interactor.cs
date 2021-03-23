@@ -84,16 +84,10 @@ namespace Fragsurf.Shared.Player
             for (int i = 0; i < hitCount; i++)
             {
                 var hit = _hitBuffer[i];
-                var trigger = hit.collider.GetComponentInParent<FSMTrigger>();
+                var interactable = hit.collider.GetComponentInParent<IInteractable>()
+                    ?? _human.Game.EntityManager.FindEntity(hit.collider.gameObject) as IInteractable;
 
-                if (trigger != null)
-                {
-                    trigger.OnInteract(_human.EntityId, _human.Game.IsHost);
-                    return;
-                }
-
-                var ent = _human.Game.EntityManager.FindEntity(hit.collider.gameObject);
-                if(ent is IInteractable interactable)
+                if (interactable != null)
                 {
                     interactable.OnInteract(_human);
                     break;

@@ -10,7 +10,7 @@ namespace Fragsurf.Actors
 {
     [SelectionBase]
     [ExecuteAlways]
-    public class FSMTrigger : FSMActor
+    public class FSMTrigger : FSMActor, IInteractable
     {
 
         public enum FilterType
@@ -56,15 +56,6 @@ namespace Fragsurf.Actors
             }
             rb.tag = "IgnoreItemTrace";
             rb.isKinematic = true;
-        }
-
-        public void OnInteract(int entityId, bool isHost)
-        {
-            var entity = FSGameLoop.GetGameInstance(isHost).EntityManager.FindEntity(entityId);
-            if(entity != null && PassesCondition(entity))
-            {
-                _TriggerInteract(entity);
-            }
         }
 
         public void OnStartTouch(int entityId, bool isHost)
@@ -206,6 +197,22 @@ namespace Fragsurf.Actors
             }
 
             return true;
+        }
+
+        public void OnInteract(NetEntity interactee)
+        {
+            if (interactee != null && PassesCondition(interactee))
+            {
+                _TriggerInteract(interactee);
+            }
+        }
+
+        public void MouseEnter(int clientIndex)
+        {
+        }
+
+        public void MouseExit(int clientIndex)
+        {
         }
 
         private struct StayingData

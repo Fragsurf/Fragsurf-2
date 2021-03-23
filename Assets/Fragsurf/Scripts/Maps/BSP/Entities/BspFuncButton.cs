@@ -34,6 +34,7 @@ namespace Fragsurf.BSP
 
         public void OnInteract(NetEntity interactee)
         {
+            Debug.Log("Pressed");
             Press();
         }
 
