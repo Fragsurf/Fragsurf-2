@@ -17,7 +17,7 @@ namespace Fragsurf.Movement
         public float StopSpeed = 75 * SurfController.HammerScale;
         public float JumpPower = 7.15f;
         public float MaxSpeed = 270 * SurfController.HammerScale;
-        public float MaxVelocity = 99999 * SurfController.HammerScale;
+        public float MaxVelocity = 3500 * SurfController.HammerScale;
         public float NoclipSpeed = 6.5f;
         public float NoclipFriction = 12f;
         public bool NoclipCollide = false;
