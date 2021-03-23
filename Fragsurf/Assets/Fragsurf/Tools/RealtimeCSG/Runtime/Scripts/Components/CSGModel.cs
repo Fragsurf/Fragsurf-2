@@ -96,7 +96,7 @@ namespace RealtimeCSG.Components
         [EnumAsFlags] public ModelSettingsFlags Settings = DefaultSettings;
         [EnumAsFlags] public Foundation.VertexChannelFlags VertexChannels = Foundation.VertexChannelFlags.All;
 #if UNITY_2019_2_OR_NEWER
-        [EnumAsFlags] public ReceiveGI ReceiveGI = ReceiveGI.LightProbes;
+        [EnumAsFlags] public ReceiveGI ReceiveGI = ReceiveGI.Lightmaps;
 #endif
 
 #if UNITY_2017_3_OR_NEWER

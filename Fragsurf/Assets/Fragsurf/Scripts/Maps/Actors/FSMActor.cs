@@ -1,6 +1,7 @@
 ﻿//using RealtimeCSG;
 //using RealtimeCSG.Components;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Fragsurf.Actors
 {
@@ -10,7 +11,12 @@ namespace Fragsurf.Actors
     {
 
         [Header("Actor Options")]
+        [FormerlySerializedAs("_targetName")]
         public string ActorName;
+        //[HideInInspector]
+        [SerializeField]
+        [FormerlySerializedAs("_fields")]
+        protected ActorField[] _customProperties;
 
         public virtual void Tick() { }
         protected virtual void _Update() { }
@@ -21,6 +27,9 @@ namespace Fragsurf.Actors
 
         private void Awake()
         {
+            // backwards compatibility
+            CustomPropertiesToFields();
+
             _Awake();
         }
 
@@ -60,6 +69,59 @@ namespace Fragsurf.Actors
         }
 
         public virtual void Refresh() { }
+
+        public ActorField GetCustomProperty(string name)
+        {
+            for (int i = 0; i < _customProperties.Length; i++)
+            {
+                if (_customProperties[i].Name == name)
+                {
+                    return _customProperties[i];
+                }
+            }
+            return null;
+        }
+
+        // This is to support really old maps
+        private void CustomPropertiesToFields()
+        {
+            var thisType = GetType();
+
+            if (_customProperties != null)
+            {
+                foreach (var field in _customProperties)
+                {
+                    var actualField = thisType.GetField(field.Name.Replace(" ", null));
+                    if (actualField != null)
+                    {
+                        switch (field.FieldType)
+                        {
+                            case ActorFieldType.Bool:
+                                actualField.SetValue(this, field.BoolValue);
+                                break;
+                            case ActorFieldType.Float:
+                                actualField.SetValue(this, field.FloatValue);
+                                break;
+                            case ActorFieldType.Int:
+                                actualField.SetValue(this, field.IntValue);
+                                break;
+                            case ActorFieldType.String:
+                                actualField.SetValue(this, field.StringValue);
+                                break;
+                            case ActorFieldType.TriggerCondition:
+                                actualField.SetValue(this, field.TriggerConditionValue);
+                                break;
+                            case ActorFieldType.Vector2:
+                                actualField.SetValue(this, field.Vector2Value);
+                                break;
+                            case ActorFieldType.Vector3:
+                                actualField.SetValue(this, field.Vector3Value);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
 
     }
 }

@@ -2,6 +2,7 @@
 using Fragsurf.Movement;
 using System.Linq;
 using Fragsurf.Shared.Entity;
+using UnityEngine.Serialization;
 
 namespace Fragsurf.Actors
 {
@@ -10,9 +11,9 @@ namespace Fragsurf.Actors
 
         [Header("Teleport Options")]
 
-        public string TargetActorName;
-        public bool DontRotate;
-        public bool SetVelocityToZero;
+        public string TargetActor;
+        public bool MaintainAngles;
+        public bool ClearVelocity;
 
         protected override void _TriggerEnter(NetEntity entity)
         {
@@ -23,25 +24,25 @@ namespace Fragsurf.Actors
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(TargetActorName))
+            if (!string.IsNullOrWhiteSpace(TargetActor))
             {
                 // todo: cache actors for efficient lookup
-                var target = FindObjectsOfType<FSMActor>().FirstOrDefault(x => x.ActorName.Equals(TargetActorName, System.StringComparison.OrdinalIgnoreCase));
+                var target = FindObjectsOfType<FSMActor>().FirstOrDefault(x => x.ActorName.Equals(TargetActor, System.StringComparison.OrdinalIgnoreCase));
                 if (target)
                 {
                     character.MoveData.Origin = target.transform.position;
-                    if (!DontRotate)
+                    if (!MaintainAngles)
                     {
                         character.MoveData.ViewAngles = target.transform.rotation.eulerAngles;
                     }
                 }
             }
 
-            if(SetVelocityToZero)
+            if(ClearVelocity)
             {
                 character.MoveData.Velocity = Vector3.zero;
 
-                if (!DontRotate)
+                if (!MaintainAngles)
                 {
                     character.MoveData.BaseVelocity = Vector3.zero;
                 }
@@ -54,9 +55,9 @@ namespace Fragsurf.Actors
 
             Gizmos.color = Color.white;
             var targetPoint = transform.position;
-            if (!string.IsNullOrWhiteSpace(TargetActorName))
+            if (!string.IsNullOrWhiteSpace(TargetActor))
             {
-                var target = GameObject.FindObjectsOfType<FSMActor>().FirstOrDefault(x => string.Equals(x.ActorName, TargetActorName, System.StringComparison.OrdinalIgnoreCase));
+                var target = GameObject.FindObjectsOfType<FSMActor>().FirstOrDefault(x => string.Equals(x.ActorName, TargetActor, System.StringComparison.OrdinalIgnoreCase));
                 if (target)
                 {
                     targetPoint = target.transform.position;

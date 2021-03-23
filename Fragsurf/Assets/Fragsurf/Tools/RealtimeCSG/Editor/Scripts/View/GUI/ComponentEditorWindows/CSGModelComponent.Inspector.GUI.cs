@@ -769,7 +769,7 @@ namespace RealtimeCSG
                         EditorGUI.BeginChangeCheck();
                         {
                             EditorGUI.showMixedValue = !MeshReceiveGI.HasValue;
-                            MeshReceiveGI = (ReceiveGI)EditorGUILayout.EnumPopup(ReceiveGIContent, MeshReceiveGI ?? ReceiveGI.LightProbes, popupStyle);
+                            MeshReceiveGI = (ReceiveGI)EditorGUILayout.EnumPopup(ReceiveGIContent, MeshReceiveGI ?? ReceiveGI.Lightmaps, popupStyle);
                         }
                         if (EditorGUI.EndChangeCheck() && MeshReceiveGI.HasValue)
                         {

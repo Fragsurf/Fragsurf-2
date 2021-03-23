@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc76d64aa6c15cc48afb457e8dc2ed06, type: 3}
+  m_Name: CodeSettings
+  m_EditorClassIdentifier: 
+  _inheritanceRestrictions:
+  - message: Please use ModTool.Interface.ModBehaviour instead of MonoBehaviour.
+    applicableBaseType:
+      nameSpace: UnityEngine
+      name: MonoBehaviour
+    restrictionMode: 1
+    type:
+      nameSpace: ModTool.Interface
+      name: ModBehaviour
+  _memberRestrictions:
+  - message: Please use ModBehaviour.Instantiate or ContentHandler.Instantiate instead
+      to ensure proper object creation.
+    applicableBaseType:
+      nameSpace: 
+      name: 
+    restrictionMode: 0
+    memberName:
+      type:
+        nameSpace: UnityEngine
+        name: Object
+      name: Instantiate
+  - message: Please use ModBehaviour.AddComponent or ContentHandler.AddComponent
+      instead to ensure proper component handling.
+    applicableBaseType:
+      nameSpace: 
+      name: 
+    restrictionMode: 0
+    memberName:
+      type:
+        nameSpace: UnityEngine
+        name: GameObject
+      name: AddComponent
+  - message: Creating new GameObjects is not allowed
+    applicableBaseType:
+      nameSpace: 
+      name: 
+    restrictionMode: 0
+    memberName:
+      type:
+        nameSpace: UnityEngine
+        name: GameObject
+      name: .ctor
+  _typeRestrictions: []
+  _namespaceRestrictions:
+  - message: Reflection is not allowed.
+    applicableBaseType:
+      nameSpace: 
+      name: 
+    restrictionMode: 0
+    nameSpace: System.Reflection
+    includeNested: 1
+  - message: IO is not allowed.
+    applicableBaseType:
+      nameSpace: 
+      name: 
+    restrictionMode: 0
+    nameSpace: System.IO
+    includeNested: 1
+  _apiAssemblies:
+  - Fragsurf
+  - Fragsurf.Editor
+  _customPaths:
+  - Assets\Fragsurf\Plugins
+  - Assets\Fragsurf\Content
+  - Assets\Fragsurf\Tools
+  - Assets\Fragsurf\candy.txt
