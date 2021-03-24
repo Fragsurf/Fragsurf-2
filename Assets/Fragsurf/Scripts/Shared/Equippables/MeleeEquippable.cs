@@ -84,7 +84,12 @@ namespace Fragsurf.Shared
 
         protected virtual void ProcessHit(RaycastHit hit)
         {
-            if(hit.collider.TryGetComponent(out HitboxBehaviour hb)
+            if (hit.collider && hit.collider.gameObject.layer == Layers.Default)
+            {
+                hit.collider.GetComponentInParent<IDamageable>()?.Damage(default);
+            }
+
+            if (hit.collider.TryGetComponent(out HitboxBehaviour hb)
                 && Entity.Game.EntityManager.TryFindEntity(hb.EntityId, out NetEntity ent)
                 && ent is IDamageable dmg)
             {

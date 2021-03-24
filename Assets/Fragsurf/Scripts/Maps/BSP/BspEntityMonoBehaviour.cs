@@ -7,7 +7,7 @@ using Fragsurf.Server;
 
 namespace Fragsurf.BSP
 {
-	public class BspEntityMonoBehaviour : MonoBehaviour, IHasNetProps
+	public class BspEntityMonoBehaviour : MonoBehaviour, IHasNetProps, IDamageable
 	{
 		public Entity Entity;
 		public BspToUnity BspToUnity;
@@ -15,7 +15,9 @@ namespace Fragsurf.BSP
 		public int UniqueId { get; set; }
 		public bool HasAuthority => GameServer.Instance != null;
 
-		private List<BspEntityOutput> _pendingOutputs = new List<BspEntityOutput>();
+        public bool Dead => false;
+
+        private List<BspEntityOutput> _pendingOutputs = new List<BspEntityOutput>();
 
 		public BspEntityMonoBehaviour FindBspEntity(string targetName)
         {
@@ -94,7 +96,14 @@ namespace Fragsurf.BSP
         {
 
         }
-	}
+
+        public void Damage(DamageInfo dmgInfo)
+        {
+			Fire("OnDamaged");
+
+			Debug.Log("Firing: ");
+		}
+    }
 
 	public class GenericBspEntityMonoBehaviour<T> : BspEntityMonoBehaviour
 		where T : Entity

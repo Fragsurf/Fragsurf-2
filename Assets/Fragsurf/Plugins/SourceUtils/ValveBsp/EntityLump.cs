@@ -574,6 +574,13 @@ namespace SourceUtils
             public string FilterName { get; private set; }
         }
 
+        [EntityClass("func_breakable")]
+        public class FuncBreakable : Entity
+        {
+            [EntityField("health")]
+            public int Health { get; private set; }
+        }
+
         [EntityClass("func_rotating")]
         public class FuncRotating : Entity
         {

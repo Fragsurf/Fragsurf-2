@@ -30,7 +30,7 @@ namespace Fragsurf.Misc
             _audioSrc.rolloffMode = AudioRolloffMode.Linear;
             _audioSrc.spatialBlend = 1.0f;
             _audioSrc.minDistance = .1f;
-            _audioSrc.maxDistance = 3f;
+            _audioSrc.maxDistance = 8f;
         }
 
         void OnCollisionEnter(Collision coll)

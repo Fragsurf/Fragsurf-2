@@ -14,6 +14,8 @@ namespace Fragsurf.BSP
         private Vector3 _downPosition;
         private Vector3 _originalPosition;
 
+        public bool Dead => throw new System.NotImplementedException();
+
         protected override void OnStart()
         {
             gameObject.SetChildrenCollidersToConvexTrigger();
@@ -34,7 +36,6 @@ namespace Fragsurf.BSP
 
         public void OnInteract(NetEntity interactee)
         {
-            Debug.Log("Pressed");
             Press();
         }
 
@@ -68,6 +69,14 @@ namespace Fragsurf.BSP
         public void MouseExit(int clientIndex)
         {
         }
+
+        public new void Damage(DamageInfo dmgInfo)
+        {
+            base.Damage(dmgInfo);
+
+            Press();
+        }
+
     }
 }
 

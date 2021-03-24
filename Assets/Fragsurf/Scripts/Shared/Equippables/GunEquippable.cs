@@ -313,6 +313,11 @@ namespace Fragsurf.Shared
 
         protected virtual void ProcessHit(RaycastHit hit)
         {
+            if (hit.collider && hit.collider.gameObject.layer == Layers.Default)
+            {
+                hit.collider.GetComponentInParent<IDamageable>()?.Damage(default);
+            }
+
             var ent = Entity.Game.EntityManager.FindEntity(hit.collider.gameObject);
             if(ent == null && !Entity.Game.IsHost)
             {
