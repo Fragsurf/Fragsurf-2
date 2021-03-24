@@ -52,7 +52,8 @@ namespace Fragsurf.Actors
                 }
                 _wm.transform.position = transform.position;
                 _wm.transform.SetParent(transform);
-                foreach(var r in _wm.GetComponentsInChildren<Renderer>())
+                _wm.transform.localEulerAngles = Vector3.zero;
+                foreach (var r in _wm.GetComponentsInChildren<Renderer>())
                 {
                     r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     r.rendererPriority = 10;
