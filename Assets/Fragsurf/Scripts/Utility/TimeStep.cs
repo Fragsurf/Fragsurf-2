@@ -10,8 +10,10 @@ namespace Fragsurf.Utility
 		// Elapsed Time, Delta Time, Alpha
 		public UnityEvent<float, float, float> OnFrame = new UnityEvent<float, float, float>();
 
-		private float _accumulator;
+		private bool _idling;
+		private float _accumulator = 300;
 		private float _desiredTimeScale = 1f;
+		private int _desiredFramerate = 300;
 
 		public FPSCounter FPSCounter { get; } = new FPSCounter();
 		public float ElapsedTime { get; private set; }
@@ -23,7 +25,11 @@ namespace Fragsurf.Utility
 		public int TargetFPS
 		{
 			get => Application.targetFrameRate;
-			set => Application.targetFrameRate = Mathf.Clamp(value, 10, 2000);
+			set
+			{
+				_desiredFramerate = Mathf.Clamp(value, 10, 2000);
+				Application.targetFrameRate = _desiredFramerate;
+			}
 		}
 
 		[ConVar("game.tickrate", "Ticks to process per second", ConVarFlags.Replicator)]
@@ -42,6 +48,7 @@ namespace Fragsurf.Utility
 
 		private void Awake()
         {
+			_desiredFramerate = Application.targetFrameRate;
 			DevConsole.RegisterObject(this);
         }
 
@@ -71,14 +78,11 @@ namespace Fragsurf.Utility
 
 		void Update()
 		{
-			DeltaTime = Time.deltaTime;
-			FixedDeltaTime = (1f / TickRate) * (1f / Time.timeScale);
-
-			//var frameTime = /*Mathf.Min(*/Time.realtimeSinceStartup - ElapsedTime/*, FixedDeltaTime)*/;
-			var frameTime = Time.deltaTime;
-
+			var tickRate = _idling ? 10 : TickRate;
 			ElapsedTime = Time.realtimeSinceStartup;
-			_accumulator += frameTime;
+			DeltaTime = Time.deltaTime;
+			FixedDeltaTime = (1f / tickRate) * (1f / Time.timeScale);
+			_accumulator += DeltaTime;
 
 			while (_accumulator >= FixedDeltaTime)
 			{
@@ -91,6 +95,12 @@ namespace Fragsurf.Utility
 
 			FPSCounter.Update();
 		}
+
+		public void SetIdleMode(bool idle)
+        {
+			_idling = idle;
+			Application.targetFrameRate = idle ? 10 : _desiredFramerate;
+        }
 
 	}
 }

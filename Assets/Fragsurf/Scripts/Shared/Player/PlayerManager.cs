@@ -25,6 +25,7 @@ namespace Fragsurf.Shared.Player
         public BasePlayer LocalPlayer => FindPlayer(Game.ClientIndex);
         public List<BasePlayer> Players { get; } = new List<BasePlayer>();
         public Dictionary<BasePlayer, List<ulong>> SpecList { get; } = new Dictionary<BasePlayer, List<ulong>>();
+        public override bool ExecuteWhenIdling => true;
 
         public int PlayerCount => Players.Count;
 

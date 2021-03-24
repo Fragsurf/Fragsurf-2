@@ -15,6 +15,7 @@ namespace Fragsurf.Shared
         public int UniqueId { get; set; }
         public virtual bool HasNetProps => false;
         public virtual bool HasAuthority => Game.IsHost;
+        public virtual bool ExecuteWhenIdling { get; set; } = false;
 
         public void Initialize(FSGameLoop game)
         {

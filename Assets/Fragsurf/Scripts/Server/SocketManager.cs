@@ -8,6 +8,7 @@ using Fragsurf.Shared.Player;
 using Lidgren.Network;
 using System.Net.NetworkInformation;
 using UnityEngine;
+using Fragsurf.Utility;
 
 namespace Fragsurf.Server
 {
@@ -41,6 +42,7 @@ namespace Fragsurf.Server
 
         public int NextClientIndex => ++_clientIndex;
         public ServerStatus Status { get; private set; } = ServerStatus.None;
+        public override bool ExecuteWhenIdling => true;
 
         [ConVar("server.name")]
         public string ServerName

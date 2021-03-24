@@ -10,18 +10,13 @@ namespace Fragsurf.Server
 {
     public class SteamworksServer : FSServerScript
     {
+
+        [ConVar("server.steamqueryport", "")]
         public int SteamQueryPort { get; set; } = 43026;
+        [ConVar("server.steamport", "")]
         public int SteamPort { get; set; } = 43025;
-        private bool _minFps = true;
 
         private const string DefaultServerName = "New Fragsurf Server";
-
-        protected override void _Initialize()
-        {
-            DevConsole.RegisterVariable("server.minfps", "", () => _minFps, v => _minFps = v, this);
-            DevConsole.RegisterVariable("server.steamport", "", () => SteamPort, v => SteamPort = v, this);
-            DevConsole.RegisterVariable("server.steamqueryport", "", () => SteamQueryPort, v => SteamQueryPort = v, this);
-        }
 
         protected override void _Start()
         {
@@ -47,22 +42,18 @@ namespace Fragsurf.Server
 
                 GameObject.FindObjectOfType<ServerConsole>()?.SetTitle(GameServer.Instance.Socket.ServerName);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.LogError(e.ToString());
             }
         }
 
-        protected override void _Update()
+        protected override void _Tick()
         {
-            if(SteamServer.IsValid)
+            if (SteamServer.IsValid)
             {
                 SteamServer.RunCallbacks();
             }
-
-            Application.targetFrameRate = Game.PlayerManager.PlayerCount > 0
-                ? _minFps ? (int)(1 / Time.fixedDeltaTime) + 5 : TimeStep.Instance.TargetFPS
-                : 10;
         }
 
         protected override void _Destroy()
@@ -82,7 +73,7 @@ namespace Fragsurf.Server
         private void SteamServer_OnValidateAuthTicketResponse(SteamId steamid, SteamId owner, AuthResponse response)
         {
             var player = Game.PlayerManager.FindPlayer(steamid);
-            if(player == null)
+            if (player == null)
             {
                 return;
             }
@@ -106,13 +97,13 @@ namespace Fragsurf.Server
 
         protected override void OnPlayerIntroduced(BasePlayer player)
         {
-            if(player.IsFake)
+            if (player.IsFake)
             {
                 SteamServer.BotCount++;
             }
             else
             {
-                if(player.TicketData != null 
+                if (player.TicketData != null
                     && player.TicketData.Length > 0
                     && !Game.IsLocalServer
                     && !SteamServer.BeginAuthSession(player.TicketData, player.SteamId))
@@ -124,7 +115,7 @@ namespace Fragsurf.Server
 
         protected override void OnPlayerDisconnected(BasePlayer player)
         {
-            if(player.IsFake)
+            if (player.IsFake)
             {
                 SteamServer.BotCount--;
             }

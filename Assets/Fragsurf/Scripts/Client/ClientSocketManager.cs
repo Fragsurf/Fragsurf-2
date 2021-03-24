@@ -29,6 +29,7 @@ namespace Fragsurf.Client
         public ClientSocketStatus Status { get; private set; } = ClientSocketStatus.Disconnected;
         public string HostAddress { get; private set; }
         public int HostPort { get; private set; }
+        public override bool ExecuteWhenIdling => true;
 
         public float AverageRoundtripTime => _pingAverage.TrimmedAverage;
 
@@ -41,18 +42,28 @@ namespace Fragsurf.Client
 
         public string EnteredPassword = string.Empty;
 
-        protected override void _Initialize()
+        private int _fakelag;
+        [ConVar("net.fakelag")]
+        public int FakeLag
         {
-            DevConsole.RegisterCommand("net.disconnect", "Disconnects from the host", this, Cmd_Disconnect);
-            DevConsole.RegisterCommand("disconnect", "Disconnects from the host", this, Cmd_Disconnect);
-            DevConsole.RegisterCommand("net.fakelag", "", this, (e) =>
+            get => _fakelag;
+            set
             {
-                _socket?.SetFakeLag(int.Parse(e[1]));
-            });
-            DevConsole.RegisterCommand("net.fakeloss", "", this, (e) =>
+                _socket?.SetFakeLag(value);
+                _fakelag = value;
+            }
+        }
+
+        private int _fakeloss;
+        [ConVar("net.fakelag")]
+        public int FakeLoss
+        {
+            get => _fakeloss;
+            set
             {
-                _socket?.SetFakeLoss(int.Parse(e[1]));
-            });
+                _socket?.SetFakeLoss(value);
+                _fakeloss = value;
+            }
         }
 
         protected override void _Destroy()
@@ -102,7 +113,7 @@ namespace Fragsurf.Client
 
         public void Shutdown()
         {
-            Disconnect("Shutdown");
+            Disconnect();
         }
 
         public void HandleIncomingData(NetBuffer buffer)
@@ -301,13 +312,20 @@ namespace Fragsurf.Client
             return Status;
         }
 
-        public void Disconnect(string reason = "Disconnected")
+        [ConCommand("net.connect", "")]
+        public void ConnectCmd(string address, int port)
+        {
+            Connect(address, port);
+        }
+        
+        [ConCommand("net.disconnect", "")]
+        public void Disconnect()
         {
             CancelAsyncConnect();
-            _socket?.Disconnect(reason);
+            _socket?.Disconnect("Disconnected");
             _socket = null;
 
-            HandleDisconnected(reason);
+            HandleDisconnected("Disconnected");
         }
 
         public void BroadcastPacket(IBasePacket packet)
@@ -330,11 +348,6 @@ namespace Fragsurf.Client
         private void StartPinging()
         {
             _pingTimer = _pingInterval;
-        }
-
-        private void Cmd_Disconnect(string[] args)
-        {
-            Disconnect("bye");
         }
 
         private void SendPing()

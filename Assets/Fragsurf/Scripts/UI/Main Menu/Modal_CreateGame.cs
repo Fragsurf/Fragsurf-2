@@ -4,6 +4,7 @@ using Fragsurf.Server;
 using Fragsurf.Shared;
 using Fragsurf.Utility;
 using System;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -96,6 +97,7 @@ namespace Fragsurf.UI
             if (serverResult == GameLoadResult.Success)
             {
                 var sv = FSGameLoop.GetGameInstance(true) as GameServer;
+
                 var joinResult = await cl.GameLoader.JoinGameAsync("localhost", sv.Socket.GameplayPort, sv.Socket.ServerPassword);
             }
         }

@@ -17,6 +17,7 @@ namespace Fragsurf.Shared
         public Action PostExecConfig;
 
 
+        public bool Idling { get; set; }
         public abstract bool IsHost { get; }
         protected abstract void RegisterComponents();
         protected abstract void Initialize();
@@ -150,11 +151,13 @@ namespace Fragsurf.Shared
         {
             for (int i = 0; i < FSComponents.Count; i++)
             {
-                if (FSComponents[i].Started
-                    && FSComponents[i].enabled)
+                if(!FSComponents[i].Started
+                    || !FSComponents[i].enabled
+                    /*|| (Idling && !FSComponents[i].ExecuteWhenIdling)*/)
                 {
-                    FSComponents[i].Tick();
+                    continue;
                 }
+                FSComponents[i].Tick();
             }
         }
 
@@ -162,11 +165,13 @@ namespace Fragsurf.Shared
         {
             for (int i = 0; i < FSComponents.Count; i++)
             {
-                if (FSComponents[i].Started
-                    && FSComponents[i].enabled)
+                if (!FSComponents[i].Started
+                    || !FSComponents[i].enabled
+                    /*|| (Idling && !FSComponents[i].ExecuteWhenIdling)*/)
                 {
-                    FSComponents[i].OnUpdate();
+                    continue;
                 }
+                FSComponents[i].OnUpdate();
             }
         }
 
