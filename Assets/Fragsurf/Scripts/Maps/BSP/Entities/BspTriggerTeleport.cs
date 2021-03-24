@@ -2,6 +2,7 @@ using Fragsurf.BSP;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using SourceUtils.ValveBsp.Entities;
+using System.Linq;
 
 namespace Fragsurf.BSP
 {
@@ -14,7 +15,7 @@ namespace Fragsurf.BSP
             {
                 return;
             }
-            var target = FindBspEntity(Entity.Target);
+            var target = FindBspEntities(Entity.Target).FirstOrDefault();
             if (target != null)
             {
                 entity.Origin = target.transform.position;

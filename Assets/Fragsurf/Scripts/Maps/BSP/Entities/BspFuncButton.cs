@@ -14,8 +14,6 @@ namespace Fragsurf.BSP
         private Vector3 _downPosition;
         private Vector3 _originalPosition;
 
-        public bool Dead => throw new System.NotImplementedException();
-
         protected override void OnStart()
         {
             gameObject.SetChildrenCollidersToConvexTrigger();

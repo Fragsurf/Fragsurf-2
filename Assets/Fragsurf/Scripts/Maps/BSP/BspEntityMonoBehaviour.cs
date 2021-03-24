@@ -19,16 +19,15 @@ namespace Fragsurf.BSP
 
         private List<BspEntityOutput> _pendingOutputs = new List<BspEntityOutput>();
 
-		public BspEntityMonoBehaviour FindBspEntity(string targetName)
+		public IEnumerable<BspEntityMonoBehaviour> FindBspEntities(string targetName)
         {
 			foreach(var entity in BspToUnity.Entities)
             {
 				if(string.Equals(entity.Key.TargetName, targetName, StringComparison.OrdinalIgnoreCase))
                 {
-					return entity.Value;
+					yield return entity.Value;
                 }
             }
-			return null;
         }
 
         private void Start()
@@ -83,10 +82,9 @@ namespace Fragsurf.BSP
 				if (prop.StartsWith(outputName, StringComparison.OrdinalIgnoreCase))
 				{
 					var output = BspEntityOutput.Parse(outputName, Entity.GetRawPropertyValue(prop));
-					var target = FindBspEntity(output.TargetEntity);
-					if (target)
-					{
-						target.Input(output);
+					foreach(var ent in FindBspEntities(output.TargetEntity))
+                    {
+						ent.Input(output);
 					}
 				}
 			}
