@@ -100,8 +100,6 @@ namespace Fragsurf.BSP
         public void Damage(DamageInfo dmgInfo)
         {
 			Fire("OnDamaged");
-
-			Debug.Log("Firing: ");
 		}
     }
 
