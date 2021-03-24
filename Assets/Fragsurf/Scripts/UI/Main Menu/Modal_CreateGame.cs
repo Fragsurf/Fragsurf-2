@@ -2,6 +2,7 @@ using Fragsurf.Client;
 using Fragsurf.Maps;
 using Fragsurf.Server;
 using Fragsurf.Shared;
+using Fragsurf.Utility;
 using System;
 using TMPro;
 using UnityEngine;
@@ -147,6 +148,7 @@ namespace Fragsurf.UI
                 _mapCover.texture = map.Cover;
             }
             _mapTitle.text = $"<size=24>{map.Name}</size>\n<b>author:</b> {map.Author}";
+            _mapTitle.transform.parent.gameObject.RebuildLayout();
         }
 
         private void ClearMap()
