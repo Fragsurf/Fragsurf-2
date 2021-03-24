@@ -1,5 +1,13 @@
 ![Fragsurf Banner](Images/cover.png)
 
+Fragsurf is an actively developed next-gen surf and bunnyhop game developed with philosophy that favors modding.  This repository contains the majority of Fragsurf's source code which can be used for reference, education, experimenting, and modding.  Not included in this repository are assets that we do not have a license to release to the public, but will be included in game builds provided on Steam.  Excluded assets are mostly 3d weapons and viewmodel animations.
+
+If you download and build Fragsurf without owning it on Steam you may experience some limited functionality, notably in multiplayer.
+
+You are welcome to contribute to Fragsurf's development in any way you like!  
+
+## Screenshots
+
 ![Fragsurf BSP Loading](Images/bsp.jpg)
 
 ![Fragsurf Combat Surf](Images/csurf.jpg)
