@@ -35,7 +35,8 @@ namespace Fragsurf.Maps
                     Author = "Unknown",
                     FilePath = file,
                     Name = Path.GetFileNameWithoutExtension(file),
-                    AppId = 240
+                    AppId = 240,
+                    MountedGame = "CSS"
                 });
             }
 
@@ -46,7 +47,8 @@ namespace Fragsurf.Maps
                     Author = "Unknown",
                     FilePath = file,
                     Name = Path.GetFileNameWithoutExtension(file),
-                    AppId = 730
+                    AppId = 730,
+                    MountedGame = "CSGO"
                 });
             }
 

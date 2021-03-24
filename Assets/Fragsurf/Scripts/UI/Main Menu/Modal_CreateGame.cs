@@ -20,6 +20,8 @@ namespace Fragsurf.UI
         [SerializeField]
         private Toggle _showWorkshopMaps;
         [SerializeField]
+        private Toggle _showMountedMaps;
+        [SerializeField]
         private Button _refreshButton;
 
         [Header("Map Details")]
@@ -52,6 +54,7 @@ namespace Fragsurf.UI
             _searchInput.onValueChanged.AddListener((s) => { FilterMaps(); });
             _onlyForThisGamemode.onValueChanged.AddListener((b) => { FilterMaps(); });
             _showWorkshopMaps.onValueChanged.AddListener((b) => { FilterMaps(); });
+            _showMountedMaps.onValueChanged.AddListener((b) => { FilterMaps(); });
             _refreshButton.onClick.AddListener(() =>
             {
                 if (!_selectedGamemode)
@@ -168,17 +171,26 @@ namespace Fragsurf.UI
             {
                 return false;
             }
+
             //if(!_showWorkshopMaps.isOn 
             //    && entry.Map is WorkshopMap)
             //{
             //    return false;
             //}
+
             if(_selectedGamemode
                 && _onlyForThisGamemode.isOn 
                 && map.Name.IndexOf(_selectedGamemode.Identifier, StringComparison.OrdinalIgnoreCase) == -1)
             {
                 return false;
             }
+
+            if(!_showMountedMaps.isOn
+                && map.IsMounted)
+            {
+                return false;
+            }
+
             return true;
         }
 

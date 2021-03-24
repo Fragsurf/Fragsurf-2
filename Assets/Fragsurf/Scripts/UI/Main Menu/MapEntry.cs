@@ -19,6 +19,8 @@ namespace Fragsurf.UI
         [SerializeField]
         private TMP_Text _name;
         [SerializeField]
+        private TMP_Text _mountedGame;
+        [SerializeField]
         private Button _button;
 
         public BaseMap Map { get; private set; }
@@ -29,6 +31,7 @@ namespace Fragsurf.UI
         {
             Map = data.Map;
             _name.text = data.Name;
+            _mountedGame.text = data.Map.MountedGame ?? string.Empty;
             _button.onClick.AddListener(() =>
             {
                 if (_selectedTab)

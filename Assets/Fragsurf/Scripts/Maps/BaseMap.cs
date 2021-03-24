@@ -11,6 +11,7 @@ namespace Fragsurf.Maps
         public string Author;
         public Texture2D Cover;
         public string FilePath;
+        public string MountedGame;
 
         private string _uniqueId;
         public string UniqueId
@@ -18,6 +19,8 @@ namespace Fragsurf.Maps
             get { return !string.IsNullOrEmpty(_uniqueId) ? _uniqueId : Name; }
             set { _uniqueId = value; }
         }
+
+        public bool IsMounted => !string.IsNullOrWhiteSpace(MountedGame);
 
         private FSMActor[] _actors;
 
