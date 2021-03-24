@@ -6,18 +6,6 @@ If you download and build Fragsurf without owning it on Steam you may experience
 
 You are welcome to contribute to Fragsurf's development in any way you like!  
 
-## Screenshots
-
-![Fragsurf BSP Loading](Images/bsp.jpg)
-
-![Fragsurf Combat Surf](Images/csurf.jpg)
-
-![Fragsurf Tricksurf](Images/tricksurf.jpg)
-
-![Fragsurf Speedrun Timer](Images/timer.jpg)
-
-![Fragsurf Mapping](Images/mapping.jpg)
-
 ## Links
 
 [Website](https://fragsurf.com)
@@ -36,3 +24,16 @@ You are welcome to contribute to Fragsurf's development in any way you like!
 
 
 The project contains a scene named TestScene with various triggers and meshes, it uses materials from the material pack linked above.  To add it, download or clone the material pack into a folder under your Unity project's Assets folder, i.e. Assets/Default-Material-Pack.
+
+## Screenshots
+
+![Fragsurf BSP Loading](Images/bsp.jpg)
+
+![Fragsurf Combat Surf](Images/csurf.jpg)
+
+![Fragsurf Tricksurf](Images/tricksurf.jpg)
+
+![Fragsurf Speedrun Timer](Images/timer.jpg)
+
+![Fragsurf Mapping](Images/mapping.jpg)
+
