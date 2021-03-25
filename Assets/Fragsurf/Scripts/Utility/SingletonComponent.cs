@@ -19,8 +19,7 @@ namespace Fragsurf.Utility
             {
                 if (m_ShuttingDown)
                 {
-                    Debug.LogWarning("[Singleton] Instance '" + typeof(T) +
-                        "' already destroyed. Returning null.");
+                    //Debug.LogWarning("[Singleton] Instance '" + typeof(T) + "' already destroyed. Returning null.");
                     return null;
                 }
 
