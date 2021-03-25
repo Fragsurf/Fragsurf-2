@@ -12,8 +12,8 @@ namespace Fragsurf.Misc
         private AudioSource _audioSrc;
         [SerializeField]
         private float _soundDelay = .25f;
-        [SerializeField]
-        private float _velocityClipSplit = 1f;
+        //[SerializeField]
+        //private float _velocityClipSplit = 1f;
         [SerializeField]
         private float _velocityMaxVolume = 2f;
 

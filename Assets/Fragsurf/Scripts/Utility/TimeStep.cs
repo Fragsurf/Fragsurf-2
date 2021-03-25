@@ -12,7 +12,6 @@ namespace Fragsurf.Utility
 
 		private bool _idling;
 		private float _accumulator = 300;
-		private float _desiredTimeScale = 1f;
 		private int _desiredFramerate = 300;
 
 		public FPSCounter FPSCounter { get; } = new FPSCounter();

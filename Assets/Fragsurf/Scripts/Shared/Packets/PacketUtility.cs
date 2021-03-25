@@ -42,7 +42,7 @@ namespace Fragsurf.Shared.Packets
             {
                 return _packetTypes[t];
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 UnityEngine.Debug.LogError("Missing : " + t.Name);
             }

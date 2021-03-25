@@ -49,11 +49,11 @@ namespace Fragsurf.Client
                     Map.UnloadAsync();
                 }
 
-                //var server = FSGameLoop.GetGameInstance(true);
-                //if (server)
-                //{
-                //    server.Destroy();
-                //}
+                var server = FSGameLoop.GetGameInstance(true);
+                if (server)
+                {
+                    server.Destroy();
+                }
             }
 
             base.OnDestroy();

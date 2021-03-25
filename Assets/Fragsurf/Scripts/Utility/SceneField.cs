@@ -15,6 +15,7 @@ public class SceneField
 
     public string SceneName => m_SceneName;
     public string ScenePath => m_ScenePath;
+    public Object SceneAsset => m_SceneAsset;
 
     public static implicit operator string(SceneField sceneField)
     {
@@ -36,8 +37,9 @@ public class SceneField
             m_SceneName = asset.name,
             m_ScenePath = scenePath
         };
-#endif
+#else
         return default;
+#endif
     }
 
 }
