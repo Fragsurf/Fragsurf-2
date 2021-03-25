@@ -264,8 +264,11 @@ namespace Fragsurf.Shared
                 _tailSrc.PlayClip(GunData.FireTailSound, 1.0f, true);
             }
 
-            ViewModel.PlayAnimation("Fire");
-            ViewModel.Kick(GunData.ViewModelKickStrength);
+            if (ViewModel && ViewModel.gameObject.activeInHierarchy)
+            {
+                ViewModel.PlayAnimation("Fire");
+                ViewModel.Kick(GunData.ViewModelKickStrength);
+            }
 
             if (_gunEffectTriggers != null)
             {

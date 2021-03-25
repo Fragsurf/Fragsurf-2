@@ -184,7 +184,11 @@ namespace Fragsurf.Shared.Entity
             {
                 GameCamera.Instance.Stack(ViewModel.Camera);
                 SetVisibility();
-                ViewModel.PlayAnimation("Equip", 0);
+
+                if (ViewModel.gameObject.activeInHierarchy)
+                {
+                    ViewModel.PlayAnimation("Equip", 0);
+                }
             }
 
             AudioSource.PlayClip(Data.EquipSound, 1f, true);
