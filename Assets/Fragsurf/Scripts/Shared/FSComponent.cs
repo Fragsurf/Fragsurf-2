@@ -73,7 +73,7 @@ namespace Fragsurf.Shared
                     BuildNetProps();
                 }
             }
-           catch(Exception e)
+            catch (Exception e)
             {
                 Debug.LogError("Failed to start " + GetType().Name + ":" + e.Message);
             }

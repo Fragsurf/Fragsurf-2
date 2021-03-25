@@ -6,7 +6,7 @@ namespace Fragsurf.Server
 {
     public class GameServer : FSGameLoop
     {
-        public static GameServer Instance { get; private set; }
+        public static GameServer Instance => GetGameInstance(true) as GameServer;
         public override bool IsHost => true;
         public SocketManager Socket => GetFSComponent<SocketManager>();
 
@@ -15,19 +15,12 @@ namespace Fragsurf.Server
             AddFSComponent<SocketManager>();
             AddFSComponent<LagCompensator>();
             AddFSComponent<ServerPlayerManager>();
+            AddFSComponent<SteamworksServer>();
         }
 
         protected override void Initialize()
         {
-            Instance = this;
             Socket.StartServer();
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-
-            Instance = null;
         }
 
         protected override void OnTick()

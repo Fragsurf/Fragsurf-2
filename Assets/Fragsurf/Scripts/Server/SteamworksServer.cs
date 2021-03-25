@@ -3,8 +3,6 @@ using Fragsurf.Shared;
 using Fragsurf.Maps;
 using Fragsurf.Shared.Player;
 using UnityEngine;
-using System;
-using Fragsurf.Utility;
 
 namespace Fragsurf.Server
 {
@@ -15,6 +13,8 @@ namespace Fragsurf.Server
         public int SteamQueryPort { get; set; } = 43026;
         [ConVar("server.steamport", "")]
         public int SteamPort { get; set; } = 43025;
+        [ConVar("server.requiresteamauth", "")]
+        public bool RequireSteamAuth { get; set; } = false;
 
         private const string DefaultServerName = "New Fragsurf Server";
 
@@ -22,29 +22,27 @@ namespace Fragsurf.Server
         {
             SteamServer.OnValidateAuthTicketResponse += SteamServer_OnValidateAuthTicketResponse;
 
+            var socketMan = Game.Network as SocketManager;
             var init = new SteamServerInit("fragsurf", "Fragsurf");
-            init.GamePort = (ushort)GameServer.Instance.Socket.GameplayPort;
+            init.GamePort = (ushort)socketMan.GameplayPort;
             init.QueryPort = (ushort)SteamQueryPort;
             init.SteamPort = (ushort)SteamPort;
             init.VersionString = Structure.Version;
 
-            try
-            {
-                SteamServer.Init(Structure.AppId, init);
-                SteamServer.ServerName = GameServer.Instance.Socket.ServerName ?? DefaultServerName;
-                SteamServer.DedicatedServer = true;
-                SteamServer.Passworded = !string.IsNullOrEmpty(GameServer.Instance.Socket.ServerPassword);
-                SteamServer.MaxPlayers = GameServer.Instance.Socket.MaxPlayers;
-                SteamServer.AutomaticHeartbeats = true;
-                SteamServer.LogOnAnonymous();
+            SteamServer.Init(Structure.AppId, init);
+            SteamServer.ServerName = socketMan.ServerName ?? DefaultServerName;
+            SteamServer.DedicatedServer = true;
+            SteamServer.Passworded = !string.IsNullOrEmpty(socketMan.ServerPassword);
+            SteamServer.MaxPlayers = socketMan.MaxPlayers;
+            SteamServer.AutomaticHeartbeats = true;
+            SteamServer.LogOnAnonymous();
 
-                DevConsole.WriteLine($"Steamworks Server initialized\n - Name: {SteamServer.ServerName}\n - Password: {GameServer.Instance.Socket.ServerPassword}\n - Version: {init.VersionString}\n - Game Port: {init.GamePort} (This must be open to allow players to connect)\n - Query Port: {init.QueryPort} (This must be open to show on master server list)\n - Steam Port: {init.SteamPort} (This must be open to show on master server list)");
+            DevConsole.WriteLine($"Steamworks Server initialized\n - Name: {SteamServer.ServerName}\n - Password: {socketMan.ServerPassword}\n - Version: {init.VersionString}\n - Game Port: {init.GamePort} (This must be open to allow players to connect)\n - Query Port: {init.QueryPort} (This must be open to show on master server list)\n - Steam Port: {init.SteamPort} (This must be open to show on master server list)");
 
-                GameObject.FindObjectOfType<ServerConsole>()?.SetTitle(GameServer.Instance.Socket.ServerName);
-            }
-            catch (Exception e)
+            var serverConsole = GameObject.FindObjectOfType<ServerConsole>();
+            if (serverConsole)
             {
-                Debug.LogError(e.ToString());
+                serverConsole.SetTitle(socketMan.ServerName);
             }
         }
 
@@ -58,63 +56,81 @@ namespace Fragsurf.Server
 
         protected override void _Destroy()
         {
-            try
-            {
-                SteamServer.Shutdown();
-            }
-            catch
-            {
-                // whatever
-            }
-
             SteamServer.OnValidateAuthTicketResponse -= SteamServer_OnValidateAuthTicketResponse;
+            SteamServer.Shutdown();
         }
 
         private void SteamServer_OnValidateAuthTicketResponse(SteamId steamid, SteamId owner, AuthResponse response)
         {
             var player = Game.PlayerManager.FindPlayer(steamid);
-            if (player == null)
+            if (player == null || !SteamServer.IsValid)
             {
                 return;
             }
 
-            if (response != AuthResponse.OK)
-            {
-                GameServer.Instance.Socket.DisconnectPlayer(player.ClientIndex, DenyReason.SteamAuthFailed.ToString());
-            }
-            else
+            if(response == AuthResponse.OK)
             {
                 SteamServer.UpdatePlayer(steamid, player.DisplayName, 0);
+                return;
+            }
+
+            if (RequireSteamAuth)
+            {
+                ((SocketManager)Game.Network).DisconnectPlayer(player.ClientIndex, DenyReason.SteamAuthFailed.ToString());
             }
         }
 
         protected override void OnGameLoaded()
         {
+            if (!SteamServer.IsValid)
+            {
+                return;
+            }
+
             SteamServer.GameTags = Game.GamemodeLoader.Gamemode.Data.Name;
-            SteamServer.ServerName = GameServer.Instance.Socket.ServerName ?? DefaultServerName;
+            SteamServer.ServerName = ((SocketManager)Game.Network).ServerName ?? DefaultServerName;
             SteamServer.MapName = Map.Current.Name;
         }
 
         protected override void OnPlayerIntroduced(BasePlayer player)
         {
+            if (!SteamServer.IsValid)
+            {
+                return;
+            }
+
             if (player.IsFake)
             {
                 SteamServer.BotCount++;
+                return;
             }
-            else
+
+            var canKick = RequireSteamAuth && !Game.IsServerHost(player.ClientIndex);
+
+            if (player.TicketData == null 
+                || player.TicketData.Length == 0)
             {
-                if (player.TicketData != null
-                    && player.TicketData.Length > 0
-                    && !Game.IsLocalServer
-                    && !SteamServer.BeginAuthSession(player.TicketData, player.SteamId))
+                if (canKick)
                 {
                     ((GameServer)Game).Socket.DisconnectPlayer(player, DenyReason.SteamAuthFailed.ToString());
                 }
+                return;
+            }
+
+            var session = SteamServer.BeginAuthSession(player.TicketData, player.SteamId);
+            if(!session && canKick)
+            {
+                ((GameServer)Game).Socket.DisconnectPlayer(player, DenyReason.SteamAuthFailed.ToString());
             }
         }
 
         protected override void OnPlayerDisconnected(BasePlayer player)
         {
+            if (!SteamServer.IsValid)
+            {
+                return;
+            }
+
             if (player.IsFake)
             {
                 SteamServer.BotCount--;
