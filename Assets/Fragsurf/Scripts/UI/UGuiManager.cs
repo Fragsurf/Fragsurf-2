@@ -25,8 +25,6 @@ namespace Fragsurf.UI
 
         private void Awake()
         {
-            GameObject.DontDestroyOnLoad(gameObject);
-
             DevConsole.RegisterObject(this);
         }
 

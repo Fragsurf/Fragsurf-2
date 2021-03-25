@@ -15,6 +15,15 @@ namespace ModTool.Exporting.Editor
         [RuntimeInitializeOnLoadMethod]
         private static void InitializeModSurrogate()
         {
+            // Not sure what the purpose of this script is but 
+            // it seems to be only for within a mod project, so try to detect 
+            // if we're in the main project and skip all this bs
+            // todo: see if this script can be deleted
+            if(File.Exists(Path.Combine(Application.dataPath, "Fragsurf", "Scripts", "Fragsurf.asmdef")))
+            {
+                return;
+            }
+
             List<GameObject> prefabs = new List<GameObject>();
             List<IResource> scenes = new List<IResource>();
 
