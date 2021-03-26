@@ -28,29 +28,29 @@ namespace Fragsurf.Maps
                 }
             }
 
-            foreach(var file in GetMaps("240"))
-            {
-                result.Add(new BSPMap()
-                {
-                    Author = "Unknown",
-                    FilePath = file,
-                    Name = Path.GetFileNameWithoutExtension(file),
-                    AppId = 240,
-                    MountedGame = "CSS"
-                });
-            }
+            //foreach(var file in GetMaps("240"))
+            //{
+            //    result.Add(new BSPMap()
+            //    {
+            //        Author = "Unknown",
+            //        FilePath = file,
+            //        Name = Path.GetFileNameWithoutExtension(file),
+            //        AppId = 240,
+            //        MountedGame = "CSS"
+            //    });
+            //}
 
-            foreach (var file in GetMaps("730"))
-            {
-                result.Add(new BSPMap()
-                {
-                    Author = "Unknown",
-                    FilePath = file,
-                    Name = Path.GetFileNameWithoutExtension(file),
-                    AppId = 730,
-                    MountedGame = "CSGO"
-                });
-            }
+            //foreach (var file in GetMaps("730"))
+            //{
+            //    result.Add(new BSPMap()
+            //    {
+            //        Author = "Unknown",
+            //        FilePath = file,
+            //        Name = Path.GetFileNameWithoutExtension(file),
+            //        AppId = 730,
+            //        MountedGame = "CSGO"
+            //    });
+            //}
 
             await Task.Delay(100);
 
