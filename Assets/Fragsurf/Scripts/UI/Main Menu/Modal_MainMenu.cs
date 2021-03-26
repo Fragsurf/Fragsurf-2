@@ -13,7 +13,10 @@ namespace Fragsurf.UI
                 || cl.GameLoader.State == GameLoaderState.None 
                 || cl.GameLoader.State == GameLoaderState.Idle)
             {
-                Open();
+                if (!IsOpen)
+                {
+                    Open();
+                }
 
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
