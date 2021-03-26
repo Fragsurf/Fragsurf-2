@@ -1,4 +1,7 @@
+using Fragsurf.Client;
+using Fragsurf.Shared;
 using Steamworks;
+using Steamworks.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +15,13 @@ namespace Fragsurf.UI
     public class Modal_ServerBrowser : UGuiModal
     {
 
+        public enum ServerType
+        {
+            Official,
+            Community,
+            Lobby
+        }
+
         [SerializeField]
         private TMP_InputField _searchFilter;
         [SerializeField]
@@ -24,9 +34,17 @@ namespace Fragsurf.UI
         private Button _refresh;
         [SerializeField]
         private Button _connect;
+        [SerializeField]
+        private Button _officialTab;
+        [SerializeField]
+        private Button _communityTab;
+        [SerializeField]
+        private Button _lobbyTab;
 
         private Modal_ServerBrowserPlayerEntry _playerTemplate;
         private Modal_ServerBrowserServerEntry _serverTemplate;
+        private ServerType _selectedType;
+        private Button _selectedTypeTab;
 
         private void Start()
         {
@@ -35,62 +53,172 @@ namespace Fragsurf.UI
             _serverTemplate = gameObject.GetComponentInChildren<Modal_ServerBrowserServerEntry>();
             _serverTemplate.gameObject.SetActive(false);
 
-            _refresh.onClick.AddListener(RefreshServers);
+            _refresh.onClick.AddListener(() => RefreshServers(_selectedType));
             _searchFilter.onSubmit.AddListener((v) => ApplyFilters());
             _hideEmpty.onValueChanged.AddListener((v) => ApplyFilters());
             _hideFull.onValueChanged.AddListener((v) => ApplyFilters());
             _hidePrivate.onValueChanged.AddListener((v) => ApplyFilters());
-            _connect.onClick.AddListener(() =>
+            _connect.onClick.AddListener(JoinSelectedServer);
+
+            _officialTab.onClick.AddListener(() =>
             {
-                throw new NotImplementedException();
+                SetServerType(_officialTab, ServerType.Official);
             });
+
+            _communityTab.onClick.AddListener(() =>
+            {
+                SetServerType(_communityTab, ServerType.Community);
+            });
+
+            _lobbyTab.onClick.AddListener(() =>
+            {
+                SetServerType(_lobbyTab, ServerType.Lobby);
+            });
+
+            SetServerType(_officialTab, ServerType.Official);
+        }
+
+        private void SetServerType(Button btn, ServerType type)
+        {
+            _selectedType = type;
+            if (_selectedTypeTab)
+            {
+                _selectedTypeTab.interactable = true;
+            }
+            _selectedTypeTab = btn;
+            btn.interactable = false;
+            RefreshServers(type);
         }
 
         protected override void OnOpen()
         {
-            RefreshServers();
+            RefreshServers(_selectedType);
         }
 
-        public async void RefreshServers()
+        private Modal_ServerBrowserServerEntry.Data _selectedServer;
+
+        public async void RefreshServers(ServerType type)
         {
+            _selectedServer = null;
             _playerTemplate.Clear();
+            _serverTemplate.Clear();
 
             if (!SteamClient.IsValid)
             {
                 return;
             }
 
-            using (var list = new Steamworks.ServerList.Internet())
+            bool switched() => _selectedType != type;
+
+            switch (type)
             {
-                var result = await list.RunQueryAsync();
-                if (!result)
-                {
-                    return;
-                }
-                _serverTemplate.Clear();
-                list.Responsive.AddRange(list.Unresponsive);
-                foreach(var server in list.Responsive)
-                {
-                    _serverTemplate.Append(new Modal_ServerBrowserServerEntry.Data()
+                case ServerType.Official:
+                case ServerType.Community:
+                    using (var list = new Steamworks.ServerList.Internet())
                     {
-                        Name = server.Name,
-                        Gamemode = server.TagString ?? string.Empty,
-                        Map = server.Map,
-                        MaxPlayers = server.MaxPlayers,
-                        Players = server.Players,
-                        Passworded = server.Passworded,
-                        Ping = server.Ping,
-                        OnClick = () => { }
-                    });
-                }
+                        var result = await list.RunQueryAsync();
+                        if (!result || switched())
+                        {
+                            break;
+                        }
+                        _serverTemplate.Clear();
+                        foreach (var server in list.Responsive)
+                        {
+                            var data = new Modal_ServerBrowserServerEntry.Data()
+                            {
+                                Address = server.Address.ToString(),
+                                Port = server.ConnectionPort,
+                                Name = server.Name,
+                                Gamemode = server.TagString ?? string.Empty,
+                                Map = server.Map,
+                                MaxPlayers = server.MaxPlayers,
+                                Players = server.Players,
+                                Passworded = server.Passworded,
+                                Ping = server.Ping
+                            };
+                            data.OnClick = () => _selectedServer = data;
+                            data.OnDoubleClick = JoinSelectedServer;
+                            _serverTemplate.Append(data);
+                        }
+                    }
+                    break;
+                case ServerType.Lobby:
+                    var lobbies = await SteamMatchmaking.LobbyList.RequestAsync();
+                    if (lobbies == null || switched())
+                    {
+                        break;
+                    }
+                    _serverTemplate.Clear();
+                    foreach (var lobby in lobbies)
+                    {
+                        uint ip = 0;
+                        ushort port = 0;
+                        SteamId steamid = default;
+                        lobby.GetGameServer(ref ip, ref port, ref steamid);
+                        var data = new Modal_ServerBrowserServerEntry.Data()
+                        {
+                            Address = steamid.ToString(),
+                            Port = port,
+                            Name = GetLobbyData(lobby, "name"),
+                            Gamemode = GetLobbyData(lobby, "gamemode"),
+                            Map = GetLobbyData(lobby, "map"),
+                            MaxPlayers = GetLobbyDataInt(lobby, "maxplayers"),
+                            Players = lobby.MemberCount,
+                            Passworded = GetLobbyData(lobby, "password") != string.Empty,
+                            Ping = 0
+                        };
+                        data.OnClick = () => _selectedServer = data;
+                        data.OnDoubleClick = JoinSelectedServer;
+                        _serverTemplate.Append(data);
+                    }
+                    break;
             }
 
             ApplyFilters();
         }
 
+        private void JoinSelectedServer()
+        {
+            if(_selectedServer == null)
+            {
+                return;
+            }
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (!cl)
+            {
+                return;
+            }
+            (cl.Network as ClientSocketManager).Connect(_selectedServer.Address, _selectedServer.Port);
+        }
+
         private void ApplyFilters()
         {
 
+        }
+
+        private string GetLobbyData(Lobby lobby, string key)
+        {
+            foreach(var kvp in lobby.Data)
+            {
+                if(kvp.Key.Equals(key, StringComparison.OrdinalIgnoreCase))
+                {
+                    return kvp.Value;
+                }
+            }
+            return string.Empty;
+        }
+
+        private int GetLobbyDataInt(Lobby lobby, string key)
+        {
+            var result = 0;
+            foreach (var kvp in lobby.Data)
+            {
+                if (kvp.Key.Equals(key, StringComparison.OrdinalIgnoreCase))
+                {
+                    int.TryParse(kvp.Value, out result);
+                }
+            }
+            return result;
         }
 
     }

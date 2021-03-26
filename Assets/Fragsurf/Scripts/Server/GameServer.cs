@@ -16,6 +16,7 @@ namespace Fragsurf.Server
             AddFSComponent<LagCompensator>();
             AddFSComponent<ServerPlayerManager>();
             AddFSComponent<SteamworksServer>();
+            AddFSComponent<SteamworksLobby>();
         }
 
         protected override void Initialize()
