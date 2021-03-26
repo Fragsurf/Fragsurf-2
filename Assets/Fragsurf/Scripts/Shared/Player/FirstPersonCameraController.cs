@@ -9,7 +9,6 @@ namespace Fragsurf.Shared.Player
         private Vector3 _eyeOffset;
         private Vector3 _targetEyeOffset;
         private Vector3 _offsetVelocity;
-        private float _defaultFov;
 
         protected override bool HideViewer => true;
 
@@ -17,11 +16,6 @@ namespace Fragsurf.Shared.Player
             : base(viewer)
         {
 
-        }
-
-        protected override void OnActivate()
-        {
-            _defaultFov = Camera.fieldOfView;
         }
 
         public override void Update()
@@ -73,9 +67,10 @@ namespace Fragsurf.Shared.Player
                     magnification = gun.GetMagnification();
                 }
 
-                var diff = _defaultFov * magnification - _defaultFov;
-                var fov = Mathf.Clamp(_defaultFov - diff, 1, 100);
-                SensitivityModifier = fov / _defaultFov;
+                var defFov = GameCamera.Instance.FieldOfView;
+                var diff = defFov * magnification - defFov;
+                var fov = Mathf.Clamp(defFov - diff, 1, 100);
+                SensitivityModifier = fov / defFov;
                 Camera.fieldOfView = fov;
             }
 

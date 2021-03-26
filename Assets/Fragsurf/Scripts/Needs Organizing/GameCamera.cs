@@ -11,9 +11,48 @@ namespace Fragsurf
     public class GameCamera : SingletonComponent<GameCamera>
     {
 
+        private int _fieldOfView = 75;
+        private int _weaponFieldOfView = 45;
+
         private static GameObject _depthCamera;
         private static Camera _camera;
         public static Camera Camera => GetCamera();
+
+        [ConVar("cam.weaponfov", "", ConVarFlags.UserSetting)]
+        public int WeaponFieldOfView
+        {
+            get => _weaponFieldOfView;
+            set => _weaponFieldOfView = Mathf.Clamp(value, 30, 60);
+        }
+
+        [ConVar("cam.fov", "", ConVarFlags.UserSetting)]
+        public int FieldOfView
+        {
+            get => _fieldOfView;
+            set 
+            {
+                _fieldOfView = Mathf.Clamp(value, 60, 110);
+                if (_camera)
+                {
+                    _camera.fieldOfView = _fieldOfView;
+                }
+            }
+        }
+
+        private void Awake()
+        {
+            _camera = GetComponent<Camera>();
+            _camera.fieldOfView = FieldOfView;
+
+            DevConsole.RegisterObject(this);
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            DevConsole.RemoveAll(this);
+        }
 
         public void EnableDepthCamera(bool enabled)
         {
@@ -58,11 +97,6 @@ namespace Fragsurf
                 return;
             }
             gameCameraURP.cameraStack.Remove(cam);
-        }
-
-        private void Awake()
-        {
-            _camera = GetComponent<Camera>();
         }
 
         private static Camera GetCamera()

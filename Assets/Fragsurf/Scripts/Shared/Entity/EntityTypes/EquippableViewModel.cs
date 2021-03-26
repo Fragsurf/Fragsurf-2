@@ -44,6 +44,11 @@ namespace Fragsurf.Shared.Entity
 
         private void Update()
         {
+            if (Camera && GameCamera.Instance)
+            {
+                Camera.fieldOfView = GameCamera.Instance.WeaponFieldOfView;
+            }
+
             var cl = FSGameLoop.GetGameInstance(false);
             var sway = cl && cl.Get<SpectateController>().TargetHuman == Human.Local;
             if (sway)
