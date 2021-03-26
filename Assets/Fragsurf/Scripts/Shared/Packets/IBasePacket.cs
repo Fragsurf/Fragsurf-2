@@ -11,12 +11,6 @@ namespace Fragsurf.Shared.Packets
             SequenceChannel = 0
         };
 
-        public static SendCategory UI = new SendCategory()
-        {
-            DeliveryMethod = NetDeliveryMethod.Unreliable,
-            SequenceChannel = 0
-        };
-
         public static SendCategory UI_Important = new SendCategory()
         {
             DeliveryMethod = NetDeliveryMethod.ReliableOrdered,

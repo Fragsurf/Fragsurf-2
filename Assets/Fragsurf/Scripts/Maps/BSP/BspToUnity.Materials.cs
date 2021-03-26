@@ -195,6 +195,8 @@ namespace Fragsurf.BSP
 		public int CompileSky;
 		public int CompileWater;
 		public int CompileLadder;
+		public int CompileTrigger;
+		public int CompileClip;
 		public int VertexColor;
 		public SourceUtils.Color32 Color;
 		public SourceUtils.Color32 RefractTint;
@@ -228,6 +230,8 @@ namespace Fragsurf.BSP
 				RefractAmount = vmt[VmtShader].ContainsKey("$refractamount") ? vmt[VmtShader]["$refractamount"] : 0.2f;
 				CompileSky = vmt[VmtShader].ContainsKey("%compilesky") ? vmt[VmtShader]["%compilesky"] : 0;
 				CompileWater = vmt[VmtShader].ContainsKey("%compilewater") ? vmt[VmtShader]["%compilewater"] : 0;
+				CompileTrigger = vmt[VmtShader].ContainsKey("%compiletrigger") ? vmt[VmtShader]["%compiletrigger"] : 0;
+				CompileClip = vmt[VmtShader].ContainsKey("%compileclip") ? vmt[VmtShader]["%compileclip"] : 0;
 				VertexColor = vmt[VmtShader].ContainsKey("$vertexcolor") ? vmt[VmtShader]["$vertexcolor"] : 0;
 				break;
 			}

@@ -50,6 +50,11 @@ namespace Fragsurf.Actors
 
             gameObject.SetChildrenCollidersToConvexTrigger();
 
+            foreach(var c in gameObject.GetComponentsInChildren<Collider>())
+            {
+                c.tag = "IgnoreItemTrace";
+            }
+
             if(!TryGetComponent(out Rigidbody rb))
             {
                 rb = gameObject.AddComponent<Rigidbody>();

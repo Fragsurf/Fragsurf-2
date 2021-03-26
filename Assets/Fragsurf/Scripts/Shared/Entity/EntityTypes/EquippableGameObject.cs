@@ -27,8 +27,6 @@ namespace Fragsurf.Shared.Entity
         [HideInInspector]
         public Vector3 DropTorque;
 
-        public bool HideViewModel;
-
         private bool _equipped;
         private float _equipTimer;
         private float _unequipTimer;
@@ -38,6 +36,7 @@ namespace Fragsurf.Shared.Entity
         public Equippable Equippable => Entity as Equippable;
         public EquippableWorldModel WorldModel { get; private set; }
         public EquippableViewModel ViewModel { get; private set; }
+        public bool Equipped => _equipped;
 
         public override Vector3 Position 
         {
@@ -267,9 +266,7 @@ namespace Fragsurf.Shared.Entity
             var isFirstPerson = Equippable.Human != null && Equippable.Human.IsFirstPerson;
             var viewModelVisible = !Entity.Game.IsHost
                 && _equipped
-                && Equippable.Human != null
-                && isFirstPerson
-                && !HideViewModel;
+                && isFirstPerson;
             var worldModelVisible = Equippable.Human == null || (_equipped && !isFirstPerson);
 
             ViewModel.gameObject.SetActive(viewModelVisible);

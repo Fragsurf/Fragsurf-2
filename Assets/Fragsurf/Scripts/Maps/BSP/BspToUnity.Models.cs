@@ -84,7 +84,7 @@ namespace Fragsurf.BSP
 			mr.lightmapIndex = _currentLightmap;
 
 			var vmtInfo = ApplyMaterial(mr, materialPath);
-			if(vmtInfo != null)
+			if(vmtInfo != null && vmtInfo.CompileTrigger == 0 && vmtInfo.CompileClip == 0)
             {
 				CreateSurfacePropIdentifier(obj, vmtInfo.SurfaceProp);
 				if(vmtInfo.SurfaceProp.Equals("water", StringComparison.OrdinalIgnoreCase))
