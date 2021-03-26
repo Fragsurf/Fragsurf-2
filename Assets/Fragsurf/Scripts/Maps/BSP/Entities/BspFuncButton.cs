@@ -68,7 +68,7 @@ namespace Fragsurf.BSP
         {
         }
 
-        public new void Damage(DamageInfo dmgInfo)
+        public override void Damage(DamageInfo dmgInfo)
         {
             base.Damage(dmgInfo);
 
