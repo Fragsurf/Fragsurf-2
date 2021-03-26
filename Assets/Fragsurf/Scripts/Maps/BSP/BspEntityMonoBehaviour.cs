@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Server;
+using System.Linq;
 
 namespace Fragsurf.BSP
 {
@@ -34,6 +35,15 @@ namespace Fragsurf.BSP
         {
 			EntityEnabled = Entity.StartDisabled == 0;
 
+            if (!string.IsNullOrWhiteSpace(Entity.ParentName))
+            {
+				var parent = FindBspEntities(Entity.ParentName).FirstOrDefault();
+				if(parent != null)
+                {
+					transform.SetParent(parent.transform);
+                }
+            }
+			
 			OnStart();
         }
 

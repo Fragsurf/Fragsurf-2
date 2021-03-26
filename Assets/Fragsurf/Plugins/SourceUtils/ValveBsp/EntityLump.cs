@@ -317,6 +317,8 @@ namespace SourceUtils
             public int RenderMode { get; private set; }
             [EntityField("spawnflags")]
             public int SpawnFlags { get; private set; }
+            [EntityField("parentname")]
+            public string ParentName { get; private set; }
 
             public IEnumerable<string> PropertyNames => _properties.Keys;
 
