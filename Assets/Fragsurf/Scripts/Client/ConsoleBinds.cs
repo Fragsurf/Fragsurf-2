@@ -52,7 +52,9 @@ namespace Fragsurf.Client
             {
                 if(_scroll != 0)
                 {
-                    return Mathf.Sign(Input.mouseScrollDelta.y) == Mathf.Sign(_scroll);
+                    return _scroll == 1
+                        ? Input.mouseScrollDelta.y > 0
+                        : Input.mouseScrollDelta.y < 0;
                 }
                 return Input.GetKeyDown(_keyCode);
             }
@@ -61,7 +63,7 @@ namespace Fragsurf.Client
             {
                 if (_scroll != 0)
                 {
-                    return IsPressed && Mathf.Sign(Input.mouseScrollDelta.y) != Mathf.Sign(_scroll);
+                    return Input.mouseScrollDelta.y == 0 || Mathf.Sign(Input.mouseScrollDelta.y) != Mathf.Sign(_scroll);
                 }
                 return Input.GetKeyUp(_keyCode);
             }
