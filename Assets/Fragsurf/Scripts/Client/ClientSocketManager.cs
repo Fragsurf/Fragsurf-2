@@ -261,7 +261,7 @@ namespace Fragsurf.Client
 
         public void Connect(string address, int port, string password = null)
         {
-            if(string.IsNullOrEmpty(address))
+            if (string.IsNullOrEmpty(address))
             {
                 UnityEngine.Debug.LogError("Don't do that");
                 return;
@@ -276,7 +276,7 @@ namespace Fragsurf.Client
                 Disconnect();
             }
 
-            if(address.Length == 17)
+            if (address.Length == 17)
             {
                 _socket = new ClientSteamP2PSocket(this);
             }

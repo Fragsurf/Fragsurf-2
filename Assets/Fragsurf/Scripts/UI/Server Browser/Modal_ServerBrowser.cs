@@ -188,7 +188,7 @@ namespace Fragsurf.UI
             {
                 return;
             }
-            (cl.Network as ClientSocketManager).Connect(_selectedServer.Address, _selectedServer.Port);
+            cl.GameLoader.JoinGameAsync(_selectedServer.Address, _selectedServer.Port);
         }
 
         private void ApplyFilters()

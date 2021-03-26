@@ -166,7 +166,7 @@ namespace Fragsurf.Shared
 
         private async Task<GameLoadResult> _JoinGameAsync(string address, int port = 0, string password = null)
         {
-            if(Game.IsHost)
+            if (Game.IsHost)
             {
                 return GameLoadResult.None;
             }
@@ -200,7 +200,7 @@ namespace Fragsurf.Shared
 
             Game.Network.BroadcastPacket(PacketUtility.TakePacket<MapChange>());
             var mapChange = await (Game.Network as ClientSocketManager).WaitForPacketAsync<MapChange>(5000);
-            if(mapChange == null)
+            if (mapChange == null)
             {
                 return GameLoadResult.MissingMapChange;
             }
