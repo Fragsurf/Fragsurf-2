@@ -57,6 +57,15 @@ namespace Fragsurf.UI
             }
             OpenTab(_tabs[0]);
         }
+
+        public void OpenTab(int index)
+        {
+            if(_tabs == null || _tabs.Length <= index || index < 0)
+            {
+                return;
+            }
+            OpenTab(_tabs[index]);
+        }
         
         private void OpenTab(ButtonTab tab, bool openModal = true)
         {

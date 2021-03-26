@@ -14,6 +14,15 @@ namespace Fragsurf.UI
                 || cl.GameLoader.State == GameLoaderState.Idle)
             {
                 Open();
+
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    var tabs = GetComponentInChildren<ButtonTabs>();
+                    if (tabs)
+                    {
+                        tabs.OpenTab(0);
+                    }
+                }
             }
         }
 
