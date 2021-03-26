@@ -112,7 +112,12 @@ namespace Fragsurf.BSP
             {
 				return Options.MissingMaterial;
             }
-			if (vmt.VmtShader.Equals("Cable", StringComparison.OrdinalIgnoreCase))
+            if (vmt.CompileWater == 1)
+            {
+				return Options.WaterMaterial;
+            }
+			if (vmt.VmtShader.Equals("Cable", StringComparison.OrdinalIgnoreCase)
+				|| vmt.VmtShader.Equals("Sprite", StringComparison.OrdinalIgnoreCase))
 			{
 				return Options.Unlit;
 			}
@@ -188,6 +193,7 @@ namespace Fragsurf.BSP
 		public float Alpha;
 		public float RefractAmount;
 		public int CompileSky;
+		public int CompileWater;
 		public int CompileLadder;
 		public int VertexColor;
 		public SourceUtils.Color32 Color;
@@ -221,6 +227,7 @@ namespace Fragsurf.BSP
 				Alpha = vmt[VmtShader].ContainsKey("$alpha") ? vmt[VmtShader]["$alpha"] : 1.0f;
 				RefractAmount = vmt[VmtShader].ContainsKey("$refractamount") ? vmt[VmtShader]["$refractamount"] : 0.2f;
 				CompileSky = vmt[VmtShader].ContainsKey("%compilesky") ? vmt[VmtShader]["%compilesky"] : 0;
+				CompileWater = vmt[VmtShader].ContainsKey("%compilewater") ? vmt[VmtShader]["%compilewater"] : 0;
 				VertexColor = vmt[VmtShader].ContainsKey("$vertexcolor") ? vmt[VmtShader]["$vertexcolor"] : 0;
 				break;
 			}

@@ -6,7 +6,7 @@ using Fragsurf.Utility;
 
 namespace Fragsurf.BSP
 {
-    [EntityComponent("func_occluder", "func_hostage_rescue", "func_breakable_surf", "func_precipitation")]
+    [EntityComponent("func_occluder", "func_hostage_rescue", "func_dustmotes", "func_breakable_surf", "func_precipitation")]
     public class BspDiscard : BspEntityMonoBehaviour
     {
         protected override void OnStart()

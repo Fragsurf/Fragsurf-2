@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Fragsurf.Actors
 {
-    public class FSMPickup : FSMTrigger
+    public class FSMPickup : FSMTrigger, IResettable
     {
 
         private int _given;
@@ -25,6 +25,11 @@ namespace Fragsurf.Actors
         {
             get => _given;
             set => SetGiven(value);
+        }
+
+        public void OnReset()
+        {
+            Given = 0;
         }
 
         protected override void _Start()
@@ -114,7 +119,11 @@ namespace Fragsurf.Actors
             if (Quantity > 0 && _given >= Quantity)
             {
                 _wm.SetActive(false);
-                GameObject.Destroy(gameObject, 1f);
+                //GameObject.Destroy(gameObject, 1f);
+            }
+            else
+            {
+                _wm.SetActive(true);
             }
         }
 

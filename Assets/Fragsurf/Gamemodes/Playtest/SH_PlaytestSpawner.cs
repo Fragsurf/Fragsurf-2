@@ -3,6 +3,7 @@ using Fragsurf.Maps;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -43,6 +44,15 @@ namespace Fragsurf.Gamemodes.Playtest
             Give(player, "AK47");
             Give(player, "M1911");
             Give(player, "Knife");
+        }
+
+        [ChatCommand("Resets actors", "reset")]
+        public void ResetCmd(BasePlayer player)
+        {
+            foreach (IResettable resettable in GameObject.FindObjectsOfType<MonoBehaviour>().OfType<IResettable>())
+            {
+                resettable.OnReset();
+            }
         }
 
         [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]

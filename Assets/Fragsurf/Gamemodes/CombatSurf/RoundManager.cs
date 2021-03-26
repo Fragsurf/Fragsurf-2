@@ -393,6 +393,11 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         private void CleanRound()
         {
+            foreach(IResettable resettable in GameObject.FindObjectsOfType<MonoBehaviour>().OfType<IResettable>())
+            {
+                resettable.OnReset();
+            }
+
             if (!Game.IsHost)
             {
                 return;

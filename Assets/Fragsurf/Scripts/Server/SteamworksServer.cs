@@ -27,7 +27,9 @@ namespace Fragsurf.Server
             init.GamePort = (ushort)socketMan.GameplayPort;
             init.QueryPort = (ushort)SteamQueryPort;
             init.SteamPort = (ushort)SteamPort;
-            init.VersionString = Structure.Version;
+            // this version doesn't match anything, it's just what is specified in Steamworks settings.  if there's a mismatch the server won't show up in server list queries
+            // prolly better to leave this be and check for version mismatches manually
+            init.VersionString = "1.2.2"; 
 
             SteamServer.Init(Structure.AppId, init);
             SteamServer.ServerName = socketMan.ServerName ?? DefaultServerName;

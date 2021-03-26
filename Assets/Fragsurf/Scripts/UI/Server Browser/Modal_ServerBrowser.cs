@@ -1,6 +1,8 @@
+using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,10 +51,39 @@ namespace Fragsurf.UI
             RefreshServers();
         }
 
-        public void RefreshServers()
+        public async void RefreshServers()
         {
             _playerTemplate.Clear();
-            _serverTemplate.Clear();
+
+            if (!SteamClient.IsValid)
+            {
+                return;
+            }
+
+            using (var list = new Steamworks.ServerList.Internet())
+            {
+                var result = await list.RunQueryAsync();
+                if (!result)
+                {
+                    return;
+                }
+                _serverTemplate.Clear();
+                list.Responsive.AddRange(list.Unresponsive);
+                foreach(var server in list.Responsive)
+                {
+                    _serverTemplate.Append(new Modal_ServerBrowserServerEntry.Data()
+                    {
+                        Name = server.Name,
+                        Gamemode = server.TagString ?? string.Empty,
+                        Map = server.Map,
+                        MaxPlayers = server.MaxPlayers,
+                        Players = server.Players,
+                        Passworded = server.Passworded,
+                        Ping = server.Ping,
+                        OnClick = () => { }
+                    });
+                }
+            }
 
             ApplyFilters();
         }

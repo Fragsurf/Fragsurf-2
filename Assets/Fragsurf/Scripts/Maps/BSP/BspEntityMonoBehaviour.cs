@@ -95,7 +95,7 @@ namespace Fragsurf.BSP
 
         }
 
-        public void Damage(DamageInfo dmgInfo)
+        public virtual void Damage(DamageInfo dmgInfo)
         {
 			Fire("OnDamaged");
 		}
