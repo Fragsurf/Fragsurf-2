@@ -38,7 +38,7 @@ namespace Fragsurf.Shared.Entity
 
             ent.LoadPropData(update.PropData);
 
-            OnEntityUpdated(ent, ent.ChangedTick, ent.ChangedTime);
+            OnEntityUpdated?.Invoke(ent, update.ChangedTick, update.ChangedTime);
         }
 
         private void TrySendEntities()
