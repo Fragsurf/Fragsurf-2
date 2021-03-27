@@ -12,7 +12,7 @@ namespace Fragsurf.Client
     {
 
         private Configuration _config;
-        private const string _settingFileName = "UserSettings2.cfg";
+        private const string _settingFileName = "UserSettings4.cfg";
         public static ConsoleBinds Binds { get; } = new ConsoleBinds();
 
         private void Start()
@@ -179,6 +179,7 @@ namespace Fragsurf.Client
             _config["Binds"].Add("g", "+input drop");
             _config["Binds"].Add("q", "+input previtem");
             _config["Binds"].Add("k", "+voicerecord");
+            _config["Binds"].Add("tab", "+modal scoreboard");
 
             // Modal defaults
             _config["Binds"].Add("backquote", "modal.toggle console");

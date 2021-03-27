@@ -14,6 +14,10 @@ namespace Fragsurf.UI
     public class Modal_CreateGame : UGuiModal
     {
 
+        [Header("Misc")]
+        [SerializeField]
+        private GameObject _disabledCover;
+
         [Header("Map Filters")]
         [SerializeField]
         private TMP_InputField _searchInput;
@@ -72,11 +76,16 @@ namespace Fragsurf.UI
             ClearMap();
         }
 
+        private void Update()
+        {
+            _disabledCover.SetActive(_selectedGamemode == null);
+        }
+
         private async void CreateGame()
         {
             if(_selectedGamemode == null || _selectedMap == null)
             {
-                Debug.LogError("Selected gamemode or map is null, can't create game");
+                UGuiManager.Instance.Popup("Selected gamemode or map is null, can't create game");
                 return;
             }
 
@@ -146,9 +155,9 @@ namespace Fragsurf.UI
         {
             if (map.Cover)
             {
-                _mapCover.enabled = true;
                 _mapCover.texture = map.Cover;
             }
+            _mapCover.enabled = true;
             _mapTitle.text = $"<size=24>{map.Name}</size>\n<b>author:</b> {map.Author}";
             _mapTitle.transform.parent.gameObject.RebuildLayout();
         }

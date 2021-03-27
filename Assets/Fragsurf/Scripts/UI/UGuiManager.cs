@@ -210,7 +210,12 @@ namespace Fragsurf.UI
 
         public void Popup(string message)
         {
-            Debug.LogError("Popup not implemented:" + message);
+            var dialog = Find<Modal_Dialog>();
+            if (!dialog)
+            {
+                return;
+            }
+            dialog.Popup("Info", message);
         }
 
         public static void EnableEventSystem()
