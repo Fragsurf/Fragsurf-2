@@ -48,9 +48,9 @@ namespace Fragsurf.UI
 
         private void Start()
         {
-            _playerTemplate = gameObject.GetComponentInChildren<Modal_ServerBrowserPlayerEntry>();
+            _playerTemplate = gameObject.GetComponentInChildren<Modal_ServerBrowserPlayerEntry>(true);
             _playerTemplate.gameObject.SetActive(false);
-            _serverTemplate = gameObject.GetComponentInChildren<Modal_ServerBrowserServerEntry>();
+            _serverTemplate = gameObject.GetComponentInChildren<Modal_ServerBrowserServerEntry>(true);
             _serverTemplate.gameObject.SetActive(false);
 
             _refresh.onClick.AddListener(() => RefreshServers(_selectedType));
