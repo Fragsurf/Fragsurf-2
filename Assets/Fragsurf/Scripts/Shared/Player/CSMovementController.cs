@@ -187,10 +187,15 @@ namespace Fragsurf.Shared.Player
         }
 
         private const float _stepDistance = 3.0f;
+        private float _noSpam;
         private float _traveled;
         private float _stepRand;
         protected void TickFootstep()
         {
+            if(_noSpam > 0)
+            {
+                _noSpam -= Time.fixedDeltaTime;
+            }
             _swimSoundTimer -= Time.fixedDeltaTime;
             _traveled += (MoveData.Origin - MoveData.PreviousOrigin).magnitude;
             if (_traveled >= _stepDistance + _stepRand)
@@ -199,17 +204,22 @@ namespace Fragsurf.Shared.Player
                 var maxSpd = Human.Game.GameMovement.MaxSpeed;
                 var vol = Mathf.Lerp(0f, 1f, (float)spd / maxSpd);
                 PlayFootstepSound(vol);
-                _stepRand = Random.Range(0.0f, 0.5f);
+                _stepRand = Random.Range(0.0f, 0.1f);
                 _traveled = 0.0f;
             }
-            else if (MoveData.JustGrounded || MoveData.JustJumped)
+            else if ((MoveData.JustGrounded || MoveData.JustJumped) && _noSpam <= 0)
             {
                 PlayFootstepSound(Random.Range(.7f, 1f));
+                if(Time.realtimeSinceStartup - _lastFootstepTime <= .1f)
+                {
+                    _noSpam = .45f;
+                }
             }
         }
 
         private static Collider[] _footstepTest = new Collider[32];
         private float _swimSoundTimer;
+        private float _lastFootstepTime;
         private void PlayFootstepSound(float vol)
         {
             if (!Human.HumanGameObject || !Human.HumanGameObject.FeetAudioSource)
@@ -277,6 +287,8 @@ namespace Fragsurf.Shared.Player
             vol = Mathf.Clamp(vol, 0f, 1f);
 
             feetSrc.PlayClip(audioClip, vol, true);
+
+            _lastFootstepTime = Time.realtimeSinceStartup;
         }
 
     }
