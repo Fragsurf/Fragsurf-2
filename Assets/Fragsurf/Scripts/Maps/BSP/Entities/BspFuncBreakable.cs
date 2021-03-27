@@ -1,12 +1,13 @@
 using Fragsurf.Actors;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Utility;
+using SourceUtils.ValveBsp.Entities;
 using UnityEngine;
 
 namespace Fragsurf.BSP
 {
     [EntityComponent("func_breakable")]
-    public class BspFuncBreakable : BspEntityMonoBehaviour, IResettable
+    public class BspFuncBreakable : GenericBspEntityMonoBehaviour<FuncBreakable>, IResettable
     {
 
         private bool _broken;
@@ -22,7 +23,10 @@ namespace Fragsurf.BSP
         {
             base.Damage(dmgInfo);
 
-            Broken = true;
+            if(Entity.Health > 0)
+            {
+                Broken = true;
+            }
         }
 
         private void SetBroken(bool broken)
