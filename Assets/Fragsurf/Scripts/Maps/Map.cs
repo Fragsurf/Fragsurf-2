@@ -70,17 +70,36 @@ namespace Fragsurf.Maps
             await Instance._UnloadAsync();
         }
 
+        private static List<FSMSpawnPoint> _spawnPoints = new List<FSMSpawnPoint>();
         public static void GetSpawnPoint(out Vector3 position, out Vector3 angles, int teamNumber = 255)
         {
             position = Vector3.zero;
             angles = Vector3.zero;
 
-            var sps = GameObject.FindObjectsOfType<FSMSpawnPoint>();
-            if (sps.Length > 0)
+            if (_spawnPoints.Count == 0)
             {
-                var rnd = sps[UnityEngine.Random.Range(0, sps.Length)];
-                position = rnd.transform.position;
-                angles = rnd.transform.eulerAngles;
+                _spawnPoints = GameObject.FindObjectsOfType<FSMSpawnPoint>().ToList();
+                if(_spawnPoints.Count == 0)
+                {
+                    return;
+                }
+            }
+
+            var spawnPoint = _spawnPoints[0];
+            if(teamNumber > 0 && teamNumber < 255)
+            {
+                var potentialPoints = _spawnPoints.Where(x => x.TeamNumber == teamNumber);
+                spawnPoint = potentialPoints.ElementAt(UnityEngine.Random.Range(0, potentialPoints.Count()));
+            }
+            else
+            {
+                spawnPoint = _spawnPoints.ElementAt(UnityEngine.Random.Range(0, _spawnPoints.Count()));
+            }
+
+            if (spawnPoint)
+            {
+                position = spawnPoint.transform.position;
+                angles = spawnPoint.transform.eulerAngles;
             }
         }
 
