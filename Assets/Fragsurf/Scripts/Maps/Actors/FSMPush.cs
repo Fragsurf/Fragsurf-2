@@ -15,9 +15,10 @@ namespace Fragsurf.Actors
 
         protected override void _TriggerEnter(NetEntity entity)
         {
-            if(entity is Human hu && hu.MovementController is ISurfControllable surfer)
+            if(entity is Human hu 
+                && hu.MovementController is ISurfControllable surfer)
             {
-                if (surfer.MoveType == MoveType.Noclip)
+                if (surfer.MoveType == MoveType.Noclip || hu.Frozen)
                 {
                     return;
                 }
@@ -34,7 +35,7 @@ namespace Fragsurf.Actors
         {
             if (entity is Human hu && hu.MovementController is ISurfControllable surfer)
             {
-                if (Once || surfer.MoveType == MoveType.Noclip)
+                if (Once || surfer.MoveType == MoveType.Noclip || hu.Frozen)
                 {
                     return;
                 }
