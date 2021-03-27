@@ -193,7 +193,7 @@ namespace Fragsurf.UI
 
             if(_selectedGamemode
                 && _onlyForThisGamemode.isOn 
-                && map.Name.IndexOf(_selectedGamemode.Identifier, StringComparison.OrdinalIgnoreCase) == -1)
+                && !map.Name.StartsWith(_selectedGamemode.Identifier, StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }

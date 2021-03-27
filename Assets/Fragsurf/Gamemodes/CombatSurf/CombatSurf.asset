@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CombatSurf
   m_EditorClassIdentifier: 
   Name: Combat Surf
-  Identifier: csurf
+  Identifier: surf
   GamemodeType:
     _classRef: Fragsurf.Gamemodes.CombatSurf.CombatSurf, Assembly-CSharp
   HumanPrefab: {fileID: 7776529293873923163, guid: d64aa5b739895ac41b41075f48746df8, type: 3}

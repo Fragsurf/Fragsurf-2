@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skillsurf
   m_EditorClassIdentifier: 
   Name: Skillsurf
-  Identifier: surf
+  Identifier: ssurf
   GamemodeType:
     _classRef: Fragsurf.Gamemodes.Bunnyhop.Bunnyhop, Assembly-CSharp
   HumanPrefab: {fileID: 7776529293873923163, guid: d64aa5b739895ac41b41075f48746df8, type: 3}
