@@ -25,7 +25,7 @@ namespace Fragsurf.Actors
 
                 if (Once)
                 {
-                    var pushAmount = Direction * Speed;
+                    var pushAmount = Direction.normalized * Speed;
                     hu.BaseVelocity = pushAmount;
                 }
             }
@@ -43,7 +43,7 @@ namespace Fragsurf.Actors
                 var vecPush = Direction.normalized * Speed;
                 if (surfer.MoveData.Momentum && !surfer.GroundObject)
                 {
-                    vecPush += surfer.MoveData.BaseVelocity;
+                    vecPush += hu.BaseVelocity;
                 }
                 hu.BaseVelocity = vecPush;
                 surfer.MoveData.Momentum = true;

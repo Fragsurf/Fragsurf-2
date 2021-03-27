@@ -88,6 +88,7 @@ namespace Fragsurf.Movement
                     CheckJump();
                     CalculateWalkVelocity();
                     CheckSteps();
+                    ClampVelocity();
                     IncrementOrigin(_surfer.MoveData.AbsVelocity * _deltaTime);
                     break;
                 case MoveType.Ladder:
@@ -97,6 +98,7 @@ namespace Fragsurf.Movement
                     CalculateWalkVelocity(0.3f);
                     WaterMove();
                     ApplyMomentum();
+                    ClampVelocity();
                     IncrementOrigin(_surfer.MoveData.AbsVelocity * _deltaTime);
                     break;
                 case MoveType.Noclip:
@@ -112,6 +114,15 @@ namespace Fragsurf.Movement
             }
 
             CheckWater();
+        }
+
+        private void ClampVelocity()
+        {
+            var v = _surfer.MoveData.Velocity;
+            v.y = 0;
+            v = Vector3.ClampMagnitude(_surfer.MoveData.Velocity, _config.MaxVelocity);
+            v.y = Mathf.Clamp(_surfer.MoveData.Velocity.y, -_config.MaxVelocity, _config.MaxVelocity);
+            _surfer.MoveData.Velocity = v;
         }
 
         private bool LadderMove()
@@ -327,15 +338,6 @@ namespace Fragsurf.Movement
                 _surfer.MoveData.Velocity.y -= _surfer.MoveData.GravityFactor * _config.Gravity * _deltaTime;
                 _surfer.MoveData.Velocity.y += _surfer.MoveData.BaseVelocity.y * _deltaTime;
                 _surfer.MoveData.BaseVelocity.y = 0;
-                CheckVelocity(); // todo: check if this is needed..
-            }
-        }
-
-        private void CheckVelocity()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                _surfer.MoveData.Velocity[i] = Mathf.Clamp(_surfer.MoveData.Velocity[i], -_config.MaxVelocity, _config.MaxVelocity);
             }
         }
 

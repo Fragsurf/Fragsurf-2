@@ -105,6 +105,8 @@ namespace Fragsurf.Maps
 
         private async Task<MapLoadState> _LoadAsync(BaseMap map)
         {
+            _spawnPoints.Clear();
+
             if (Current != null)
             {
                 await UnloadAsync();
@@ -122,6 +124,8 @@ namespace Fragsurf.Maps
 
         private async Task<MapLoadState> _LoadAsync(string mapName)
         {
+            _spawnPoints.Clear();
+
             if (mapName == "LoadActiveScene")
             {
                 return await LoadAsync(new PlayTestMap() { Name = "Playtest" });

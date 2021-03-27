@@ -245,7 +245,7 @@ namespace Fragsurf.Shared.Entity
 
         public int HammerVelocity(bool horizontalOnly = true)
         {
-            var vel = Velocity;
+            var vel = Velocity + BaseVelocity;
             if (horizontalOnly)
             {
                 vel.y = 0;
