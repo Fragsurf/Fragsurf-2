@@ -18,7 +18,7 @@ namespace Fragsurf
         }
 
         public static event Action<string> OnMessageLogged;
-        public static event Action<string> OnVariableChanged;
+        public static event Action<DevConsoleEntry> OnVariableChanged;
 
         private static Dictionary<string, List<DevConsoleEntry>> _entries = new Dictionary<string, List<DevConsoleEntry>>();
         private static Dictionary<string, CmdCache> _commandCache = new Dictionary<string, CmdCache>();
@@ -50,9 +50,9 @@ namespace Fragsurf
             }
         }
 
-        public static void RaiseVariableChanged(string variableName)
+        public static void RaiseVariableChanged(DevConsoleEntry entry)
         {
-            OnVariableChanged?.Invoke(variableName);
+            OnVariableChanged?.Invoke(entry);
         }
 
         public static void RegisterObject(object owner)
@@ -208,10 +208,6 @@ namespace Fragsurf
             {
                 return string.Empty;
             }
-            //var method = typeof(DevConsole).GetMethod(nameof(DevConsole.GetVariable));
-            //var generic = method.MakeGenericMethod(type);
-            //var result = generic.Invoke(null, new object[] { variableName });
-            //return result != null ? result.ToString() : string.Empty;
             var method = typeof(DevConsole).GetMethod(nameof(DevConsole.GetVariableEntry));
             var generic = method.MakeGenericMethod(type);
             var result = generic.Invoke(null, new object[] { variableName });
@@ -237,6 +233,33 @@ namespace Fragsurf
                 return default;
             }
             return variable;
+        }
+
+        public static void SetVariable(string varName, string value, bool bypassLock = false, bool noEvent = false)
+        {
+            if (!_entries.ContainsKey(varName))
+            {
+                return;
+            }
+            foreach (var entry in _entries[varName])
+            {
+                if (IsLocked(entry.Flags) && !bypassLock)
+                {
+                    continue;
+                }
+
+                if (!(entry is ITypeVariable typevar))
+                {
+                    continue;
+                }
+
+                // this is disgusting, maybe I should rewrite the console already
+                var type = typeof(DevConsoleVariable<>).MakeGenericType(typevar.MyType);
+                var thing = Convert.ChangeType(entry, type);
+                var setValue = type.GetMethod(nameof(DevConsoleVariable<int>.SetValue));
+                var fromString = type.GetMethod(nameof(DevConsoleVariable<int>.FromString));
+                setValue.Invoke(entry, new object[] { fromString.Invoke(entry, new object[] { value }), noEvent });
+            }
         }
 
         public static void SetVariable<T>(string varName, T value, bool bypassLock = false, bool noEvent = false)

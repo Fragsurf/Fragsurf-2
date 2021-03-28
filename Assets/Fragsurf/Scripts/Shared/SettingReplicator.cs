@@ -1,10 +1,13 @@
 ﻿using Fragsurf.Shared.Player;
 using Fragsurf.Shared.Packets;
+using UnityEngine;
 
 namespace Fragsurf.Shared
 {
     public class SettingReplicator : FSSharedScript
     {
+
+        private const string _cpLabel = "repl";
 
         protected override void _Hook()
         {
@@ -29,19 +32,23 @@ namespace Fragsurf.Shared
             DevConsole.LockFlags(locked, ConVarFlags.Gamemode);
         }
 
-        private void FSConsole_OnVariableChanged(string varName)
+        private void FSConsole_OnVariableChanged(DevConsoleEntry var)
         {
             if (!Game.IsHost 
-                || !DevConsole.VariableHasFlags(varName, ConVarFlags.Replicator))
+                || !var.Flags.HasFlag(ConVarFlags.Replicator))
             {
                 return;
             }
 
-            var replStr = varName + " " + DevConsole.GetVariableAsString(varName);
+            var value = var.ToString();
+
+            Game.TextChat.MessageAll($"Server setting changed: {var.Name} {value}");
+
+            var replStr = $"{var.Name}={value}";
             var cp = PacketUtility.TakePacket<CustomPacket>();
             cp.Sc = SendCategory.UI_Important;
             cp.AddString(replStr);
-            cp.Label = "Replicate";
+            cp.Label = _cpLabel;
             Game.Network.BroadcastPacket(cp);
         }
 
@@ -56,7 +63,7 @@ namespace Fragsurf.Shared
             var vars = DevConsole.GetVariablesWithFlags(ConVarFlags.Replicator);
             foreach(var var in vars)
             {
-                var str = var + " " + DevConsole.GetVariableAsString(var);
+                var str = var + "=" + DevConsole.GetVariableAsString(var);
                 if(replStr == string.Empty)
                 {
                     replStr = str;
@@ -69,7 +76,7 @@ namespace Fragsurf.Shared
             var cp = PacketUtility.TakePacket<CustomPacket>();
             cp.Sc = SendCategory.UI_Important;
             cp.AddString(replStr);
-            cp.Label = "Replicate";
+            cp.Label = _cpLabel;
             Game.Network.SendPacket(player.ClientIndex, cp);
         }
 
@@ -77,7 +84,7 @@ namespace Fragsurf.Shared
         {
             if(Game.IsHost
                 || !(packet is CustomPacket cp)
-                || !cp.Label.Equals("Replicate"))
+                || !cp.Label.Equals(_cpLabel))
             {
                 return;
             }
@@ -89,7 +96,10 @@ namespace Fragsurf.Shared
             {
                 foreach(var cmd in cmds)
                 {
-                    DevConsole.ExecuteLine(cmd, true);
+                    var split = cmd.Split('=');
+                    var varName = split[0];
+                    var varValue = split[1];
+                    DevConsole.SetVariable(varName, varValue, true, true);
                 }
             }
         }

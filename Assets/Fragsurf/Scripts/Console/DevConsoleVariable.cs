@@ -19,12 +19,9 @@ namespace Fragsurf
 
         private Func<T> _getter;
         private Action<T> _setter;
-        private T _lastKnownValue;
+        private T _cached;
 
-        Type ITypeVariable.MyType
-        {
-            get { return typeof(T); }
-        }
+        Type ITypeVariable.MyType => typeof(T);
 
         public T GetValue()
         {
@@ -47,45 +44,48 @@ namespace Fragsurf
                 return;
             }
 
-            if(Differs())
+            var curVal = _getter();
+            if(!TEquals(curVal, _cached))
             {
-                DevConsole.RaiseVariableChanged(Name);
+                _cached = curVal;
+                DevConsole.RaiseVariableChanged(this);
             }
         }
 
         public void SetValue(T value, bool noEvent = false)
         {
+            var equals = TEquals(_getter(), value);
+            if (equals)
+            {
+                return;
+            }
+
             try
             {
                 _setter.Invoke(value);
-                _lastKnownValue = value;
+                _cached = value;
+                if (!noEvent)
+                {
+                    DevConsole.RaiseVariableChanged(this);
+                }
             }
             catch(Exception e)
             {
                 UnityEngine.Debug.LogError("Failed to set " + Name + ": " + e.Message);
             }
-
-            if(!noEvent && Differs())
-            {
-                DevConsole.RaiseVariableChanged(Name);
-            }
         }
 
-        private bool Differs()
+        private bool TEquals(T a, T b)
         {
-            var curValue = _getter.Invoke();
-            var differs = false;
-
-            if (curValue is IEquatable<T> equatable)
+            if (a is IEquatable<T> equatable)
             {
-                differs = !equatable.Equals(_lastKnownValue);
+                return equatable.Equals(b);
             }
-            else if (curValue != null)
+            else if (a != null)
             {
-                differs = !curValue.Equals(_lastKnownValue);
+                return a.Equals(b);
             }
-            _lastKnownValue = curValue;
-            return differs;
+            return false;
         }
 
         protected override void _OnExecute(string[] args)

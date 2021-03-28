@@ -24,7 +24,7 @@ namespace Fragsurf.UI
         public override void LoadData(AutoCompleteEntryData data)
         {
             var val = !string.IsNullOrWhiteSpace(data.Value)
-                ? $" = <color=yellow>{data.Value}</color> "
+                ? $" <color=yellow>{data.Value}</color> "
                 : string.Empty;
             _text.text = $"{data.Name}{val} - <color=#CCC>{data.Description}</color>";
             if(data.OnClick != null)
