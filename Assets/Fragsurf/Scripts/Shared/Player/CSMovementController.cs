@@ -160,12 +160,10 @@ namespace Fragsurf.Shared.Player
                 if (!_lastTickTriggers.Contains(trigger))
                 {
                     trigger.OnStartTouch(Human.EntityId, Human.Game.IsHost);
-                    Human.Game.EntityManager.RaiseHumanTrigger(Human, trigger, TriggerEventType.Enter, 0f);
                 }
                 else
                 {
                     trigger.OnTouch(Human.EntityId, Human.Game.IsHost);
-                    Human.Game.EntityManager.RaiseHumanTrigger(Human, trigger, TriggerEventType.Stay, 0f);
                 }
             }
 
@@ -174,7 +172,6 @@ namespace Fragsurf.Shared.Player
                 if (!_touchingTriggers.Contains(trigger))
                 {
                     trigger.OnEndTouch(Human.EntityId, Human.Game.IsHost);
-                    Human.Game.EntityManager.RaiseHumanTrigger(Human, trigger, TriggerEventType.Exit, 0f);
                 }
             }
 

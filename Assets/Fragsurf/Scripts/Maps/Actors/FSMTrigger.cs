@@ -76,6 +76,11 @@ namespace Fragsurf.Actors
                 _TriggerEnter(entity);
                 _staying.Add(sd);
                 OnTriggerEnter?.Invoke(entity);
+
+                if (entity is Human hu)
+                {
+                    entity.Game.EntityManager.RaiseHumanTrigger(hu, this, TriggerEventType.Enter, 0f);
+                }
             }
         }
 
@@ -88,6 +93,11 @@ namespace Fragsurf.Actors
                 _TriggerExit(entity);
                 _staying.Remove(sd);
                 OnTriggerExit?.Invoke(entity);
+
+                if(entity is Human hu)
+                {
+                    entity.Game.EntityManager.RaiseHumanTrigger(hu, this, TriggerEventType.Exit, 0f);
+                }
             }
         }
 
@@ -104,11 +114,21 @@ namespace Fragsurf.Actors
                         _TriggerEnter(entity);
                         _staying.Add(sd);
                         OnTriggerEnter?.Invoke(entity);
+
+                        if (entity is Human hu)
+                        {
+                            entity.Game.EntityManager.RaiseHumanTrigger(hu, this, TriggerEventType.Enter, 0f);
+                        }
                     }
                     else
                     {
                         _TriggerStay(entity);
                         OnTriggerStay?.Invoke(entity);
+
+                        if (entity is Human hu)
+                        {
+                            entity.Game.EntityManager.RaiseHumanTrigger(hu, this, TriggerEventType.Stay, 0f);
+                        }
                     }
                 }
                 else
@@ -118,6 +138,11 @@ namespace Fragsurf.Actors
                         _TriggerExit(entity);
                         _staying.Remove(sd);
                         OnTriggerExit?.Invoke(entity);
+
+                        if (entity is Human hu)
+                        {
+                            entity.Game.EntityManager.RaiseHumanTrigger(hu, this, TriggerEventType.Exit, 0f);
+                        }
                     }
                 }
             }

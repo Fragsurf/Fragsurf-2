@@ -18,4 +18,4 @@ MonoBehaviour:
     _classRef: Fragsurf.Gamemodes.Tricksurf.Tricksurf, Assembly-CSharp
   HumanPrefab: {fileID: 7776529293873923163, guid: d64aa5b739895ac41b41075f48746df8, type: 3}
   InstantiateOnLoad:
-  - {fileID: 0}
+  - {fileID: 8108575845128965535, guid: 9a770aa502de2cb45b92601066fe60e3, type: 3}
