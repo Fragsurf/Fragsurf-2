@@ -3,9 +3,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using Fragsurf;
-using Fragsurf.Server;
-using Fragsurf.Client;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
@@ -291,12 +288,12 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
         {
-            if(Game.IsHost || player != null)
+            if (Game.IsHost)
             {
                 return;
             }
 
-            if(packet is TrickCompletion tc)
+            if (packet is TrickCompletion tc)
             {
                 var playerRef = Game.PlayerManager.FindPlayer(tc.ClientIndex);
                 var trick = TrickData.GetTrick(tc.TrickName);
@@ -319,8 +316,6 @@ namespace Fragsurf.Gamemodes.Tricksurf
                     //    Fragsurf.Client.Surface.SurfaceManager.Toast($"Nice, you've completed a new trick! <span class='green'>{tl.CompletionCount + 1}</span> out of <span class='green'>{TrickData.tricks.Count}</span>");
                     //}
                 }
-
-                Debug.Log("DONE: " + tc.TrickName);
 
                 OnTrickCompleted?.Invoke(playerRef, tc);
             }
@@ -480,7 +475,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
                 OnTrickCompleted?.Invoke(player, completion);
 
-                GameServer.Instance.Socket.BroadcastPacket(completion);
+                Game.Network.BroadcastPacket(completion);
             }
         }
 

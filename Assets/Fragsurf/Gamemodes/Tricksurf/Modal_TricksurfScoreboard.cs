@@ -1,11 +1,10 @@
+using Fragsurf.Gamemodes.Bunnyhop;
 using Fragsurf.Shared;
 using Fragsurf.UI;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Fragsurf.Gamemodes.Bunnyhop
+namespace Fragsurf.Gamemodes.Tricksurf
 {
     public class Modal_TricksurfScoreboard : UGuiModal
     {
@@ -18,13 +17,17 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private ScoreboardPlayerEntry _playerTemplate;
         private ScoreboardSpectatorEntry _specTemplate;
+        private Modal_TricksurfTrickEntry _trickTemplate;
 
         private void Start()
         {
-            _playerTemplate = gameObject.GetComponentInChildren<ScoreboardPlayerEntry>();
+            _playerTemplate = gameObject.GetComponentInChildren<ScoreboardPlayerEntry>(true);
             _playerTemplate.gameObject.SetActive(false);
-            _specTemplate = gameObject.GetComponentInChildren<ScoreboardSpectatorEntry>();
+            _specTemplate = gameObject.GetComponentInChildren<ScoreboardSpectatorEntry>(true);
             _specTemplate.gameObject.SetActive(false);
+            _trickTemplate = gameObject.GetComponentInChildren<Modal_TricksurfTrickEntry>(true);
+            //_trickTemplate.gameObject.SetActive(false);
+            _trickTemplate.EntryLimit = 99999;
 
             _playersButton.onClick.AddListener(() =>
             {
@@ -37,6 +40,25 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             });
 
             SpectateController.ScoreboardUpdateNotification += SpectateController_ScoreboardUpdateNotification;
+
+            var ts = FSGameLoop.GetGameInstance(false).Get<SH_Tricksurf>();
+            ts.OnTricksLoaded += LoadTricks;
+            LoadTricks(ts.TrickData);
+        }
+
+        private void LoadTricks(TrickData trickData)
+        {
+            _trickTemplate.Clear();
+
+            foreach (var trick in trickData.tricks)
+            {
+                _trickTemplate.Append(new Modal_TricksurfTrickEntry.Data()
+                {
+                    TrickId = trick.id,
+                    TrickName = trick.name,
+                    Completed = CL_TrickLog.IsTrickCompleted(trick.id)
+                });
+            }
         }
 
         protected override void OnDestroy()

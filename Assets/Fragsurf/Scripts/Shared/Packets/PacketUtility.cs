@@ -101,51 +101,6 @@ namespace Fragsurf.Shared.Packets
             }
         }
 
-        //public static IBasePacket TakePacket(PacketName name)
-        //{
-        //    // todo : I shouldn't have to update this for every new packet type
-        //    switch (name)
-        //    {
-        //        case PacketName.PlayerIntroduction:
-        //            return TakePacket<PlayerIntroduction>();
-        //        case PacketName.UserCmd:
-        //            return TakePacket<UserCmd>();
-        //        case PacketName.ChooseTeam:
-        //            return TakePacket<ChooseTeam>();
-        //        case PacketName.ChatMessage:
-        //            return TakePacket<ChatMessage>();
-        //        case PacketName.PlayerEvent:
-        //            return TakePacket<PlayerEvent>();
-        //        case PacketName.MapChange:
-        //            return TakePacket<MapChange>();
-        //        case PacketName.CustomPacket:
-        //            return TakePacket<CustomPacket>();
-        //        case PacketName.FileSync:
-        //            return TakePacket<FileSync>();
-        //        case PacketName.FileChunk:
-        //            return TakePacket<FileChunk>();
-        //        case PacketName.PlaySound:
-        //            return TakePacket<PlaySound>();
-        //        case PacketName.DeleteEntity:
-        //            return TakePacket<DeleteEntity>();
-        //        case PacketName.SkinManifest:
-        //            return TakePacket<SkinManifest>();
-        //        case PacketName.PacketPack:
-        //            return TakePacket<PacketPack>();
-        //        case PacketName.ConnectionApproval:
-        //            return TakePacket<ConnectionApproval>();
-        //        case PacketName.Ping:
-        //            return TakePacket<Ping>();
-        //        case PacketName.CompressedVoiceData:
-        //            return TakePacket<CompressedVoiceData>();
-        //        case PacketName.DamageEvent:
-        //            return TakePacket<DamageEvent>();
-        //        case PacketName.EntityCommand:
-        //            return TakePacket<EntityCommand>();
-        //        default:
-        //            return null;
-        //    }
-        //}
     }
 }
 
