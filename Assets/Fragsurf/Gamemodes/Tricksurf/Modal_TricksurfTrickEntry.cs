@@ -1,5 +1,4 @@
 using Fragsurf.UI;
-using Mosframe;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,6 +16,13 @@ namespace Fragsurf.Gamemodes.Tricksurf
             public bool Completed;
         }
 
+        public enum TrickFilter
+        {
+            All,
+            Completed,
+            Incomplete
+        }
+
         [SerializeField]
         private TMP_Text _trickName;
         [SerializeField]
@@ -25,6 +31,8 @@ namespace Fragsurf.Gamemodes.Tricksurf
         private GameObject _completedCheck;
 
         private int _trickId;
+
+        public static TrickFilter Filter = TrickFilter.All;
 
         private void Start()
         {
@@ -48,6 +56,14 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         protected override bool DataContainsSearch(Data data, string input)
         {
+            if(!data.Completed && Filter == TrickFilter.Completed)
+            {
+                return false;
+            }
+            if(data.Completed && Filter == TrickFilter.Incomplete)
+            {
+                return false;
+            }
             return !string.IsNullOrEmpty(data.TrickName) && data.TrickName.ContainsInsensitive(input);
         }
 

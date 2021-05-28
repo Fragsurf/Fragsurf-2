@@ -11,9 +11,11 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         [Header("Tricksurf Scoreboard Options")]
         [SerializeField]
-        private Button _playersButton;
+        private Button _allTricks;
         [SerializeField]
-        private Button _tricksButton;
+        private Button _completedTricks;
+        [SerializeField]
+        private Button _incompleteTricks;
 
         private ScoreboardPlayerEntry _playerTemplate;
         private ScoreboardSpectatorEntry _specTemplate;
@@ -29,17 +31,25 @@ namespace Fragsurf.Gamemodes.Tricksurf
             //_trickTemplate.gameObject.SetActive(false);
             _trickTemplate.EntryLimit = 99999;
 
-            _playersButton.onClick.AddListener(() =>
-            {
-                // switch to players tab
-            });
-
-            _tricksButton.onClick.AddListener(() =>
-            {
-                // switch to players tab
-            });
-
             SpectateController.ScoreboardUpdateNotification += SpectateController_ScoreboardUpdateNotification;
+
+            _allTricks.onClick.AddListener(() =>
+            {
+                Modal_TricksurfTrickEntry.Filter = Modal_TricksurfTrickEntry.TrickFilter.All;
+                _trickTemplate.SearchField.onValueChanged.Invoke(_trickTemplate.SearchField.text);
+            });
+
+            _completedTricks.onClick.AddListener(() =>
+            {
+                Modal_TricksurfTrickEntry.Filter = Modal_TricksurfTrickEntry.TrickFilter.Completed;
+                _trickTemplate.SearchField.onValueChanged.Invoke(_trickTemplate.SearchField.text);
+            });
+
+            _incompleteTricks.onClick.AddListener(() =>
+            {
+                Modal_TricksurfTrickEntry.Filter = Modal_TricksurfTrickEntry.TrickFilter.Incomplete;
+                _trickTemplate.SearchField.onValueChanged.Invoke(_trickTemplate.SearchField.text);
+            });
 
             var ts = FSGameLoop.GetGameInstance(false).Get<SH_Tricksurf>();
             ts.OnTricksLoaded += LoadTricks;

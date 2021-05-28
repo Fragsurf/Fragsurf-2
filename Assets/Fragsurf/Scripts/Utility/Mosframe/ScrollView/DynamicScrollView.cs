@@ -127,7 +127,8 @@
                 // move scroll to bottom
 
                 if( isBottom ) {
-                    this.contentAnchoredPosition = this.viewportSize - this.contentSize;
+                    this.contentAnchoredPosition = 0;
+                    //this.contentAnchoredPosition = this.viewportSize - this.contentSize;
                 }
 
                 this.refresh();
