@@ -49,6 +49,18 @@ namespace Fragsurf.Gamemodes.Tricksurf
         private Dictionary<string, int> _triggerIds;
         private Dictionary<string, Trick> _trickMap;
 
+        public string GetTriggerName(int triggerId)
+        {
+            foreach(var kvp in _triggerIds)
+            {
+                if(kvp.Value == triggerId)
+                {
+                    return kvp.Key;
+                }
+            }
+            return string.Empty;
+        }
+
         public int GetTriggerId(string triggerName)
         {
             if(_triggerIds.ContainsKey(triggerName))

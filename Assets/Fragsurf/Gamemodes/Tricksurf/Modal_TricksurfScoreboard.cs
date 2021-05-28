@@ -1,6 +1,7 @@
 using Fragsurf.Gamemodes.Bunnyhop;
 using Fragsurf.Shared;
 using Fragsurf.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,10 @@ namespace Fragsurf.Gamemodes.Tricksurf
         private Button _completedTricks;
         [SerializeField]
         private Button _incompleteTricks;
+        [SerializeField]
+        private Button _untrackButton;
+        [SerializeField]
+        private TMP_Text _activeTrickText;
 
         private ScoreboardPlayerEntry _playerTemplate;
         private ScoreboardSpectatorEntry _specTemplate;
@@ -51,9 +56,30 @@ namespace Fragsurf.Gamemodes.Tricksurf
                 _trickTemplate.SearchField.onValueChanged.Invoke(_trickTemplate.SearchField.text);
             });
 
+            _untrackButton.onClick.AddListener(() =>
+            {
+                SetTrackedTrick(-1);
+            });
+
             var ts = FSGameLoop.GetGameInstance(false).Get<SH_Tricksurf>();
             ts.OnTricksLoaded += LoadTricks;
             LoadTricks(ts.TrickData);
+        }
+
+        public void SetTrackedTrick(int trickId)
+        {
+            var cl = FSGameLoop.GetGameInstance(false);
+            var t = cl.Get<SH_Tricksurf>().TrickData.GetTrick(trickId);
+            if(trickId == -1 || t == null)
+            {
+                _untrackButton.interactable = false;
+                _activeTrickText.text = string.Empty;
+                // unset tracker
+                return;
+            }
+            _untrackButton.interactable = true;
+            _activeTrickText.text = t.name;
+            // set tracker
         }
 
         private void LoadTricks(TrickData trickData)

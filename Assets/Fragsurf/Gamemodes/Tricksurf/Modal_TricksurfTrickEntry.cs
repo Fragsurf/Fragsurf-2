@@ -1,4 +1,6 @@
+using Fragsurf.Shared;
 using Fragsurf.UI;
+using JetBrains.Annotations;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -30,7 +32,14 @@ namespace Fragsurf.Gamemodes.Tricksurf
         [SerializeField]
         private GameObject _completedCheck;
 
-        private int _trickId;
+        [SerializeField]
+        private TMP_Text _trickDetailName;
+        [SerializeField]
+        private TMP_Text _trickDetailPath;
+        [SerializeField]
+        private Button _trickDetailTrack;
+
+        private Data _data;
 
         public static TrickFilter Filter = TrickFilter.All;
 
@@ -40,7 +49,51 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
             _button.onClick.AddListener(() =>
             {
-                Debug.Log("Clicked");
+                if(_data == null)
+                {
+                    return;
+                }
+                var cl = FSGameLoop.GetGameInstance(false);
+                if(cl == null)
+                {
+                    return;
+                }
+
+                var ts = cl.Get<SH_Tricksurf>();
+                if(ts == null)
+                {
+                    return;
+                }
+
+                var trick = ts.TrickData.GetTrick(_data.TrickId);
+                if(trick == null)
+                {
+                    return;
+                }
+
+                var path = string.Empty;
+                var idx = 1;
+                foreach(var triggerId in trick.path)
+                {
+                    var triggerName = ts.TrickData.GetTriggerName(triggerId);
+                    path += $"<b>{idx}</b> - {triggerName}, ";
+                    idx++;
+                }
+
+                path = path.Substring(0, path.Length - 2);
+
+                _trickDetailName.text = $"{_data.TrickName}\nCompleted: {_data.Completed}";
+                _trickDetailPath.text = path;
+                _trickDetailTrack.onClick.RemoveAllListeners();
+                _trickDetailTrack.onClick.AddListener(() =>
+                {
+                    var sc = GameObject.FindObjectOfType<Modal_TricksurfScoreboard>();
+                    if(sc == null)
+                    {
+                        return;
+                    }
+                    sc.SetTrackedTrick(_data.TrickId);
+                });
             });
         }
 
@@ -69,7 +122,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         private void OnTrickCompleted(int trickId)
         {
-            if(_trickId != trickId)
+            if(_data == null || _data.TrickId != trickId)
             {
                 return;
             }
@@ -78,7 +131,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         public override void LoadData(Data data)
         {
-            _trickId = data.TrickId;
+            _data = data;
             _trickName.text = data.TrickName;
             _completedCheck.SetActive(data.Completed);
         }
