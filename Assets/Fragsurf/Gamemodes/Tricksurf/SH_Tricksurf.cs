@@ -11,6 +11,7 @@ using Fragsurf.Actors;
 using Newtonsoft.Json;
 using Fragsurf.Maps;
 using Fragsurf.Movement;
+using System.Net;
 
 namespace Fragsurf.Gamemodes.Tricksurf
 {
@@ -53,12 +54,6 @@ namespace Fragsurf.Gamemodes.Tricksurf
             return Gamemode.GetDataDirectory() + "/tricks/" + fileName + ".json";
         }
 
-        public string GetCustomTrickDataPath()
-        {
-            var fileName = Path.GetFileNameWithoutExtension(Map.Current.Name);
-            return Path.Combine(Application.persistentDataPath, "UserTricks", fileName + ".json");
-        }
-
         private void Tune()
         {
             if (TrickData == null || string.IsNullOrWhiteSpace(TrickData.tune))
@@ -81,7 +76,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
         {
             if (TrickData == null)
             {
-                LoadTrickData();
+                LoadTricks();
             }
 
             try
@@ -101,7 +96,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
         {
             if (TrickData == null)
             {
-                LoadTrickData();
+                LoadTricks();
             }
 
             try
@@ -110,12 +105,6 @@ namespace Fragsurf.Gamemodes.Tricksurf
                 if (tricks == null)
                 {
                     return;
-                }
-                // this is just a temporary patch for tricks that don't have custom flagged yet...
-                // in the future, remove this
-                foreach(var trick in tricks)
-                {
-                    trick.custom = true;
                 }
                 TrickData.tricks.AddRange(tricks);
                 BuildTrickDataTree();
@@ -127,19 +116,37 @@ namespace Fragsurf.Gamemodes.Tricksurf
             }
         }
 
-        public void LoadTrickData()
+        private string GetTrickJson()
         {
-            var jsonFilePath = GetTrickDataPath();
-            var jsonData = File.Exists(jsonFilePath) ? File.ReadAllText(jsonFilePath) : string.Empty;
+            var githubPath = $"https://raw.githubusercontent.com/Fragsurf/Tricks/main/{Map.Current.Name}.json";
+            var localPath = GetTrickDataPath();
+            try
+            {
+                using var client = new WebClient();
+                string s = client.DownloadString(githubPath);
+                if (!string.IsNullOrEmpty(s) && !s.StartsWith("404"))
+                {
+                    return s;
+                }
+            }
+            catch  { }
+
+            return File.Exists(localPath) ? File.ReadAllText(localPath) : string.Empty;
+        }
+
+        public void LoadTricks()
+        {
+            var json = GetTrickJson();
 
             try
             {
-                TrickData = JsonConvert.DeserializeObject<TrickData>(jsonData);
+                TrickData = JsonConvert.DeserializeObject<TrickData>(json);
             }
             catch (Exception e)
             {
-                DevConsole.WriteLine("Failed to load tricks from file: " + jsonFilePath);
+                DevConsole.WriteLine("Failed to load tricks:");
                 DevConsole.WriteLine(e.ToString());
+                Debug.LogError(e.ToString());
             }
 
             if(TrickData == null)
@@ -180,7 +187,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
             OnTriggerEntered += (player, touchData) => { Game.UserPlugins?.InvokeEventSubscriptions("OnTrickTrigger", player, touchData); };
             OnTrackInvalidated += (player) => { Game.UserPlugins?.InvokeEventSubscriptions("OnTrickInvalidated", player); };
 
-            LoadTrickData();
+            LoadTricks();
 
             if(!Game.IsHost)
             {

@@ -22,12 +22,11 @@ namespace Fragsurf.Gamemodes.Tricksurf
     public class Trick
     {
         public int id;
-        public List<int> path;
-        public HashSet<int> pass;
-        public int points;
         public string name;
+        public string author;
+        public int points;
         public bool prespeed;
-        public bool custom;
+        public List<int> path;
 
         public override string ToString()
         {

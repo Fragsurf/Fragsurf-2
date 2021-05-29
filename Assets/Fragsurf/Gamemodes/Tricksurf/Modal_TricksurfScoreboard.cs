@@ -10,7 +10,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
     public class Modal_TricksurfScoreboard : UGuiModal
     {
 
-        public static int TrackedTrick;
+        public static int TrackedTrick = -1;
 
         [Header("Tricksurf Scoreboard Options")]
         [SerializeField]
