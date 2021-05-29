@@ -10,6 +10,8 @@ namespace Fragsurf.Gamemodes.Tricksurf
     public class Modal_TricksurfScoreboard : UGuiModal
     {
 
+        public static int TrackedTrick;
+
         [Header("Tricksurf Scoreboard Options")]
         [SerializeField]
         private Button _allTricks;
@@ -68,18 +70,19 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         public void SetTrackedTrick(int trickId)
         {
+            TrackedTrick = trickId;
+
             var cl = FSGameLoop.GetGameInstance(false);
             var t = cl.Get<SH_Tricksurf>().TrickData.GetTrick(trickId);
-            if(trickId == -1 || t == null)
+            if (trickId == -1 || t == null)
             {
                 _untrackButton.interactable = false;
                 _activeTrickText.text = string.Empty;
-                // unset tracker
                 return;
             }
+
             _untrackButton.interactable = true;
             _activeTrickText.text = t.name;
-            // set tracker
         }
 
         private void LoadTricks(TrickData trickData)

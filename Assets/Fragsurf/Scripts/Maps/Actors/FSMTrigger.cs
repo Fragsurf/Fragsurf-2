@@ -35,14 +35,20 @@ namespace Fragsurf.Actors
         public UnityEvent<NetEntity> OnTriggerExit = new UnityEvent<NetEntity>();
 
         private HashSet<StayingData> _staying = new HashSet<StayingData>();
+        private static Material _triggerMaterial;
 
         protected override void _Start()
         {
+            if(_triggerMaterial == null)
+            {
+                _triggerMaterial = Resources.Load<Material>("FSM/Materials/FSMTrigger Material");
+            }
+
             if (!Application.isPlaying)
             {
                 foreach (var r in GetComponentsInChildren<Renderer>())
                 {
-                    r.material = Resources.Load<Material>("FSM/Materials/FSMTrigger Material"); 
+                    r.material = _triggerMaterial; 
                 }
                 EnableRenderers(true);
                 return;
@@ -227,6 +233,25 @@ namespace Fragsurf.Actors
             }
 
             return true;
+        }
+
+        public void EnsureRenderers()
+        {
+            if (_triggerMaterial == null)
+            {
+                _triggerMaterial = Resources.Load<Material>("FSM/Materials/FSMTrigger Material");
+            }
+
+            foreach (var mf in GetComponentsInChildren<MeshFilter>(true))
+            {
+                if(mf.TryGetComponent(out MeshRenderer mr))
+                {
+                    mr.material = _triggerMaterial;
+                    continue;
+                }
+                mr = mf.gameObject.AddComponent<MeshRenderer>();
+                mr.material = _triggerMaterial;
+            }
         }
 
         public void OnInteract(NetEntity interactee)
