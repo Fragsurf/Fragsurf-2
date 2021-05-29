@@ -25,7 +25,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
         {
             base.ExecuteGameConfig();
 
-            DevConsole.SetVariable("mv.acceleration", 10f, true, true);
+            DevConsole.SetVariable("mv.accelerate", 10f, true, true);
             DevConsole.SetVariable("mv.falldamage", false, true, true);
             DevConsole.SetVariable("mv.autobhop", true, true, true);
             DevConsole.SetVariable("mv.solidplayers", false, true, true);
