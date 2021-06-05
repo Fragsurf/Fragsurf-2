@@ -21,7 +21,7 @@ namespace Fragsurf.Maps
                 {
                     result.Add(new BSPMap()
                     {
-                        Author = "Unknown",
+                        Author = "N/A",
                         FilePath = file,
                         Name = Path.GetFileNameWithoutExtension(file)
                     });

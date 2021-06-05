@@ -1,7 +1,10 @@
+using Fragsurf.Actors;
 using Fragsurf.Client;
+using Fragsurf.Maps;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
+using System.Linq;
 
 namespace Fragsurf.Gamemodes.Bunnyhop
 {
@@ -16,10 +19,58 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return;
             }
 
-            SpawnPlayer(player);
+            SpawnAtStart(player);
         }
 
-        [ChatCommand("Teleport to the beginning", "r", "spawn", "restart")]
+        [ChatCommand("Teleport to a start zone", "r", "restart")]
+        public void SpawnAtStart(BasePlayer player)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+
+            SpawnPlayer(player);
+
+            if(Map.Current == null)
+            {
+                return;
+            }
+
+            var track = Map.Current.Actors.FirstOrDefault(x => x is FSMTrack) as FSMTrack;
+            if(track == null)
+            {
+                return;
+            }
+
+            FSMTrigger startTrig = null;
+
+            switch(track.TrackType)
+            {
+                case FSMTrackType.Linear:
+                    startTrig = track.LinearData.StartTrigger;
+                    break;
+                case FSMTrackType.Staged:
+                    if(track.StageData.Stages == null || track.StageData.Stages.Length == 0)
+                    {
+                        break;
+                    }
+                    startTrig = track.StageData.Stages[0].StartTrigger;
+                    break;
+                case FSMTrackType.Bonus:
+                    startTrig = track.BonusData.StartTrigger;
+                    break;
+            }
+
+            if(startTrig == null)
+            {
+                return;
+            }
+
+            player.Entity.Origin = startTrig.transform.position;
+        }
+
+        [ChatCommand("Teleport to a spawn point", "spawn")]
         public void SpawnPlayer(BasePlayer player)
         {
             if (!Game.IsHost)

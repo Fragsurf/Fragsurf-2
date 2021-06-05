@@ -47,31 +47,11 @@ namespace Fragsurf.BSP
 			OnStart();
         }
 
-        private void Update()
-        {
-			for(int i = _pendingOutputs.Count - 1; i >= 0; i--)
-            {
-				_pendingOutputs[i].Delay -= Time.deltaTime;
-				if(_pendingOutputs[i].Delay <= 0)
-                {
-					Input(_pendingOutputs[i]);
-					_pendingOutputs.RemoveAt(i);
-                }
-            }
-			OnUpdate();
-        }
-
 		protected virtual void OnStart() { }
 		protected virtual void OnUpdate() { }
 
 		public void Input(BspEntityOutput output)
         {
-			if(output.Delay > 0)
-            {
-				_pendingOutputs.Add(output);
-				return;
-			}
-
             switch (output.TargetInput.ToLower())
             {
 				case "enable":
@@ -85,20 +65,54 @@ namespace Fragsurf.BSP
 			_Input(output);
         }
 
-		protected void Fire(string outputName)
+		private void Update()
+		{
+			for (int i = _pendingOutputs.Count - 1; i >= 0; i--)
+			{
+				_pendingOutputs[i].Delay -= Time.deltaTime;
+				if (_pendingOutputs[i].Delay <= 0)
+				{
+					_Fire(_pendingOutputs[i]);
+					_pendingOutputs.RemoveAt(i);
+				}
+			}
+			OnUpdate();
+		}
+
+		protected void Fire(string outputName, NetEntity activator = null)
 		{
 			foreach (var prop in Entity.PropertyNames)
 			{
 				if (prop.StartsWith(outputName, StringComparison.OrdinalIgnoreCase))
 				{
 					var output = BspEntityOutput.Parse(outputName, Entity.GetRawPropertyValue(prop));
-					foreach(var ent in FindBspEntities(output.TargetEntity))
+					output.Activator = activator;
+					if(output.Delay > 0)
                     {
-						ent.Input(output);
-					}
+						_pendingOutputs.Add(output);
+						continue;
+                    }
+					_Fire(output);
 				}
 			}
 		}
+
+		private void _Fire(BspEntityOutput output)
+        {
+			if (!output.TargetEntity.StartsWith("!"))
+			{
+				foreach (var ent in FindBspEntities(output.TargetEntity))
+				{
+					ent.Input(output);
+				}
+			}
+			OnOutputFired(output);
+		}
+
+		protected virtual void OnOutputFired(BspEntityOutput output)
+        {
+
+        }
 
 		protected virtual void _Input(BspEntityOutput output)
         {

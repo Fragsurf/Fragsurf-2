@@ -31,8 +31,8 @@ namespace Fragsurf.Server
             var shouldIdle = PlayerManager.PlayerCount == 0;
             if(Idling != shouldIdle)
             {
-                TimeStep.Instance.SetIdleMode(shouldIdle);
-                Idling = shouldIdle;
+                //TimeStep.Instance.SetIdleMode(shouldIdle);
+                //Idling = shouldIdle;
             }
         }
 

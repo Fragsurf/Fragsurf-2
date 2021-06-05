@@ -1,4 +1,5 @@
 using Fragsurf.Actors;
+using Fragsurf.Maps;
 using Fragsurf.Shared;
 using Fragsurf.Utility;
 using UnityEngine;
@@ -48,6 +49,10 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         protected override void _Initialize()
         {
+            if(Map.Current.FilePath.EndsWith("bsp"))
+            {
+                new BTimesSpeedrunMapDataProvider().CreateZones(Map.Current.Name);
+            }
             OutlineTracks();
             _initted = true;
         }

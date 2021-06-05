@@ -1,4 +1,6 @@
 using Fragsurf.Actors;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -22,7 +24,7 @@ namespace Fragsurf.Maps
 
         public bool IsMounted => !string.IsNullOrWhiteSpace(MountedGame);
 
-        private FSMActor[] _actors;
+        public List<FSMActor> Actors { get; } = new List<FSMActor>();
 
         public async Task<MapLoadState> LoadAsync()
         {
@@ -30,7 +32,7 @@ namespace Fragsurf.Maps
 
             if(result == MapLoadState.Loaded)
             {
-                _actors = GameObject.FindObjectsOfType<FSMActor>(true);
+                Actors.AddRange(GameObject.FindObjectsOfType<FSMActor>(true));
             }
 
             return result;
@@ -43,18 +45,18 @@ namespace Fragsurf.Maps
 
         public void Tick()
         {
-            for (int i = _actors.Length - 1; i >= 0; i--)
+            for (int i = Actors.Count - 1; i >= 0; i--)
             {
-                if (!_actors[i])
+                if (!Actors[i])
                 {
-                    _actors.RemoveAt(i);
+                    Actors.RemoveAt(i);
                     continue;
                 }
-                if (!_actors[i].isActiveAndEnabled)
+                if (!Actors[i].isActiveAndEnabled)
                 {
                     continue;
                 }
-                _actors[i].Tick();
+                Actors[i].Tick();
             }
             _Tick();
         }

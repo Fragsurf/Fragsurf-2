@@ -1,3 +1,4 @@
+using Fragsurf.Shared.Entity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace Fragsurf.BSP
     public class BspEntityOutput
     {
 
+        public NetEntity Activator;
         public string MyOutput;
         public string TargetEntity;
         public string TargetInput;

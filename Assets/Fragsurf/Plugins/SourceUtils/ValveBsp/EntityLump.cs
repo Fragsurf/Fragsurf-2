@@ -182,7 +182,7 @@ namespace SourceUtils
             static Entity()
             {
                 _sPropertyActions = new Dictionary<Type, Dictionary<string, Action<Entity, string>>>();
-
+                
                 foreach ( var type in Assembly.GetExecutingAssembly().GetTypes() )
                 {
                     if ( !typeof(Entity).IsAssignableFrom( type ) ) continue;
@@ -195,7 +195,7 @@ namespace SourceUtils
                 Dictionary<string, Action<Entity, string>> actions;
                 if ( _sPropertyActions.TryGetValue( type, out actions ) ) return actions;
 
-                _sPropertyActions.Add( type, actions = new Dictionary<string, Action<Entity, string>>() );
+                _sPropertyActions.Add( type, actions = new Dictionary<string, Action<Entity, string>>(StringComparer.InvariantCultureIgnoreCase) );
                 if ( type.BaseType != null && typeof(Entity).IsAssignableFrom( type.BaseType ) )
                 {
                     foreach ( var pair in BuildPropertyActions( type.BaseType ) )
@@ -552,6 +552,51 @@ namespace SourceUtils
             public Color32 ColorHDR { get; private set; }
             [EntityField("_lightscalehdr")]
             public float LightScaleHDR { get; private set; }
+        }
+
+        [EntityClass("filter_activator_name")]
+        public class FilterActivatorName : Entity
+        {
+            [EntityField("negated")]
+            public int Negated { get; private set; }
+            [EntityField("filtername")]
+            public string FilterName { get; private set; }
+
+            public bool AllowMatch => Negated == 0;
+        }
+
+        [EntityClass("filter_activator_class")]
+        public class FilterActivatorClass : Entity
+        {
+            [EntityField("negated")]
+            public int Negated { get; private set; }
+            [EntityField("filterclass")]
+            public string FilterClass { get; private set; }
+
+            public bool AllowMatch => Negated == 0;
+        }
+
+        [EntityClass("filter_multi")]
+        public class FilterMulti : Entity
+        {
+            [EntityField("negated")]
+            public bool Negated { get; private set; }
+            /// <summary>
+            /// 0 = and (all filters must pass)
+            /// 1 = or (any filter must pass)
+            /// </summary>
+            [EntityField("filtertype")]
+            public int FilterType { get; private set; }
+            [EntityField("filter01")]
+            public string Filter01 { get; private set; }
+            [EntityField("filter02")]
+            public string Filter02 { get; private set; }
+            [EntityField("filter03")]
+            public string Filter03 { get; private set; }
+            [EntityField("filter04")]
+            public string Filter04 { get; private set; }
+            [EntityField("filter05")]
+            public string Filter05 { get; private set; }
         }
 
         [EntityClass("trigger_teleport")]

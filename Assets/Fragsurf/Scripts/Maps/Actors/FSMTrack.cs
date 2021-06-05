@@ -19,7 +19,7 @@ namespace Fragsurf.Actors
     {
         public FSMTrigger StartTrigger;
         public FSMTrigger EndTrigger;
-        public FSMTrigger[] Checkpoints;
+        public FSMTrigger[] Checkpoints = new FSMTrigger[0];
 
         public bool IsValid()
         {
@@ -358,6 +358,25 @@ namespace Fragsurf.Actors
 
             OnStage?.Invoke(hu, stage);
             _stageRunDatas.Remove(runData);
+        }
+
+        public void Set(FSMTrackType type, string name)
+        {
+            _trackType = type;
+            _trackName = name;
+
+            switch(type)
+            {
+                case FSMTrackType.Linear:
+                    _linearData = new FSMTrackLinear();
+                    break;
+                case FSMTrackType.Staged:
+                    _stageData = new FSMTrackStage();
+                    break;
+                case FSMTrackType.Bonus:
+                    _bonusData = new FSMTrackBonus();
+                    break;
+            }
         }
 
     }

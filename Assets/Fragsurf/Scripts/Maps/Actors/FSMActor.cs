@@ -64,6 +64,10 @@ namespace Fragsurf.Actors
         {
             foreach(var renderer in GetComponentsInChildren<Renderer>())
             {
+                if(renderer is LineRenderer)
+                {
+                    continue;
+                }
                 renderer.enabled = enabled;
             }
         }

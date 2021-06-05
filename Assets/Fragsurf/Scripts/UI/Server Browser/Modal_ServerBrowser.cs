@@ -75,7 +75,7 @@ namespace Fragsurf.UI
                 SetServerType(_lobbyTab, ServerType.Lobby);
             });
 
-            SetServerType(_officialTab, ServerType.Lobby);
+            SetServerType(_lobbyTab, ServerType.Lobby);
         }
 
         private void SetServerType(Button btn, ServerType type)

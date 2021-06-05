@@ -30,16 +30,11 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         public BaseLeaderboardSystem LeaderboardSystem { get; } = new SteamworksLeaderboardSystem();
 
-        protected override void _Initialize()
+        protected override void _Start()
         {
-            var tl = new BunnyhopTimeline();
-            tl.Frames.Add(new BunnyhopTimelineFrame());
-            tl.SetSegment(1);
-            tl.Serialize();
-            tl.SerializeAsync();
-            File.Exists("C:\\Test\\test.test");
+            base._Start();
 
-            foreach(var track in GameObject.FindObjectsOfType<FSMTrack>())
+            foreach (var track in GameObject.FindObjectsOfType<FSMTrack>())
             {
                 // the x.Game == Game conditional is important because we're tying into MonoBehaviours which exist in shared space.
                 track.OnStart.AddListener((x) => { if (x.Game == Game) Track_OnStart(track, x); });
@@ -50,6 +45,18 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 track.OnEnterStart.AddListener((x) => { if (x.Game == Game) Track_OnEnterStart(track, x); });
             }
         }
+
+        //protected override void _Initialize()
+        //{
+        //    var tl = new BunnyhopTimeline();
+        //    tl.Frames.Add(new BunnyhopTimelineFrame());
+        //    tl.SetSegment(1);
+        //    tl.Serialize();
+        //    tl.SerializeAsync();
+        //    File.Exists("C:\\Test\\test.test");
+
+
+        //}
 
         private void Track_OnEnterStart(FSMTrack track, Human hu)
         {
