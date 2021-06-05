@@ -25,6 +25,7 @@ namespace Fragsurf.Maps
         public bool IsMounted => !string.IsNullOrWhiteSpace(MountedGame);
 
         public List<FSMActor> Actors { get; } = new List<FSMActor>();
+        public abstract Texture LoadCoverImage();
 
         public async Task<MapLoadState> LoadAsync()
         {

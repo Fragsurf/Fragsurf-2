@@ -7,7 +7,7 @@ public class btimestest : MonoBehaviour
     void Start()
     {
         var p = new BTimesSpeedrunMapDataProvider();
-        p.CreateZones("bhop_white");
+        p.CreateTracks("bhop_white");
     }
 
     // Update is called once per frame

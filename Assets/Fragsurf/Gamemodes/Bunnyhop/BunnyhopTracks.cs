@@ -30,9 +30,14 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         public BaseLeaderboardSystem LeaderboardSystem { get; } = new SteamworksLeaderboardSystem();
 
-        protected override void _Start()
+        protected override void _Initialize()
         {
-            base._Start();
+            base._Initialize();
+
+            if (Game.IsHost || FSGameLoop.GetGameInstance(true) == null)
+            {
+                new BTimesSpeedrunMapDataProvider().CreateTracks(Map.Current.Name);
+            }
 
             foreach (var track in GameObject.FindObjectsOfType<FSMTrack>())
             {
@@ -45,18 +50,6 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 track.OnEnterStart.AddListener((x) => { if (x.Game == Game) Track_OnEnterStart(track, x); });
             }
         }
-
-        //protected override void _Initialize()
-        //{
-        //    var tl = new BunnyhopTimeline();
-        //    tl.Frames.Add(new BunnyhopTimelineFrame());
-        //    tl.SetSegment(1);
-        //    tl.Serialize();
-        //    tl.SerializeAsync();
-        //    File.Exists("C:\\Test\\test.test");
-
-
-        //}
 
         private void Track_OnEnterStart(FSMTrack track, Human hu)
         {

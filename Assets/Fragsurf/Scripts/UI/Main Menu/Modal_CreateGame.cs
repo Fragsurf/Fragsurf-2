@@ -162,16 +162,7 @@ namespace Fragsurf.UI
             _mapTitle.text = $"<size=24>{map.Name}</size>\n<b>author:</b> {map.Author}";
             _mapTitle.transform.parent.gameObject.RebuildLayout();
 
-            var imgPath = Path.ChangeExtension(map.FilePath, "jpg");
-            if(File.Exists(imgPath))
-            {
-                var bytes = File.ReadAllBytes(imgPath);
-                var tex = new Texture2D(1280, 720);
-                if(ImageConversion.LoadImage(tex, bytes))
-                {
-                    _mapCover.texture = tex;
-                }
-            }
+            _mapCover.texture = map.LoadCoverImage();
         }
 
         private void ClearMap()

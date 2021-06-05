@@ -7,6 +7,12 @@ namespace Fragsurf.Maps
 {
     public class SceneMap : BaseMap
     {
+
+        public override Texture LoadCoverImage()
+        {
+            return Resources.Load<Texture>(Name);
+        }
+
         protected override async Task<MapLoadState> _LoadAsync()
         {
             try

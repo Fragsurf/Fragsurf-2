@@ -10,7 +10,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
     public class BTimesSpeedrunMapDataProvider
     {
 
-        public bool CreateZones(string mapName)
+        public bool CreateTracks(string mapName)
         {
             var zoneFile = Resources.Load<TextAsset>("btimes_zones");
             if (zoneFile == null)

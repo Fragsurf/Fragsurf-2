@@ -1,6 +1,7 @@
 using ModTool;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +18,21 @@ namespace Fragsurf.Maps
             _mod = mod;
             FilePath = mod.modInfo.path;
             Name = mod.name;
+        }
+
+        public override Texture LoadCoverImage()
+        {
+            var imgPath = Path.ChangeExtension(_mod.modInfo.path, "jpg");
+            if (File.Exists(imgPath))
+            {
+                var bytes = File.ReadAllBytes(imgPath);
+                var tex = new Texture2D(1280, 720);
+                if (ImageConversion.LoadImage(tex, bytes))
+                {
+                    return tex;
+                }
+            }
+            return null;
         }
 
         protected override async Task<MapLoadState> _LoadAsync()

@@ -12,6 +12,7 @@ namespace Fragsurf.Maps
     {
 
         public static BaseMap Current { get; private set; }
+        public static bool Loading { get; private set; }
 
         [ConVar("map.default", "")]
         public string DefaultMap { get; set; } = "surf_fst_skyworld";
@@ -105,12 +106,13 @@ namespace Fragsurf.Maps
 
         private async Task<MapLoadState> _LoadAsync(BaseMap map)
         {
-            _spawnPoints.Clear();
-
             if (Current != null)
             {
                 await UnloadAsync();
             }
+
+            _spawnPoints.Clear();
+            Loading = true;
 
             var result = await map.LoadAsync();
             if (result == MapLoadState.Loaded)
@@ -118,6 +120,8 @@ namespace Fragsurf.Maps
                 Current = map;
                 GC.Collect(2, GCCollectionMode.Forced);
             }
+
+            Loading = false;
 
             return result;
         }
@@ -146,11 +150,15 @@ namespace Fragsurf.Maps
                 return;
             }
 
+            Loading = true;
+
             await Current.UnloadAsync();
             Current = null;
 
             Resources.UnloadUnusedAssets();
             GC.Collect(2, GCCollectionMode.Forced);
+
+            Loading = false;
         }
 
     }

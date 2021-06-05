@@ -47,12 +47,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private bool _initted;
 
-        protected override void _Initialize()
+        protected override void _Start()
         {
-            if(Map.Current.FilePath.EndsWith("bsp"))
-            {
-                new BTimesSpeedrunMapDataProvider().CreateZones(Map.Current.Name);
-            }
             OutlineTracks();
             _initted = true;
         }

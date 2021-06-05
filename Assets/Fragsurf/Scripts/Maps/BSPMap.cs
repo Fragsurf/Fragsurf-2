@@ -15,6 +15,21 @@ namespace Fragsurf.Maps
 
         private BspToUnity _bspToUnity;
 
+        public override Texture LoadCoverImage()
+        {
+            var imgPath = Path.ChangeExtension(FilePath, "jpg");
+            if (File.Exists(imgPath))
+            {
+                var bytes = File.ReadAllBytes(imgPath);
+                var tex = new Texture2D(1280, 720);
+                if (ImageConversion.LoadImage(tex, bytes))
+                {
+                    return tex;
+                }
+            }
+            return null;
+        }
+
         protected override async Task<MapLoadState> _LoadAsync()
         {
             if (!File.Exists(FilePath)
