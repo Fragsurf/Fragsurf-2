@@ -24,10 +24,7 @@ namespace Fragsurf.BSP
                     {
                         continue;
                     }
-                    if (!tf.Passes(ent))
-                    {
-                        return false;
-                    }
+                    return tf.Passes(ent);
                 }
             }
             return true;
@@ -100,8 +97,23 @@ namespace Fragsurf.BSP
                 return;
             }
 
-            if(output.Parameter.StartsWith("targetname", System.StringComparison.OrdinalIgnoreCase)
-                || output.Parameter.StartsWith("classname", System.StringComparison.OrdinalIgnoreCase))
+            if (output.Parameter.StartsWith("classname", System.StringComparison.OrdinalIgnoreCase))
+            {
+                if (output.Activator == null)
+                {
+                    return;
+                }
+
+                var s = output.Parameter.Split(' ');
+                if (s.Length != 2)
+                {
+                    return;
+                }
+
+                output.Activator.ClassName = s[1];
+            }
+
+            if (output.Parameter.StartsWith("targetname", System.StringComparison.OrdinalIgnoreCase))
             {
                 if(output.Activator == null)
                 {

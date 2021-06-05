@@ -47,9 +47,20 @@ namespace Fragsurf.BSP
         private IEnumerator MakeCollidersConvex()
         {
             var ct = 0;
-            foreach(var mc in BspToUnity.CollidersToConvex)
+            foreach(var mc in BspToUnity.CollidersToProcess)
             {
-                mc.convex = true;
+                //if(mc.ReverseNormals)
+                //{
+                //    mc.Mesh.ReverseNormals();
+                //}
+                if(mc.Convex)
+                {
+                    mc.Mc.convex = true;
+                }
+                if(mc.Trigger)
+                {
+                    mc.Mc.isTrigger = true;
+                }
                 ct++;
                 if(ct >= 10)
                 {

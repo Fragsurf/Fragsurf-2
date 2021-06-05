@@ -1,5 +1,6 @@
 using Fragsurf.Shared.Entity;
 using SourceUtils.ValveBsp.Entities;
+using UnityEngine;
 
 namespace Fragsurf.BSP
 {
@@ -11,12 +12,12 @@ namespace Fragsurf.BSP
         {
             var fn = Entity as FilterActivatorClass;
 
-            if (string.IsNullOrEmpty(fn.ClassName))
+            if (string.IsNullOrEmpty(fn.FilterClass))
             {
                 return true;
             }
 
-            var match = string.Equals(fn.ClassName, ent.EntityName, System.StringComparison.OrdinalIgnoreCase);
+            var match = string.Equals(fn.FilterClass, ent.ClassName, System.StringComparison.OrdinalIgnoreCase);
 
             if (fn.AllowMatch)
             {

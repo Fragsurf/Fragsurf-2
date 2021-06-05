@@ -15,7 +15,16 @@ namespace Fragsurf.BSP
 	public partial class BspToUnity
 	{
 
-		public List<MeshCollider> CollidersToConvex = new List<MeshCollider>();
+		public List<MeshCoroutineProcess> CollidersToProcess = new List<MeshCoroutineProcess>();
+
+		public class MeshCoroutineProcess
+        {
+			public Mesh Mesh;
+			public MeshCollider Mc;
+			public bool Convex;
+			public bool ReverseNormals;
+			public bool Trigger;
+        }
 
 		private void GeneratePhysModels()
 		{
@@ -102,8 +111,14 @@ namespace Fragsurf.BSP
 						mf.mesh.ReverseNormals();
 						var mc = solidObj.AddComponent<MeshCollider>();
 						mc.sharedMesh = mf.mesh;
-						CollidersToConvex.Add(mc);
-						//mc.convex = true;
+
+						var p = new MeshCoroutineProcess()
+						{
+							Mesh = mf.mesh,
+							Convex = true,
+							Mc = mc,
+							ReverseNormals = true
+						};
 
 						if (_bsp.Brushes[cc.BrushIndex].Contents.HasFlag(BrushContents.LADDER))
 						{
@@ -113,9 +128,10 @@ namespace Fragsurf.BSP
 						if (_bsp.Brushes[cc.BrushIndex].Contents.HasFlag(BrushContents.WATER))
 						{
 							mc.gameObject.layer = LayerMask.NameToLayer("Water");
-							mc.convex = true;
-							mc.isTrigger = true;
+							p.Trigger = true;
 						}
+
+						CollidersToProcess.Add(p);
 
 						solidObj.transform.position = pivot;
 					}

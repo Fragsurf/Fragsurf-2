@@ -81,6 +81,8 @@ namespace Fragsurf.Shared.Entity
         [NetProperty]
         public string EntityName { get; set; } = string.Empty;
         [NetProperty]
+        public string ClassName { get; set; } = string.Empty;
+        [NetProperty]
         public bool Enabled
         {
             get => _enabled;
