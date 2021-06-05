@@ -48,6 +48,7 @@ namespace Fragsurf.BSP
 
             // OnPressed:prisondoor,Open,,0,-1
             Fire("OnPressed");
+            Fire("OnIn");
         }
 
         protected override void _Input(BspEntityOutput output)

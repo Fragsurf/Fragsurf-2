@@ -34,6 +34,7 @@ namespace Fragsurf.Client
             _client.ChannelsCount = 32;
             _client.Start();
             _client.Connect(host, port, "Fragsurf");
+            _client.DisconnectTimeout = 30000;
             listener.NetworkLatencyUpdateEvent += Listener_NetworkLatencyUpdateEvent;
             listener.NetworkReceiveEvent += Listener_NetworkReceiveEvent;
             listener.NetworkErrorEvent += Listener_NetworkErrorEvent;

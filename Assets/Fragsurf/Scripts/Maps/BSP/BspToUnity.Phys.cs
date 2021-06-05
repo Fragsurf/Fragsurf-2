@@ -14,6 +14,9 @@ namespace Fragsurf.BSP
 {
 	public partial class BspToUnity
 	{
+
+		public List<MeshCollider> CollidersToConvex = new List<MeshCollider>();
+
 		private void GeneratePhysModels()
 		{
 			var lump = _bsp.GetLumpStream(ValveBspFile.LumpType.PHYSCOLLIDE);
@@ -99,7 +102,8 @@ namespace Fragsurf.BSP
 						mf.mesh.ReverseNormals();
 						var mc = solidObj.AddComponent<MeshCollider>();
 						mc.sharedMesh = mf.mesh;
-						mc.convex = true;
+						CollidersToConvex.Add(mc);
+						//mc.convex = true;
 
 						if (_bsp.Brushes[cc.BrushIndex].Contents.HasFlag(BrushContents.LADDER))
 						{

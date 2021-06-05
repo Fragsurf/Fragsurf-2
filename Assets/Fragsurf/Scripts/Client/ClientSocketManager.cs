@@ -299,7 +299,7 @@ namespace Fragsurf.Client
         {
             _asyncConnectCancelled = false;
             Connect(address, port, password);
-            float timeout = 10000f; // wait 10 seconds
+            float timeout = 30000f; // wait 30 seconds
             while(Status != ClientSocketStatus.Connected && timeout > 0 && !_asyncConnectCancelled)
             {
                 if(Status == ClientSocketStatus.Disconnected)

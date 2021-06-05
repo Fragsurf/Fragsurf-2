@@ -367,6 +367,13 @@ namespace SourceUtils
 
             public Worldspawn() : base(0) { }
         }
+
+        [EntityClass("trigger_multiple")]
+        public class TriggerMultiple : Entity
+        {
+            [EntityField("filtername")]
+            public string FilterName { get; private set; }
+        }
         
         [EntityClass("func_brush")]
         public class FuncBrush : Entity

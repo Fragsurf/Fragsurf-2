@@ -112,24 +112,44 @@ namespace Fragsurf.BSP
             {
 				return Options.MissingMaterial;
             }
+
             if (vmt.CompileWater == 1)
             {
 				return Options.WaterMaterial;
             }
+
+			if(vmt.VmtShader.Equals("Refract", StringComparison.OrdinalIgnoreCase))
+            {
+				return Options.RefractMaterial;
+            }
+			
+			if(vmt.VmtShader.Equals("BaseTextureAlphaBlend", StringComparison.OrdinalIgnoreCase))
+            {
+				return Options.UnlitTransparent;
+			}
+
 			if (vmt.VmtShader.Equals("Cable", StringComparison.OrdinalIgnoreCase)
-				|| vmt.VmtShader.Equals("Sprite", StringComparison.OrdinalIgnoreCase))
+				|| vmt.VmtShader.Equals("Sprite", StringComparison.OrdinalIgnoreCase)
+				|| vmt.VmtShader.Equals("UnlitGeneric", StringComparison.OrdinalIgnoreCase))
 			{
+				if (vmt.Translucent || vmt.AlphaTest || vmt.Alpha < 1)
+				{
+					return Options.UnlitTransparent;
+				}
 				return Options.Unlit;
 			}
+
 			if (vmt.VmtShader.Equals("VertexLitGeneric", StringComparison.OrdinalIgnoreCase) 
 				|| !vmt.Lightmapped)
             {
-				return vmt.Translucent ? Options.VertexLitGenericTransparent : Options.VertexLitGeneric;
+				return (vmt.Translucent || vmt.AlphaTest || vmt.Alpha < 1) ? Options.VertexLitGenericTransparent : Options.VertexLitGeneric;
             }
-			if (vmt.Translucent || vmt.AlphaTest)
+
+			if (vmt.Translucent || vmt.AlphaTest || vmt.Alpha < 1)
 			{
 				return Options.LightmappedGenericTransparent;
 			}
+
 			return Options.LightmappedGeneric;
 		}
 

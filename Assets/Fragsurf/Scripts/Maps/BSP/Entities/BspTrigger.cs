@@ -13,6 +13,48 @@ namespace Fragsurf.BSP
 
         private FSMTrigger _trigger;
 
+        private bool PassesFilter(NetEntity ent)
+        {
+            var fn = Entity.GetRawPropertyValue("filtername");
+            if (!string.IsNullOrEmpty(fn))
+            {
+                foreach (var f in FindBspEntities(fn))
+                {
+                    if (!(f is BspBaseFilter tf))
+                    {
+                        continue;
+                    }
+                    if (!tf.Passes(ent))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private void TryStartTouch(NetEntity ent)
+        {
+            Fire("OnStartTouch", ent);
+            if (!PassesFilter(ent)) 
+            { 
+                return;
+            }
+            Fire("OnTrigger", ent);
+            OnStartTouch(ent);
+        }
+
+        private void TryTouch(NetEntity ent)
+        {
+            Fire("OnTouching", ent);
+            if (!PassesFilter(ent))
+            {
+                return;
+            }
+            Fire("OnTrigger", ent);
+            OnTouch(ent);
+        }
+
         protected virtual void Awake()
         {
             _trigger = gameObject.AddComponent<FSMTrigger>();
@@ -22,8 +64,7 @@ namespace Fragsurf.BSP
                 {
                     return;
                 }
-                Fire("OnStartTouch", ent);
-                OnStartTouch(ent);
+                TryStartTouch(ent);
             });
 
             _trigger.OnTriggerExit.AddListener((ent) =>
@@ -42,7 +83,7 @@ namespace Fragsurf.BSP
                 {
                     return;
                 }
-                OnTouch(ent);
+                TryTouch(ent);
             });
         }
 
@@ -120,7 +161,7 @@ namespace Fragsurf.BSP
     }
 
     [EntityComponent("trigger_*", "func_bomb_target")]
-    public class BspTriggerPartial : BspTrigger<FuncBrush>
+    public class BspTriggerPartial : BspTrigger<TriggerMultiple>
     {
 
     }

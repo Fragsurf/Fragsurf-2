@@ -1,3 +1,4 @@
+using System.Collections;
 using System.IO;
 using UnityEngine;
 
@@ -36,6 +37,25 @@ namespace Fragsurf.BSP
             if (ReflectionProbe)
             {
                 ReflectionProbe.RenderProbe();
+            }
+
+            StartCoroutine(MakeCollidersConvex());
+        }
+
+        // Setting a ton of MeshColliders to convex in one frame takes forever
+        // In some cases 15+ seconds.  So here just do it in a coroutine so load time isn't stupid slow
+        private IEnumerator MakeCollidersConvex()
+        {
+            var ct = 0;
+            foreach(var mc in BspToUnity.CollidersToConvex)
+            {
+                mc.convex = true;
+                ct++;
+                if(ct >= 10)
+                {
+                    ct = 0;
+                    yield return 0;
+                }
             }
         }
 

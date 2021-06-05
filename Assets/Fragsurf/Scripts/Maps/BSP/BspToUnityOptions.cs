@@ -31,7 +31,9 @@ namespace Fragsurf.BSP
 		public Material VertexLitGeneric;
 		public Material VertexLitGenericTransparent;
 		public Material Unlit;
+		public Material UnlitTransparent;
 		public Material WaterMaterial;
+		public Material RefractMaterial;
 		public Material MissingMaterial;
 		public Material SkyMaterial;
 

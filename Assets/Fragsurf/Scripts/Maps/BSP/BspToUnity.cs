@@ -62,6 +62,8 @@ namespace Fragsurf.BSP
 				Debug.LogError(e);
             }
 
+			var t = new System.Diagnostics.Stopwatch();
+			t.Start();
 
 			if (Options.WithModels)
 			{
@@ -73,6 +75,8 @@ namespace Fragsurf.BSP
 				{
 					Debug.LogError(e);
 				}
+				Debug.Log("Models: " + t.ElapsedMilliseconds + "ms");
+				t.Restart();
 			}
 
 			if (Options.WithDisplacements)
@@ -85,6 +89,8 @@ namespace Fragsurf.BSP
 				{
 					Debug.LogError(e);
 				}
+				Debug.Log("Displacements: " + t.ElapsedMilliseconds + "ms");
+				t.Restart();
 			}
 
 			if (Options.WithLightmaps)
@@ -97,6 +103,8 @@ namespace Fragsurf.BSP
 				{
 					Debug.LogError(e);
 				}
+				Debug.Log("Lightmaps: " + t.ElapsedMilliseconds + "ms");
+				t.Restart();
 			}
 
 			if (Options.WithConvexColliders)
@@ -109,6 +117,8 @@ namespace Fragsurf.BSP
 				{
 					Debug.LogError(e);
 				}
+				Debug.Log("Colliders: " + t.ElapsedMilliseconds + "ms");
+				t.Restart();
 			}
 			else
 			{
@@ -125,6 +135,8 @@ namespace Fragsurf.BSP
                 {
 					Debug.LogError(e);
                 }
+				Debug.Log("Entities: " + t.ElapsedMilliseconds + "ms");
+				t.Restart();
 			}
 
             if (Options.WithSkybox)
@@ -137,6 +149,8 @@ namespace Fragsurf.BSP
                 {
 					Debug.LogError(e);
                 }
+				Debug.Log("Skybox: " + t.ElapsedMilliseconds + "ms");
+				t.Restart();
 			}
 
             if (Options.WithProps)
@@ -150,6 +164,8 @@ namespace Fragsurf.BSP
                 {
 					Debug.LogError(e);
                 }
+				Debug.Log("Props: " + t.ElapsedMilliseconds + "ms");
+				t.Restart();
 			}
 
 			foreach(var kvp in SurfaceMaterials)
@@ -160,6 +176,9 @@ namespace Fragsurf.BSP
                 }
 				kvp.Key.AddComponent<SurfaceTypeIdentifier>().SurfaceType = surfaceType;
             }
+
+			Debug.Log("SurfaceMats: " + t.ElapsedMilliseconds + "ms");
+			t.Restart();
 
 			return _rootObject;
 		}
