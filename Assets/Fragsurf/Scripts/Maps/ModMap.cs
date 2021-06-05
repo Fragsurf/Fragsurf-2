@@ -15,6 +15,7 @@ namespace Fragsurf.Maps
         public ModMap(Mod mod)
         {
             _mod = mod;
+            FilePath = mod.modInfo.path;
             Name = mod.name;
         }
 

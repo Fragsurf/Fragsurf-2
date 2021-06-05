@@ -15,6 +15,11 @@ namespace Fragsurf.BSP
 
         private bool PassesFilter(NetEntity ent)
         {
+            if(Entity == null)
+            {
+                return true;
+            }
+
             var fn = Entity.GetRawPropertyValue("filtername");
             if (!string.IsNullOrEmpty(fn))
             {

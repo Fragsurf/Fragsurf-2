@@ -53,6 +53,10 @@ namespace Fragsurf.BSP
                 //{
                 //    mc.Mesh.ReverseNormals();
                 //}
+                if (!mc.Mc)
+                {
+                    continue;
+                }
                 if(mc.Convex)
                 {
                     mc.Mc.convex = true;

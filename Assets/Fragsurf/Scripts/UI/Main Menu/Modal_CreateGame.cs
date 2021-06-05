@@ -4,6 +4,7 @@ using Fragsurf.Server;
 using Fragsurf.Shared;
 using Fragsurf.Utility;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -160,6 +161,17 @@ namespace Fragsurf.UI
             _mapCover.enabled = true;
             _mapTitle.text = $"<size=24>{map.Name}</size>\n<b>author:</b> {map.Author}";
             _mapTitle.transform.parent.gameObject.RebuildLayout();
+
+            var imgPath = Path.ChangeExtension(map.FilePath, "jpg");
+            if(File.Exists(imgPath))
+            {
+                var bytes = File.ReadAllBytes(imgPath);
+                var tex = new Texture2D(1280, 720);
+                if(ImageConversion.LoadImage(tex, bytes))
+                {
+                    _mapCover.texture = tex;
+                }
+            }
         }
 
         private void ClearMap()
