@@ -20,6 +20,9 @@ namespace Fragsurf.Shared.Entity
         private bool _hasAuthorityNextTick;
         private bool _dead;
 
+        public Vector3 AngleOverride = InvalidAngleOverride;
+        public static Vector3 InvalidAngleOverride = new Vector3(-1, -2, -3);
+
         public Human(FSGameLoop game) 
             : base(game)
         {
@@ -127,6 +130,13 @@ namespace Fragsurf.Shared.Entity
             if (!Enabled || Dead)
             {
                 return;
+            }
+
+            if(AngleOverride != InvalidAngleOverride)
+            {
+                Angles = AngleOverride;
+                cmd.Angles = AngleOverride;
+                AngleOverride = InvalidAngleOverride;
             }
 
             if (Frozen)
@@ -408,6 +418,16 @@ namespace Fragsurf.Shared.Entity
             {
                 HumanGameObject.gameObject.SetActive(!outOfGame);
             }
+        }
+
+        public void SetAngles(Vector3 newAngles)
+        {
+            NetCommand(SetClAngleOverride, newAngles);
+        }
+
+        private void SetClAngleOverride(Vector3 ang)
+        {
+            AngleOverride = ang;
         }
 
     }
