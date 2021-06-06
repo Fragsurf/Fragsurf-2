@@ -12,18 +12,14 @@ namespace Fragsurf.Shared.Player
         public char CommandChar = '/';
         public int MaxMessageLength = 150;
 
-        protected override void _Initialize()
+        [ConCommand("say", "Say something", ConVarFlags.Silent)]
+        public void SayCmd(string msg)
         {
-            base._Initialize();
-
-            DevConsole.RegisterCommand("say", "Sends a chat message", this, (e) =>
+            if (Game.IsLocalServer)
             {
-                if(e.Length < 2 || Game.IsLocalServer)
-                {
-                    return;
-                }
-                MessageAll(e[1]);
-            }, true);
+                return;
+            }
+            MessageAll(msg);
         }
 
         protected override void OnPlayerPacketReceived(BasePlayer player, IBasePacket packet)
