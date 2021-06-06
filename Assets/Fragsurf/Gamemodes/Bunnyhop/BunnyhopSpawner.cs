@@ -104,6 +104,25 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             hu.Give(item);
         }
 
+        [ChatCommand("Enter noclip mode", "noclip", "nc")]
+        public void NoclipCmd(BasePlayer player)
+        {
+            if(!(player.Entity is Human hu)
+                || !(hu.MovementController is CSMovementController csm))
+            {
+                return;
+            }
+
+            csm.MoveType = csm.MoveType == Movement.MoveType.Noclip
+                ? Movement.MoveType.Walk
+                : Movement.MoveType.Noclip;
+
+            if(hu.Timeline is BunnyhopTimeline tl)
+            {
+                tl.RunIsLive = false;
+            }
+        }
+
     }
 }
 
