@@ -132,5 +132,15 @@ namespace Fragsurf.Gamemodes.Tricksurf
             hu.SetAngles(Quaternion.LookRotation(WhopVelocity, Vector3.up).eulerAngles);
         }
 
+        [ChatCommand("Give an item [AK47/Knife/AWP/Axe/Bat/etc]", "give")]
+        public void Give(BasePlayer player, string item)
+        {
+            if (!Game.IsHost || !(player.Entity is Human hu))
+            {
+                return;
+            }
+            hu.Give(item);
+        }
+
     }
 }
