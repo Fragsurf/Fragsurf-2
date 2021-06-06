@@ -125,6 +125,7 @@ namespace Fragsurf.UI
                     OnSelect = () =>
                     {
                         _selectedGamemode = gm;
+                        ClearMap();
                         PopulateMaps(/*gm.Identifier + "_"*/);
                     }
                 });
@@ -133,6 +134,7 @@ namespace Fragsurf.UI
 
         private async void PopulateMaps(string prefix = null)
         {
+            _mapTemplate.Clear();
             var maps = await Map.QueryAll(prefix);
             _selectedMap = null;
             _mapTemplate.Clear();
