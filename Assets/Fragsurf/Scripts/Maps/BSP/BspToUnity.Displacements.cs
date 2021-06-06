@@ -5,6 +5,8 @@ using UVector3 = UnityEngine.Vector3;
 using UVector2 = UnityEngine.Vector2;
 using SVector2 = SourceUtils.Vector2;
 using SVector3 = SourceUtils.Vector3;
+using SourceUtils.ValveBsp;
+using Fragsurf.Movement;
 
 namespace Fragsurf.BSP
 {
@@ -126,7 +128,10 @@ namespace Fragsurf.BSP
 			// todo: blend textures on vert R value
 			//mf.sharedMesh.colors = cols.ToArray();
 
-			faceObject.gameObject.AddComponent<MeshCollider>();
+			if(disp.Solid)
+            {
+				faceObject.gameObject.AddComponent<MeshCollider>();
+			}
 
 			var texString = _bsp.GetTextureString(texData.NameStringTableId);
 			var materialPath = "materials/" + texString + ".vmt";

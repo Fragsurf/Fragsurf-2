@@ -92,6 +92,8 @@ namespace SourceUtils.ValveBsp
 
         public int Subdivisions => 1 << _dispInfo.Power;
         public int Size => Subdivisions + 1;
+        public DispInfo Info => _dispInfo;
+        public bool Solid => (Info.Contents & (int)BrushContents.SOLID) == (int)BrushContents.SOLID;
         public Vector3 Normal { get; }
 
         internal Displacement( ValveBspFile bsp, int index )

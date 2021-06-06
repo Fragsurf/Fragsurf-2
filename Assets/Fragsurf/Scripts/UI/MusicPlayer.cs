@@ -42,7 +42,7 @@ namespace Fragsurf.UI
             _next.onClick.AddListener(PlayNext);
             _prev.onClick.AddListener(PlayPrevious);
             _volume.onValueChanged.AddListener(SetVolume);
-            SetVolume(_volume.value);
+            SetVolume(.15f);
             PlayRandom();
             Play();
         }

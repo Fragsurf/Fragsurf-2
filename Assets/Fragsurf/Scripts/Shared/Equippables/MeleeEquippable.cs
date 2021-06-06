@@ -84,9 +84,21 @@ namespace Fragsurf.Shared
 
         protected virtual void ProcessHit(RaycastHit hit)
         {
+            var dmgInfo = new DamageInfo()
+            {
+                Amount = MeleeData.BaseDamage,
+                HitPoint = hit.point,
+                HitNormal = hit.normal,
+                DamageType = DamageType.Normal,
+                HitArea = HitboxArea.None,
+                WeaponId = Entity.EntityId,
+                AttackerEntityId = Equippable.Human.EntityId,
+                Server = Entity.Game.IsHost
+            };
+
             if (hit.collider && hit.collider.gameObject.layer == Layers.Default)
             {
-                hit.collider.GetComponentInParent<IDamageable>()?.Damage(default);
+                hit.collider.GetComponentInParent<IDamageable>()?.Damage(dmgInfo);
             }
 
             if (hit.collider.TryGetComponent(out HitboxBehaviour hb)
@@ -94,17 +106,9 @@ namespace Fragsurf.Shared
                 && ent is IDamageable dmg)
             {
                 AudioSource.PlayClip(MeleeData.HitFleshSound);
-                dmg.Damage(new DamageInfo()
-                {
-                    Amount = MeleeData.BaseDamage,
-                    AttackerEntityId = Equippable.Human.EntityId,
-                    DamageType = DamageType.Normal,
-                    HitArea = hb.Area,
-                    HitNormal = hit.normal,
-                    HitPoint = hit.point,
-                    VictimEntityId = hb.EntityId,
-                    WeaponId = Entity.EntityId
-                });
+                dmgInfo.VictimEntityId = hb.EntityId;
+                dmgInfo.HitArea = hb.Area;
+                dmg.Damage(dmgInfo);
             }
             else
             {

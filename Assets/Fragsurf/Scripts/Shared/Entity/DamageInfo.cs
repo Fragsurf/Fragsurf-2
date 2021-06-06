@@ -22,5 +22,6 @@ namespace Fragsurf.Shared.Entity
         public Vector3 Viewpunch;
         public HitboxArea HitArea;
         public DamageType DamageType;
+        public bool Server;
     }
 }

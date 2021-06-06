@@ -316,9 +316,21 @@ namespace Fragsurf.Shared
 
         protected virtual void ProcessHit(RaycastHit hit)
         {
+            var dmgInfo = new DamageInfo()
+            {
+                Amount = GunData.BaseDamage,
+                HitPoint = hit.point,
+                HitNormal = hit.normal,
+                DamageType = DamageType.Bullet,
+                HitArea = HitboxArea.None,
+                WeaponId = Entity.EntityId,
+                AttackerEntityId = Equippable.HumanId,
+                Server = Entity.Game.IsHost
+            };
+
             if (hit.collider && hit.collider.gameObject.layer == Layers.Default)
             {
-                hit.collider.GetComponentInParent<IDamageable>()?.Damage(default);
+                hit.collider.GetComponentInParent<IDamageable>()?.Damage(dmgInfo);
             }
 
             var ent = Entity.Game.EntityManager.FindEntity(hit.collider.gameObject);
@@ -333,17 +345,10 @@ namespace Fragsurf.Shared
                 var hb = hit.collider.GetComponent<HitboxBehaviour>();
                 var dmgMultiplier = hb ? GunData.GetDamageMultiplier(hb.Area) : 1f;
                 var dmgAmount = (int)(GunData.BaseDamage * dmgMultiplier);
-                dmg.Damage(new DamageInfo()
-                {
-                    Amount = dmgAmount,
-                    HitPoint = hit.point,
-                    HitNormal = hit.normal,
-                    DamageType = DamageType.Bullet,
-                    HitArea = hb != null ? hb.Area : HitboxArea.None,
-                    WeaponId = Entity.EntityId,
-                    AttackerEntityId = Equippable.HumanId,
-                    VictimEntityId = ent.EntityId
-                });
+                dmgInfo.Amount = dmgAmount;
+                dmgInfo.HitArea = hb != null ? hb.Area : HitboxArea.None;
+                dmgInfo.VictimEntityId = ent.EntityId;
+                dmg.Damage(dmgInfo);
             }
         }
 

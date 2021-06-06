@@ -5,6 +5,8 @@ using UnityEngine;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Server;
 using System.Linq;
+using Fragsurf.Shared.Player;
+using Fragsurf.Shared;
 
 namespace Fragsurf.BSP
 {
@@ -106,7 +108,13 @@ namespace Fragsurf.BSP
 					ent.Input(output);
 				}
 			}
-			OnOutputFired(output);
+
+            if (output.Activator != null)
+            {
+                BaseActivatorStuff(output);
+            }
+
+            OnOutputFired(output);
 		}
 
 		protected virtual void OnOutputFired(BspEntityOutput output)
@@ -121,8 +129,93 @@ namespace Fragsurf.BSP
 
         public virtual void Damage(DamageInfo dmgInfo)
         {
-			Fire("OnDamaged");
+            var gameLoop = FSGameLoop.GetGameInstance(dmgInfo.Server);
+            NetEntity activator = null;
+            if(gameLoop)
+            {
+                activator = gameLoop.EntityManager.FindEntity(dmgInfo.AttackerEntityId);
+            }
+            Fire("OnDamaged", activator);
 		}
+
+		private void BaseActivatorStuff(BspEntityOutput output)
+        {
+            if (string.IsNullOrWhiteSpace(output.Parameter))
+            {
+                return;
+            }
+
+            if (output.Parameter.StartsWith("classname", StringComparison.OrdinalIgnoreCase))
+            {
+                if (output.Activator == null)
+                {
+                    return;
+                }
+
+                var s = output.Parameter.Split(' ');
+                if (s.Length != 2)
+                {
+                    return;
+                }
+
+                output.Activator.ClassName = s[1];
+            }
+
+            if (output.Parameter.StartsWith("targetname", StringComparison.OrdinalIgnoreCase))
+            {
+                if (output.Activator == null)
+                {
+                    return;
+                }
+
+                var s = output.Parameter.Split(' ');
+                if (s.Length != 2)
+                {
+                    return;
+                }
+
+                output.Activator.EntityName = s[1];
+            }
+
+            if (output.Parameter.StartsWith("gravity", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!(output.Activator is Human hu)
+                    || !(hu.MovementController is CSMovementController csm))
+                {
+                    return;
+                }
+
+                var s = output.Parameter.Split(' ');
+                if (s.Length != 2
+                    || !float.TryParse(s[1], out float grav))
+                {
+                    return;
+                }
+
+                csm.MoveData.GravityFactor = grav;
+            }
+
+            if (output.Parameter.StartsWith("basevelocity", System.StringComparison.OrdinalIgnoreCase))
+            {
+                if (!(output.Activator is Human hu))
+                {
+                    return;
+                }
+
+                var s = output.Parameter.Split(' ');
+                if (s.Length != 4
+                    || !float.TryParse(s[1], out float x)
+                    || !float.TryParse(s[2], out float y)
+                    || !float.TryParse(s[3], out float z))
+                {
+                    return;
+                }
+
+                var vec = new Vector3(x, z, y) * .0254f;
+                hu.BaseVelocity += vec;
+            }
+        }
+
     }
 
 	public class GenericBspEntityMonoBehaviour<T> : BspEntityMonoBehaviour

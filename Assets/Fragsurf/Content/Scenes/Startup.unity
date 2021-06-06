@@ -2486,6 +2486,30 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 715305667511175049, guid: 31cf15f97e12f044d8f0b8b01198c4b8, type: 3}
+      propertyPath: _songs.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 715305667511175049, guid: 31cf15f97e12f044d8f0b8b01198c4b8, type: 3}
+      propertyPath: _songs.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: da9d6b3eb51c31746901cc7b080b2707, type: 3}
+    - target: {fileID: 715305667511175049, guid: 31cf15f97e12f044d8f0b8b01198c4b8, type: 3}
+      propertyPath: _songs.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 075ab83e24cb35e4fb1b59471aceb42d, type: 3}
+    - target: {fileID: 715305667511175049, guid: 31cf15f97e12f044d8f0b8b01198c4b8, type: 3}
+      propertyPath: _songs.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 1129475b88f8ea4408d27b62ada2cebc, type: 3}
+    - target: {fileID: 715305667511175049, guid: 31cf15f97e12f044d8f0b8b01198c4b8, type: 3}
+      propertyPath: _songs.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 60c3b124275777f41becc651e290eba9, type: 3}
+    - target: {fileID: 715305667511175049, guid: 31cf15f97e12f044d8f0b8b01198c4b8, type: 3}
+      propertyPath: _songs.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: ec1cadb297559554782c20d716926a94, type: 3}
     - target: {fileID: 1225472562951082927, guid: 31cf15f97e12f044d8f0b8b01198c4b8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

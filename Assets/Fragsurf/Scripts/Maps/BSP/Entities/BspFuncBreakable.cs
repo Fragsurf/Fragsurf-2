@@ -44,6 +44,18 @@ namespace Fragsurf.BSP
             Broken = false;
         }
 
+        protected override void _Input(BspEntityOutput output)
+        {
+            base._Input(output);
+
+            switch(output.TargetInput.ToLower())
+            {
+                case "break":
+                    SetBroken(true);
+                    break;
+            }
+        }
+
     }
 }
 
