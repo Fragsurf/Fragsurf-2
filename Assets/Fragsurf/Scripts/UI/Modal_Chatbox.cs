@@ -74,7 +74,7 @@ namespace Fragsurf.UI
             var commands = cl.Get<ChatCommands>().FindCommandsStartingWith(value);
 
             if (string.IsNullOrWhiteSpace(value)
-                || value[0] != '/'
+                || value[0] != TextChat.CommandChar
                 || commands.Count == 0)
             {
                 return;
@@ -89,7 +89,7 @@ namespace Fragsurf.UI
                     Description = cmd.Attribute.Description,
                     OnClick = () => 
                     {
-                        _input.text = $"/{firstCommand} ";
+                        _input.text = $"{TextChat.CommandChar}{firstCommand} ";
                         StartCoroutine(MoveToEndOfInput());
                     }
                 });

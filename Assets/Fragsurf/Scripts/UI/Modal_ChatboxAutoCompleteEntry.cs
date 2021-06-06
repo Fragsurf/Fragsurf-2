@@ -1,3 +1,4 @@
+using Fragsurf.Shared.Player;
 using System;
 using TMPro;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace Fragsurf.UI
 
         public override void LoadData(Modal_ChatboxAutoCompleteEntryData data)
         {
-            _text.text = $"/{data.Command} <color=white>| {data.Description}</color>";
+            _text.text = $"{TextChat.CommandChar}{data.Command} <color=white>| {data.Description}</color>";
             _button.onClick.AddListener(() => data.OnClick?.Invoke());
         }
 

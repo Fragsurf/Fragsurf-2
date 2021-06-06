@@ -25,6 +25,20 @@ namespace Fragsurf.Client
                 }
                 settingsModal.CreatePage("gamemode modals", modalNames);
             }
+
+            var cmdNames = new List<string>();
+            foreach(var cmd in Game.Get<ChatCommands>().Commands)
+            {
+                if(cmd.Attribute.Commands == null 
+                    || cmd.Attribute.Commands.Count == 0)
+                {
+                    continue;
+                }
+                cmdNames.Add("bind/say/say !" + cmd.Attribute.Commands.First());
+            }
+
+            settingsModal.CreatePage("gamemode commands", cmdNames);
+
             UserSettings.Instance.Load();
         }
 
@@ -39,6 +53,7 @@ namespace Fragsurf.Client
             {
                 settingsModal.RemovePage("server");
                 settingsModal.RemovePage("gamemode");
+                settingsModal.RemovePage("gamemode commands");
                 settingsModal.RemovePage("gamemode modals");
             }
         }

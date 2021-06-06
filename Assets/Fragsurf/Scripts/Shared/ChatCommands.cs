@@ -14,15 +14,17 @@ namespace Fragsurf.Shared
 
         private List<ChatCommand> _commandInstances = new List<ChatCommand>();
 
+        public IReadOnlyList<ChatCommand> Commands => _commandInstances.ToList();
+
         public List<ChatCommand> FindCommandsStartingWith(string input)
         {
             if (string.IsNullOrEmpty(input)
-                || input[0] == '/' && input.Length == 1)
+                || input[0] == TextChat.CommandChar && input.Length == 1)
             {
                 return new List<ChatCommand>(_commandInstances);
             }
 
-            if(input[0] == '/')
+            if(input[0] == TextChat.CommandChar)
             {
                 input = input.Remove(0, 1);
             }
