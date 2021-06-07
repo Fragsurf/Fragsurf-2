@@ -195,9 +195,11 @@ namespace Fragsurf.Client
             ExecuteDefaultBinds();
 
             _config["UserSettings"].Clear();
+
             // ClientInput defaults
             _config["UserSettings"].Add("input.sensitivity", 1);
-            _config["UserSettings"].Add("input.pitchmodifier", 1.0f);
+            _config["UserSettings"].Add("input.mouseyaw", 1.0f);
+            _config["UserSettings"].Add("input.mousepitch", 1.0f);
             _config["UserSettings"].Add("input.adsmodifier", 1.0f);
             _config["UserSettings"].Add("input.toggleads", true);
             _config["UserSettings"].Add("input.confinecursor", false);

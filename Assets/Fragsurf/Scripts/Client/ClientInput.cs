@@ -50,12 +50,14 @@ namespace Fragsurf.Client
         protected UserCmd UserCmd { get; } = new UserCmd();
         public UserCmd.CmdFields CurrentCommand => UserCmd.Fields;
 
-        [ConVar("input.pitchmodifier", "Y axis modifier", ConVarFlags.UserSetting)]
-        public float PitchModifier { get; set; } = 1f;
         [ConVar("input.sensitivity", "Mouse sensitivity", ConVarFlags.UserSetting)]
         public float Sensitivity { get; set; } = 1f;
         [ConVar("input.yawspeed", "Yaw speed", ConVarFlags.UserSetting)]
         public float YawSpeed { get; set; } = 260;
+        [ConVar("input.mouseyaw", "Mouse yaw multiplier (default 1)", ConVarFlags.UserSetting)]
+        public float MouseYaw { get; set; } = 1f;
+        [ConVar("input.mousepitch", "Mouse pitch multiplier (default 1)", ConVarFlags.UserSetting)]
+        public float MousePitch { get; set; } = 1f;
         [ConVar("input.confinecursor", "Confines the cursor to the game window", ConVarFlags.UserSetting)]
         public bool ConfineCursor { get; set; } = false;
 
@@ -108,6 +110,7 @@ namespace Fragsurf.Client
 
             if (!Game.Live
                 || Human.Local == null
+                || Human.Local.Dead
                 || localPlayer == null)
             {
                 UserCmd.Buttons = 0;
@@ -265,8 +268,8 @@ namespace Fragsurf.Client
         private Vector3 ProcessMouseLook(Vector3 start, float x, float y)
         {
             var cameraSensModifier = Human.Local.CameraController.SensitivityModifier;
-            var mx = x * Sensitivity/* * .022f*/ * cameraSensModifier;
-            var my = y * Sensitivity * PitchModifier/* * .022f*/ * cameraSensModifier;
+            var mx = x * Sensitivity * MouseYaw * cameraSensModifier;
+            var my = y * Sensitivity * MousePitch * cameraSensModifier;
             var rotDelta = new Vector3(-my, mx, 0f);
             var finalRot = start + rotDelta;
             finalRot.x = ClampAngle(finalRot.x, -89f, 89f);
