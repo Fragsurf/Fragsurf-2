@@ -112,7 +112,7 @@ namespace Fragsurf.Shared.Player
 
                 for (int i = 0; i < hitCount; i++)
                 {
-                    if (!_touchBuffer2[i].isTrigger)
+                    if (!_touchBuffer2[i].isTrigger || !_touchBuffer2[i].enabled)
                     {
                         continue;
                     }
@@ -140,7 +140,8 @@ namespace Fragsurf.Shared.Player
 
                 for (int i = 0; i < hitCount; i++)
                 {
-                    if (!_touchBuffer[i].collider.isTrigger)
+                    if (!_touchBuffer[i].collider.enabled
+                        || !_touchBuffer[i].collider.isTrigger)
                     {
                         continue;
                     }
@@ -249,7 +250,8 @@ namespace Fragsurf.Shared.Player
                 // todo: maybe blend footstep sounds i.e. 50% water 50% concrete
                 for (int i = 0; i < hits; i++)
                 {
-                    if (!_footstepTest[i].TryGetComponent(out SurfaceTypeIdentifier surfId))
+                    if (!_footstepTest[i].enabled
+                        || !_footstepTest[i].TryGetComponent(out SurfaceTypeIdentifier surfId))
                     {
                         continue;
                     }

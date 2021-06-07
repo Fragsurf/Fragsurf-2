@@ -13,8 +13,6 @@ namespace Fragsurf.Movement
             Vertical
         }
 
-        ///// Fields /////
-
         public static int GroundLayerMask = (1 << 0);
         public static int LadderLayerMask = (1 << 1);
         private static Collider[] _colliders = new Collider[MaxCollisions];
@@ -31,8 +29,6 @@ namespace Fragsurf.Movement
             public Vector3 Direction;
         }
 
-        ///// Methods /////
-
         public static void ResolveCollisions(ISurfControllable controller, StrictCollisionAxis axis = StrictCollisionAxis.None)
         {
             var staticOrigin = controller.MoveData.Origin + new Vector3(0, controller.Collider.bounds.extents.y, 0);
@@ -41,6 +37,11 @@ namespace Fragsurf.Movement
 
             for (int i = 0; i < numOverlaps; i++)
             {
+                if(!_colliders[i].enabled)
+                {
+                    continue;
+                }
+
                 if (Physics.ComputePenetration(controller.Collider, controller.MoveData.Origin,
                     controller.Orientation, _colliders[i], _colliders[i].transform.position,
                     _colliders[i].transform.rotation, out Vector3 direction, out float distance))

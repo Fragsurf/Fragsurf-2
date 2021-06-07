@@ -585,7 +585,8 @@ namespace Fragsurf.Movement
                     queryTriggerInteraction: QueryTriggerInteraction.Ignore,
                     hitInfo: out RaycastHit hit))
                 {
-                    if (hit.point == Vector3.zero
+                    if (!hit.collider.enabled
+                        || hit.point == Vector3.zero
                         || hit.normal.y <= SurfPhysics.SurfSlope)
                     {
                         return;
@@ -626,12 +627,9 @@ namespace Fragsurf.Movement
 
             for (int i = 0; i < hitCount; i++)
             {
-                if (_hitCache[i].normal.y <= SurfPhysics.SurfSlope)
-                {
-                    continue;
-                }
-
-                if (_hitCache[i].normal.y >= 1)
+                if (!_hitCache[i].collider.enabled
+                    || _hitCache[i].normal.y <= SurfPhysics.SurfSlope
+                    || _hitCache[i].normal.y >= 1)
                 {
                     continue;
                 }
@@ -679,6 +677,11 @@ namespace Fragsurf.Movement
 
             for (int i = 0; i < hitCount; i++)
             {
+                if (!_waterTestCache[i].enabled)
+                {
+                    continue;
+                }
+
                 var water = _waterTestCache[i];
                 var headPoint = _surfer.MoveData.Origin + new Vector3(0, _surfer.Collider.bounds.size.y, 0);
 
@@ -791,6 +794,10 @@ namespace Fragsurf.Movement
                 {
                     for (int i = 0; i < hitCount; i++)
                     {
+                        if(!_hitCache[i].collider.enabled)
+                        {
+                            continue;
+                        }
                         newMovement += _hitCache[i].normal * (movementThisStep.magnitude - _hitCache[i].distance);
                         SurfPhysics.ClipVelocity(_surfer.MoveData.Velocity, _hitCache[i].normal, ref _surfer.MoveData.Velocity, 1.01f);
                     }

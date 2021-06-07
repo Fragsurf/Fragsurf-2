@@ -154,7 +154,7 @@ namespace Fragsurf.Movement
 
         public static bool HitIsShit(RaycastHit hit)
         {
-            return hit.distance == 0 && hit.point == Vector3.zero && hit.normal != Vector3.zero;
+            return (hit.collider == null || !hit.collider.enabled) || (hit.distance == 0 && hit.point == Vector3.zero && hit.normal != Vector3.zero);
         }
 
     }
