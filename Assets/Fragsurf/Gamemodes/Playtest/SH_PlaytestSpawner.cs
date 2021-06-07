@@ -86,6 +86,17 @@ namespace Fragsurf.Gamemodes.Playtest
             Game.PlayerManager.CreateFakePlayer("Bot");
         }
 
+        [ChatCommand("Kicks all bots", "kickbots")]
+        public void KickBots(BasePlayer player)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+
+            Game.PlayerManager.RemoveFakePlayers();
+        }
+
         [ChatCommand("Teleport to the beginning", "r", "spawn", "restart")]
         public void SpawnPlayer(BasePlayer player)
         {

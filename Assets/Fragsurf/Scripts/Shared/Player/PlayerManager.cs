@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Packets;
 using UnityEngine;
@@ -47,6 +48,14 @@ namespace Fragsurf.Shared.Player
             };
             IntroducePlayer(player);
             return player;
+        }
+
+        public void RemoveFakePlayers()
+        {
+            foreach(var pl in Players.FindAll(x => x.IsFake))
+            {
+                RemovePlayer(pl);
+            }
         }
 
         public void IntroducePlayer(BasePlayer player)

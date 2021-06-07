@@ -202,6 +202,17 @@ namespace Fragsurf.Gamemodes.CombatSurf
             Game.PlayerManager.CreateFakePlayer("Fake Player");
         }
 
+        [ChatCommand("Kicks all bots", "kickbots")]
+        public void KickBots(BasePlayer player)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+
+            Game.PlayerManager.RemoveFakePlayers();
+        }
+
         [ChatCommand("Kill yourself", "suicide", "kill")]
         public void Suicide(BasePlayer player)
         {
