@@ -52,6 +52,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
             _rm = cl.Get<RoundManager>();
             _team1Name.color = PlayerManager.GetTeamColor(1);
             _team2Name.color = PlayerManager.GetTeamColor(2);
+            _team1Score.color = PlayerManager.GetTeamColor(1);
+            _team2Score.color = PlayerManager.GetTeamColor(2);
         }
 
         public void FlashScreenBorder(Color color)
