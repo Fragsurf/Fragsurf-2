@@ -233,11 +233,27 @@ namespace Fragsurf.Shared.Player
             { 2, new Color32(15, 195, 245, 255) }
         };
 
+        public static Dictionary<int, Color> TeamBodyColors = new Dictionary<int, Color>()
+        {
+            { 0, new Color32(192, 194, 192, 255) },
+            { 1, new Color32(255, 0, 0, 255) },
+            { 2, new Color32(0, 0, 255, 255) }
+        };
+
         public static Color GetTeamColor(int team)
         {
             if (TeamColors.ContainsKey(team))
             {
                 return TeamColors[team];
+            }
+            return Color.white;
+        }
+
+        public static Color GetTeamBodyColor(int team)
+        {
+            if (TeamBodyColors.ContainsKey(team))
+            {
+                return TeamBodyColors[team];
             }
             return Color.white;
         }

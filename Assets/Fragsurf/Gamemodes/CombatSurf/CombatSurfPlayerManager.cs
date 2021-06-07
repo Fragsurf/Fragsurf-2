@@ -233,8 +233,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
             {
                 return;
             }
-            var color = PlayerManager.GetTeamColor(owner.Team);
-            hu.HumanGameObject.SetColor(color);
+            hu.HumanGameObject.SetColor(PlayerManager.GetTeamBodyColor(owner.Team));
         }
 
         private void EquipHuman(Human hu)
