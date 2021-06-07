@@ -77,6 +77,7 @@ namespace Fragsurf.Shared.Entity
             }
             if(Equipped != null)
             {
+                _lastEquipped = Equipped;
                 Equipped.Equipped = false;
             }
             item.Equipped = true;
