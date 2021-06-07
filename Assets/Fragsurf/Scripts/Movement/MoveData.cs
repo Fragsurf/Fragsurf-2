@@ -47,6 +47,7 @@ namespace Fragsurf.Movement
         public bool JustGrounded;
         public bool Surfing;
         public Vector3 SurfNormal;
+        public Vector3 GroundNormal;
         public bool Sliding;
         public float WaterDepth;
         public float WaterJumpTime;

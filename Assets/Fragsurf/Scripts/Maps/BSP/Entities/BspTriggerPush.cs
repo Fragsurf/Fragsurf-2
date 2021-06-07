@@ -39,6 +39,14 @@ namespace Fragsurf.BSP
             }
         }
 
+   //     Vector vecPush = (pev->speed * pev->movedir);
+			//if (pevToucher->flags & FL_BASEVELOCITY )
+			//	vecPush = vecPush +  pevToucher->basevelocity;
+
+			//pevToucher->basevelocity = vecPush;
+
+			//pevToucher->flags |= FL_BASEVELOCITY;
+
         protected override void OnTouch(NetEntity entity)
         {
             if (entity is Human hu && hu.MovementController is ISurfControllable surfer)
@@ -49,10 +57,19 @@ namespace Fragsurf.BSP
                 }
 
                 var vecPush = _direction.normalized * _speed;
-                if (surfer.MoveData.Momentum && !surfer.GroundObject)
+                if (surfer.MoveData.Momentum)
                 {
                     vecPush += hu.BaseVelocity;
                 }
+
+                if (vecPush.y > 0 && surfer.GroundObject)
+                {
+                    surfer.GroundObject = null;
+                    var o = entity.Origin;
+                    o.y += .0254f;
+                    entity.Origin = o;
+                }
+
                 hu.BaseVelocity = vecPush;
                 surfer.MoveData.Momentum = true;
             }

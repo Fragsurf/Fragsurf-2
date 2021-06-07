@@ -311,23 +311,27 @@ namespace Fragsurf.Movement
 
         private void ApplyMomentum()
         {
-            if (!_surfer.MoveData.Momentum && _surfer.MoveData.BaseVelocity != Vector3.zero)
+            if (!_surfer.MoveData.Momentum)
             {
-                _surfer.MoveData.Velocity += (1.0f + (_deltaTime * 0.5f)) * _surfer.MoveData.BaseVelocity;
-                _surfer.MoveData.BaseVelocity = Vector3.zero;
-
                 if (_surfer.MoveData.MomentumModifier != Vector3.zero)
                 {
-                    SurfPhysics.ClipVelocity(_surfer.MoveData.Velocity, _surfer.MoveData.MomentumModifier, ref _surfer.MoveData.Velocity, 1.0f);
-                    SurfPhysics.ClipVelocity(_surfer.MoveData.BaseVelocity, _surfer.MoveData.MomentumModifier, ref _surfer.MoveData.BaseVelocity, 1.0f);
+                    var v = _surfer.MoveData.Velocity;
+                    var bv = _surfer.MoveData.BaseVelocity;
+                    var n = _surfer.MoveData.MomentumModifier;
+                    var bvi = Vector3.ProjectOnPlane(bv, n).normalized * bv.magnitude;
+                    var vi = Vector3.ProjectOnPlane(v, n).normalized * v.magnitude;
+                    _surfer.MoveData.BaseVelocity = bvi * (bvi.magnitude / bv.magnitude);
+                    _surfer.MoveData.Velocity = vi * (vi.magnitude / v.magnitude);
                     _surfer.MoveData.MomentumModifier = Vector3.zero;
                 }
+
+                _surfer.MoveData.Velocity += (1.0f + (_deltaTime * 0.5f)) * _surfer.MoveData.BaseVelocity;
+                _surfer.MoveData.BaseVelocity = Vector3.zero;
             }
-            else if (_surfer.MoveData.Momentum)
+            else
             {
                 CheckSlope();
             }
-
             _surfer.MoveData.Momentum = false;
         }
 
@@ -441,6 +445,11 @@ namespace Fragsurf.Movement
             _surfer.MoveData.Surfing = false;
             _surfer.MoveData.Sliding = false;
 
+            if (_surfer.MoveData.Buttons.HasFlag(InputActions.Slide))
+            {
+                _surfer.MoveData.Sliding = true;
+            }
+
             var trace = BoxCastToFloor(.1f, .99f);
             var movingUp = _surfer.MoveData.Velocity.y > 0;
             var goingAgainstSlope = false;
@@ -491,7 +500,7 @@ namespace Fragsurf.Movement
                     return false;
                 }
                 _surfer.MoveData.GroundTest = 0;
-                SetGround(trace.HitCollider.gameObject);
+                SetGround(trace.HitCollider.gameObject, trace.PlaneNormal);
                 _surfer.MoveData.Origin.y = trace.HitPoint.y + HammerScale;
 
                 // slant boost, but only if velocity is away from slope 
@@ -509,8 +518,10 @@ namespace Fragsurf.Movement
             }
         }
 
-        private void SetGround(GameObject obj)
+        private void SetGround(GameObject obj, Vector3 normal = default)
         {
+            _surfer.MoveData.GroundNormal = normal;
+
             if (obj != null)
             {
                 if (_surfer.GroundObject == null)
