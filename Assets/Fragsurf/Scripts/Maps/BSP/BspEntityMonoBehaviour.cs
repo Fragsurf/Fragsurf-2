@@ -43,6 +43,7 @@ namespace Fragsurf.BSP
 				if(parent != null)
                 {
 					transform.SetParent(parent.transform);
+                    transform.localRotation = Quaternion.identity;
                 }
             }
 			
