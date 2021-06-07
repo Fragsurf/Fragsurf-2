@@ -52,12 +52,9 @@ namespace Fragsurf.Shared
 
         public bool CanSpectate(Human hu)
         {
-            if(hu == null || hu.Dead)
-            {
-                return false;
-            }
-
-            if (!hu.Enabled && hu != Human.Local)
+            if(hu == null 
+                || (hu.Dead && hu.TimeDead > 5f)
+                || (!hu.Enabled && hu != Human.Local))
             {
                 return false;
             }

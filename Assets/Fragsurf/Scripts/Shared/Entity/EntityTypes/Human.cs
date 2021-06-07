@@ -22,6 +22,7 @@ namespace Fragsurf.Shared.Entity
 
         public Vector3 AngleOverride = InvalidAngleOverride;
         public static Vector3 InvalidAngleOverride = new Vector3(-1, -2, -3);
+        public float TimeDead { get; private set; }
 
         public Human(FSGameLoop game) 
             : base(game)
@@ -110,6 +111,11 @@ namespace Fragsurf.Shared.Entity
             TickPunches();
 
             BotController?.Tick();
+
+            if (Dead)
+            {
+                TimeDead += Time.fixedDeltaTime;
+            }
         }
 
         protected override void OnUpdate()
@@ -198,6 +204,7 @@ namespace Fragsurf.Shared.Entity
             if (Game.IsHost)
             {
                 Dead = false;
+                TimeDead = 0;
             }
         }
 
@@ -226,6 +233,8 @@ namespace Fragsurf.Shared.Entity
             }
 
             Game.EntityManager.RaiseHumanKilled(this);
+
+            TimeDead = 0;
         }
 
         private void OnSpawned()
