@@ -200,7 +200,7 @@ namespace Fragsurf.UI
         {
             foreach(var kvp in _modals)
             {
-                if (kvp.Value.IsOpen && kvp.Value.CursorType != CursorType.None)
+                if (kvp.Value.HasCursor)
                 {
                     return true;
                 }

@@ -25,6 +25,7 @@ namespace Fragsurf.UI
 
         private InputField[] _inputFields;
         private TMP_InputField[] _tmpInputFields;
+        private bool _hasCursor;
 
         public string Name
         {
@@ -32,6 +33,7 @@ namespace Fragsurf.UI
             set => _modalName = value;
         }
         public CursorType CursorType => _cursorType;
+        public bool HasCursor => IsOpen && _hasCursor;
         public bool IsOpen => _modalContainer.activeInHierarchy;
 
         protected virtual void Awake()
@@ -65,6 +67,18 @@ namespace Fragsurf.UI
             else
             {
                 Open();
+            }
+        }
+
+        private void Update()
+        {
+            if(IsOpen && _cursorType == CursorType.Click)
+            {
+                if(Input.GetMouseButtonDown(0)
+                    || Input.GetMouseButtonDown(1))
+                {
+                    _hasCursor = true;
+                }
             }
         }
 
@@ -113,6 +127,11 @@ namespace Fragsurf.UI
             }
             OnOpened?.Invoke();
             OnOpen();
+
+            if(_cursorType == CursorType.Always)
+            {
+                _hasCursor = true;
+            }
         }
 
         public void Close()
@@ -124,6 +143,8 @@ namespace Fragsurf.UI
             }
             OnClosed?.Invoke();
             OnClose();
+
+            _hasCursor = false;
         }
 
         public void Toggle()
