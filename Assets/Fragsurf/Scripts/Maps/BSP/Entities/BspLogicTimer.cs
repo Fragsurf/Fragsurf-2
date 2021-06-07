@@ -13,7 +13,14 @@ namespace Fragsurf.BSP
 
         protected override void OnStart()
         {
-            OnTimer();
+            if (Entity.UseRandomTime == 1)
+            {
+                _refireTimer = (Entity.LowerRandomBound + Entity.UpperRandomBound) / 2f;
+            }
+            else if (Entity.RefireInterval > 0)
+            {
+                _refireTimer = Entity.RefireInterval;
+            }
         }
 
         protected override void OnUpdate()
