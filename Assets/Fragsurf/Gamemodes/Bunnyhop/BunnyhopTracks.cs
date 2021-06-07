@@ -117,7 +117,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private async void Track_OnFinish(FSMTrack track, Human hu)
         {
-            if(!(hu.Timeline is BunnyhopTimeline bhopTimeline))
+            if(!(hu.Timeline is BunnyhopTimeline bhopTimeline)
+                || !bhopTimeline.RunIsLive)
             {
                 return;
             }
@@ -142,7 +143,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private async void Track_OnStage(FSMTrack track, Human hu, int stage)
         {
-            if (!(hu.Timeline is BunnyhopTimeline bhopTimeline))
+            if (!(hu.Timeline is BunnyhopTimeline bhopTimeline)
+                || !bhopTimeline.RunIsLive)
             {
                 return;
             }
