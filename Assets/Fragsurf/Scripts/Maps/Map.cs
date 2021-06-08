@@ -14,9 +14,6 @@ namespace Fragsurf.Maps
         public static BaseMap Current { get; private set; }
         public static bool Loading { get; private set; }
 
-        [ConVar("map.default", "")]
-        public string DefaultMap { get; set; } = "surf_fst_skyworld";
-
         private static List<IMapProvider> _providers = new List<IMapProvider>()
         {
             new SceneMapProvider(),

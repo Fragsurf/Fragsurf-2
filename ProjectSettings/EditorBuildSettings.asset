@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Fragsurf/Content/Scenes/ModMap.unity
     guid: 4ca52e461fc53e547b6847367633a264
+  - enabled: 1
+    path: Assets/Fragsurf/Content/Scenes/Server.unity
+    guid: d783d79806d54844c9f60a3701ee75b9
   m_configObjects: {}

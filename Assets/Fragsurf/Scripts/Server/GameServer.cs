@@ -1,14 +1,19 @@
 ﻿using Fragsurf.Shared;
 using Fragsurf.Shared.LagComp;
-using Fragsurf.Utility;
 
 namespace Fragsurf.Server
 {
     public class GameServer : FSGameLoop
     {
+
         public static GameServer Instance => GetGameInstance(true) as GameServer;
         public override bool IsHost => true;
         public SocketManager Socket => GetFSComponent<SocketManager>();
+
+        [ConVar("server.map", "Default map the server will start on")]
+        public string DefaultMap { get; set; } = "surf_ny_bigloop_nf";
+        [ConVar("server.gamemode", "Default map the server will start on")]
+        public string DefaultGamemode { get; set; } = "Combat Surf";
 
         protected override void RegisterComponents()
         {

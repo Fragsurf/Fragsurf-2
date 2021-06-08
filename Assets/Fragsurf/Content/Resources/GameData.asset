@@ -15,6 +15,9 @@ MonoBehaviour:
   MainMenu:
     sceneAsset: {fileID: 102900000, guid: 912cfa9f4efa4ff409572e96142e9633, type: 3}
     scenePath: Assets/Fragsurf/Content/Scenes/Main Menu.unity
+  MainServer:
+    sceneAsset: {fileID: 102900000, guid: d783d79806d54844c9f60a3701ee75b9, type: 3}
+    scenePath: Assets/Fragsurf/Content/Scenes/Server.unity
   DefaultGamemodes:
   - {fileID: 11400000, guid: f4dac0d2cc36f914a87e1453201ac448, type: 2}
   - {fileID: 11400000, guid: 245d9bbacf27c614badced207381308b, type: 2}

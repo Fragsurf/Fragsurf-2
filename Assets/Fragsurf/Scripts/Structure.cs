@@ -19,7 +19,7 @@ namespace Fragsurf
             //System.Threading.Thread.CurrentThread.CurrentUICulture = ci;
         }
 
-        public static bool DedicatedServer => LaunchParams.Contains("server") || SceneManager.GetActiveScene().name == "GameServer";
+        public static bool DedicatedServer => LaunchParams.Contains("server") || SceneManager.GetActiveScene().name == "Server";
         public static string RootPath => Directory.GetParent(Application.dataPath).ToString();
         public static string RuntimePath => Application.streamingAssetsPath;
         public static string MapsFolder => Path.Combine(RuntimePath, "Maps");
