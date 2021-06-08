@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Test Knife
   m_EditorClassIdentifier: 
   Name: Test Knife
-  Slot: 1
+  Slot: 3
   WorldModelPrefab: {fileID: 0}
   ViewModelPrefab: {fileID: 0}
   PlayerAnimationLayer: 3
@@ -29,6 +29,7 @@ MonoBehaviour:
   BaseDamage: 50
   HitRange: 2
   HitRadius: 0.1
+  _ImpactType: 1
   SwingSound: {fileID: 0}
   HitFleshSound: {fileID: 0}
   HitSolidSound: {fileID: 0}

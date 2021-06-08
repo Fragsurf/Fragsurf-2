@@ -103,11 +103,11 @@ namespace Fragsurf.UI
         {
             switch (slot)
             {
-                case ItemSlot.Melee:
+                case ItemSlot.Heavy:
                     return InputActions.Slot1;
                 case ItemSlot.Light:
                     return InputActions.Slot2;
-                case ItemSlot.Heavy:
+                case ItemSlot.Melee:
                     return InputActions.Slot3;
                 case ItemSlot.Utility:
                     return InputActions.Slot4;
