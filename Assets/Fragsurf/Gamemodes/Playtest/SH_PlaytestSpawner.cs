@@ -46,6 +46,15 @@ namespace Fragsurf.Gamemodes.Playtest
             Give(player, "Knife");
         }
 
+        [ChatCommand("Kill yourself", "suicide", "kill")]
+        public void Suicide(BasePlayer player)
+        {
+            if (Game.IsHost && player.Entity is Human hu)
+            {
+                hu.Dead = true;
+            }
+        }
+
         [ChatCommand("Resets actors", "reset")]
         public void ResetCmd(BasePlayer player)
         {

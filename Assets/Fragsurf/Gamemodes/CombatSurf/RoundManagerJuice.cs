@@ -1,9 +1,6 @@
 ﻿using Fragsurf.Shared;
-using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Player;
 using Fragsurf.UI;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Fragsurf.Gamemodes.CombatSurf

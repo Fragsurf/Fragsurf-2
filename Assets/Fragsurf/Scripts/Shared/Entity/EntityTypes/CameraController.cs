@@ -38,7 +38,14 @@ namespace Fragsurf.Shared.Entity
         {
             if (HideViewer && Viewer.EntityGameObject)
             {
-                Viewer.EntityGameObject.SetVisible(true);
+                if(Viewer is Human hu)
+                {
+                    Viewer.EntityGameObject.SetVisible(!hu.Dead);
+                }
+                else
+                {
+                    Viewer.EntityGameObject.SetVisible(true);
+                }
             }
 
             OnDeactivate();

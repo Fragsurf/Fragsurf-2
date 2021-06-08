@@ -19,7 +19,7 @@ MonoBehaviour:
   HumanPrefab: {fileID: 7776529293873923163, guid: d64aa5b739895ac41b41075f48746df8, type: 3}
   InstantiateOnLoad:
   - {fileID: 6294503463378374111, guid: b97dfe74934113c4d9e9ebf5c861520f, type: 3}
-  MatchStart: {fileID: 8300000, guid: 7aa67fd1ad1f5804ebae5625ffb893d0, type: 3}
+  MatchStart: {fileID: 8300000, guid: a24bc366cb4bfc04c8c68c8816560338, type: 3}
   MatchEnd: {fileID: 8300000, guid: f621cd6a7d53d364cbe529cad593b4db, type: 3}
   RoundLive: {fileID: 8300000, guid: 4ba616b449150654cb94802b65b18546, type: 3}
   RoundEndLose: {fileID: 8300000, guid: cfa6cbe2a5b32de47bc5c1c655a2b469, type: 3}
