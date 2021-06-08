@@ -3,10 +3,18 @@ using Mosframe;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Fragsurf.UI
 {
+
+    public class DynamicScrollDataContainer<T>
+    {
+        public bool Filtered;
+        public List<T> DynamicScrollData = new List<T>();
+        public List<T> FilteredDynamicScrollData = new List<T>();
+        public List<T> DisplayedDynamicScrollData => Filtered ? FilteredDynamicScrollData : DynamicScrollData;
+    }
+
     public abstract class EntryElement<T> : MonoBehaviour, IDynamicScrollViewItem
     {
 
@@ -17,12 +25,7 @@ namespace Fragsurf.UI
         protected virtual bool ContainsSearch(string input) { return true; }
         protected virtual bool DataContainsSearch(T data, string input) { return true; }
 
-        public static List<T> DynamicScrollData => _filtered ? _filteredDynamicScrollData : _dynamicScrollData;
-
-        // todo: this can't be static, there can only be 1 dynamic scroll view..
-        private static bool _filtered;
-        private static List<T> _dynamicScrollData = new List<T>();
-        private static List<T> _filteredDynamicScrollData = new List<T>();
+        protected DynamicScrollDataContainer<T> _dynScroll;
 
         // todo: probably don't need 2 children lists..
         private List<GameObject> _children = new List<GameObject>();
@@ -39,17 +42,17 @@ namespace Fragsurf.UI
         {
             if(DynamicScrollView)
             {
-                _filtered = true;
-                _filteredDynamicScrollData.Clear();
-                foreach(var d in _dynamicScrollData)
+                _dynScroll.Filtered = true;
+                _dynScroll.FilteredDynamicScrollData.Clear();
+                foreach(var d in _dynScroll.DynamicScrollData)
                 {
                     if(!DataContainsSearch(d, input))
                     {
                         continue;
                     }
-                    _filteredDynamicScrollData.Add(d);
+                    _dynScroll.FilteredDynamicScrollData.Add(d);
                 }
-                DynamicScrollView.totalItemCount = _filteredDynamicScrollData.Count;
+                DynamicScrollView.totalItemCount = _dynScroll.FilteredDynamicScrollData.Count;
                 return;
             }
 
@@ -97,6 +100,7 @@ namespace Fragsurf.UI
         {
             var clone = GameObject.Instantiate(gameObject, transform.parent).GetComponent<EntryElement<T>>();
             clone._parent = this;
+            clone._dynScroll = _dynScroll;
             clone.SearchField = null;
             _children.Add(clone.gameObject);
             _childrenElements.Add(clone);
@@ -116,7 +120,7 @@ namespace Fragsurf.UI
 
             if (DynamicScrollView)
             {
-                _dynamicScrollData.Insert(0, data);
+                _dynScroll.DynamicScrollData.Insert(0, data);
                 DynamicScrollView.totalItemCount++;
                 return null;
             }
@@ -145,7 +149,7 @@ namespace Fragsurf.UI
 
             if (DynamicScrollView)
             {
-                _dynamicScrollData.Insert(DynamicScrollData.Count, data);
+                _dynScroll.DynamicScrollData.Insert(_dynScroll.DynamicScrollData.Count, data);
                 DynamicScrollView.totalItemCount++;
                 return null;
             }
@@ -177,11 +181,11 @@ namespace Fragsurf.UI
 
         public void onUpdateItem(int index)
         {
-            if(index >= 0 
-                && DynamicScrollData.Count > 0 
-                && index < DynamicScrollData.Count)
+            if (index >= 0 
+                && _dynScroll.DisplayedDynamicScrollData.Count > 0 
+                && index < _dynScroll.DisplayedDynamicScrollData.Count)
             {
-                LoadData(DynamicScrollData[index]);
+                LoadData(_dynScroll.DisplayedDynamicScrollData[index]);
             }
         }
 

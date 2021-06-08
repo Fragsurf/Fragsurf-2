@@ -1,6 +1,5 @@
 using Fragsurf.Shared;
 using Fragsurf.UI;
-using JetBrains.Annotations;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -42,6 +41,11 @@ namespace Fragsurf.Gamemodes.Tricksurf
         private Data _data;
 
         public static TrickFilter Filter = TrickFilter.All;
+
+        private void Awake()
+        {
+            _dynScroll = Modal_TricksurfScoreboard.DscrollTrickData;
+        }
 
         private void Start()
         {

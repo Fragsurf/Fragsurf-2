@@ -28,6 +28,15 @@ namespace Fragsurf.Gamemodes.Tricksurf
         private ScoreboardSpectatorEntry _specTemplate;
         private Modal_TricksurfTrickEntry _trickTemplate;
 
+        public static DynamicScrollDataContainer<Modal_TricksurfTrickEntry.Data> DscrollTrickData;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            DscrollTrickData = new DynamicScrollDataContainer<Modal_TricksurfTrickEntry.Data>();
+        }
+
         private void Start()
         {
             _playerTemplate = gameObject.GetComponentInChildren<ScoreboardPlayerEntry>(true);
