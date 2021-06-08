@@ -1001,7 +1001,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: message or ! for commands
+  m_text: / for commands
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0ab73696e54d2c747ac03f849f3c11ee, type: 2}
   m_sharedMaterial: {fileID: -8795465729657404508, guid: 0ab73696e54d2c747ac03f849f3c11ee, type: 2}
@@ -1322,10 +1322,10 @@ RectTransform:
   m_Father: {fileID: 6965408784027009077}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 16}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 316, y: -12}
+  m_SizeDelta: {x: 632, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6965408782667038322
 CanvasRenderer:

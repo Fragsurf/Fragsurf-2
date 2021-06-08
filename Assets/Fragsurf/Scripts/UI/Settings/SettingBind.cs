@@ -33,7 +33,7 @@ namespace Fragsurf.UI
 
             var path = SettingName.Split('/');
             var header = path[1];
-            _action = path[2];
+            _action = path[2].Replace('|', '/');
             Setting.SetLabel($"{header}/{_action}");
             _button.onClick.AddListener(OnClick);
         }

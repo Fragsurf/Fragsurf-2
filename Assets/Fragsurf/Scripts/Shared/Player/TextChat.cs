@@ -9,7 +9,7 @@ namespace Fragsurf.Shared.Player
         public event Action<ChatMessage> OnMessageReceived;
 
         public static string ServerName = "[Server]";
-        public const char CommandChar = '!';
+        public const char CommandChar = '/';
         public int MaxMessageLength = 150;
 
         [ConCommand("say", "Say something", ConVarFlags.Silent)]
@@ -38,7 +38,7 @@ namespace Fragsurf.Shared.Player
                         chatMessage.Message = chatMessage.Message.Substring(0, MaxMessageLength);
                     }
 
-                    if (chatMessage.Message[0] == CommandChar)
+                    if (chatMessage.Message[0] == CommandChar || chatMessage.Message[0] == '!')
                     {
                         ParseCommand(player, chatMessage.Message);
                     }

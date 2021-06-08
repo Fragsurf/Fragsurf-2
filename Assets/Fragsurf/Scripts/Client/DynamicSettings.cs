@@ -34,7 +34,7 @@ namespace Fragsurf.Client
                 {
                     continue;
                 }
-                cmdNames.Add("bind/command/say !" + cmd.Attribute.Commands.First());
+                cmdNames.Add("bind/command/say |" + cmd.Attribute.Commands.First());
             }
 
             settingsModal.CreatePage("gamemode commands", cmdNames);
