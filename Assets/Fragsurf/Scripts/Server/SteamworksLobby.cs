@@ -2,6 +2,7 @@ using Fragsurf.Maps;
 using Fragsurf.Shared;
 using Steamworks;
 using Steamworks.Data;
+using UnityEngine;
 
 namespace Fragsurf.Server
 {
@@ -12,7 +13,7 @@ namespace Fragsurf.Server
 
         protected override async void OnGameLoaded()
         {
-            if (!SteamClient.IsValid)
+            if (!SteamClient.IsValid || Application.isEditor)
             {
                 return;
             }

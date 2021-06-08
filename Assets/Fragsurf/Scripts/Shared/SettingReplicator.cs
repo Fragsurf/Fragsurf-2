@@ -26,6 +26,10 @@ namespace Fragsurf.Shared
         protected override void OnGameLoaded()
         {
             var locked = (FSGameLoop.GetGameInstance(true) == null) || Game.GamemodeLoader.Gamemode.LockVars;
+            if (Application.isEditor)
+            {
+                locked = false;
+            }
 
             DevConsole.LockFlags(locked, ConVarFlags.Replicator);
             DevConsole.LockFlags(locked, ConVarFlags.Cheat);
