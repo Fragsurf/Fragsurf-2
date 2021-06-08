@@ -774,47 +774,57 @@ namespace Fragsurf.Movement
         private void IncrementOrigin(Vector3 amount)
         {
             _surfer.MoveData.PreviousOrigin = _surfer.MoveData.Origin;
-            _surfer.MoveData.Origin += amount;
 
             if (_surfer.MoveType == MoveType.Noclip && !_config.NoclipCollide)
             {
+                _surfer.MoveData.Origin += amount;
                 return;
             }
 
-            SurfPhysics.ResolveCollisions(_surfer);
+            var maxMove = .15f;
+            var steps = Mathf.CeilToInt(amount.magnitude / maxMove);
+            if (steps <= 0) steps = 1;
+            steps = Mathf.Max(steps, 1);
 
-            var prevOrigin = _surfer.MoveData.PreviousOrigin;
-            var newOrigin = _surfer.MoveData.Origin;
-            var movementThisStep = newOrigin - prevOrigin;
-            var newMovement = movementThisStep;
-            if (movementThisStep.magnitude >= _surfer.Collider.bounds.extents.x)
+            var increment = amount / steps;
+            for (int i = 0; i < steps; i++)
             {
-                var center = prevOrigin;
-                center.y += _surfer.Collider.bounds.extents.y;
-
-                var hitCount = Physics.BoxCastNonAlloc(center: center,
-                    halfExtents: _surfer.Collider.bounds.extents * 0.5f,
-                    direction: movementThisStep.normalized,
-                    orientation: Quaternion.identity,
-                    results: _hitCache,
-                    maxDistance: movementThisStep.magnitude,
-                    layerMask: SurfPhysics.GroundLayerMask,
-                    queryTriggerInteraction: QueryTriggerInteraction.Ignore);
-
-                if(hitCount > 0)
-                {
-                    for (int i = 0; i < hitCount; i++)
-                    {
-                        if(!_hitCache[i].collider.enabled)
-                        {
-                            continue;
-                        }
-                        newMovement += _hitCache[i].normal * (movementThisStep.magnitude - _hitCache[i].distance);
-                        SurfPhysics.ClipVelocity(_surfer.MoveData.Velocity, _hitCache[i].normal, ref _surfer.MoveData.Velocity, 1.01f);
-                    }
-                    _surfer.MoveData.Origin = prevOrigin + newMovement;
-                }
+                _surfer.MoveData.Origin += increment;
+                SurfPhysics.ResolveCollisions(_surfer);
             }
+
+            //var prevOrigin = _surfer.MoveData.PreviousOrigin;
+            //var newOrigin = _surfer.MoveData.Origin;
+            //var movementThisStep = newOrigin - prevOrigin;
+            //var newMovement = movementThisStep;
+            //if (movementThisStep.magnitude >= _surfer.Collider.bounds.extents.x)
+            //{
+            //    var center = prevOrigin;
+            //    center.y += _surfer.Collider.bounds.extents.y;
+
+            //    var hitCount = Physics.BoxCastNonAlloc(center: center,
+            //        halfExtents: _surfer.Collider.bounds.extents * 0.5f,
+            //        direction: movementThisStep.normalized,
+            //        orientation: Quaternion.identity,
+            //        results: _hitCache,
+            //        maxDistance: movementThisStep.magnitude,
+            //        layerMask: SurfPhysics.GroundLayerMask,
+            //        queryTriggerInteraction: QueryTriggerInteraction.Ignore);
+
+            //    if (hitCount > 0)
+            //    {
+            //        for (int i = 0; i < hitCount; i++)
+            //        {
+            //            if (!_hitCache[i].collider.enabled)
+            //            {
+            //                continue;
+            //            }
+            //            newMovement += _hitCache[i].normal * (movementThisStep.magnitude - _hitCache[i].distance);
+            //            SurfPhysics.ClipVelocity(_surfer.MoveData.Velocity, _hitCache[i].normal, ref _surfer.MoveData.Velocity, 1.01f);
+            //        }
+            //        _surfer.MoveData.Origin = prevOrigin + newMovement;
+            //    }
+            //}
         }
 
         private Trace BoxCastToFloor(float distance = 0.05f, float extentModifier = 1.0f)

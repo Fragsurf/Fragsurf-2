@@ -6,34 +6,19 @@ namespace Fragsurf.Movement
     public class SurfPhysics
     {
 
-        public enum StrictCollisionAxis
-        {
-            None,
-            Horizontal,
-            Vertical
-        }
-
         public static int GroundLayerMask = (1 << 0);
         public static int LadderLayerMask = (1 << 1);
         private static Collider[] _colliders = new Collider[MaxCollisions];
-        private static Vector3[] _planes = new Vector3[MaxClipPlanes];
         private const int MaxCollisions = 128;
-        private const int MaxClipPlanes = 5;
-        private const int NumBumps = 4;
 
         public const float SurfSlope = 0.7f;
 
-        private struct CollisionData
-        {
-            public float Distance;
-            public Vector3 Direction;
-        }
-
-        public static void ResolveCollisions(ISurfControllable controller, StrictCollisionAxis axis = StrictCollisionAxis.None)
+        public static bool ResolveCollisions(ISurfControllable controller)
         {
             var staticOrigin = controller.MoveData.Origin + new Vector3(0, controller.Collider.bounds.extents.y, 0);
             var numOverlaps = Physics.OverlapBoxNonAlloc(staticOrigin, controller.Collider.bounds.extents, _colliders,
                 controller.Orientation, GroundLayerMask, QueryTriggerInteraction.Ignore);
+            var corrected = false;
 
             for (int i = 0; i < numOverlaps; i++)
             {
@@ -47,35 +32,17 @@ namespace Fragsurf.Movement
                     _colliders[i].transform.rotation, out Vector3 direction, out float distance))
                 {
                     // don't resolve if moving away from it
-                    if (Vector3.Dot(direction, controller.MoveData.Velocity.normalized) > 0)
-                    {
-                        continue;
-                    }
+                    //if (Vector3.Dot(direction, controller.MoveData.Velocity.normalized) > 0)
+                    //{
+                    //    continue;
+                    //}
 
                     var penetrationVec = direction * distance;
                     var velocityVec = -Vector3.Project(controller.MoveData.Velocity, -direction);
 
-                    if (axis != StrictCollisionAxis.None)
-                    {
-                        var horizAdjustment = (Mathf.Abs(penetrationVec.x) + Mathf.Abs(penetrationVec.z)) > Mathf.Abs(penetrationVec.y);
-                        if ((axis == StrictCollisionAxis.Horizontal && horizAdjustment)
-                            || (axis == StrictCollisionAxis.Vertical && !horizAdjustment))
-                        {
-                            controller.MoveData.Origin += penetrationVec;
-                            if (controller.MoveData.Surfing)
-                            {
-                                ClipVelocity(controller.MoveData.Velocity, direction, ref controller.MoveData.Velocity, 1.0f);
-                            }
-                            else
-                            {
-                                controller.MoveData.Velocity += velocityVec;
-                            }
-                        }
-                        continue;
-                    }
-
                     controller.MoveData.Origin += penetrationVec;
                     staticOrigin += penetrationVec;
+
                     if (controller.MoveData.Surfing)
                     {
                         ClipVelocity(controller.MoveData.Velocity, direction, ref controller.MoveData.Velocity, distance);
@@ -84,8 +51,11 @@ namespace Fragsurf.Movement
                     {
                         controller.MoveData.Velocity += velocityVec;
                     }
+
+                    corrected = true;
                 }
             }
+            return corrected;
         }
 
         public static void Friction(ref Vector3 velocity, float stopSpeed, float friction, float deltaTime)
