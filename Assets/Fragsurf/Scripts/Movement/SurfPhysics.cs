@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Fragsurf.Movement
 {
@@ -13,12 +12,11 @@ namespace Fragsurf.Movement
 
         public const float SurfSlope = 0.7f;
 
-        public static bool ResolveCollisions(ISurfControllable controller)
+        public static void ResolveCollisions(ISurfControllable controller)
         {
             var staticOrigin = controller.MoveData.Origin + new Vector3(0, controller.Collider.bounds.extents.y, 0);
             var numOverlaps = Physics.OverlapBoxNonAlloc(staticOrigin, controller.Collider.bounds.extents, _colliders,
                 controller.Orientation, GroundLayerMask, QueryTriggerInteraction.Ignore);
-            var corrected = false;
 
             for (int i = 0; i < numOverlaps; i++)
             {
@@ -27,35 +25,42 @@ namespace Fragsurf.Movement
                     continue;
                 }
 
-                if (Physics.ComputePenetration(controller.Collider, controller.MoveData.Origin,
-                    controller.Orientation, _colliders[i], _colliders[i].transform.position,
-                    _colliders[i].transform.rotation, out Vector3 direction, out float distance))
+                var pen = Physics.ComputePenetration(controller.Collider, 
+                    controller.MoveData.Origin, 
+                    controller.Orientation, 
+                    _colliders[i], 
+                    _colliders[i].transform.position,
+                    _colliders[i].transform.rotation, 
+                    out Vector3 direction, 
+                    out float distance);
+
+                if (!pen)
                 {
-                    // don't resolve if moving away from it
-                    //if (Vector3.Dot(direction, controller.MoveData.Velocity.normalized) > 0)
-                    //{
-                    //    continue;
-                    //}
+                    continue;
+                }
 
-                    var penetrationVec = direction * distance;
-                    var velocityVec = -Vector3.Project(controller.MoveData.Velocity, -direction);
+                // don't resolve if moving away from it
+                // this was needed at one point but it might be causing problems now.  keeping it just in case
+                //if (Vector3.Dot(direction, controller.MoveData.Velocity.normalized) > 0)
+                //{
+                //    continue;
+                //}
 
-                    controller.MoveData.Origin += penetrationVec;
-                    staticOrigin += penetrationVec;
+                var penetrationVec = direction * distance;
+                var velocityVec = -Vector3.Project(controller.MoveData.Velocity, -direction);
 
-                    if (controller.MoveData.Surfing)
-                    {
-                        ClipVelocity(controller.MoveData.Velocity, direction, ref controller.MoveData.Velocity, distance);
-                    }
-                    else
-                    {
-                        controller.MoveData.Velocity += velocityVec;
-                    }
+                controller.MoveData.Origin += penetrationVec;
+                staticOrigin += penetrationVec;
 
-                    corrected = true;
+                if (controller.MoveData.Surfing)
+                {
+                    ClipVelocity(controller.MoveData.Velocity, direction, ref controller.MoveData.Velocity, distance);
+                }
+                else
+                {
+                    controller.MoveData.Velocity += velocityVec;
                 }
             }
-            return corrected;
         }
 
         public static void Friction(ref Vector3 velocity, float stopSpeed, float friction, float deltaTime)
