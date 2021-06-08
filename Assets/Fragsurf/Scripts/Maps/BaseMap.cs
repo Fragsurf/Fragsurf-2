@@ -34,6 +34,15 @@ namespace Fragsurf.Maps
             if(result == MapLoadState.Loaded)
             {
                 Actors.AddRange(GameObject.FindObjectsOfType<FSMActor>(true));
+
+                foreach(var al in GameObject.FindObjectsOfType<AudioListener>(true))
+                {
+                    if(al == GameCamera.AudioListener)
+                    {
+                        continue;
+                    }
+                    GameObject.Destroy(al);
+                }
             }
 
             return result;

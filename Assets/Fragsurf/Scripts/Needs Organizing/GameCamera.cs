@@ -17,6 +17,7 @@ namespace Fragsurf
         private static GameObject _depthCamera;
         private static Camera _camera;
         public static Camera Camera => GetCamera();
+        public static AudioListener AudioListener => Camera.GetComponentInChildren<AudioListener>(true);
 
         [ConVar("cam.weaponfov", "", ConVarFlags.UserSetting)]
         public int WeaponFieldOfView
