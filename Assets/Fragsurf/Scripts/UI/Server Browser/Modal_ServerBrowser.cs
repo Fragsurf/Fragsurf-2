@@ -163,7 +163,7 @@ namespace Fragsurf.UI
                             Gamemode = GetLobbyData(lobby, "gamemode"),
                             Map = GetLobbyData(lobby, "map"),
                             MaxPlayers = GetLobbyDataInt(lobby, "maxplayers"),
-                            Players = lobby.MemberCount,
+                            Players = GetLobbyDataInt(lobby, "players"),
                             Passworded = GetLobbyData(lobby, "password") != string.Empty,
                             Ping = 0
                         };

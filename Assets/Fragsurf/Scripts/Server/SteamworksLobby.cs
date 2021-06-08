@@ -1,5 +1,6 @@
 using Fragsurf.Maps;
 using Fragsurf.Shared;
+using Fragsurf.Shared.Player;
 using Steamworks;
 using Steamworks.Data;
 using UnityEngine;
@@ -32,10 +33,31 @@ namespace Fragsurf.Server
             lobby.SetData("password", socketMan.ServerPassword ?? string.Empty);
             lobby.SetData("gamemode", Game.GamemodeLoader.Gamemode.Data.Name);
             lobby.SetData("map", Map.Current.Name);
+            lobby.SetData("players", "1");
             lobby.SetData("maxplayers", socketMan.MaxPlayers.ToString());
             lobby.SetGameServer(SteamClient.SteamId);
             lobby.SetPublic();
             lobby.SetJoinable(true);
+        }
+
+        protected override void OnPlayerIntroduced(BasePlayer player)
+        {
+            base.OnPlayerIntroduced(player);
+
+            if (_lobby.HasValue && SteamClient.IsValid)
+            {
+                _lobby.Value.SetData("players", Game.PlayerManager.PlayerCount.ToString());
+            }
+        }
+
+        protected override void OnPlayerDisconnected(BasePlayer player)
+        {
+            base.OnPlayerDisconnected(player);
+
+            if(_lobby.HasValue && SteamClient.IsValid)
+            {
+                _lobby.Value.SetData("players", Game.PlayerManager.PlayerCount.ToString());
+            }
         }
 
         protected override void _Destroy()
