@@ -72,11 +72,6 @@ namespace Fragsurf.Shared
 
         public int GetPlayersSpectating(int entityId, int[] clients)
         {
-            if(clients == null || clients.Length == 0)
-            {
-                return 0;
-            }
-
             var idx = 0;
             foreach(var kvp in _specTargets)
             {

@@ -14,6 +14,12 @@ namespace Fragsurf.UI
         [SerializeField]
         private TMP_Text _name;
         [SerializeField]
+        private GameObject _specContainer;
+        [SerializeField]
+        private TMP_Text _specName;
+        [SerializeField]
+        private TMP_Text _specList;
+        [SerializeField]
         private CanvasGroup _canvasGroup;
 
         private float _targetAlpha;
@@ -26,8 +32,49 @@ namespace Fragsurf.UI
             _targetAlpha = 0;
         }
 
+        private int[] _specCache = new int[64];
         private void Update()
         {
+            var cl = FSGameLoop.GetGameInstance(false);
+            if(cl == null)
+            {
+                return;
+            }
+            var spec = cl.Get<SpectateController>();
+
+            if (SpectateController.SpecTarget == null
+                || Human.Local == SpectateController.SpecTarget)
+            {
+                _specContainer.SetActive(false);
+            }
+            else if(SpectateController.SpecTarget != Human.Local)
+            {
+                var pl = cl.PlayerManager.FindPlayer(SpectateController.SpecTarget);
+                if(pl != null)
+                {
+                    _specContainer.SetActive(true);
+                    var specStr = string.Empty;
+                    _specName.text = $"Watching: {pl.DisplayName}";
+                    var specCount = spec.GetPlayersSpectating(SpectateController.SpecTarget.EntityId, _specCache);
+                    for(int i = 0; i < specCount; i++)
+                    {
+                        var pl2 = cl.PlayerManager.FindPlayer(_specCache[i]);
+                        if(pl2 == null)
+                        {
+                            continue;
+                        }
+                        specStr += pl2.DisplayName + "\n";
+                    }
+                    _specList.text = specStr;
+                }
+                else
+                {
+                    _specContainer.SetActive(false);
+                    _specList.text = string.Empty;
+                    _specName.text = string.Empty;
+                }
+            }
+
             if (_canvasGroup)
             {
                 _canvasGroup.alpha = Mathf.Lerp(_canvasGroup.alpha, _targetAlpha, 16 * Time.deltaTime);
@@ -48,7 +95,6 @@ namespace Fragsurf.UI
                 && entObj.Entity is Human hu)
             {
                 _hoverTimer += Time.deltaTime;
-                var cl = FSGameLoop.GetGameInstance(false);
                 var player = cl.PlayerManager.FindPlayer(hu);
                 if (player != null)
                 {
