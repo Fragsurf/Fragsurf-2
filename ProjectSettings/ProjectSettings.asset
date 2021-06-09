@@ -129,7 +129,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.0.0.1
+  bundleVersion: 1.0.0.2
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -150,11 +150,11 @@ PlayerSettings:
   applicationIdentifier:
     Standalone: com.Crayz.Fragsurf
   buildNumber:
-    Standalone: 1
-    iPhone: 1
+    Standalone: 3
+    iPhone: 3
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 2
+  AndroidBundleVersionCode: 4
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -593,7 +593,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    1: SUBSTANCE_PLUGIN_ENABLED;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68;URP_OUTLINE;DT_COMMAND_PALETTE
+    1: BUILD_TYPE_SERVER;BUILD_PLATFORM_PC;BUILD_ARCH_WINDOWSX64;SUBSTANCE_PLUGIN_ENABLED;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68;URP_OUTLINE;DT_COMMAND_PALETTE
     4: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68
     7: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68
     13: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68

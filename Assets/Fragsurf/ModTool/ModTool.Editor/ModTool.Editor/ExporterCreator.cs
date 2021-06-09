@@ -14,7 +14,7 @@ using Fragsurf;
 
 namespace ModTool.Editor
 {
-    internal class ExporterCreator
+    public class ExporterCreator
     {
 
         private static string PackageVersion => Structure.Version;
@@ -28,7 +28,6 @@ namespace ModTool.Editor
             CreatePackage(filePath, Path.GetDirectoryName(filePath));
         }
 
-        //[PostProcessBuild]
         public static void CreateExporterPostBuild(BuildTarget target, string pathToBuiltProject)
         {
             if(IsFileBelowDirectory(pathToBuiltProject, Application.temporaryCachePath))
