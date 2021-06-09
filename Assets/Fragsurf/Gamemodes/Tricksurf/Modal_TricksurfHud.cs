@@ -21,7 +21,6 @@ namespace Fragsurf.Gamemodes.Tricksurf
         private int _touchInfoCount;
 
         private SH_Tricksurf _tricksurf => FSGameLoop.GetGameInstance(false).Get<SH_Tricksurf>();
-        private Human _targetHuman => FSGameLoop.GetGameInstance(false).Get<SpectateController>().TargetHuman;
 
         private int _boardSpeed;
         private int _exitSpeed;
@@ -45,22 +44,22 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         private void Update()
         {
-            if (_targetHuman == null)
+            if (SpectateController.SpecTarget == null)
             {
                 _boardSpeed = 0;
                 _exitSpeed = 0;
                 _wasSurfing = false;
                 return;
             }
-            var mc = _targetHuman.MovementController as CSMovementController;
+            var mc = SpectateController.SpecTarget.MovementController as CSMovementController;
             var surfing = mc.MoveData.Surfing;
             if (surfing && !_wasSurfing)
             {
-                _boardSpeed = _targetHuman.HammerVelocity();
+                _boardSpeed = SpectateController.SpecTarget.HammerVelocity();
             }
             else if (!surfing && _wasSurfing)
             {
-                _exitSpeed = _targetHuman.HammerVelocity();
+                _exitSpeed = SpectateController.SpecTarget.HammerVelocity();
             }
             _wasSurfing = surfing;
 
@@ -70,7 +69,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         private void OnTriggerEntered(BasePlayer player, TouchInfo touchInfo)
         {
-            if (player.Entity != _targetHuman)
+            if (player.Entity != SpectateController.SpecTarget)
             {
                 return;
             }
@@ -87,17 +86,17 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         private int GetTargetVelocity()
         {
-            if (_targetHuman == null)
+            if (SpectateController.SpecTarget == null)
             {
                 return 0;
             }
-            return _targetHuman.HammerVelocity(!DevConsole.GetVariable<bool>("game.verticalvelocity"));
+            return SpectateController.SpecTarget.HammerVelocity(!DevConsole.GetVariable<bool>("game.verticalvelocity"));
         }
 
         private int GetTargetStartSpeed()
         {
-            var pl = FSGameLoop.GetGameInstance(false).PlayerManager.FindPlayer(_targetHuman);
-            if (_targetHuman == null || pl == null)
+            var pl = FSGameLoop.GetGameInstance(false).PlayerManager.FindPlayer(SpectateController.SpecTarget);
+            if (SpectateController.SpecTarget == null || pl == null)
             {
                 return 0;
             }
@@ -106,11 +105,14 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         private string GetTargetName()
         {
-            var pl = FSGameLoop.GetGameInstance(false).PlayerManager.FindPlayer(_targetHuman);
-            if (_targetHuman == null || pl == null || pl.ClientIndex == FSGameLoop.GetGameInstance(false).ClientIndex)
+            var pl = FSGameLoop.GetGameInstance(false).PlayerManager.FindPlayer(SpectateController.SpecTarget);
+            if (SpectateController.SpecTarget == null 
+                || pl == null 
+                || pl.ClientIndex == FSGameLoop.GetGameInstance(false).ClientIndex)
             {
                 return string.Empty;
             }
+
             return pl.DisplayName;
         }
 

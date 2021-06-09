@@ -14,7 +14,7 @@ namespace Fragsurf.Shared
     public class SpectateController : FSSharedScript
     {
 
-        private Human _targetHuman;
+        private static Human _targetHuman;
         // todo: a netprop for dictionaries would be nice.
         private Dictionary<int, int> _specTargets = new Dictionary<int, int>();
 
@@ -25,6 +25,8 @@ namespace Fragsurf.Shared
             get => _targetHuman;
             set => Spectate(value);
         }
+
+        public static Human SpecTarget => _targetHuman;
 
         public bool IsSpectating(int clientIndex)
         {
