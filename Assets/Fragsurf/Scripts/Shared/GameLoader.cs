@@ -60,13 +60,13 @@ namespace Fragsurf.Shared
             {
                 DevConsole.RegisterCommand("map.change", "", this, (e) =>
                 {
-                    if (e.Length > 1)
+                    if (e.Length > 0)
                     {
-                        var map = e[1];
+                        var map = e[0];
                         string gamemode = Game.GamemodeLoader.Gamemode.Data.Name;
-                        if (e.Length > 2)
+                        if (e.Length > 1)
                         {
-                            gamemode = e[2];
+                            gamemode = e[1];
                         }
                         var name = DevConsole.GetVariable<string>("server.name");
                         var pass = DevConsole.GetVariable<string>("server.password");
