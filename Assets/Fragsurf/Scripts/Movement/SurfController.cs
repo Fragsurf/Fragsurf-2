@@ -118,11 +118,10 @@ namespace Fragsurf.Movement
 
         private void ClampVelocity()
         {
-            var v = _surfer.MoveData.Velocity;
-            v.y = 0;
-            v = Vector3.ClampMagnitude(_surfer.MoveData.Velocity, _config.MaxVelocity);
-            v.y = Mathf.Clamp(_surfer.MoveData.Velocity.y, -_config.MaxVelocity, _config.MaxVelocity);
-            _surfer.MoveData.Velocity = v;
+            for (int i = 0; i < 3; i++)
+            {
+                _surfer.MoveData.Velocity[i] = Mathf.Clamp(_surfer.MoveData.Velocity[i], -_config.MaxVelocity, _config.MaxVelocity);
+            }
         }
 
         private bool LadderMove()
