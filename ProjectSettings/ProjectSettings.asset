@@ -593,7 +593,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    1: BUILD_TYPE_SERVER;BUILD_PLATFORM_PC;BUILD_ARCH_WINDOWSX64;SUBSTANCE_PLUGIN_ENABLED;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68;URP_OUTLINE;DT_COMMAND_PALETTE
+    1: SUBSTANCE_PLUGIN_ENABLED;RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68;URP_OUTLINE;DT_COMMAND_PALETTE
     4: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68
     7: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68
     13: RealtimeCSG;RealtimeCSG_1;RealtimeCSG_1_5;RealtimeCSG_1_5_68

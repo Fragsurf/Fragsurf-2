@@ -70,7 +70,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             player.Entity.Origin = startTrig.transform.position;
         }
 
-        [ChatCommand("Teleport to a spawn point", "spawn")]
+        [ChatCommand("Spawn your human", "spawn")]
         public void SpawnPlayer(BasePlayer player)
         {
             if (!Game.IsHost)

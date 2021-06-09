@@ -260,6 +260,12 @@ namespace Fragsurf.Shared
             if (Game.IsHost)
             {
                 BroadcastSpecId(spec.ClientIndex, spec.TargetEntityId);
+
+                if(!(player.Entity is Human hu)
+                    || hu.EntityId != spec.TargetEntityId)
+                {
+                    Game.PlayerManager.SetPlayerTeam(player, 0);
+                }
             }
             else
             {
