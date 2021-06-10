@@ -14,7 +14,7 @@ namespace Fragsurf.Server
 
         protected override async void OnGameLoaded()
         {
-            if (!SteamClient.IsValid || Application.isEditor)
+            if (!SteamClient.IsValid/* || Application.isEditor*/)
             {
                 return;
             }
