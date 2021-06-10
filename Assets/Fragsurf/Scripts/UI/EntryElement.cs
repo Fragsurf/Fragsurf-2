@@ -52,7 +52,9 @@ namespace Fragsurf.UI
                     }
                     _dynScroll.FilteredDynamicScrollData.Add(d);
                 }
+                SortData(_dynScroll.FilteredDynamicScrollData);
                 DynamicScrollView.totalItemCount = _dynScroll.FilteredDynamicScrollData.Count;
+                DynamicScrollView.refresh();
                 return;
             }
 
@@ -64,6 +66,10 @@ namespace Fragsurf.UI
                 }
                 child.SetActive(string.IsNullOrWhiteSpace(input) || ee.ContainsSearch(input));
             }
+        }
+
+        protected virtual void SortData(List<T> data)
+        {
         }
 
         public void Clear()

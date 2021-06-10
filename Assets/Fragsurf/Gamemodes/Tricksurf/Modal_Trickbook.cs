@@ -22,8 +22,11 @@ namespace Fragsurf.Gamemodes.Tricksurf
         private Button _untrackButton;
         [SerializeField]
         private TMP_Text _activeTrickText;
+        [SerializeField]
+        private TMP_Dropdown _sortDropdown;
 
         private Modal_TricksurfTrickEntry _trickTemplate;
+        private Button _activeBtn;
 
         public static DynamicScrollDataContainer<Modal_TricksurfTrickEntry.Data> DscrollTrickData;
 
@@ -32,6 +35,20 @@ namespace Fragsurf.Gamemodes.Tricksurf
             base.Awake();
 
             DscrollTrickData = new DynamicScrollDataContainer<Modal_TricksurfTrickEntry.Data>();
+        }
+
+        private void SetActiveBtn(Button btn)
+        {
+            if(_activeBtn)
+            {
+                _activeBtn.interactable = true;
+                _activeBtn = null;
+            }
+            if(btn)
+            {
+                btn.interactable = false;
+                _activeBtn = btn;
+            }
         }
 
         private void Start()
@@ -44,23 +61,53 @@ namespace Fragsurf.Gamemodes.Tricksurf
             {
                 Modal_TricksurfTrickEntry.Filter = Modal_TricksurfTrickEntry.TrickFilter.All;
                 _trickTemplate.SearchField.onValueChanged.Invoke(_trickTemplate.SearchField.text);
+
+                SetActiveBtn(_allTricks);
             });
 
             _completedTricks.onClick.AddListener(() =>
             {
                 Modal_TricksurfTrickEntry.Filter = Modal_TricksurfTrickEntry.TrickFilter.Completed;
                 _trickTemplate.SearchField.onValueChanged.Invoke(_trickTemplate.SearchField.text);
+
+                SetActiveBtn(_completedTricks);
             });
 
             _incompleteTricks.onClick.AddListener(() =>
             {
                 Modal_TricksurfTrickEntry.Filter = Modal_TricksurfTrickEntry.TrickFilter.Incomplete;
                 _trickTemplate.SearchField.onValueChanged.Invoke(_trickTemplate.SearchField.text);
+
+                SetActiveBtn(_incompleteTricks);
             });
 
             _untrackButton.onClick.AddListener(() =>
             {
                 SetTrackedTrick(-1);
+            });
+
+            _sortDropdown.onValueChanged.AddListener((x) =>
+            {
+                var v = _sortDropdown.options[x].text;
+                switch(v.ToLower())
+                {
+                    case "default":
+                        Modal_TricksurfTrickEntry.Sort = Modal_TricksurfTrickEntry.TrickSort.Default;
+                        break;
+                    case "most points":
+                        Modal_TricksurfTrickEntry.Sort = Modal_TricksurfTrickEntry.TrickSort.MostPoints;
+                        break;
+                    case "least points":
+                        Modal_TricksurfTrickEntry.Sort = Modal_TricksurfTrickEntry.TrickSort.LeastPoints;
+                        break;
+                    case "longest path":
+                        Modal_TricksurfTrickEntry.Sort = Modal_TricksurfTrickEntry.TrickSort.LongestPath;
+                        break;
+                    case "shortest path":
+                        Modal_TricksurfTrickEntry.Sort = Modal_TricksurfTrickEntry.TrickSort.ShortestPath;
+                        break;
+                }
+                _trickTemplate.SearchField.onValueChanged.Invoke(_trickTemplate.SearchField.text);
             });
 
             var ts = FSGameLoop.GetGameInstance(false).Get<SH_Tricksurf>();
@@ -95,7 +142,9 @@ namespace Fragsurf.Gamemodes.Tricksurf
                 {
                     TrickId = trick.id,
                     TrickName = trick.name,
-                    Completed = CL_TrickLog.IsTrickCompleted(trick.id)
+                    Completed = CL_TrickLog.IsTrickCompleted(trick.id),
+                    Points = trick.points,
+                    PathLength = trick.path.Count
                 });
             }
         }

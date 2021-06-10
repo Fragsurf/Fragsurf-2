@@ -1,5 +1,7 @@
 using Fragsurf.Shared;
 using Fragsurf.UI;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,6 +14,8 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         public class Data
         {
+            public int Points;
+            public int PathLength;
             public int TrickId;
             public string TrickName;
             public bool Completed;
@@ -24,12 +28,23 @@ namespace Fragsurf.Gamemodes.Tricksurf
             Incomplete
         }
 
+        public enum TrickSort
+        {
+            Default,
+            MostPoints,
+            LeastPoints,
+            LongestPath,
+            ShortestPath
+        }
+
         [SerializeField]
         private TMP_Text _trickName;
         [SerializeField]
         private Button _button;
         [SerializeField]
         private GameObject _completedCheck;
+        [SerializeField]
+        private TMP_Text _pointsText;
 
         [SerializeField]
         private TMP_Text _trickDetailName;
@@ -41,6 +56,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
         private Data _data;
 
         public static TrickFilter Filter = TrickFilter.All;
+        public static TrickSort Sort = TrickSort.Default;
 
         private void Awake()
         {
@@ -106,6 +122,31 @@ namespace Fragsurf.Gamemodes.Tricksurf
             CL_TrickLog.OnNewTrickCompleted -= OnTrickCompleted;
         }
 
+        protected override void SortData(List<Data> data)
+        {
+            var newData = new List<Data>();
+            switch(Sort)
+            {
+                case TrickSort.Default:
+                    newData = data;
+                    break;
+                case TrickSort.MostPoints:
+                    newData = data.OrderByDescending(x => x.Points).ToList();
+                    break;
+                case TrickSort.LeastPoints:
+                    newData = data.OrderBy(x => x.Points).ToList();
+                    break;
+                case TrickSort.LongestPath:
+                    newData = data.OrderByDescending(x => x.PathLength).ToList();
+                    break;
+                case TrickSort.ShortestPath:
+                    newData = data.OrderBy(x => x.PathLength).ToList();
+                    break;
+            }
+            data.Clear();
+            data.AddRange(newData);
+        }
+
         protected override bool ContainsSearch(string input)
         {
             return _trickName.text.ContainsInsensitive(input);
@@ -138,6 +179,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
             _data = data;
             _trickName.text = data.TrickName;
             _completedCheck.SetActive(data.Completed);
+            _pointsText.text = $"+{data.Points} points"; 
         }
 
     }
