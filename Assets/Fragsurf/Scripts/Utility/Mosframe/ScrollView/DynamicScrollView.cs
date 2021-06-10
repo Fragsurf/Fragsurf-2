@@ -5,7 +5,8 @@
  * 
  */
 
- namespace Mosframe {
+namespace Mosframe
+{
 
     using System.Collections.Generic;
     using UnityEngine;
@@ -17,37 +18,43 @@
     /// Dynamic Scroll View
     /// </summary>
     [RequireComponent(typeof(ScrollRect))]
-    public abstract class DynamicScrollView : UIBehaviour {
+    public abstract class DynamicScrollView : UIBehaviour
+    {
 
-	    public int             totalItemCount   = 99;
-	    public RectTransform   itemPrototype    = null;
+        public int totalItemCount = 99;
+        public RectTransform itemPrototype = null;
 
-        public void scrollToLastPos () {
+        public void scrollToLastPos()
+        {
 
             this.contentAnchoredPosition = this.viewportSize - this.contentSize;
             this.refresh();
         }
-        public void scrollByItemIndex ( int itemIndex ) {
+        public void scrollByItemIndex(int itemIndex)
+        {
 
             var totalLen = this.contentSize;
-            var itemLen  = totalLen / this.totalItemCount;
+            var itemLen = totalLen / this.totalItemCount;
             var pos = itemLen * itemIndex;
             this.contentAnchoredPosition = -pos;
         }
-        public void refresh () {
+        public void refresh()
+        {
 
             var index = 0;
-            if( this.contentAnchoredPosition != 0 ) {
+            if (this.contentAnchoredPosition != 0)
+            {
                 index = (int)(-this.contentAnchoredPosition / this.itemSize);
             }
 
-            foreach( var itemRect in  this.containers ) {
+            foreach (var itemRect in this.containers)
+            {
 
                 // set item position
                 var pos = this.itemSize * index;
-			    itemRect.anchoredPosition = (this.direction == Direction.Vertical) ? new Vector2(0, -pos) : new Vector2(pos, 0);
+                itemRect.anchoredPosition = (this.direction == Direction.Vertical) ? new Vector2(0, -pos) : new Vector2(pos, 0);
 
-                this.updateItem( index, itemRect.gameObject );
+                this.updateItem(index, itemRect.gameObject);
 
                 ++index;
             }
@@ -57,68 +64,67 @@
         }
 
 
-        protected override void Awake () {
-
-            if( this.itemPrototype == null ) {
-                Debug.LogError( RichText.Red(new{this.name,this.itemPrototype}) );
+        protected override void Awake()
+        {
+            if (itemPrototype == null)
+            {
+                Debug.LogError(RichText.Red(new { name, itemPrototype }));
                 return;
             }
 
             base.Awake();
 
-            this.scrollRect    = this.GetComponent<ScrollRect>();
-            this.viewportRect  = this.scrollRect.viewport;
-            this.contentRect   = this.scrollRect.content;
+            scrollRect = GetComponent<ScrollRect>();
+            viewportRect = scrollRect.viewport;
+            contentRect = scrollRect.content;
         }
-        protected override void Start () {
 
-            this.prevTotalItemCount = this.totalItemCount;
+        protected override void Start()
+        {
+            base.Start();
 
-            this.StartCoroutine( this.onSeedData() );
-	    }
+            prevTotalItemCount = totalItemCount;
 
-        protected virtual IEnumerator onSeedData() {
+            SeedData();
+        }
 
-            yield return null;
+        private void SeedData()
+        {
+            itemPrototype.gameObject.SetActive(false);
 
-            // hide prototype
+            var itemCount = (int)(viewportSize / itemSize) + 3;
 
-            this.itemPrototype.gameObject.SetActive(false);
+            for (var i = 0; i < itemCount; ++i)
+            {
 
-            // instantiate items
+                var itemRect = Instantiate(itemPrototype);
+                itemRect.SetParent(contentRect, false);
+                itemRect.name = i.ToString();
+                itemRect.anchoredPosition = direction == Direction.Vertical ? new Vector2(0, -itemSize * i) : new Vector2(itemSize * i, 0);
+                containers.AddLast(itemRect);
 
-            var itemCount = (int)(this.viewportSize / this.itemSize) + 3;
+                itemRect.gameObject.SetActive(true);
 
-		    for( var i = 0; i < itemCount; ++i ) {
+                updateItem(i, itemRect.gameObject);
+            }
 
-			    var itemRect = Instantiate( this.itemPrototype );
-			    itemRect.SetParent( this.contentRect, false );
-			    itemRect.name = i.ToString();
-			    itemRect.anchoredPosition = this.direction == Direction.Vertical ? new Vector2(0, -this.itemSize * i) : new Vector2( this.itemSize * i, 0);
-                this.containers.AddLast( itemRect );
-
-			    itemRect.gameObject.SetActive( true );
-
-				this.updateItem( i, itemRect.gameObject );
-		    }
-
-
-            // resize content
-
-			this.resizeContent();
+            resizeContent();
         }
 
 
-	    private void Update () {
+        private void Update()
+        {
 
-            if( this.totalItemCount != this.prevTotalItemCount ) {
+            if (this.totalItemCount != this.prevTotalItemCount)
+            {
 
                 this.prevTotalItemCount = this.totalItemCount;
 
                 // check scroll bottom
 
                 var isBottom = false;
-                if( this.viewportSize-this.contentAnchoredPosition >= this.contentSize-this.itemSize*0.5f ) {
+                if (this.viewportSize - this.contentAnchoredPosition >= this.contentSize - this.itemSize * 0.5f)
+                {
                     isBottom = true;
                 }
 
@@ -126,7 +132,8 @@
 
                 // move scroll to bottom
 
-                if( isBottom ) {
+                if (isBottom)
+                {
                     this.contentAnchoredPosition = 0;
                     //this.contentAnchoredPosition = this.viewportSize - this.contentSize;
                 }
@@ -137,41 +144,43 @@
 
             // [ Scroll up ]
 
-		    while( this.contentAnchoredPosition - this.prevAnchoredPosition  < -this.itemSize * 2 ) {
+            while (this.contentAnchoredPosition - this.prevAnchoredPosition < -this.itemSize * 2)
+            {
 
                 this.prevAnchoredPosition -= this.itemSize;
 
                 // move a first item to last
 
                 var first = this.containers.First;
-                if( first == null ) break;
+                if (first == null) break;
                 var item = first.Value;
                 this.containers.RemoveFirst();
                 this.containers.AddLast(item);
 
                 // set item position
 
-                var pos = this.itemSize * ( this.containers.Count + this.nextInsertItemNo );
-			    item.anchoredPosition = (this.direction == Direction.Vertical) ? new Vector2(0, -pos) : new Vector2(pos, 0);
+                var pos = this.itemSize * (this.containers.Count + this.nextInsertItemNo);
+                item.anchoredPosition = (this.direction == Direction.Vertical) ? new Vector2(0, -pos) : new Vector2(pos, 0);
 
                 // update item
 
-                this.updateItem( this.containers.Count+this.nextInsertItemNo, item.gameObject );
+                this.updateItem(this.containers.Count + this.nextInsertItemNo, item.gameObject);
 
-			    this.nextInsertItemNo++;
-		    }
+                this.nextInsertItemNo++;
+            }
 
             // [ Scroll down ]
 
-            while ( this.contentAnchoredPosition - this.prevAnchoredPosition > 0 ) {
+            while (this.contentAnchoredPosition - this.prevAnchoredPosition > 0)
+            {
 
                 this.prevAnchoredPosition += this.itemSize;
 
                 // move a last item to first
 
                 var last = this.containers.Last;
-                if( last == null ) break;
-			    var item = last.Value;
+                if (last == null) break;
+                var item = last.Value;
                 this.containers.RemoveLast();
                 this.containers.AddFirst(item);
 
@@ -179,41 +188,46 @@
 
                 // set item position
 
-			    var pos = this.itemSize * this.nextInsertItemNo;
-			    item.anchoredPosition = (this.direction == Direction.Vertical) ? new Vector2(0,-pos): new Vector2(pos,0);
+                var pos = this.itemSize * this.nextInsertItemNo;
+                item.anchoredPosition = (this.direction == Direction.Vertical) ? new Vector2(0, -pos) : new Vector2(pos, 0);
 
                 // update item
 
-                this.updateItem( this.nextInsertItemNo, item.gameObject );
-		    }
-	    }
+                this.updateItem(this.nextInsertItemNo, item.gameObject);
+            }
+        }
 
-        private void resizeContent () {
+        private void resizeContent()
+        {
 
             var size = this.contentRect.getSize();
-            if( this.direction == Direction.Vertical ) size.y = this.itemSize * this.totalItemCount;
-            else                                       size.x = this.itemSize * this.totalItemCount;
-            this.contentRect.setSize( size );
+            if (this.direction == Direction.Vertical) size.y = this.itemSize * this.totalItemCount;
+            else size.x = this.itemSize * this.totalItemCount;
+            this.contentRect.setSize(size);
         }
-	    private void updateItem ( int index, GameObject itemObj ) {
+        private void updateItem(int index, GameObject itemObj)
+        {
 
-		    if( index < 0 || index >= this.totalItemCount ) {
+            if (index < 0 || index >= this.totalItemCount)
+            {
 
-			    itemObj.SetActive(false);
-		    }
-		    else {
+                itemObj.SetActive(false);
+            }
+            else
+            {
 
-			    itemObj.SetActive(true);
-			
-			    var item = itemObj.GetComponent<IDynamicScrollViewItem>();
-                if( item != null ) item.onUpdateItem( index );
-		    }
-	    }
+                itemObj.SetActive(true);
+
+                var item = itemObj.GetComponent<IDynamicScrollViewItem>();
+                if (item != null) item.onUpdateItem(index);
+            }
+        }
 
 
 
         [ContextMenu("Initialize")]
-        public virtual void init () {
+        public virtual void init()
+        {
 
             // [ cliear ]
 
@@ -227,17 +241,17 @@
             // [ ScrollRect ]
 
             var scrollRect = this.GetComponent<ScrollRect>();
-            scrollRect.horizontal   = this.direction == Direction.Horizontal;
-            scrollRect.vertical     = this.direction == Direction.Vertical;
+            scrollRect.horizontal = this.direction == Direction.Horizontal;
+            scrollRect.vertical = this.direction == Direction.Vertical;
             scrollRect.scrollSensitivity = 15f;
 
             // [ ScrollRect / Viewport ]
 
-            var viewportRect = new GameObject( "Viewport", typeof(RectTransform), typeof(Mask), typeof(Image) ).GetComponent<RectTransform>();
-            viewportRect.SetParent( scrollRect.transform, false );
+            var viewportRect = new GameObject("Viewport", typeof(RectTransform), typeof(Mask), typeof(Image)).GetComponent<RectTransform>();
+            viewportRect.SetParent(scrollRect.transform, false);
             viewportRect.setFullSize();
-            viewportRect.offsetMin = new Vector2( 10f, 10f );
-            viewportRect.offsetMax = new Vector2(-10f,-10f );
+            viewportRect.offsetMin = new Vector2(10f, 10f);
+            viewportRect.offsetMax = new Vector2(-10f, -10f);
             var viewportImage = viewportRect.GetComponent<Image>();
             //viewportImage.sprite = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UIMask.psd");
             viewportImage.type = Image.Type.Sliced;
@@ -247,62 +261,63 @@
 
             // [ ScrollRect / Viewport / Content ]
 
-            var contentRect = new GameObject( "Content", typeof(RectTransform) ).GetComponent<RectTransform>();
-            contentRect.SetParent( viewportRect, false );
-            if( this.direction == Direction.Horizontal ) contentRect.setSizeFromLeft( 1.0f ); else contentRect.setSizeFromTop( 1.0f );
+            var contentRect = new GameObject("Content", typeof(RectTransform)).GetComponent<RectTransform>();
+            contentRect.SetParent(viewportRect, false);
+            if (this.direction == Direction.Horizontal) contentRect.setSizeFromLeft(1.0f); else contentRect.setSizeFromTop(1.0f);
             var contentRectSize = contentRect.getSize();
-            contentRect.setSize( contentRectSize-contentRectSize*0.06f );
+            contentRect.setSize(contentRectSize - contentRectSize * 0.06f);
             scrollRect.content = contentRect;
 
             // [ ScrollRect / Viewport / Content / PrototypeItem ]
 
-            this.resetPrototypeItem( contentRect );
+            this.resetPrototypeItem(contentRect);
 
 
             // [ ScrollRect / Scrollbar ]
 
             var scrollbarName = this.direction == Direction.Horizontal ? "Scrollbar Horizontal" : "Scrollbar Vertical";
-            var scrollbarRect = new GameObject( scrollbarName, typeof(Scrollbar), typeof(Image) ).GetComponent<RectTransform>();
-            scrollbarRect.SetParent( viewportRect, false );
-            if( this.direction == Direction.Horizontal ) scrollbarRect.setSizeFromBottom( 0.05f ); else scrollbarRect.setSizeFromRight( 0.05f );
-            scrollbarRect.SetParent( scrollRect.transform, true );
+            var scrollbarRect = new GameObject(scrollbarName, typeof(Scrollbar), typeof(Image)).GetComponent<RectTransform>();
+            scrollbarRect.SetParent(viewportRect, false);
+            if (this.direction == Direction.Horizontal) scrollbarRect.setSizeFromBottom(0.05f); else scrollbarRect.setSizeFromRight(0.05f);
+            scrollbarRect.SetParent(scrollRect.transform, true);
 
             var scrollbar = scrollbarRect.GetComponent<Scrollbar>();
-            scrollbar.direction = ( this.direction == Direction.Horizontal ) ? Scrollbar.Direction.LeftToRight : Scrollbar.Direction.BottomToTop;
-            if( this.direction == Direction.Horizontal ) scrollRect.horizontalScrollbar = scrollbar; else scrollRect.verticalScrollbar = scrollbar;
+            scrollbar.direction = (this.direction == Direction.Horizontal) ? Scrollbar.Direction.LeftToRight : Scrollbar.Direction.BottomToTop;
+            if (this.direction == Direction.Horizontal) scrollRect.horizontalScrollbar = scrollbar; else scrollRect.verticalScrollbar = scrollbar;
 
             // [ ScrollRect / Scrollbar / Image ]
 
             var scrollbarImage = scrollbarRect.GetComponent<Image>();
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             scrollbarImage.sprite = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Background.psd");
-            #endif
-            scrollbarImage.color = new Color(0.1f,0.1f,0.1f,0.5f);
+#endif
+            scrollbarImage.color = new Color(0.1f, 0.1f, 0.1f, 0.5f);
             scrollbarImage.type = Image.Type.Sliced;
 
             // [ ScrollRect / Scrollbar / slidingArea ]
 
-            var slidingAreaRect = new GameObject( "Sliding Area", typeof(RectTransform) ).GetComponent<RectTransform>();
-            slidingAreaRect.SetParent( scrollbarRect, false );
+            var slidingAreaRect = new GameObject("Sliding Area", typeof(RectTransform)).GetComponent<RectTransform>();
+            slidingAreaRect.SetParent(scrollbarRect, false);
             slidingAreaRect.setFullSize();
 
             // [ ScrollRect / Scrollbar / slidingArea / Handle ]
 
-            var scrollbarHandleRect = new GameObject( "Handle", typeof(Image) ).GetComponent<RectTransform>();
-            scrollbarHandleRect.SetParent( slidingAreaRect, false );
+            var scrollbarHandleRect = new GameObject("Handle", typeof(Image)).GetComponent<RectTransform>();
+            scrollbarHandleRect.SetParent(slidingAreaRect, false);
             scrollbarHandleRect.setFullSize();
             var scrollbarHandleImage = scrollbarHandleRect.GetComponent<Image>();
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             scrollbarHandleImage.sprite = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
-            #endif
-            scrollbarHandleImage.color = new Color(0.5f,0.5f,1.0f,0.5f);
-            scrollbarHandleImage.type   = Image.Type.Sliced;
+#endif
+            scrollbarHandleImage.color = new Color(0.5f, 0.5f, 1.0f, 0.5f);
+            scrollbarHandleImage.type = Image.Type.Sliced;
             scrollbar.handleRect = scrollbarHandleRect;
 
             // [ ScrollRect / ScrollbarHandleSize ]
 
             var scrollbarHandleSize = scrollRect.GetComponent<ScrollbarHandleSize>();
-            if( scrollbarHandleSize == null ) {
+            if (scrollbarHandleSize == null)
+            {
                 scrollbarHandleSize = scrollRect.gameObject.AddComponent<ScrollbarHandleSize>();
                 scrollbarHandleSize.maxSize = 1.0f;
                 scrollbarHandleSize.minSize = 0.1f;
@@ -310,71 +325,75 @@
 
             // [ Layer ]
 
-            this.gameObject.setLayer( this.transform.parent.gameObject.layer, true );
+            this.gameObject.setLayer(this.transform.parent.gameObject.layer, true);
         }
-        protected virtual void resetPrototypeItem( RectTransform contentRect ) {
+        protected virtual void resetPrototypeItem(RectTransform contentRect)
+        {
 
             // [ ScrollRect / Viewport / Content / PrototypeItem ]
 
-            var prototypeItemRect = new GameObject( "Prototype Item", typeof(RectTransform), typeof(Image), typeof(DynamicScrollViewItemExample) ).GetComponent<RectTransform>();
-            prototypeItemRect.SetParent( contentRect, false );
-            if( this.direction == Direction.Horizontal ) prototypeItemRect.setSizeFromLeft(0.23f); else prototypeItemRect.setSizeFromTop(0.23f);
+            var prototypeItemRect = new GameObject("Prototype Item", typeof(RectTransform), typeof(Image), typeof(DynamicScrollViewItemExample)).GetComponent<RectTransform>();
+            prototypeItemRect.SetParent(contentRect, false);
+            if (this.direction == Direction.Horizontal) prototypeItemRect.setSizeFromLeft(0.23f); else prototypeItemRect.setSizeFromTop(0.23f);
             var prototypeItem = prototypeItemRect.GetComponent<DynamicScrollViewItemExample>();
             var prototypeItemBg = prototypeItemRect.GetComponent<Image>();
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             prototypeItemBg.sprite = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
-            #endif
+#endif
             prototypeItemBg.type = Image.Type.Sliced;
             prototypeItem.background = prototypeItemBg;
             this.itemPrototype = prototypeItemRect;
 
             // [ ScrollRect / Viewport / Content / PrototypeItem / Title ]
 
-            var prototypeTitleRect = new GameObject( "Title", typeof(RectTransform), typeof(Text) ).GetComponent<RectTransform>();
-            prototypeTitleRect.SetParent( prototypeItemRect, false );
+            var prototypeTitleRect = new GameObject("Title", typeof(RectTransform), typeof(Text)).GetComponent<RectTransform>();
+            prototypeTitleRect.SetParent(prototypeItemRect, false);
             prototypeTitleRect.setFullSize();
             var prototypeTitleSize = prototypeTitleRect.getSize();
-            prototypeTitleRect.setSize( prototypeTitleSize-prototypeTitleSize*0.1f );
+            prototypeTitleRect.setSize(prototypeTitleSize - prototypeTitleSize * 0.1f);
             var title = prototypeTitleRect.GetComponent<Text>();
-            title.fontSize              = 16;
-            title.alignment             = TextAnchor.MiddleCenter;
-            title.horizontalOverflow    = HorizontalWrapMode.Wrap;
-            title.verticalOverflow      = VerticalWrapMode.Truncate;
-            title.color                 = Color.black;
-            title.text                  = "Name000";
-            title.resizeTextForBestFit  = true;
-            title.resizeTextMinSize     = 9;
-            title.resizeTextMaxSize     = 40;
+            title.fontSize = 16;
+            title.alignment = TextAnchor.MiddleCenter;
+            title.horizontalOverflow = HorizontalWrapMode.Wrap;
+            title.verticalOverflow = VerticalWrapMode.Truncate;
+            title.color = Color.black;
+            title.text = "Name000";
+            title.resizeTextForBestFit = true;
+            title.resizeTextMinSize = 9;
+            title.resizeTextMaxSize = 40;
             prototypeItem.title = title;
         }
-        protected virtual void clear() {
+        protected virtual void clear()
+        {
 
-            while( this.transform.childCount>0 ) {
-                DestroyImmediate( this.transform.GetChild( 0 ).gameObject );
+            while (this.transform.childCount > 0)
+            {
+                DestroyImmediate(this.transform.GetChild(0).gameObject);
             }
         }
 
 
-        protected abstract float    contentAnchoredPosition { get; set; }
-	    protected abstract float    contentSize             { get; }
-	    protected abstract float    viewportSize            { get; }
-        protected abstract float    itemSize                { get; }
+        protected abstract float contentAnchoredPosition { get; set; }
+        protected abstract float contentSize { get; }
+        protected abstract float viewportSize { get; }
+        protected abstract float itemSize { get; }
 
 
-        protected Direction                     direction               = Direction.Vertical;
-        protected LinkedList<RectTransform>     containers              = new LinkedList<RectTransform>();
-        protected float                         prevAnchoredPosition    = 0;
-	    protected int                           nextInsertItemNo        = 0; // item index from left-top of viewport at next insert
-	    protected int                           prevTotalItemCount      = 99;
-        protected ScrollRect                    scrollRect              = null;
-        protected RectTransform                 viewportRect            = null;
-        protected RectTransform                 contentRect             = null;
+        protected Direction direction = Direction.Vertical;
+        protected LinkedList<RectTransform> containers = new LinkedList<RectTransform>();
+        protected float prevAnchoredPosition = 0;
+        protected int nextInsertItemNo = 0; // item index from left-top of viewport at next insert
+        protected int prevTotalItemCount = 99;
+        protected ScrollRect scrollRect = null;
+        protected RectTransform viewportRect = null;
+        protected RectTransform contentRect = null;
 
 
 
 
         /// <summary> Scroll Direction </summary>
-	    public enum Direction {
+	    public enum Direction
+        {
             Vertical,
             Horizontal,
         }

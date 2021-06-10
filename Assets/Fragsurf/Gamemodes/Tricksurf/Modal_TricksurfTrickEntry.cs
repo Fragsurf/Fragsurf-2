@@ -44,7 +44,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         private void Awake()
         {
-            _dynScroll = Modal_TricksurfScoreboard.DscrollTrickData;
+            _dynScroll = Modal_Trickbook.DscrollTrickData;
         }
 
         private void Start()
@@ -91,12 +91,12 @@ namespace Fragsurf.Gamemodes.Tricksurf
                 _trickDetailTrack.onClick.RemoveAllListeners();
                 _trickDetailTrack.onClick.AddListener(() =>
                 {
-                    var sc = GameObject.FindObjectOfType<Modal_TricksurfScoreboard>();
-                    if(sc == null)
+                    var tb = GameObject.FindObjectOfType<Modal_Trickbook>();
+                    if(tb == null)
                     {
                         return;
                     }
-                    sc.SetTrackedTrick(_data.TrickId);
+                    tb.SetTrackedTrick(_data.TrickId);
                 });
             });
         }
