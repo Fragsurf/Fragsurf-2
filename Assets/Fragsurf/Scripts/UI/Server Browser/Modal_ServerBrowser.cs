@@ -188,6 +188,15 @@ namespace Fragsurf.UI
             {
                 return;
             }
+            if(_selectedServer.Passworded)
+            {
+                var dialog = UGuiManager.Instance.Find<Modal_Dialog>();
+                dialog.TakeInput("Enter Password", "This game requires a password: ", (s) =>
+                {
+                    cl.GameLoader.JoinGameAsync(_selectedServer.Address, _selectedServer.Port, s);
+                });
+                return;
+            }
             cl.GameLoader.JoinGameAsync(_selectedServer.Address, _selectedServer.Port);
         }
 
