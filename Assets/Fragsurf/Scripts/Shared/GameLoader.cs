@@ -131,21 +131,20 @@ namespace Fragsurf.Shared
             State = GameLoaderState.None;
         }
 
-        private string _lastAddress;
-        private int _lastPort;
-        private string _lastPassword;
         public async Task<GameLoadResult> JoinGameAsync(string address, int port = 0, string password = null)
         {
             if(State != GameLoaderState.None)
             {
                 Debug.LogError($"{Game.IsHost} Can't join while state is: {State}");
+                var m = UGuiManager.Instance.Find<Modal_Dialog>();
+                if (m)
+                {
+                    m.Popup("Couldn't Join", "Leave your current game first");
+                }
                 return GameLoadResult.None;
             }
 
             State = GameLoaderState.Joining;
-            _lastAddress = address;
-            _lastPort = port;
-            _lastPassword = password;
             _cancelled = false;
 
             FileSystem.EmptyTempFolder();
