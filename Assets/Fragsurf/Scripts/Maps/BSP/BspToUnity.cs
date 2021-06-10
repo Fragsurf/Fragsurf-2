@@ -62,6 +62,14 @@ namespace Fragsurf.BSP
 				Debug.LogError(e);
             }
 
+   //         try
+   //         {
+			//	var path = Application.streamingAssetsPath + "/Pack/cstrike_pak_dir.vpk";
+			//	var vpk = new ValvePackage(path);
+			//	_resourceLoader.AddResourceProvider(vpk);
+			//}
+			//catch(Exception e) { }
+
 			var t = new System.Diagnostics.Stopwatch();
 			t.Start();
 
