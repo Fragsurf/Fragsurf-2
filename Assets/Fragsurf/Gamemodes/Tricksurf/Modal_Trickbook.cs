@@ -1,5 +1,6 @@
 using Fragsurf.Shared;
 using Fragsurf.UI;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +28,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         private Modal_TricksurfTrickEntry _trickTemplate;
         private Button _activeBtn;
+        private bool _refreshOnOpen;
 
         public static DynamicScrollDataContainer<Modal_TricksurfTrickEntry.Data> DscrollTrickData;
 
@@ -35,6 +37,38 @@ namespace Fragsurf.Gamemodes.Tricksurf
             base.Awake();
 
             DscrollTrickData = new DynamicScrollDataContainer<Modal_TricksurfTrickEntry.Data>();
+
+            CL_TrickLog.OnNewTrickCompleted += CL_TrickLog_OnNewTrickCompleted;
+        }
+
+        private void CL_TrickLog_OnNewTrickCompleted(int trickId)
+        {
+            var t = DscrollTrickData.DynamicScrollData.FirstOrDefault(x => x.TrickId == trickId);
+            if(t == null)
+            {
+                return;
+            }
+            t.Completed = true;
+
+            if(IsOpen)
+            {
+                _trickTemplate.DynamicScrollView.refresh();
+            }
+            else
+            {
+                _refreshOnOpen = true;
+            }
+        }
+
+        protected override void OnOpen()
+        {
+            base.OnOpen();
+
+            if(_refreshOnOpen)
+            {
+                _trickTemplate.DynamicScrollView.refresh();
+                _refreshOnOpen = false;
+            }
         }
 
         private void SetActiveBtn(Button btn)
