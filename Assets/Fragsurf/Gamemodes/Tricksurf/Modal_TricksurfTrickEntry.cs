@@ -65,8 +65,6 @@ namespace Fragsurf.Gamemodes.Tricksurf
 
         private void Start()
         {
-            CL_TrickLog.OnNewTrickCompleted += OnTrickCompleted;
-
             _button.onClick.AddListener(() =>
             {
                 if(_data == null)
@@ -117,19 +115,13 @@ namespace Fragsurf.Gamemodes.Tricksurf
             });
         }
 
-        private void OnDestroy()
-        {
-            CL_TrickLog.OnNewTrickCompleted -= OnTrickCompleted;
-        }
-
         protected override void SortData(List<Data> data)
         {
             var newData = new List<Data>();
             switch(Sort)
             {
                 case TrickSort.Default:
-                    newData = data;
-                    break;
+                    return;
                 case TrickSort.MostPoints:
                     newData = data.OrderByDescending(x => x.Points).ToList();
                     break;
@@ -163,15 +155,6 @@ namespace Fragsurf.Gamemodes.Tricksurf
                 return false;
             }
             return !string.IsNullOrEmpty(data.TrickName) && data.TrickName.ContainsInsensitive(input);
-        }
-
-        private void OnTrickCompleted(int trickId)
-        {
-            if(_data == null || _data.TrickId != trickId)
-            {
-                return;
-            }
-            _completedCheck.gameObject.SetActive(true);
         }
 
         public override void LoadData(Data data)
