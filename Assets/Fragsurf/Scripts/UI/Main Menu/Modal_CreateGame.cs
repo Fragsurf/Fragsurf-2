@@ -3,6 +3,7 @@ using Fragsurf.Maps;
 using Fragsurf.Server;
 using Fragsurf.Shared;
 using Fragsurf.Utility;
+using Steamworks;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -39,6 +40,12 @@ namespace Fragsurf.UI
         [SerializeField]
         private Button _createButton;
 
+        [Header("Lobby Settings")]
+        [SerializeField]
+        private TMP_InputField _lobbyName;
+        [SerializeField]
+        private TMP_InputField _lobbyPass;
+
         private GamemodeEntry _gamemodeTemplate;
         private MapEntry _mapTemplate;
         private GamemodeData _selectedGamemode;
@@ -57,6 +64,8 @@ namespace Fragsurf.UI
             {
                 _mapTemplate.gameObject.SetActive(false);
             }
+
+            ResetSettingInputs();
 
             _searchInput.onValueChanged.AddListener((s) => { FilterMaps(); });
             _onlyForThisGamemode.onValueChanged.AddListener((b) => { FilterMaps(); });
@@ -77,9 +86,20 @@ namespace Fragsurf.UI
             ClearMap();
         }
 
+        private void ResetSettingInputs()
+        {
+            _lobbyName.text = SteamClient.IsValid ? $"{SteamClient.Name}'s Lobby" : "Unknown's Lobby";
+            _lobbyPass.text = string.Empty;
+        }
+
         private void Update()
         {
             _disabledCover.SetActive(_selectedGamemode == null);
+        }
+
+        private void OnDisable()
+        {
+            ResetSettingInputs();
         }
 
         private async void CreateGame()
@@ -103,7 +123,10 @@ namespace Fragsurf.UI
             }
 
             var cl = new GameObject("[Client]").AddComponent<GameClient>();
-            var serverResult = await cl.GameLoader.CreateServerAsync(_selectedMap.Name, _selectedGamemode.Name, "Testing my map!");
+            var n = SteamClient.IsValid ? SteamClient.Name : "Unknown";
+            var lobbyName = string.IsNullOrEmpty(_lobbyName.text) ? $"{n}'s Lobby" : _lobbyName.text;
+            var lobbyPass = _lobbyPass.text;
+            var serverResult = await cl.GameLoader.CreateServerAsync(_selectedMap.Name, _selectedGamemode.Name, lobbyName, lobbyPass);
             if (serverResult == GameLoadResult.Success)
             {
                 var sv = FSGameLoop.GetGameInstance(true) as GameServer;
