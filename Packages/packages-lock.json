@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "com.github.superunitybuild.buildtool": {
-      "version": "https://github.com/superunitybuild/buildtool.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "5c1e4a9f8e3820f4a37033ae833e50ba70784085"
-    },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
       "depth": 1,
