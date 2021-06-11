@@ -14,9 +14,9 @@ namespace Fragsurf.Shared.Entity
 
         private Dictionary<InputActions, ItemSlot> _buttonToSlot = new Dictionary<InputActions, ItemSlot>()
         {
-            { InputActions.Slot1, ItemSlot.Melee },
+            { InputActions.Slot1, ItemSlot.Heavy },
             { InputActions.Slot2, ItemSlot.Light },
-            { InputActions.Slot3, ItemSlot.Heavy },
+            { InputActions.Slot3, ItemSlot.Melee },
             { InputActions.Slot4, ItemSlot.Utility }
         };
 
