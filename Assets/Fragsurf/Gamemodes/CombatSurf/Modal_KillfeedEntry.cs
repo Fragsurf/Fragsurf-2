@@ -66,7 +66,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 wpnName = wpn.EquippableGameObject.Data.Name;
             }
 
-            _text.text = $"<size=12>(<color=yellow>{wpnName} -> {data.DamageInfo.HitArea}</color>)</size> {killerName} killed {victimName}";
+            _text.text = $"{killerName} killed {victimName}";
+            //_text.text = $"<size=12>(<color=yellow>{wpnName} -> {data.DamageInfo.HitArea}</color>)</size> {killerName} killed {victimName}";
         }
 
         private void Update()

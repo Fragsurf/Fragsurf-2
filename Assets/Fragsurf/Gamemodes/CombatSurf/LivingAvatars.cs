@@ -29,17 +29,6 @@ namespace Fragsurf.Gamemodes.CombatSurf
             SpectateController.ScoreboardUpdateNotification -= BuildAvatars;
         }
 
-        private void Update()
-        {
-            foreach(LivingAvatarsEntry el in _template.ChildrenElements)
-            {
-                var active = el.Player != null
-                    && el.Player.Entity is Human hu
-                    && !hu.Dead;
-                el.gameObject.SetActive(active);
-            }
-        }
-
         public void BuildAvatars()
         {
             _template.Clear();
