@@ -208,6 +208,24 @@ namespace Fragsurf.UI
             return false;
         }
 
+        public bool HasCursorOrAfterClick()
+        {
+            if(HasCursor())
+            {
+                return true;
+            }    
+
+            foreach (var kvp in _modals)
+            {
+                if (kvp.Value.IsOpen && kvp.Value.CursorType == CursorType.Click)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void Popup(string message)
         {
             var dialog = Find<Modal_Dialog>();

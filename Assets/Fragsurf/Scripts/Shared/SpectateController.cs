@@ -39,12 +39,13 @@ namespace Fragsurf.Shared
             if (!_specTargets.ContainsKey(clientIndex)
                 || _specTargets[clientIndex] <= 0)
             {
-                return true;
+                return false;
             }
 
             var entId = _specTargets[clientIndex];
             var targetEnt = Game.EntityManager.FindEntity(entId);
-            if (targetEnt == null || !(targetEnt is Human targetHu))
+
+            if(targetEnt == null || !(targetEnt is Human targetHu))
             {
                 return true;
             }
@@ -193,7 +194,7 @@ namespace Fragsurf.Shared
         private bool _guiHadFocus;
         private void UpdateSpectateCycle()
         {
-            if (!UGuiManager.Instance.HasCursor()
+            if (!UGuiManager.Instance.HasCursorOrAfterClick()
                 && !UGuiManager.Instance.HasFocusedInput())
             {
                 // do this to skip the first click after toying around in menus
