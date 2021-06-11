@@ -33,7 +33,7 @@ namespace Fragsurf.Shared.Player
 
                 if(Game.IsHost)
                 {
-                    if (chatMessage.Message.Length > MaxMessageLength)
+                    if (!chatMessage.FromGame && chatMessage.Message.Length > MaxMessageLength)
                     {
                         chatMessage.Message = chatMessage.Message.Substring(0, MaxMessageLength);
                     }
@@ -85,9 +85,9 @@ namespace Fragsurf.Shared.Player
             Game.Network.SendPacket(player.ClientIndex, GetChatPacket(message));
         }
 
-        public void MessageAll(string message)
+        public void MessageAll(string message, bool fromGame = false)
         {
-            Game.Network.BroadcastPacket(GetChatPacket(message));
+            Game.Network.BroadcastPacket(GetChatPacket(message, fromGame));
             if (message[0] == CommandChar)
             {
                 var localPlayer = Game.PlayerManager.FindPlayer(Game.ClientIndex);
@@ -112,11 +112,12 @@ namespace Fragsurf.Shared.Player
             Game.PlayerManager.RaiseChatCommand(player, args); 
         }
 
-        private ChatMessage GetChatPacket(string message)
+        private ChatMessage GetChatPacket(string message, bool fromGame = false)
         {
             var packet = PacketUtility.TakePacket<ChatMessage>();
             packet.ClientIndex = Game.ClientIndex;
             packet.Message = message;
+            packet.FromGame = fromGame;
             packet.Name = Game.IsHost ? ServerName : Steamworks.SteamClient.Name;
             packet.SupporterLevel = 0;
             return packet;

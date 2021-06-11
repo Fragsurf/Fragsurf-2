@@ -202,24 +202,24 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             if (result.Improved)
             {
                 var msg = $"<color={MessageColor.HashRGBA()}> Finished <color={NameColor.HashRGBA()}>{trackName}</color> in <color={TimeColor.HashRGBA()}>{timeStr}s</color>, <color={MiscColor.HashRGBA()}>{frame.Jumps} jumps</color> @ rank <color={MiscColor.HashRGBA()}>#{result.NewRank}</color>!</color>";
-                Game.TextChat.MessageAll(msg);
+                Game.TextChat.MessageAll(msg, true);
 
                 if (result.NewRank < result.OldRank)
                 {
                     var improveStr = Bunnyhop.FormatTime(result.Improvement);
                     msg = $"<color={MessageColor.HashRGBA()}>Improvement of <color={TimeColor.HashRGBA()}>{improveStr}s</color></color>";
-                    Game.TextChat.MessageAll(msg);
+                    Game.TextChat.MessageAll(msg, true);
                 }
             }
             else
             {
-                Game.TextChat.MessageAll($"<color={MessageColor.HashRGBA()}>Finished <color={NameColor.HashRGBA()}>{trackName}</color> in <color={TimeColor.HashRGBA()}>{timeStr}s</color></color>");
+                Game.TextChat.MessageAll($"<color={MessageColor.HashRGBA()}>Finished <color={NameColor.HashRGBA()}>{trackName}</color> in <color={TimeColor.HashRGBA()}>{timeStr}s</color></color>", true);
             }
 
             if (result.Improved && result.NewRank == 1)
             {
                 var takeoverStr = Bunnyhop.FormatTime(result.Takeover);
-                Game.TextChat.MessageAll($"<color=#f04dff><b>**NEW WORLD RECORD!**</b></color>   <color=#ff4d4d>-{takeoverStr}</color>s");
+                Game.TextChat.MessageAll($"<color=#f04dff><b>**NEW WORLD RECORD!**</b></color>   <color=#ff4d4d>-{takeoverStr}</color>s", true);
             }
         }
 
