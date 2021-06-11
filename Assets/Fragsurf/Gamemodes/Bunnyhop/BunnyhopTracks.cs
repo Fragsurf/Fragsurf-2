@@ -5,6 +5,7 @@ using Fragsurf.Maps;
 using Fragsurf.Movement;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
+using Fragsurf.Shared.Player;
 using Fragsurf.UI;
 using Fragsurf.Utility;
 using UnityEngine;
@@ -67,6 +68,12 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return;
             }
 
+            if(hu.MovementController is CSMovementController csm
+                && csm.MoveType == MoveType.Noclip)
+            {
+                return;
+            }
+
             bhopTimeline.InStartZone = false;
 
             if(hu.HammerVelocity() > 290)
@@ -97,6 +104,12 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         private void Track_OnStartStage(FSMTrack track, Human hu, int stage)
         {
             if (!(hu.Timeline is BunnyhopTimeline bhopTimeline))
+            {
+                return;
+            }
+
+            if (hu.MovementController is CSMovementController csm
+                && csm.MoveType == MoveType.Noclip)
             {
                 return;
             }
