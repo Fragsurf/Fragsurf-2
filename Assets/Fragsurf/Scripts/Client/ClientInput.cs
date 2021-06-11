@@ -116,6 +116,7 @@ namespace Fragsurf.Client
                 UserCmd.Buttons = 0;
                 _actionsRequiringRelease.Clear();
                 _actionsQueue.Clear();
+                _prevActionsDown = InputActions.None;
 
                 return;
             }
@@ -130,6 +131,8 @@ namespace Fragsurf.Client
             if (Blocked)
             {
                 UserCmd.Buttons = 0;
+                _actionsQueue.Clear();
+                _prevActionsDown = InputActions.None;
             }
 
             TickUserCmd();
