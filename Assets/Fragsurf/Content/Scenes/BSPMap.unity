@@ -186,7 +186,7 @@ MonoBehaviour:
     VertexLitGenericTransparent: {fileID: 2100000, guid: 6c03f344a51018a4e8452eb71f5bf71a, type: 2}
     Unlit: {fileID: 2100000, guid: 7e4fe3b743ece114daea919f46defa20, type: 2}
     UnlitTransparent: {fileID: 2100000, guid: 2c800011805f00542bfa7b84ddb655e7, type: 2}
-    WaterMaterial: {fileID: 2100000, guid: 96b28bfc658679f4a91d6a2ae1291eb0, type: 2}
+    WaterMaterial: {fileID: 2100000, guid: fb659c98d6ac4db41b88596ff2c4e2e1, type: 2}
     RefractMaterial: {fileID: 2100000, guid: 96b28bfc658679f4a91d6a2ae1291eb0, type: 2}
     MissingMaterial: {fileID: 2100000, guid: 1160f2b9eab30814f9be602abd6b89d2, type: 2}
     SkyMaterial: {fileID: 2100000, guid: 3d0ab576ce606bd45acb393214b4a6ec, type: 2}
