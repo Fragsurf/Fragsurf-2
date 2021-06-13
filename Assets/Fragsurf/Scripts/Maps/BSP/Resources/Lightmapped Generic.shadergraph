@@ -1131,6 +1131,8 @@
         "m_GuidSerialized": "96425349-8bbe-4412-bb85-ff06ea279a33"
     },
     "m_Name": "Main Texture",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Texture2D_e41bf7baae4e4bec8c480039c944ecd1",
     "m_OverrideReferenceName": "_MainTex",
     "m_GeneratePropertyBlock": true,
