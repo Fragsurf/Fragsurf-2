@@ -152,6 +152,11 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 }
             }
 
+            if(t1Total == 0 || t2Total == 0)
+            {
+                return;
+            }
+
             if(t1Total == t1Dead)
             {
                 DoRoundEnd(2);
