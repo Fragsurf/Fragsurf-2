@@ -36,7 +36,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _basicSettings:
     baseBuildFolder: Builds
-    buildPath: $VERSION.$BUILD/$RELEASE_TYPE/$PLATFORM/$ARCHITECTURE
+    buildPath: $RELEASE_TYPE/$PLATFORM/$ARCHITECTURE
     openFolderPostBuild: 1
   _productParameters:
     buildCounter: 1
