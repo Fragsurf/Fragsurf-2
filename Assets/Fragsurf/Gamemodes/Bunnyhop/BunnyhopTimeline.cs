@@ -24,6 +24,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         [IgnoreMember]
         public bool InStartZone = false;
         [IgnoreMember]
+        public int BadTick;
+        [IgnoreMember]
         private CircularBuffer<bool> _realtimeSyncBuffer = new CircularBuffer<bool>(_realtimeSyncSize);
         [IgnoreMember]
         private const int _realtimeSyncSize = 100;

@@ -65,6 +65,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 if(hu.Timeline is BunnyhopTimeline tl)
                 {
                     tl.RunIsLive = false;
+                    tl.BadTick = Game.CurrentTick + 10;
                 }
 
                 if (Game.IsHost)

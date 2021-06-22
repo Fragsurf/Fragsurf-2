@@ -39,7 +39,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return;
             }
 
-            if (!bhopTimeline.RunIsLive || bhopTimeline.Frames.Count == 0)
+            if (!bhopTimeline.RunIsLive)
             {
                 SetCenterHudText(_notStartedText);
                 return;

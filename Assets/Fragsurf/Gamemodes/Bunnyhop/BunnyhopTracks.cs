@@ -54,23 +54,24 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private void Track_OnEnterStart(FSMTrack track, Human hu)
         {
-            var bhopTimeline = new BunnyhopTimeline() { Track = track };
+            var bt = hu.Timeline is BunnyhopTimeline tl ? tl.BadTick : 0;
+            var bhopTimeline = new BunnyhopTimeline() { Track = track, BadTick = bt };
             hu.Timeline = bhopTimeline;
             bhopTimeline.InStartZone = true;
         }
 
         private void Track_OnStart(FSMTrack track, Human hu)
         {
-            var bhopTimeline = hu.Timeline as BunnyhopTimeline;
-            if(bhopTimeline == null)
+            if (!(hu.Timeline is BunnyhopTimeline bhopTimeline)
+                 || Game.CurrentTick <= bhopTimeline.BadTick)
             {
-                Debug.LogError("Timeline is null, didn't enter start?");
                 return;
             }
 
-            if(hu.MovementController is CSMovementController csm
+            if (hu.MovementController is CSMovementController csm
                 && csm.MoveType == MoveType.Noclip)
             {
+                bhopTimeline.RunIsLive = false;
                 return;
             }
 
@@ -103,7 +104,8 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private void Track_OnStartStage(FSMTrack track, Human hu, int stage)
         {
-            if (!(hu.Timeline is BunnyhopTimeline bhopTimeline))
+            if (!(hu.Timeline is BunnyhopTimeline bhopTimeline)
+                 || Game.CurrentTick <= bhopTimeline.BadTick)
             {
                 return;
             }
