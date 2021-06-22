@@ -48,7 +48,7 @@ namespace Fragsurf.Server
         public string ServerName
         {
             get => _serverName;
-            set => _serverName = value.Substring(0, Mathf.Min(value.Length - 1, MaxServerNameLength));
+            set => _serverName = value.Substring(0, Mathf.Min(value.Length, MaxServerNameLength));
         }
         [ConVar("server.description")]
         public string ServerDescription { get; set; }
