@@ -12,6 +12,7 @@ namespace Fragsurf.UI
         public Action OnClick;
         public BaseMap Map;
         public bool Selected;
+        public bool IsNew;
     }
     public class MapEntry : EntryElement<MapEntryData>
     {
@@ -22,6 +23,8 @@ namespace Fragsurf.UI
         private TMP_Text _mountedGame;
         [SerializeField]
         private Button _button;
+        [SerializeField]
+        private GameObject _new;
 
         public BaseMap Map { get; private set; }
 
@@ -32,6 +35,7 @@ namespace Fragsurf.UI
             Map = data.Map;
             _name.text = data.Name;
             _mountedGame.text = data.Map.MountedGame ?? string.Empty;
+            _new.SetActive(data.IsNew);
             _button.onClick.AddListener(() =>
             {
                 if (_selectedTab)

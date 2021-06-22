@@ -9,6 +9,12 @@ namespace Fragsurf.Maps
     public abstract class BaseMap
     {
 
+        private static List<string> _newMaps
+            = new List<string>()
+            {
+                "bhop_cyber"
+            };
+
         public string Name;
         public string Author;
         public Texture2D Cover;
@@ -23,6 +29,7 @@ namespace Fragsurf.Maps
         }
 
         public bool IsMounted => !string.IsNullOrWhiteSpace(MountedGame);
+        public bool IsNew => _newMaps.Contains(Name.ToLower());
 
         public List<FSMActor> Actors { get; } = new List<FSMActor>();
         public abstract Texture LoadCoverImage();

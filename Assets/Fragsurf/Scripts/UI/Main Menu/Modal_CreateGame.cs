@@ -171,7 +171,8 @@ namespace Fragsurf.UI
                     {
                         _selectedMap = map;
                         ShowMap(_selectedGamemode, _selectedMap);
-                    }
+                    },
+                    IsNew = map.IsNew
                 });
             }
             FilterMaps();
