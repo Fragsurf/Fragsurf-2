@@ -157,7 +157,7 @@ namespace Fragsurf.Client
                 return;
             }
 
-            //Unbind(key);
+            Unbind(key);
             Binds.Add(new BindData(key, command));
         }
 
