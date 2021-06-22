@@ -183,6 +183,7 @@ namespace Fragsurf.Client
 
             // Modal defaults
             _config["Binds"].Add("backquote", "modal.toggle console");
+            _config["Binds"].Add("return", "modal.toggle chatbox");
             _config["Binds"].Add("y", "modal.toggle chatbox");
             _config["Binds"].Add("f1", "modal.toggle perf");
             _config["Binds"].Add("f2", "modal.toggle browser");
