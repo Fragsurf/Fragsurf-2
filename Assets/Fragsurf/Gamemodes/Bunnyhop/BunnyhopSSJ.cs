@@ -73,15 +73,15 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 data.TicksOnGround++;
                 if(move.MoveData.Buttons.HasFlag(InputActions.Jump) && data.TicksOnGround == 1)
                 {
-                    if (bhop.InStartZone)
-                    {
-                        data.Jump = 0;
-                        data.StrafeTick = 0;
-                        data.SyncedTick = 0;
-                        data.RawGain = 0;
-                        data.Trajectory = 0;
-                        data.TraveledDistance = Vector3.zero;
-                    }
+                    //if (bhop.InStartZone)
+                    //{
+                    //    data.Jump = 0;
+                    //    data.StrafeTick = 0;
+                    //    data.SyncedTick = 0;
+                    //    data.RawGain = 0;
+                    //    data.Trajectory = 0;
+                    //    data.TraveledDistance = Vector3.zero;
+                    //}
                     GetStats(bhop, data, hu, move, touchingWall);
                     data.TicksOnGround = 0;
                 }
