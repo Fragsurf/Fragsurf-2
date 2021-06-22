@@ -162,6 +162,13 @@ namespace Fragsurf.UI
             }
         }
 
+        private IEnumerator CloseAfterFrame()
+        {
+            yield return 0;
+            yield return 0;
+            Close();
+        }
+
         private void ToggleClanChat(bool value)
         {
             if (!value)
@@ -212,7 +219,7 @@ namespace Fragsurf.UI
         {
             _input.text = string.Empty;
             _input.DeactivateInputField();
-            Close();
+            StartCoroutine(CloseAfterFrame());
             if (string.IsNullOrWhiteSpace(value) || !_textChat)
             {
                 return;
