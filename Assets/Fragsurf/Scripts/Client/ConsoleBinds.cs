@@ -47,14 +47,20 @@ namespace Fragsurf.Client
 
             private int _scroll;
             private KeyCode _keyCode;
+            private int _scrollTick;
 
             public bool JustDown()
             {
-                if(_scroll != 0)
+                if (_scroll != 0)
                 {
-                    return _scroll == 1
+                    if (_scroll == 1
                         ? Input.mouseScrollDelta.y > 0
-                        : Input.mouseScrollDelta.y < 0;
+                        : Input.mouseScrollDelta.y < 0)
+                    {
+                        _scrollTick = 2;
+                        return true;
+                    }
+                    return false;
                 }
                 return Input.GetKeyDown(_keyCode);
             }
@@ -63,7 +69,16 @@ namespace Fragsurf.Client
             {
                 if (_scroll != 0)
                 {
-                    return Input.mouseScrollDelta.y == 0 || Mathf.Sign(Input.mouseScrollDelta.y) != Mathf.Sign(_scroll);
+                    if (_scrollTick > 0)
+                    {
+                        _scrollTick--;
+                        if (_scrollTick == 0)
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+                    return false;
                 }
                 return Input.GetKeyUp(_keyCode);
             }
@@ -102,7 +117,7 @@ namespace Fragsurf.Client
                 return;
             }
 
-            foreach(var bind in Binds)
+            foreach (var bind in Binds)
             {
                 var keyDown = bind.JustDown();
                 var keyUp = bind.JustUp();
@@ -142,7 +157,7 @@ namespace Fragsurf.Client
                 return;
             }
 
-            Unbind(key);
+            //Unbind(key);
             Binds.Add(new BindData(key, command));
         }
 
@@ -162,7 +177,7 @@ namespace Fragsurf.Client
         public void UnbindCommand(string command)
         {
             var bindDatas = FindBindDatas(command);
-            foreach(var bd in bindDatas)
+            foreach (var bd in bindDatas)
             {
                 RemoveBind(bd);
             }
