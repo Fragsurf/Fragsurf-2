@@ -39,6 +39,13 @@ namespace Fragsurf.Gamemodes.Bunnyhop
                 return;
             }
 
+            if(bhopTimeline.InStartZone)
+            {
+                var txt = $"In start zone\n{spec.TargetHuman.HammerVelocity()} u/s";
+                SetCenterHudText(txt);
+                return;
+            }
+
             if (!bhopTimeline.RunIsLive)
             {
                 SetCenterHudText(_notStartedText);
