@@ -95,6 +95,7 @@ namespace Fragsurf.Actors
         private void TryGive(NetEntity entity, bool forced = false)
         {
             if (!_data 
+                || (Quantity > 0 && Given >= Quantity)
                 || !entity.Game.IsHost
                 || !(entity is Human hu)
                 || (!forced && hu.Equippables.HasItemInSlot(_data.Slot)))
