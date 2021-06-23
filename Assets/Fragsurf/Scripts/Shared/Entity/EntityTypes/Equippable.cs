@@ -116,6 +116,36 @@ namespace Fragsurf.Shared.Entity
             {
                 Equipped = true;
             }
+            else
+            {
+                if(HasPriorityOver(Human.Equippables.Equipped))
+                {
+                    Human.Equippables.Equipped.Equipped = false;
+                    Equipped = true;
+                }
+            }
+        }
+
+        private bool HasPriorityOver(Equippable b)
+        {
+            if(EquippableGameObject == null)
+            {
+                return false;
+            }
+
+            var mySlot = EquippableGameObject.Data.Slot;
+            var theirSlot = b.EquippableGameObject.Data.Slot;
+            if (theirSlot == ItemSlot.Melee || theirSlot == ItemSlot.Utility)
+            {
+                return mySlot != ItemSlot.Melee && mySlot != ItemSlot.Utility;
+            }
+
+            if(theirSlot == ItemSlot.Light)
+            {
+                return mySlot == ItemSlot.Heavy;
+            }
+
+            return false;
         }
 
         private void SetItemName(string itemName)
