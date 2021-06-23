@@ -50,23 +50,30 @@ namespace Fragsurf.Gamemodes.Bunnyhop
 
         private float _accumulator;
         private float _elapsedTime;
-        protected override void OnUpdate()
+        //protected override void OnUpdate()
+        //{
+        //    base.OnUpdate();
+
+        //    var playbackSpeed = Mathf.Clamp(PlaybackSpeed, .25f, 5);
+        //    var fixedDeltaTime = Game.FixedDeltaTime / playbackSpeed;
+        //    var newTime = Time.realtimeSinceStartup;
+        //    var frameTime = Mathf.Min(newTime - _elapsedTime, fixedDeltaTime);
+
+        //    _elapsedTime = newTime;
+        //    _accumulator += Time.deltaTime;
+
+        //    while (_accumulator >= fixedDeltaTime)
+        //    {
+        //        _accumulator -= fixedDeltaTime;
+        //        Timeline?.ReplayTick();
+        //    }
+        //}
+
+        protected override void OnTick()
         {
-            base.OnUpdate();
+            base.OnTick();
 
-            var playbackSpeed = Mathf.Clamp(PlaybackSpeed, .25f, 5);
-            var fixedDeltaTime = Game.FixedDeltaTime / playbackSpeed;
-            var newTime = Time.realtimeSinceStartup;
-            var frameTime = Mathf.Min(newTime - _elapsedTime, fixedDeltaTime);
-
-            _elapsedTime = newTime;
-            _accumulator += frameTime;
-
-            while (_accumulator >= fixedDeltaTime)
-            {
-                _accumulator -= fixedDeltaTime;
-                Timeline?.ReplayTick();
-            }
+            Timeline?.ReplayTick();
         }
 
         protected override void OnDelete()

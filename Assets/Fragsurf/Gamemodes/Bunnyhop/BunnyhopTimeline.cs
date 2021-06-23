@@ -204,7 +204,7 @@ namespace Fragsurf.Gamemodes.Bunnyhop
             Entity.Angles = frame.Angles;
             if(Entity is Human hu)
             {
-                hu.Velocity = (Entity.Origin - originLastFrame).normalized * frame.Velocity;
+                hu.Velocity = (Entity.Origin - originLastFrame).normalized * frame.Velocity * .0254f;
             }
         }
 

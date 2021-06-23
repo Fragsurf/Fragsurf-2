@@ -23,6 +23,11 @@ namespace Fragsurf.Server
             _readBuffer.LengthBytes = 10000;
         }
 
+        ~LNLSocket()
+        {
+            _server?.Stop();
+        }
+
         public override void Tick()
         {
             _server?.PollEvents();

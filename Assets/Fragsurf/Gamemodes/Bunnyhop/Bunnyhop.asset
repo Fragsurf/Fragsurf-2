@@ -19,3 +19,4 @@ MonoBehaviour:
   HumanPrefab: {fileID: 7776529293873923163, guid: d64aa5b739895ac41b41075f48746df8, type: 3}
   InstantiateOnLoad:
   - {fileID: 2193102522733786373, guid: e63a0d73a6c50b04986c6c97a4b9ef02, type: 3}
+  - {fileID: 3865440247893670465, guid: 967f4c63823ccd24a939f0773eba6723, type: 3}
