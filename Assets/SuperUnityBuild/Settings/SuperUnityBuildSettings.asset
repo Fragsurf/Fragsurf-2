@@ -59,6 +59,7 @@ MonoBehaviour:
         - fileGUID: b9932c319c624a7418a03d74cf9021b4
         - fileGUID: d1d52a09da4569a498a83749d76a7181
         - fileGUID: 4ca52e461fc53e547b6847367633a264
+        - fileGUID: 133c04fd5d3b06a42b22411cfebd19cf
     - typeName: Server
       bundleIdentifier: com.Crayz.Fragsurf
       companyName: Crayz
@@ -70,6 +71,7 @@ MonoBehaviour:
         - fileGUID: d783d79806d54844c9f60a3701ee75b9
         - fileGUID: d1d52a09da4569a498a83749d76a7181
         - fileGUID: 4ca52e461fc53e547b6847367633a264
+        - fileGUID: 133c04fd5d3b06a42b22411cfebd19cf
   _platformList:
     platforms:
     - {fileID: 5590662194174302005}
