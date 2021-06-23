@@ -54,7 +54,7 @@ namespace Fragsurf.Shared.Entity
             if (sway)
             {
                 // todo: more robust weapon sway
-                var mdelta = new Vector3(-Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"), 0) / 30f;
+                var mdelta = new Vector3(-Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"), 0) / 15f;
                 _swayPosition += mdelta * Time.deltaTime;
                 _swayPosition = Vector3.ClampMagnitude(_swayPosition, .06f);
                 _swayPosition = Mathfx.Berp(_swayPosition, Vector3.zero, Time.deltaTime);
