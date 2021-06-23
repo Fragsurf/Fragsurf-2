@@ -25,7 +25,9 @@ namespace Fragsurf.Shared.Player
         public Vector3 Right { get; set; }
         public Vector3 Up { get; set; }
         public Vector3 StandingExtents => new Vector3(.858f, 1.83f, .858f) * .5f;
-        public new GameObject GroundObject { get; set; }
+        public override GameObject GroundObject { get; set; }
+        public override bool JustGrounded => MoveData.JustGrounded;
+        public override bool JustJumped => MoveData.JustJumped;
         public override bool MouseControlsRotation => true;
 
         public CSMovementController(Human human) 

@@ -52,6 +52,11 @@ namespace Fragsurf.Gamemodes.CombatSurf
         {
             if (!Game.IsHost)
             {
+                if(hu.CameraController is FirstPersonCameraController fpc)
+                {
+                    fpc.HeadBob = true;
+                    fpc.HeadBobSpeed = 15f;
+                }
                 SetTeamColor(hu);
                 return;
             }

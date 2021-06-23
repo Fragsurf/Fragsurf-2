@@ -40,6 +40,9 @@ namespace Fragsurf
             }
         }
 
+        [ConVar("cam.bob", "", ConVarFlags.UserSetting)]
+        public bool Bob { get; set; } = true;
+
         private void Awake()
         {
             _camera = GetComponent<Camera>();

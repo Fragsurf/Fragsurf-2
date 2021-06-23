@@ -13,9 +13,13 @@ namespace Fragsurf.Shared.Entity
             _reconciliator = new Reconciliator(human);
         }
 
-        protected GameObject GroundObject;
         protected readonly Human Human;
 
+        public virtual GameObject GroundObject { get; set; }
+        public virtual bool Grounded => GroundObject != null;
+        public virtual bool JustGrounded { get; set; }
+        public virtual bool JustJumped { get; set; }
+        public virtual bool Sprinting { get; set; }
         public virtual bool MouseControlsRotation => true;
         public virtual bool ShowsCursor => false;
 
@@ -33,6 +37,8 @@ namespace Fragsurf.Shared.Entity
             {
                 Human.Angles = userCmd.Angles;
             }
+
+            Sprinting = userCmd.Buttons.HasFlag(Movement.InputActions.Speed);
 
             ExecuteMovement(userCmd);
 

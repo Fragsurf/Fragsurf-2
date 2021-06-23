@@ -218,6 +218,7 @@ namespace Fragsurf.Client
             _config["UserSettings"].Add("crosshair.outline", true);
             _config["UserSettings"].Add("crosshair.alpha", 1f);
             _config["UserSettings"].Add("cam.fov", 75);
+            _config["UserSettings"].Add("cam.bob", true);
             _config["UserSettings"].Add("cam.clipdistance", 500);
 
             ExecuteUserSettings();
