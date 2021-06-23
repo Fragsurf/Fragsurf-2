@@ -337,6 +337,17 @@ namespace Fragsurf.Shared.Entity
                     effect.transform.forward = hit2.normal;
                 }
             }
+            else
+            {
+                // todo: detect material type if fidelity doesn't exist.
+                // fidelity can be missing on objects that weren't made with realtime-csg
+                if (GameData.Instance.TryGetImpactPrefab(Data.ImpactType, SurfaceType.Concrete, out GameObject prefab))
+                {
+                    var effect = Entity.Game.Pool.Get(prefab, 10f);
+                    effect.transform.position = hit.point;
+                    effect.transform.forward = hit.normal;
+                }
+            }
         }
 
         protected void RewindLagCompensator()

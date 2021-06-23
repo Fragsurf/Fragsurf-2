@@ -13,7 +13,7 @@ public class ExporterCreatorBuildAction : BuildAction, IPostBuildPerPlatformActi
     {
         base.PerBuildExecute(releaseType, platform, architecture, distribution, buildTime, ref options, configKey, buildPath);
 
-        ExporterCreator.CreateExporterPostBuild(BuildTarget.NoTarget, buildPath);
+        ExporterCreator.CreateExporterPostBuild(BuildTarget.NoTarget, Path.Combine(buildPath, architecture.name));
     }
 
 }

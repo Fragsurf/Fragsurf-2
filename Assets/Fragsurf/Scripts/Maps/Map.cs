@@ -84,10 +84,10 @@ namespace Fragsurf.Maps
             }
 
             var spawnPoint = _spawnPoints[0];
-            if(teamNumber > 0 && teamNumber < 255)
+            var pp = _spawnPoints.Where(x => x.TeamNumber == teamNumber);
+            if (teamNumber > 0 && teamNumber < 255 && pp.Count() > 0)
             {
-                var potentialPoints = _spawnPoints.Where(x => x.TeamNumber == teamNumber);
-                spawnPoint = potentialPoints.ElementAt(UnityEngine.Random.Range(0, potentialPoints.Count()));
+                spawnPoint = pp.ElementAt(UnityEngine.Random.Range(0, pp.Count()));
             }
             else
             {
