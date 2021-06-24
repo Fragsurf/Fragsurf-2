@@ -102,37 +102,19 @@ namespace Fragsurf.UI
             ResetSettingInputs();
         }
 
-        private async void CreateGame()
+        private void CreateGame()
         {
-            if(_selectedGamemode == null || _selectedMap == null)
+            if (_selectedGamemode == null || _selectedMap == null)
             {
                 UGuiManager.Instance.Popup("Selected gamemode or map is null, can't create game");
                 return;
             }
 
-            var server = FSGameLoop.GetGameInstance(true);
-            if (server)
-            {
-                server.Destroy();
-            }
-
-            var client = FSGameLoop.GetGameInstance(false);
-            if (client)
-            {
-                client.Destroy();
-            }
-
-            var cl = new GameObject("[Client]").AddComponent<GameClient>();
             var n = SteamClient.IsValid ? SteamClient.Name : "Unknown";
             var lobbyName = string.IsNullOrEmpty(_lobbyName.text) ? $"{n}'s Lobby" : _lobbyName.text;
             var lobbyPass = _lobbyPass.text;
-            var serverResult = await cl.GameLoader.CreateServerAsync(_selectedMap.Name, _selectedGamemode.Name, lobbyName, lobbyPass);
-            if (serverResult == GameLoadResult.Success)
-            {
-                var sv = FSGameLoop.GetGameInstance(true) as GameServer;
 
-                var joinResult = await cl.GameLoader.JoinGameAsync("localhost", sv.Socket.GameplayPort, sv.Socket.ServerPassword);
-            }
+            GameCreator.Instance.CreateGame(lobbyName, lobbyPass, _selectedGamemode.Name, _selectedMap.Name);
         }
 
         private async void PopulateGamemodes()

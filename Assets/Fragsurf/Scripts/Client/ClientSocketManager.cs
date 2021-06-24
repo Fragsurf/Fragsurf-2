@@ -187,6 +187,10 @@ namespace Fragsurf.Client
                     SetSocketStatus(ClientSocketStatus.Disconnected);
                 }
             }
+            else if(packet is RetryOnDisconnect retry)
+            {
+                GameCreator.Instance.RetryRequested = true;
+            }
 
             Game.PlayerManager.RaisePlayerPacketReceived(Game.PlayerManager.LocalPlayer, packet);
         }

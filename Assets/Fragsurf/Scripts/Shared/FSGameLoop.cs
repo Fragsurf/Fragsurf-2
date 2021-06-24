@@ -69,6 +69,7 @@ namespace Fragsurf.Shared
 
             Application.runInBackground = true;
 
+            GameObject.DontDestroyOnLoad(gameObject);
             DevConsole.RegisterObject(this);
 
             FileSystem.Init();

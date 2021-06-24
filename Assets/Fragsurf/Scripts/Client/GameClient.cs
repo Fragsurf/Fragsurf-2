@@ -23,10 +23,20 @@ namespace Fragsurf.Client
             // I feel like I put this here on purpose for absolutely no reason other than I could
             // but idk.  I like it so it stays
             UserSettings.Instance.useGUILayout = UserSettings.Instance.useGUILayout;
-
-            GameObject.DontDestroyOnLoad(gameObject);
-
             UserSettings.Instance.Load();
+
+            if(GameCreator.Instance.RetryRequested)
+            {
+                GameCreator.Instance.RetryRequested = false;
+                
+                if(FSGameLoop.GetGameInstance(true))
+                {
+                    // we always automatically join ourselves
+                    return;
+                }
+
+                GameLoader.JoinGameAsync(GameLoader.LastJoinedAddress, GameLoader.LastJoinedPort, GameLoader.LastJoinedPassword);
+            }
         }
 
         private bool _quitting;

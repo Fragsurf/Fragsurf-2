@@ -48,6 +48,10 @@ namespace Fragsurf.Shared
         private bool _cancelled;
         private CancellationTokenSource _cts;
 
+        public static string LastJoinedAddress;
+        public static int LastJoinedPort;
+        public static string LastJoinedPassword;
+
         public GameLoaderState State { get; private set; }
 
         protected override void _Start()
@@ -56,47 +60,18 @@ namespace Fragsurf.Shared
             {
                 (Game.Network as ClientSocketManager).OnStatusChanged += Socket_OnStatusChanged;
             }
-            else
-            {
-                DevConsole.RegisterCommand("map.change", "", this, (e) =>
-                {
-                    if (e.Length > 0)
-                    {
-                        var map = e[0];
-                        string gamemode = Game.GamemodeLoader.Gamemode.Data.Name;
-                        if (e.Length > 1)
-                        {
-                            gamemode = e[1];
-                        }
-                        var name = DevConsole.GetVariable<string>("server.name");
-                        var pass = DevConsole.GetVariable<string>("server.password");
-                        ChangeMapAsync(map, gamemode, name, pass);
-                    }
-                });
-            }
         }
 
-        public void ChangeMap(string mapName)
+        protected override void _Destroy()
         {
-            string gamemode = Game.GamemodeLoader.Gamemode.Data.Name;
-            var name = DevConsole.GetVariable<string>("server.name");
-            var pass = DevConsole.GetVariable<string>("server.password");
-            ChangeMapAsync(mapName, gamemode, name, pass);
-        }
-
-        private async void ChangeMapAsync(string map, string gamemode, string name, string pass)
-        {
-            if(State != GameLoaderState.Playing)
+            if (!Game.IsHost && Game.Network is ClientSocketManager csm)
             {
-                Debug.LogError($"{Game.IsHost} Can't change map while state is: {State}");
-                return;
+                csm.OnStatusChanged -= Socket_OnStatusChanged;
             }
 
-            State = GameLoaderState.ChangingMap;
-
-            GameServer.Instance.Socket.DisconnectAllPlayers(DenyReason.MapChange.ToString());
-            await Task.Delay(100);
-            await CreateGameAsync(map, gamemode);
+            PreGameLoaded = null;
+            GameLoaded = null;
+            State = GameLoaderState.None;
         }
 
         private void Socket_OnStatusChanged(ClientSocketStatus status, string reason = null)
@@ -122,13 +97,6 @@ namespace Fragsurf.Shared
                 _cts?.Dispose();
             }
             catch(Exception e) { Debug.LogError(e.Message); }
-        }
-
-        protected override void _Destroy()
-        {
-            PreGameLoaded = null;
-            GameLoaded = null;
-            State = GameLoaderState.None;
         }
 
         public async Task<GameLoadResult> JoinGameAsync(string address, int port = 0, string password = null)
@@ -159,6 +127,10 @@ namespace Fragsurf.Shared
             }
 
             State = GameLoaderState.Playing;
+
+            LastJoinedAddress = address;
+            LastJoinedPort = port;
+            LastJoinedPassword = password;
 
             return result;
         }

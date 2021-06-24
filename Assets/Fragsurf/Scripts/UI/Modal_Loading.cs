@@ -19,6 +19,7 @@ namespace Fragsurf.UI
             if(cl == null || cl.GameLoader == null)
             {
                 Close();
+                return;
             }
 
             var loading = cl.GameLoader.Loading;
