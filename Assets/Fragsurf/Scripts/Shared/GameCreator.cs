@@ -84,6 +84,17 @@ namespace Fragsurf.Shared
                     if (cl) cl.Destroy();
                     cl = new GameObject("[Client]").AddComponent<GameClient>();
                 }
+
+                if (!string.IsNullOrEmpty(name))
+                {
+                    DevConsole.ExecuteLine("server.name \"" + name + "\"");
+                }
+
+                if (!string.IsNullOrEmpty(password))
+                {
+                    DevConsole.ExecuteLine("server.password \"" + password + "\"");
+                }
+
                 if (await cl.GameLoader.JoinGameAsync("localhost", sv.Socket.GameplayPort, sv.Socket.ServerPassword) != GameLoadResult.Success)
                 {
                     cl.Destroy();
