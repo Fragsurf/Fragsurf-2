@@ -56,7 +56,7 @@ namespace Fragsurf.Shared
         public ConfigDirectory DefaultConfig { get; } = new ConfigDirectory();
         public List<FSComponent> FSComponents { get; } = new List<FSComponent>();
         public bool Initialized { get; private set; }
-        public bool Live => GameLoader.State == GameLoaderState.Playing && !_destroyed;
+        public bool Live => GameLoader.State == GameLoaderState.Playing;
 
         protected override void Awake()
         {
@@ -110,20 +110,16 @@ namespace Fragsurf.Shared
             Initialized = true;
         }
 
-        private bool _destroyed;
-
         protected override void OnDestroy()
         {
             base.OnDestroy();
 
             _gameInstances.Remove(this);
 
-            if (_destroyed)
+            if (GameLoader.State == GameLoaderState.Destroyed)
             {
                 return;
             }
-
-            _destroyed = true;
 
             UnityEngine.Debug.Log("Destroying " + (IsHost ? "Host" : "Client"));
 

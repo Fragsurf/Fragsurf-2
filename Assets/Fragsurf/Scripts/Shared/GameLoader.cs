@@ -28,13 +28,13 @@ namespace Fragsurf.Shared
 
     public enum GameLoaderState 
     { 
-        None,
-        Idle,
+        New,
         Playing,
         Creating,
         Joining,
         Unloading,
-        ChangingMap
+        ChangingMap,
+        Destroyed
     }
 
     // todo: rewrite game join & creation process so it's not such a clusterfuck and hard to work with
@@ -71,7 +71,7 @@ namespace Fragsurf.Shared
 
             PreGameLoaded = null;
             GameLoaded = null;
-            State = GameLoaderState.None;
+            State = GameLoaderState.Destroyed;
         }
 
         private void Socket_OnStatusChanged(ClientSocketStatus status, string reason = null)
@@ -101,7 +101,7 @@ namespace Fragsurf.Shared
 
         public async Task<GameLoadResult> JoinGameAsync(string address, int port = 0, string password = null)
         {
-            if(State != GameLoaderState.None)
+            if(State != GameLoaderState.New)
             {
                 Debug.LogError($"{Game.IsHost} Can't join while state is: {State}");
                 var m = UGuiManager.Instance.Find<Modal_Dialog>();
@@ -263,7 +263,7 @@ namespace Fragsurf.Shared
 
         public async Task<GameLoadResult> CreateGameAsync(string mapName, string gamemode)
         {
-            if (State != GameLoaderState.None)
+            if (State != GameLoaderState.New)
             {
                 Debug.LogError($"{Game.IsHost} Can't create game while state is: {State}");
                 return GameLoadResult.None;

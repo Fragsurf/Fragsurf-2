@@ -102,7 +102,7 @@ namespace Fragsurf.UI
             ResetSettingInputs();
         }
 
-        private void CreateGame()
+        private async void CreateGame()
         {
             if (_selectedGamemode == null || _selectedMap == null)
             {
@@ -114,7 +114,12 @@ namespace Fragsurf.UI
             var lobbyName = string.IsNullOrEmpty(_lobbyName.text) ? $"{n}'s Lobby" : _lobbyName.text;
             var lobbyPass = _lobbyPass.text;
 
-            GameCreator.Instance.CreateGame(lobbyName, lobbyPass, _selectedGamemode.Name, _selectedMap.Name);
+            var created = await GameCreator.Instance.CreateGame(lobbyName, lobbyPass, _selectedGamemode.Name, _selectedMap.Name);
+
+            if (!created)
+            {
+                // do something
+            }
         }
 
         private async void PopulateGamemodes()

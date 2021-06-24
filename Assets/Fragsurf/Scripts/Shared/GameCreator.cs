@@ -10,6 +10,10 @@ namespace Fragsurf.Shared
     // Servers & Clients are instanced, one per game.
     // So to make a new game, the server & client need to be totally destroyed
     // For map changes we need an external script to destroy then recreate, hence this script
+
+    // Side note: Main Menu has a GameClient component by default.  It's kind of a headache always maintaining 
+    // 1 valid GameClient at all times, could do for some refactor or some shit, maybe GameClient persists but 
+    // can just start fresh when it needs to
     public class GameCreator : SingletonComponent<GameCreator>
     {
 
@@ -35,7 +39,7 @@ namespace Fragsurf.Shared
             DevConsole.RegisterObject(this);
         }
 
-        public async void CreateGame(string name, string password, string gamemode, string map)
+        public async Task<bool> CreateGame(string name, string password, string gamemode, string map)
         {
             var server = FSGameLoop.GetGameInstance(true);
             if (server)
@@ -43,13 +47,6 @@ namespace Fragsurf.Shared
                 server.Network.BroadcastPacket(PacketUtility.TakePacket<RetryOnDisconnect>());
                 await Task.Delay(250);
                 server.Destroy();
-                await Task.Delay(100);
-            }
-
-            var client = FSGameLoop.GetGameInstance(false);
-            if (client)
-            {
-                client.Destroy();
                 await Task.Delay(100);
             }
 
@@ -66,26 +63,29 @@ namespace Fragsurf.Shared
             }
 
             var serverResult = await sv.GameLoader.CreateGameAsync(map, gamemode);
-            if (!Structure.DedicatedServer && serverResult == GameLoadResult.Success)
+
+            if(serverResult == GameLoadResult.Success && !Structure.DedicatedServer)
             {
                 sv.IsLocalServer = true;
-                var cl = FSGameLoop.GetGameInstance(false);
-                if (cl == null)
-                {
-                    cl = new GameObject("[Client]").AddComponent<GameClient>();
-
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        DevConsole.ExecuteLine("server.name \"" + name + "\"");
-                    }
-
-                    if (!string.IsNullOrEmpty(password))
-                    {
-                        DevConsole.ExecuteLine("server.password \"" + password + "\"");
-                    }
-                }
-                var joinResult = await cl.GameLoader.JoinGameAsync("localhost", sv.Socket.GameplayPort, sv.Socket.ServerPassword);
+                JoinGame("localhost", sv.Socket.GameplayPort, sv.Socket.ServerPassword);
+                return true;
             }
+
+            return false;
+        }
+
+        private void JoinGame(string address, int port, string password = null)
+        {
+            var cl = FSGameLoop.GetGameInstance(false);
+            if(!cl || cl.GameLoader.State != GameLoaderState.New)
+            {
+                if (cl)
+                {
+                    cl.Destroy();
+                }
+                cl = new GameObject("[Client]").AddComponent<GameClient>();
+            }
+            cl.GameLoader.JoinGameAsync(address, port, password);
         }
 
     }

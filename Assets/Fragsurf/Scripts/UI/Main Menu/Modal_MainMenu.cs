@@ -9,9 +9,7 @@ namespace Fragsurf.UI
         private void Update()
         {
             var cl = FSGameLoop.GetGameInstance(false);
-            if (!cl 
-                || cl.GameLoader.State == GameLoaderState.None 
-                || cl.GameLoader.State == GameLoaderState.Idle)
+            if (!cl || cl.GameLoader.State == GameLoaderState.New)
             {
                 if (!IsOpen)
                 {
