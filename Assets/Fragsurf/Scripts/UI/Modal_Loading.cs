@@ -15,27 +15,51 @@ namespace Fragsurf.UI
 
         private void Update()
         {
-            var cl = FSGameLoop.GetGameInstance(false);
-            if(cl == null || cl.GameLoader == null)
-            {
-                Close();
-                return;
-            }
+            GetLoading(out bool loading, out string hint);
 
-            var loading = cl.GameLoader.Loading;
-            if(loading && !IsOpen)
+            if (loading && !IsOpen)
             {
                 Open();
             }
-            else if(!loading && IsOpen)
+            else if (!loading && IsOpen)
             {
                 Close();
             }
 
-            if(loading && _loadingHint)
+            if (loading && _loadingHint)
             {
-                _loadingHint.text = cl.GameLoader.LoadingHint;
+                _loadingHint.text = hint;
             }
+        }
+
+        private void GetLoading(out bool loading, out string hint)
+        {
+            loading = false;
+            hint = string.Empty;
+
+            var sv = FSGameLoop.GetGameInstance(true);
+            if(sv)
+            {
+                switch(sv.GameLoader.State)
+                {
+                    case GameLoaderState.New:
+                    case GameLoaderState.Creating:
+                    case GameLoaderState.ChangingMap:
+                        loading = true;
+                        hint = "Creating server";
+                        return;
+                }
+            }
+
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (cl == null || cl.GameLoader == null)
+            {
+                loading = false;
+                return;
+            }
+
+            loading = cl.GameLoader.Loading;
+            hint = cl.GameLoader.LoadingHint;
         }
 
     }
