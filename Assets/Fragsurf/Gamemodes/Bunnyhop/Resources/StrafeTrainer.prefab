@@ -112,7 +112,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -128, y: 0}
-  m_SizeDelta: {x: 128, y: 0}
+  m_SizeDelta: {x: 126, y: -4}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &1641084661439301812
 CanvasRenderer:
@@ -187,7 +187,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 128, y: 0}
-  m_SizeDelta: {x: 128, y: 0}
+  m_SizeDelta: {x: 126, y: -4}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1641084662478784334
 CanvasRenderer:
@@ -315,6 +315,7 @@ GameObject:
   - component: {fileID: 1641084662829495490}
   - component: {fileID: 1641084662829495484}
   - component: {fileID: 1641084662829495485}
+  - component: {fileID: 4050552900503964663}
   m_Layer: 5
   m_Name: StrafeTrainer
   m_TagString: Untagged
@@ -379,6 +380,18 @@ MonoBehaviour:
   _syncFill: {fileID: 9102731219688052305}
   _syncRoot: {fileID: 4209752475154990368}
   _syncNumber: {fileID: 8485882318685214241}
+--- !u!225 &4050552900503964663
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641084662829495491}
+  m_Enabled: 1
+  m_Alpha: 0.8
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3040002045933763669
 GameObject:
   m_ObjectHideFlags: 0

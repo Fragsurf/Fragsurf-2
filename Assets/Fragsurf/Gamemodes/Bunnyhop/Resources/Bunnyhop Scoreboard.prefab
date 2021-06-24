@@ -275,7 +275,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -306,7 +306,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.34901962, g: 0.34901962, b: 0.34901962, a: 1}
+    m_NormalColor: {r: 0.16078432, g: 0.15686275, b: 0.15686275, a: 1}
     m_HighlightedColor: {r: 0.34901962, g: 0.34901962, b: 0.34901962, a: 0.88235295}
     m_PressedColor: {r: 0.34901962, g: 0.34901962, b: 0.34901962, a: 0.78431374}
     m_SelectedColor: {r: 0.34901962, g: 0.34901962, b: 0.34901962, a: 0.78431374}
@@ -1341,6 +1341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EntryLimit: 100
   SearchField: {fileID: 0}
+  DynamicScrollView: {fileID: 0}
   _name: {fileID: 6305205442285052383}
 --- !u!1 &6305205440674480475
 GameObject:
@@ -1411,7 +1412,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1746,7 +1747,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2114,7 +2115,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3080,6 +3081,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EntryLimit: 100
   SearchField: {fileID: 0}
+  DynamicScrollView: {fileID: 0}
   _nameText: {fileID: 6305205441655154955}
   _activityText: {fileID: 6305205441388575656}
   _specButton: {fileID: 1876515190}
