@@ -48,6 +48,7 @@ namespace Fragsurf.Shared
         private bool _cancelled;
         private CancellationTokenSource _cts;
 
+        public static bool RetryRequested;
         public static string LastJoinedAddress;
         public static int LastJoinedPort;
         public static string LastJoinedPassword;
@@ -84,7 +85,6 @@ namespace Fragsurf.Shared
             if(status == ClientSocketStatus.Disconnected)
             {
                 Game.Destroy();
-                SceneManager.LoadScene(GameData.Instance.MainMenu.ScenePath);
             }
         }
 
@@ -112,6 +112,7 @@ namespace Fragsurf.Shared
                 return GameLoadResult.None;
             }
 
+            RetryRequested = false;
             State = GameLoaderState.Joining;
             _cancelled = false;
 

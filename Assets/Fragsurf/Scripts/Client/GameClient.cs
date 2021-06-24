@@ -1,4 +1,5 @@
 ﻿using Fragsurf.Maps;
+using Fragsurf.Server;
 using Fragsurf.Shared;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,7 @@ namespace Fragsurf.Client
     {
         public override bool IsHost => false;
         public ClientSocketManager Socket => GetFSComponent<ClientSocketManager>();
+        public GameServer LocalServer { get; set; }
 
         protected override void RegisterComponents()
         { 
@@ -25,17 +27,21 @@ namespace Fragsurf.Client
             UserSettings.Instance.useGUILayout = UserSettings.Instance.useGUILayout;
             UserSettings.Instance.Load();
 
-            if(GameCreator.Instance.RetryRequested)
-            {
-                GameCreator.Instance.RetryRequested = false;
-                
-                if(FSGameLoop.GetGameInstance(true))
-                {
-                    // we always automatically join ourselves
-                    return;
-                }
+            TryRetry();
+        }
 
-                GameLoader.JoinGameAsync(GameLoader.LastJoinedAddress, GameLoader.LastJoinedPort, GameLoader.LastJoinedPassword);
+        private async void TryRetry()
+        {
+            if (GameLoader.RetryRequested)
+            {
+                GameLoader.RetryRequested = false;
+
+                var result = await GameLoader.JoinGameAsync(GameLoader.LastJoinedAddress, GameLoader.LastJoinedPort, GameLoader.LastJoinedPassword);
+
+                if(result != GameLoadResult.Success)
+                {
+                    Destroy();
+                }
             }
         }
 
@@ -59,11 +65,7 @@ namespace Fragsurf.Client
                     Map.UnloadAsync();
                 }
 
-                var server = FSGameLoop.GetGameInstance(true);
-                if (server)
-                {
-                    server.Destroy();
-                }
+                SceneManager.LoadScene(GameData.Instance.MainMenu);
             }
 
             base.OnDestroy();

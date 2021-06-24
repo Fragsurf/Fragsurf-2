@@ -2,6 +2,7 @@ using Fragsurf.Client;
 using Fragsurf.Server;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Utility;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -17,19 +18,20 @@ namespace Fragsurf.Shared
     public class GameCreator : SingletonComponent<GameCreator>
     {
 
-        public bool RetryRequested;
-
         [ConCommand("map.change", "")]
         public void ChangeMapCmd(string map)
         {
-            var sv = FSGameLoop.GetGameInstance(true);
+            var sv = FSGameLoop.GetGameInstance(true) as GameServer;
             var gamemode = "Tricksurf";
-            if(sv)
-            {
-                gamemode = sv.GamemodeLoader.Gamemode.Data.Name;
-            }
             var name = DevConsole.GetVariable<string>("server.name");
             var pass = DevConsole.GetVariable<string>("server.password");
+
+            if (sv)
+            {
+                gamemode = sv.GamemodeLoader.Gamemode.Data.Name;
+                name = sv.Socket.ServerName;
+                pass = sv.Socket.ServerPassword;
+            }
 
             CreateGame(name, pass, gamemode, map);
         }
@@ -41,16 +43,22 @@ namespace Fragsurf.Shared
 
         public async Task<bool> CreateGame(string name, string password, string gamemode, string map)
         {
-            var server = FSGameLoop.GetGameInstance(true);
-            if (server)
+            var sv = FSGameLoop.GetGameInstance(true) as GameServer;
+            if (sv)
             {
-                server.Network.BroadcastPacket(PacketUtility.TakePacket<RetryOnDisconnect>());
-                await Task.Delay(250);
-                server.Destroy();
-                await Task.Delay(100);
+                sv.Socket.BroadcastPacket(PacketUtility.TakePacket<RetryOnDisconnect>());
+                await Task.Delay(500);
+                sv.Destroy();
             }
 
-            var sv = new GameObject("[Server]").AddComponent<GameServer>();
+            var cl = FSGameLoop.GetGameInstance(false);
+            if (cl)
+            {
+                cl.Destroy();
+            }
+
+            sv = new GameObject("[Server]").AddComponent<GameServer>();
+            sv.IsLocalServer = !Structure.DedicatedServer;
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -62,30 +70,29 @@ namespace Fragsurf.Shared
                 DevConsole.ExecuteLine("server.password \"" + password + "\"");
             }
 
-            var serverResult = await sv.GameLoader.CreateGameAsync(map, gamemode);
-
-            if(serverResult == GameLoadResult.Success && !Structure.DedicatedServer)
+            if(await sv.GameLoader.CreateGameAsync(map, gamemode) != GameLoadResult.Success)
             {
-                sv.IsLocalServer = true;
-                JoinGame("localhost", sv.Socket.GameplayPort, sv.Socket.ServerPassword);
-                return true;
+                return false;
             }
 
-            return false;
-        }
-
-        private void JoinGame(string address, int port, string password = null)
-        {
-            var cl = FSGameLoop.GetGameInstance(false);
-            if(!cl || cl.GameLoader.State != GameLoaderState.New)
+            if (sv.IsLocalServer)
             {
-                if (cl)
+                GameLoader.RetryRequested = false;
+                cl = FSGameLoop.GetGameInstance(false);
+                if(!cl || cl.GameLoader.State != GameLoaderState.New)
+                {
+                    if (cl) cl.Destroy();
+                    cl = new GameObject("[Client]").AddComponent<GameClient>();
+                }
+                if (await cl.GameLoader.JoinGameAsync("localhost", sv.Socket.GameplayPort, sv.Socket.ServerPassword) != GameLoadResult.Success)
                 {
                     cl.Destroy();
+                    sv.Destroy();
+                    return false;
                 }
-                cl = new GameObject("[Client]").AddComponent<GameClient>();
             }
-            cl.GameLoader.JoinGameAsync(address, port, password);
+
+            return true;
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using Fragsurf.Shared;
 using Fragsurf.Shared.LagComp;
+using UnityEngine;
 
 namespace Fragsurf.Server
 {
@@ -22,6 +23,13 @@ namespace Fragsurf.Server
             AddFSComponent<ServerPlayerManager>();
             AddFSComponent<SteamworksServer>();
             AddFSComponent<SteamworksLobby>();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            Debug.Log("Game server destroyed");
         }
 
         protected override void Initialize()

@@ -8,7 +8,7 @@ namespace Fragsurf
 {
     public static class Structure
     {
-        public const string Version = "2.10";
+        public const string Version = "2.11";
         public const int AppId = 1033410;
         public const int ServerAppId = 1035540;
 

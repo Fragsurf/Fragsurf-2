@@ -189,7 +189,7 @@ namespace Fragsurf.Client
             }
             else if(packet is RetryOnDisconnect retry)
             {
-                GameCreator.Instance.RetryRequested = true;
+                GameLoader.RetryRequested = true;
             }
 
             Game.PlayerManager.RaisePlayerPacketReceived(Game.PlayerManager.LocalPlayer, packet);
@@ -225,6 +225,12 @@ namespace Fragsurf.Client
                 SteamUser.EndAuthSession(SteamClient.SteamId);
                 _authTicket?.Dispose();
                 _authTicket = null;
+            }
+
+            var sv = FSGameLoop.GetGameInstance(true);
+            if (sv)
+            {
+                sv.Destroy();
             }
 
             SetSocketStatus(ClientSocketStatus.Disconnected, reason);
