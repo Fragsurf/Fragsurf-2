@@ -53,21 +53,37 @@ namespace Fragsurf.Shared
                 await Task.Delay(100);
             }
 
+            var sv = new GameObject("[Server]").AddComponent<GameServer>();
+
             if (!string.IsNullOrEmpty(name))
             {
                 DevConsole.ExecuteLine("server.name \"" + name + "\"");
             }
+
             if (!string.IsNullOrEmpty(password))
             {
                 DevConsole.ExecuteLine("server.password \"" + password + "\"");
             }
 
-            var sv = new GameObject("[Server]").AddComponent<GameServer>();
             var serverResult = await sv.GameLoader.CreateGameAsync(map, gamemode);
             if (!Structure.DedicatedServer && serverResult == GameLoadResult.Success)
             {
                 sv.IsLocalServer = true;
-                var cl = new GameObject("[Client]").AddComponent<GameClient>();
+                var cl = FSGameLoop.GetGameInstance(false);
+                if (cl == null)
+                {
+                    cl = new GameObject("[Client]").AddComponent<GameClient>();
+
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        DevConsole.ExecuteLine("server.name \"" + name + "\"");
+                    }
+
+                    if (!string.IsNullOrEmpty(password))
+                    {
+                        DevConsole.ExecuteLine("server.password \"" + password + "\"");
+                    }
+                }
                 var joinResult = await cl.GameLoader.JoinGameAsync("localhost", sv.Socket.GameplayPort, sv.Socket.ServerPassword);
             }
         }

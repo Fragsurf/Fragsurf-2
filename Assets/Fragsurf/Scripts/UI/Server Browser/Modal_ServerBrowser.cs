@@ -183,11 +183,13 @@ namespace Fragsurf.UI
             {
                 return;
             }
+
             var cl = FSGameLoop.GetGameInstance(false);
             if (!cl)
             {
-                return;
+                cl = new GameObject("[Client]").AddComponent<GameClient>();
             }
+
             if(_selectedServer.Passworded)
             {
                 var dialog = UGuiManager.Instance.Find<Modal_Dialog>();
@@ -197,6 +199,7 @@ namespace Fragsurf.UI
                 });
                 return;
             }
+
             cl.GameLoader.JoinGameAsync(_selectedServer.Address, _selectedServer.Port);
         }
 
