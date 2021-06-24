@@ -54,10 +54,6 @@ namespace Fragsurf
 
         public void SetValue(T value, bool noEvent = false)
         {
-            if(Name == "server.name")
-            {
-                Debug.Log(value.ToString());
-            }
             var equals = TEquals(_getter(), value);
             if (equals)
             {
