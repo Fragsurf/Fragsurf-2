@@ -3,12 +3,6 @@ using UnityEngine;
 
 namespace Fragsurf.Client
 {
-    public enum TestEnum
-    {
-        Green,
-        Red
-    }
-
     [Inject(InjectRealm.Client)]
     public class ScreenSettings : FSSharedScript
     {

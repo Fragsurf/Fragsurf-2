@@ -25,6 +25,7 @@ namespace Fragsurf.Shared
         }
 
         public SceneReference MainMenu;
+        public SceneReference EmptyScene;
         public SceneReference MainServer;
         public GamemodeData[] DefaultGamemodes;
         public BaseEquippableData[] Equippables;

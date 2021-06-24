@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Fragsurf/Gamemodes/CombatBhop/Scenes/cb_prototype.unity
     guid: 133c04fd5d3b06a42b22411cfebd19cf
+  - enabled: 1
+    path: Assets/Fragsurf/Content/Scenes/Empty.unity
+    guid: 00655a9fcbbc5ab45904c1da80fb198f
   m_configObjects: {}

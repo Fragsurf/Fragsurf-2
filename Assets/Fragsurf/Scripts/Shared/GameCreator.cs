@@ -51,9 +51,10 @@ namespace Fragsurf.Shared
                 sv.Destroy();
             }
 
-            var cl = FSGameLoop.GetGameInstance(false);
+            var cl = FSGameLoop.GetGameInstance(false) as GameClient;
             if (cl)
             {
+                cl.MenuOverride = GameData.Instance.EmptyScene;
                 cl.Destroy();
             }
 
@@ -78,7 +79,7 @@ namespace Fragsurf.Shared
             if (sv.IsLocalServer)
             {
                 GameLoader.RetryRequested = false;
-                cl = FSGameLoop.GetGameInstance(false);
+                cl = FSGameLoop.GetGameInstance(false) as GameClient;
                 if(!cl || cl.GameLoader.State != GameLoaderState.New)
                 {
                     if (cl) cl.Destroy();

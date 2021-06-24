@@ -18,7 +18,7 @@ namespace Fragsurf.Client
                 SceneManager.LoadScene(GameData.Instance.MainServer.ScenePath);
             }
             else
-            {
+            { 
                 if (!GameObject.FindObjectOfType<PlayTest>())
                 {
                     SceneManager.LoadScene(GameData.Instance.MainMenu.ScenePath);

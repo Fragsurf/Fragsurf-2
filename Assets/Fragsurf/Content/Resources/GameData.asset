@@ -15,6 +15,9 @@ MonoBehaviour:
   MainMenu:
     sceneAsset: {fileID: 102900000, guid: 912cfa9f4efa4ff409572e96142e9633, type: 3}
     scenePath: Assets/Fragsurf/Content/Scenes/Main Menu.unity
+  EmptyScene:
+    sceneAsset: {fileID: 102900000, guid: 00655a9fcbbc5ab45904c1da80fb198f, type: 3}
+    scenePath: Assets/Fragsurf/Content/Scenes/Empty.unity
   MainServer:
     sceneAsset: {fileID: 102900000, guid: d783d79806d54844c9f60a3701ee75b9, type: 3}
     scenePath: Assets/Fragsurf/Content/Scenes/Server.unity

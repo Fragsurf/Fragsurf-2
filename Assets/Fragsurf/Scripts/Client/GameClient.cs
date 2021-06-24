@@ -1,13 +1,13 @@
 ﻿using Fragsurf.Maps;
 using Fragsurf.Server;
 using Fragsurf.Shared;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Fragsurf.Client
 {
     public class GameClient : FSGameLoop
     {
+        public SceneReference MenuOverride;
         public override bool IsHost => false;
         public ClientSocketManager Socket => GetFSComponent<ClientSocketManager>();
         public GameServer LocalServer { get; set; }
@@ -65,7 +65,7 @@ namespace Fragsurf.Client
                     Map.UnloadAsync();
                 }
 
-                SceneManager.LoadScene(GameData.Instance.MainMenu);
+                SceneManager.LoadScene(MenuOverride ?? GameData.Instance.MainMenu);
             }
 
             base.OnDestroy();
