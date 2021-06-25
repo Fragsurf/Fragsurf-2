@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using Fragsurf.Movement;
 using System.Linq;
 using Fragsurf.Shared.Entity;
-using UnityEngine.Serialization;
 
 namespace Fragsurf.Actors
 {

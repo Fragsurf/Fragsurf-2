@@ -77,14 +77,23 @@ namespace Fragsurf.Shared.Player
 
             if (Human.Game.IsHost || Human.Local == Human)
             {
+                var prevVelocity = Human.Velocity;
+
                 Human.Velocity = MoveData.Velocity;
                 Human.BaseVelocity = MoveData.BaseVelocity;
                 Human.Origin = MoveData.Origin;
                 Human.Angles = MoveData.ViewAngles;
                 Human.Ducked = MoveData.Ducked;
 
+                var prevOrigin = Human.Origin;
                 DetectTouchingTriggers();
                 TouchTriggers();
+
+                if(Human.Origin != prevOrigin)
+                {
+                    Debug.Log("Fixed!");
+                    Human.Velocity = prevVelocity;
+                }
             }
 
             TickFootstep();
