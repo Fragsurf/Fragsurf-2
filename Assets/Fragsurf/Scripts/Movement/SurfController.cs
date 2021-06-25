@@ -478,6 +478,11 @@ namespace Fragsurf.Movement
                 quickJump = _surfer.GroundObject == null && !goingAgainstSlope && movingUp && trace.Distance < _surfer.MoveData.Velocity.y;
             }
 
+            if(_surfer.MoveData.JustJumped)
+            {
+                _surfer.MoveData.Origin.y = trace.HitPoint.y + HammerScale;
+            }
+
             if (MovingUpRapidly()
                 || trace.HitCollider == null
                 || _surfer.MoveData.Surfing
