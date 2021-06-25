@@ -91,7 +91,6 @@ namespace Fragsurf.Shared.Player
 
                 if(Human.Origin != prevOrigin)
                 {
-                    Debug.Log("Fixed!");
                     Human.Velocity = prevVelocity;
                 }
             }
