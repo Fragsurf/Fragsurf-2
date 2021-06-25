@@ -65,7 +65,12 @@ namespace Fragsurf.Client
                     Map.UnloadAsync();
                 }
 
-                SceneManager.LoadScene(!string.IsNullOrEmpty(MenuOverride) ? MenuOverride : GameData.Instance.MainMenu);
+                var scene = !string.IsNullOrEmpty(MenuOverride ?? string.Empty)
+                    ? MenuOverride
+                    : GameData.Instance.MainMenu;
+                MenuOverride = null;
+
+                SceneManager.LoadScene(scene);
             }
 
             base.OnDestroy();
