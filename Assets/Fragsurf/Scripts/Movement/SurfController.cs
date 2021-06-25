@@ -478,11 +478,6 @@ namespace Fragsurf.Movement
                 quickJump = _surfer.GroundObject == null && !goingAgainstSlope && movingUp && trace.Distance < _surfer.MoveData.Velocity.y;
             }
 
-            if(_surfer.MoveData.JustJumped)
-            {
-                _surfer.MoveData.Origin.y = trace.HitPoint.y + HammerScale;
-            }
-
             if (MovingUpRapidly()
                 || trace.HitCollider == null
                 || _surfer.MoveData.Surfing
@@ -491,6 +486,10 @@ namespace Fragsurf.Movement
                 || quickJump
                 || (_surfer.MoveType == MoveType.Ladder && movingUp))
             {
+                if (_surfer.MoveData.JustJumped && !trace.IsShit)
+                {
+                    _surfer.MoveData.Origin.y = trace.HitPoint.y + HammerScale;
+                }
                 _surfer.MoveData.GroundTest = 0;
                 SetGround(null);
                 return false;
