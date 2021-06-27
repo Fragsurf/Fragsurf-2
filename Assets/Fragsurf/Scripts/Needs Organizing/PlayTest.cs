@@ -21,7 +21,7 @@ namespace Fragsurf
                 enabled = false;
                 return;
             }
-            SceneManager.LoadScene("Startup", LoadSceneMode.Additive);
+            SceneManager.LoadScene(GameData.Instance.StartupScene, LoadSceneMode.Additive);
         }
 
         private async void Start()

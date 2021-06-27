@@ -70,10 +70,9 @@ MonoBehaviour:
     restrictionMode: 0
     nameSpace: System.IO
     includeNested: 1
-  _apiAssemblies:
-  - Fragsurf
-  - Fragsurf.Editor
+  _apiAssemblies: []
   _customPaths:
+  - Assets\Fragsurf\Scripts
   - Assets\Fragsurf\Plugins
   - Assets\Fragsurf\Content
   - Assets\Fragsurf\Tools

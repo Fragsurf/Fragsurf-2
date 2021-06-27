@@ -15,15 +15,6 @@ namespace ModTool.Exporting.Editor
         [RuntimeInitializeOnLoadMethod]
         private static void InitializeModSurrogate()
         {
-            // Not sure what the purpose of this script is but 
-            // it seems to be only for within a mod project, so try to detect 
-            // if we're in the main project and skip all this bs
-            // todo: see if this script can be deleted
-            if(File.Exists(Path.Combine(Application.dataPath, "Fragsurf", "Scripts", "Fragsurf.asmdef")))
-            {
-                return;
-            }
-
             List<GameObject> prefabs = new List<GameObject>();
             List<IResource> scenes = new List<IResource>();
 
@@ -62,7 +53,7 @@ namespace ModTool.Exporting.Editor
 
                         if (type.IsSubclassOf(typeof(Component)))
                         {
-                            foreach(Component component in GetComponents(type))
+                            foreach (Component component in GetComponents(type))
                             {
                                 ((IModHandler)component).OnLoaded(contentHandler);
                             }
@@ -111,7 +102,7 @@ namespace ModTool.Exporting.Editor
     internal class ModSurrogate : IResource
     {
         public string name { get; private set; }
-        
+
         public ModSurrogate(string name)
         {
             this.name = name;
@@ -119,18 +110,18 @@ namespace ModTool.Exporting.Editor
 
         public void Load()
         {
-            
+
         }
 
         public void LoadAsync()
         {
-            
+
         }
 
         public void Unload()
         {
-            
-        }        
+
+        }
     }
 
     /// <summary>
@@ -147,22 +138,22 @@ namespace ModTool.Exporting.Editor
         public ModSceneSurrogate(string name)
         {
             this.name = name;
-           
+
         }
 
         public void Load()
         {
-            
+
         }
 
         public void LoadAsync()
         {
-            
+
         }
 
         public void Unload()
         {
-           
+
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Fragsurf.Shared
         public SceneReference MainMenu;
         public SceneReference EmptyScene;
         public SceneReference MainServer;
+        public SceneReference StartupScene;
         public GamemodeData[] DefaultGamemodes;
         public BaseEquippableData[] Equippables;
         public SurfaceTypeDatabase Surfaces;

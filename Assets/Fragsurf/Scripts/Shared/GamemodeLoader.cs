@@ -33,7 +33,7 @@ namespace Fragsurf.Shared
         public bool LoadGamemode(string gamemodeName = null)
         {
             var resource = GameData.Instance.DefaultGamemodes
-                .FirstOrDefault(x => x.Name.Equals(gamemodeName, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(x => x != null && x.Name.Equals(gamemodeName, StringComparison.OrdinalIgnoreCase));
 
             if (!resource)
             {
