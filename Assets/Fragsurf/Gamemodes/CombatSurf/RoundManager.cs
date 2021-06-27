@@ -15,6 +15,7 @@ namespace Fragsurf.Gamemodes.CombatSurf
 
         private MatchStates _matchState;
         private RoundStates _roundState;
+        private float _spawnProtectionTimer;
 
         public event Action OnMatchStart;
         public event Action<int> OnMatchEnd;
@@ -36,6 +37,8 @@ namespace Fragsurf.Gamemodes.CombatSurf
         public int RoundLimit { get; set; } = 15;
         [ConVar("rounds.autostart", "", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
         public bool AutoStart { get; set; } = true;
+        [ConVar("rounds.spawnprotectiontime", "", ConVarFlags.Gamemode | ConVarFlags.Replicator)]
+        public float SpawnProtectionTime { get; set; } = 8f;
 
         public override bool HasNetProps => true;
 
@@ -116,7 +119,26 @@ namespace Fragsurf.Gamemodes.CombatSurf
                 {
                     CheckRoundWinConditions();
                 }
+
+                if(_spawnProtectionTimer > 0)
+                {
+                    _spawnProtectionTimer -= Time.fixedDeltaTime;
+                    if(_spawnProtectionTimer <= 0)
+                    {
+                        SetSpawnProtection(false);
+                    }
+                }
             }
+        }
+
+        private void SetSpawnProtection(bool enabled)
+        {
+            if (!Game.IsHost)
+            {
+                return;
+            }
+            DevConsole.SetVariable("entity.nodamage", enabled, true, true);
+            Game.TextChat.MessageAll(enabled ? "Spawn protection enabled" : "Spawn protection disabled", true);
         }
 
         private void CheckRoundWinConditions()
@@ -273,6 +295,15 @@ namespace Fragsurf.Gamemodes.CombatSurf
             RoundState = RoundStates.Live;
             Timer = RoundDuration;
             FreezePlayers(false);
+            if(SpawnProtectionTime > 0)
+            {
+                _spawnProtectionTimer = SpawnProtectionTime;
+                SetSpawnProtection(true);
+            }
+            else
+            {
+                SetSpawnProtection(false);
+            }
 
             try
             {

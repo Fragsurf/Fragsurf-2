@@ -379,29 +379,37 @@ namespace Fragsurf.Shared.Entity
 
         public void Damage(DamageInfo dmgInfo)
         {
-            if (Game.IsHost)
+            if(!Game.IsHost)
             {
-                if (!Game.EntityManager.FriendlyFire)
+                return;
+            }
+
+            if (!Game.EntityManager.FriendlyFire)
+            {
+                var attacker = Game.EntityManager.FindEntity<Human>(dmgInfo.AttackerEntityId);
+                if(attacker != null)
                 {
-                    var attacker = Game.EntityManager.FindEntity<Human>(dmgInfo.AttackerEntityId);
-                    if(attacker != null)
+                    var p1 = Game.PlayerManager.FindPlayer(this);
+                    var p2 = Game.PlayerManager.FindPlayer(attacker);
+                    if(p1 != null && p2 != null && p1.Team == p2.Team)
                     {
-                        var p1 = Game.PlayerManager.FindPlayer(this);
-                        var p2 = Game.PlayerManager.FindPlayer(attacker);
-                        if(p1 != null && p2 != null && p1.Team == p2.Team)
-                        {
-                            dmgInfo.Amount = 0;
-                        }
+                        dmgInfo.Amount = 0;
                     }
                 }
-                var wasDead = Dead;
-                Health -= dmgInfo.Amount;
-                Dead = Health <= 0;
-                dmgInfo.ResultedInDeath = !wasDead && Dead;
-                dmgInfo.Viewpunch = new Vector3(-Random.Range(0.5f, 1.25f), Random.Range(-1f, 1f), 0);
-                Punch(dmgInfo.Viewpunch, Vector3.zero);
-                Game.EntityManager.BroadcastHumanDamaged(this, dmgInfo);
             }
+
+            if(Game.EntityManager.NoDamage)
+            {
+                dmgInfo.Amount = 0;
+            }
+
+            var wasDead = Dead;
+            Health -= dmgInfo.Amount;
+            Dead = Health <= 0;
+            dmgInfo.ResultedInDeath = !wasDead && Dead;
+            dmgInfo.Viewpunch = new Vector3(-Random.Range(0.5f, 1.25f), Random.Range(-1f, 1f), 0);
+            Punch(dmgInfo.Viewpunch, Vector3.zero);
+            Game.EntityManager.BroadcastHumanDamaged(this, dmgInfo);
         }
 
         protected override void OnEnabled()
