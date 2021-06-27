@@ -30,7 +30,7 @@ namespace Fragsurf.UI
 
         private float _originalFadeDuration;
         private StringBuilder _sb = new StringBuilder();
-        private const string _sbFormat = "{0}<color={1}>{2} |</color> {3}";
+        private const string _sbFormat = "{0} <color={1}>{2} |</color> {3}";
 
         protected override bool AutoRebuildLayout => false;
 
