@@ -18,7 +18,7 @@ namespace RealtimeCSG.Importers.Vmf
     {
         private const float inchesInMeters = 0.0254f;
 
-        public static bool Import(string vmfPath)
+        public static bool Import(string vmfPath, bool forProbuilder = false)
         {
             var result = true;
             try
@@ -29,11 +29,21 @@ namespace RealtimeCSG.Importers.Vmf
                 var obj = new GameObject(Path.GetFileName(vmfPath));
                 var model = OperationsUtility.CreateModelInstanceInScene(obj.transform);
 
-                for (int i = 0; i < world.Solids.Count; i++)
+                var solids = new List<VmfSolid>();
+                solids.AddRange(world.Solids);
+                foreach(var ent in world.Entities)
                 {
-                    EditorUtility.DisplayProgressBar("Importing Source Engine VMF", "Converting Hammer Solids To RCSG Brushes (" + (i + 1) + " / " + world.Solids.Count + ")...", i / (float)world.Solids.Count);
+                    if(ent.Solids != null)
+                    {
+                        solids.AddRange(ent.Solids);
+                    }
+                }
 
-                    VmfSolid solid = world.Solids[i];
+                for (int i = 0; i < solids.Count; i++)
+                {
+                    EditorUtility.DisplayProgressBar("Importing Source Engine VMF", "Converting Hammer Solids To RCSG Brushes (" + (i + 1) + " / " + solids.Count + ")...", i / (float)solids.Count);
+
+                    VmfSolid solid = solids[i];
 
                     // don't add triggers to the scene.
                     if (solid.Sides.Count > 0 && IsSpecialMaterial(solid.Sides[0].Material))
@@ -56,17 +66,32 @@ namespace RealtimeCSG.Importers.Vmf
                     }
 
                     BrushFactory.CreateControlMeshFromPlanes(out rcsgBrush.ControlMesh, out rcsgBrush.Shape, planes.ToArray());
+
+                    if (forProbuilder)
+                    {
+                        var meshObj = BrushToMesh(rcsgBrush);
+                        if (!meshObj) { continue; }
+                        meshObj.transform.SetParent(obj.transform);
+                    }
                 }
 
-                var flags = GameObjectUtility.GetStaticEditorFlags(model.gameObject) | StaticEditorFlags.ContributeGI;
-                GameObjectUtility.SetStaticEditorFlags(model.gameObject, flags);
+                if(forProbuilder)
+                {
+                    GameObject.DestroyImmediate(model.gameObject);
+                }
+                else
+                {
+                    var flags = GameObjectUtility.GetStaticEditorFlags(model.gameObject) | StaticEditorFlags.ContributeGI;
+                    GameObjectUtility.SetStaticEditorFlags(model.gameObject, flags);
 
-                InternalCSGModelManager.CheckForChanges();
-                InternalCSGModelManager.UpdateMeshes();
+                    InternalCSGModelManager.CheckForChanges();
+                    InternalCSGModelManager.UpdateMeshes();
 
-                EditorUtility.DisplayProgressBar("Updating Lightmap UVs", "Updating lightmap uvs for generated models", 1f);
+                    EditorUtility.DisplayProgressBar("Updating Lightmap UVs", "Updating lightmap uvs for generated models", 1f);
 
-                CSGModelManager.BuildLightmapUvs();
+                    CSGModelManager.BuildLightmapUvs();
+                }
+
             }
             catch (Exception e)
             {
@@ -387,7 +412,60 @@ namespace RealtimeCSG.Importers.Vmf
             }
             return false;
         }
+
+        private static GameObject BrushToMesh(CSGBrush brush)
+        {
+            var obj = new GameObject("Convex Solid");
+            obj.transform.position = brush.transform.position;
+            obj.transform.rotation = brush.transform.rotation;
+            obj.transform.localScale = brush.transform.localScale;
+
+            var mr = obj.AddComponent<MeshRenderer>();
+            var mf = obj.AddComponent<MeshFilter>();
+            mf.sharedMesh = new Mesh();
+
+            var controlState = new ControlMeshState(brush);
+            var points = new List<Vector3>();
+            controlState.UpdatePoints(brush.ControlMesh);
+            controlState.UpdateMesh(brush.ControlMesh);
+
+            foreach (var p in controlState.PolygonPointIndices)
+            {
+                if(p == null)
+                {
+                    continue;
+                }    
+                foreach (var i in p)
+                {
+                    points.Add(brush.ControlMesh.Vertices[i]);
+                    //indices.Add(i);
+                    //verts.Add(brush.ControlMesh.Vertices[i]);
+                }
+            }
+
+            if (points.Count < 4)
+            {
+                return null;
+            }
+
+            var tris = new List<int>();
+            var verts = new List<Vector3>();
+            var normals = new List<Vector3>();
+
+            new GK.ConvexHullCalculator().GenerateHull(points, false, ref verts, ref tris, ref normals);
+
+            mf.sharedMesh.SetVertices(verts);
+            mf.sharedMesh.SetTriangles(tris, 0);
+            mf.sharedMesh.SetNormals(normals);
+            mf.sharedMesh.RecalculateBounds();
+
+            var collider = obj.AddComponent<MeshCollider>();
+            collider.convex = true;
+
+            return obj;
+        }
     }
+
 }
 
 #endif
