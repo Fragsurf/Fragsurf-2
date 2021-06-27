@@ -180,7 +180,7 @@ namespace Fragsurf.Shared
             }
 
             _fireTimer = 1f / (GunData.RoundsPerMinute / 60f);
-            RoundsInClip--;
+            if(!Entity.Game.EntityManager.InfiniteAmmo) RoundsInClip--;
 
             Fire();
 

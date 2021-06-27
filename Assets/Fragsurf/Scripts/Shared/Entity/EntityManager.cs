@@ -40,6 +40,8 @@ namespace Fragsurf.Shared.Entity
 
         [ConVar("entity.nodamage", "", ConVarFlags.Replicator)]
         public bool NoDamage { get; set; }
+        [ConVar("entity.infiniteammo", "", ConVarFlags.Replicator | ConVarFlags.Cheat)]
+        public bool InfiniteAmmo { get; set; }
         [ConVar("entity.friendlyfire", "", ConVarFlags.Replicator)]
         public bool FriendlyFire { get; set; }
         [ConVar("entity.interpdelay", "", ConVarFlags.Replicator | ConVarFlags.Cheat)]
