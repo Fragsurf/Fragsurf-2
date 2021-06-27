@@ -1,16 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[InitializeOnLoad]
-public static class AssignRendererAsset
+[InitializeOnLoad] 
+public class AssignRendererAsset
 {
 
     static AssignRendererAsset()
     {
-        GraphicsSettings.renderPipelineAsset = Resources.Load<RenderPipelineAsset>("UniversalRenderPipelineAsset");
+        EditorApplication.update -= CheckUrpAsset;
+        EditorApplication.update += CheckUrpAsset;
+    }
+
+    static void CheckUrpAsset()
+    {
+        if(!GraphicsSettings.renderPipelineAsset)
+        {
+            GraphicsSettings.renderPipelineAsset = Resources.Load<RenderPipelineAsset>("UniversalRenderPipelineAsset");
+            EditorApplication.update -= CheckUrpAsset;
+        }
     }
 
 }
