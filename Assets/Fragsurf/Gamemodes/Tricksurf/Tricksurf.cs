@@ -31,6 +31,7 @@ namespace Fragsurf.Gamemodes.Tricksurf
             DevConsole.SetVariable("mv.solidplayers", false, true, true);
             DevConsole.SetVariable("entity.nodamage", true, true, true);
             DevConsole.SetVariable("entity.decay", .01f, true, true);
+            DevConsole.SetVariable("entity.infiniteammo", true);
         }
     }
 }

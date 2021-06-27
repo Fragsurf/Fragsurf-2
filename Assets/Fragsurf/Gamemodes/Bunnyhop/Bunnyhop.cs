@@ -16,6 +16,14 @@ namespace Fragsurf.Gamemodes.Bunnyhop
         {
         }
 
+        public override void ExecuteGameConfig()
+        {
+            base.ExecuteGameConfig();
+
+            DevConsole.SetVariable("entity.decay", .01f, true, true);
+            DevConsole.SetVariable("entity.infiniteammo", true);
+        }
+
         public static string FormatTime(int milliseconds)
         {
             return FormatTime(milliseconds / 1000f);
