@@ -79,7 +79,7 @@ namespace Fragsurf.BSP
 			//mf.mesh.RecalculateTangents();
 			mf.mesh.RecalculateBounds();
 
-			mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+			mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
 			mr.receiveShadows = true;
 			mr.lightmapIndex = _currentLightmap;
 
