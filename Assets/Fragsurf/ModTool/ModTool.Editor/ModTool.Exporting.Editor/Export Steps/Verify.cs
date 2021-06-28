@@ -39,7 +39,7 @@ namespace ModTool.Exporting.Editor
             if (Application.isPlaying)
                 throw new Exception("Unable to export mod in play mode");
 
-            if (!VerifyAssemblies())
+            if (ModToolSettings.supportedContent.HasFlag(ModContent.Code) && !VerifyAssemblies())
                 throw new Exception("Incompatible scripts or assemblies found");           
         }
 

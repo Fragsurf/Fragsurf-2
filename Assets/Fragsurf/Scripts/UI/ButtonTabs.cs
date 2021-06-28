@@ -31,13 +31,13 @@ namespace Fragsurf.UI
             }
             foreach(var tab in _tabs)
             {
-                var colors = tab.Button.colors;
-                colors.disabledColor = Color.white;
-                tab.Button.colors = colors;
-                if (tab.Button.image)
-                {
-                    tab.OriginalColor = tab.Button.image.color;
-                }
+                //var colors = tab.Button.colors;
+                //colors.disabledColor = Color.white;
+                //tab.Button.colors = colors;
+                //if (tab.Button.image)
+                //{
+                //    tab.OriginalColor = tab.Button.image.color;
+                //}
 
                 tab.Button.onClick.AddListener(() => OpenTab(tab));
 
@@ -83,7 +83,7 @@ namespace Fragsurf.UI
 
             if (tab.Button.image)
             {
-                tab.Button.image.color = _enabledColor;
+                //tab.Button.image.color = _enabledColor;
             }
 
             if(openModal && tab.Content.TryGetComponent(out UGuiModal modal))
@@ -106,7 +106,7 @@ namespace Fragsurf.UI
 
             if (tab.Button.image)
             {
-                tab.Button.image.color = tab.OriginalColor;
+                //tab.Button.image.color = tab.OriginalColor;
             }
 
             if (closeModal && tab.Content.TryGetComponent(out UGuiModal modal))
