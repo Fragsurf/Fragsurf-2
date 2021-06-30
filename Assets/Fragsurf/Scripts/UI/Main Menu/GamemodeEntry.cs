@@ -37,6 +37,7 @@ namespace Fragsurf.UI
             if (data.Selected)
             {
                 _button.interactable = false;
+                _activeTab = this;
             }
         }
 

@@ -40,6 +40,13 @@ namespace Fragsurf.UI
         private Button _communityTab;
         [SerializeField]
         private Button _lobbyTab;
+        [SerializeField]
+        private Button _emptyButton;
+
+        [SerializeField]
+        private ButtonTabs _mainnavTabs;
+        [SerializeField]
+        private Button _createGameTabButton;
 
         private Modal_ServerBrowserPlayerEntry _playerTemplate;
         private Modal_ServerBrowserServerEntry _serverTemplate;
@@ -52,6 +59,7 @@ namespace Fragsurf.UI
             _playerTemplate.gameObject.SetActive(false);
             _serverTemplate = gameObject.GetComponentInChildren<Modal_ServerBrowserServerEntry>(true);
             _serverTemplate.gameObject.SetActive(false);
+            _emptyButton.gameObject.SetActive(false);
 
             _refresh.onClick.AddListener(() => RefreshServers(_selectedType));
             _searchFilter.onSubmit.AddListener((v) => ApplyFilters());
@@ -59,6 +67,11 @@ namespace Fragsurf.UI
             _hideFull.onValueChanged.AddListener((v) => ApplyFilters());
             _hidePrivate.onValueChanged.AddListener((v) => ApplyFilters());
             _connect.onClick.AddListener(JoinSelectedServer);
+
+            _emptyButton.onClick.AddListener(() =>
+            {
+                _mainnavTabs.SetActiveTab(_createGameTabButton);
+            });
 
             _officialTab.onClick.AddListener(() =>
             {
@@ -205,7 +218,7 @@ namespace Fragsurf.UI
 
         private void ApplyFilters()
         {
-
+            _emptyButton.gameObject.SetActive(_serverTemplate.Children.Count == 0);
         }
 
         private string GetLobbyData(Lobby lobby, string key)

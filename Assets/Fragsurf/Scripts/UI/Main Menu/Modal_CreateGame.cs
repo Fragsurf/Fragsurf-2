@@ -127,11 +127,13 @@ namespace Fragsurf.UI
             var gamemodes = await GamemodeLoader.QueryAll();
             _selectedGamemode = null;
             _gamemodeTemplate.Clear();
+            var firstSelected = false;
             foreach(var gm in gamemodes)
             {
                 _gamemodeTemplate.Append(new GamemodeEntryData()
                 {
                     Name = gm.Name,
+                    Selected = !firstSelected,
                     OnSelect = () =>
                     {
                         _selectedGamemode = gm;
@@ -139,6 +141,13 @@ namespace Fragsurf.UI
                         PopulateMaps(/*gm.Identifier + "_"*/);
                     }
                 });
+                if(!firstSelected)
+                {
+                    firstSelected = true;
+                    _selectedGamemode = gm;
+                    ClearMap();
+                    PopulateMaps(/*gm.Identifier + "_"*/);
+                }
             }
         }
 
@@ -209,7 +218,7 @@ namespace Fragsurf.UI
 
             if(_selectedGamemode
                 && _onlyForThisGamemode.isOn 
-                && !map.Name.StartsWith(_selectedGamemode.Identifier, StringComparison.OrdinalIgnoreCase))
+                && !_selectedGamemode.MapHasPrefix(map.Name))
             {
                 return false;
             }

@@ -150,11 +150,11 @@ PlayerSettings:
   applicationIdentifier:
     Standalone: com.Crayz.Fragsurf
   buildNumber:
-    Standalone: 30
-    iPhone: 30
+    Standalone: 31
+    iPhone: 31
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 31
+  AndroidBundleVersionCode: 32
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1

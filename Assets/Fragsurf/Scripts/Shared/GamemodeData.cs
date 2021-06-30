@@ -2,6 +2,7 @@ using Fragsurf.DataEditor;
 using Fragsurf.Shared.Entity;
 using Fragsurf.UI;
 using Fragsurf.Utility;
+using System;
 using UnityEngine;
 
 namespace Fragsurf.Shared
@@ -14,7 +15,7 @@ namespace Fragsurf.Shared
         [Header("Gamemode Config")]
 
         public string Name;
-        public string Identifier;
+        public string[] MapPrefixes;
 
         [ClassExtends(typeof(BaseGamemode))]
         public ClassTypeReference GamemodeType;
@@ -22,6 +23,18 @@ namespace Fragsurf.Shared
         public GameObject HumanPrefab;
 
         public GameObject[] InstantiateOnLoad;
+
+        public bool MapHasPrefix(string mapName)
+        {
+            foreach(var p in MapPrefixes)
+            {
+                if(mapName.StartsWith(p, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
     }
 }

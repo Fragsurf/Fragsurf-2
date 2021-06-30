@@ -25,11 +25,9 @@ MonoBehaviour:
     sceneAsset: {fileID: 102900000, guid: e20b56b3007ca6d44b4b355746bf8de9, type: 3}
     scenePath: Assets/Fragsurf/Content/Scenes/Startup.unity
   DefaultGamemodes:
-  - {fileID: 11400000, guid: f4dac0d2cc36f914a87e1453201ac448, type: 2}
   - {fileID: 11400000, guid: 245d9bbacf27c614badced207381308b, type: 2}
+  - {fileID: 11400000, guid: f4dac0d2cc36f914a87e1453201ac448, type: 2}
   - {fileID: 11400000, guid: bdc1b649c8fd0134cb2006f984d9300b, type: 2}
-  - {fileID: 11400000, guid: 51d9b33c967bb9e4d905d3f01e0e1e17, type: 2}
-  - {fileID: 11400000, guid: 25a4f849322545e40a0b6a7f99407729, type: 2}
   Equippables:
   - {fileID: 11400000, guid: 376000d6f1d0ddc4bb0fdf42468484e4, type: 2}
   - {fileID: 11400000, guid: 18e801f0ebf0573448a55343813e9a51, type: 2}

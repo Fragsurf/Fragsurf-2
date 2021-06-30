@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Tricksurf
   m_EditorClassIdentifier: 
   Name: Tricksurf
-  Identifier: tricks
+  MapPrefixes:
+  - tricks
   GamemodeType:
     _classRef: Fragsurf.Gamemodes.Tricksurf.Tricksurf, Assembly-CSharp
   HumanPrefab: {fileID: 7776529293873923163, guid: d64aa5b739895ac41b41075f48746df8, type: 3}

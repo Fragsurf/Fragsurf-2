@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4dc84832441a2345b5c7adc4dce67e3, type: 3}
   m_Name: Bunnyhop
   m_EditorClassIdentifier: 
-  Name: Bunnyhop
-  Identifier: bhop
+  Name: Speedrun
+  MapPrefixes:
+  - bhop
+  - ssurf
   GamemodeType:
     _classRef: Fragsurf.Gamemodes.Bunnyhop.Bunnyhop, Assembly-CSharp
   HumanPrefab: {fileID: 7776529293873923163, guid: d64aa5b739895ac41b41075f48746df8, type: 3}

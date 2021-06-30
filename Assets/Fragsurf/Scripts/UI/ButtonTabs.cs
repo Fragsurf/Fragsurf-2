@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,21 @@ namespace Fragsurf.UI
         private ButtonTab[] _tabs;
 
         private ButtonTab _enabledTab;
+
+        public void SetActiveTab(Button btn)
+        {
+            var tab = _tabs.FirstOrDefault(x => x.Button == btn);
+            if(tab == null)
+            {
+                return;
+            }
+            var idx = _tabs.ToList().IndexOf(tab);
+            if(idx == -1)
+            {
+                return;
+            }
+            OpenTab(idx);
+        }
 
         private void Start()
         {
