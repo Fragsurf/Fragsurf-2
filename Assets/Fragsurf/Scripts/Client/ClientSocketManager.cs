@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Lidgren.Network;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Packets;
 using Steamworks;
 using Fragsurf.Server;
 using Fragsurf.Utility;
 using Fragsurf.UI;
+using Fragsurf.Network;
 
 namespace Fragsurf.Client
 {

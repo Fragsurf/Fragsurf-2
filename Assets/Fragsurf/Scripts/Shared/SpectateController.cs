@@ -1,7 +1,7 @@
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
-using Lidgren.Network;
+using Fragsurf.Network;
 using System;
 using System.Linq;
 using System.Collections.Generic;

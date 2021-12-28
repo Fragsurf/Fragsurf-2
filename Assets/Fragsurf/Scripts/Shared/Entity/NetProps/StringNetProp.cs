@@ -1,4 +1,4 @@
-using Lidgren.Network;
+using Fragsurf.Network;
 using System;
 
 namespace Fragsurf.Shared.Entity

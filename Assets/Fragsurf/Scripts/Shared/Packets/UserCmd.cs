@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Lidgren.Network;
+using Fragsurf.Network;
 using Fragsurf.Movement;
 
 namespace Fragsurf.Shared.Packets

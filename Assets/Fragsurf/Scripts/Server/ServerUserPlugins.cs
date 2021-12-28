@@ -1,5 +1,4 @@
-﻿using Lidgren.Network;
-using Fragsurf.Shared;
+﻿using Fragsurf.Shared;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
 

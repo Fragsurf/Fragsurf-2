@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Lidgren.Network;
+using Fragsurf.Network;
 
 namespace Fragsurf.Shared.Entity
 {

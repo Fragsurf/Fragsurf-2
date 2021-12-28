@@ -5,7 +5,7 @@ using Fragsurf.Shared;
 using Fragsurf.Shared.Packets;
 using Steamworks;
 using Steamworks.Data;
-using Lidgren.Network;
+using Fragsurf.Network;
 using System.Net;
 using Fragsurf.Shared.Player;
 

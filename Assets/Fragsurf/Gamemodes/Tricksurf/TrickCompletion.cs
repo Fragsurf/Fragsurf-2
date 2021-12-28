@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Movement;
-using Lidgren.Network;
+using Fragsurf.Network;
 using MessagePack;
 
 namespace Fragsurf.Gamemodes.Tricksurf

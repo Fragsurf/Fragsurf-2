@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Collections.Generic;
-using Lidgren.Network;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;

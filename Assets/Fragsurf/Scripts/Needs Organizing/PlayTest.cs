@@ -1,7 +1,7 @@
 using Fragsurf.Client;
 using Fragsurf.Server;
 using Fragsurf.Shared;
-using Lidgren.Network;
+using Fragsurf.Network;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;

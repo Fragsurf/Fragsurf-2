@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Lidgren.Network;
 using Fragsurf.Actors;
 using System;
 using Fragsurf.Shared.Packets;

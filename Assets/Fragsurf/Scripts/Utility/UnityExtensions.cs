@@ -195,10 +195,6 @@ namespace Fragsurf.Utility
 
         // VECTOR/QUATERNION
 
-        public static Vector3 VectorMa(Vector3 start, float scale, Vector3 direction)
-        {
-            return start + direction * scale;
-        }
         public static bool IsNaN(this Vector3 vec)
         {
             return float.IsNaN(vec.x) || float.IsNaN(vec.y) || float.IsNaN(vec.z);
@@ -224,6 +220,26 @@ namespace Fragsurf.Utility
                 float.Parse(sArray[2], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture));
 
             return result;
+        }
+
+        public static Vector3 Round(this Vector3 vector3, int decimalPlaces = 2)
+        {
+            float multiplier = 1;
+            for (int i = 0; i < decimalPlaces; i++)
+            {
+                multiplier *= 10f;
+            }
+            return new Vector3(
+                Mathf.Round(vector3.x * multiplier) / multiplier,
+                Mathf.Round(vector3.y * multiplier) / multiplier,
+                Mathf.Round(vector3.z * multiplier) / multiplier);
+        }
+        public static Vector3 SmoothStep(this Vector3 from, Vector3 to, float t)
+        {
+            return new Vector3(
+                Mathf.SmoothStep(from.x, to.x, t),
+                Mathf.SmoothStep(from.y, to.y, t),
+                Mathf.SmoothStep(from.z, to.z, t));
         }
     }
 }

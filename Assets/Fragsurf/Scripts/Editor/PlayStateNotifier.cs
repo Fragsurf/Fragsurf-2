@@ -6,6 +6,7 @@ using UnityEngine;
 using Fragsurf;
 using Fragsurf.Movement;
 using DTCommandPalette;
+using Fragsurf.Utility;
 
 [InitializeOnLoad]
 public static class PlayStateNotifier
@@ -51,7 +52,7 @@ public static class PlayStateNotifier
 
     public static Vector3 PlayFrom
     {
-        get => VectorExtensions.StringToVector3(EditorPrefs.GetString("Fragsurf.PlayFrom", Vector3.zero.ToString()));
+        get => UnityExtensions.StringToVector3(EditorPrefs.GetString("Fragsurf.PlayFrom", Vector3.zero.ToString()));
         set => EditorPrefs.SetString("Fragsurf.PlayFrom", value.ToString());
     }
 

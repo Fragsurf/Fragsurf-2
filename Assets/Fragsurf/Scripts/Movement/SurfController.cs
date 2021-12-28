@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Fragsurf.Utility;
 
 namespace Fragsurf.Movement
 {
@@ -150,7 +151,7 @@ namespace Fragsurf.Movement
 
             var start = _surfer.MoveData.Origin;
             start.y += _surfer.Collider.bounds.extents.y;
-            var end = VectorExtensions.VectorMa(start, _config.LadderDistance, wishDir);
+            var end = start + wishDir * _config.LadderDistance;
             var trace = Tracer.TraceBoxForTag(_surfer.Collider, start, end, ~0, "Ladder");
             if (trace.HitCollider == null)
             {

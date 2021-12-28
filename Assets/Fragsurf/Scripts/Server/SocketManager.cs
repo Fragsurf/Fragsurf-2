@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Shared.Player;
-using Lidgren.Network;
 using System.Net.NetworkInformation;
 using UnityEngine;
-using Fragsurf.Utility;
+using Fragsurf.Network;
 
 namespace Fragsurf.Server
 {
@@ -30,7 +29,6 @@ namespace Fragsurf.Server
     {
 
         public event Action<ServerStatus> OnServerStatusChanged;
-        public event Action<NetIncomingMessage> OnIncomingUnconnectedData;
 
         private List<BasePlayer> _players = new List<BasePlayer>();
         private List<BaseSocket> _sockets = new List<BaseSocket>();
@@ -345,11 +343,6 @@ namespace Fragsurf.Server
             }
             player.Disconnected = true;
             _players.Remove(player);
-        }
-
-        public void HandleIncomingUnconnectedData(NetIncomingMessage im)
-        {
-            OnIncomingUnconnectedData?.Invoke(im);
         }
 
         public void SendUnconnectedData(byte[] data, IPEndPoint endpoint)

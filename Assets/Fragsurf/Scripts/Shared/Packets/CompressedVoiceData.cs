@@ -1,5 +1,5 @@
 ﻿using System;
-using Lidgren.Network;
+using Fragsurf.Network;
 
 namespace Fragsurf.Shared.Packets
 {

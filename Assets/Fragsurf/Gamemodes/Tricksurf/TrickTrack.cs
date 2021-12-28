@@ -1,13 +1,9 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using Lidgren.Network;
-using Fragsurf;
-using Fragsurf.Shared.Player;
 using Fragsurf.Actors;
 using Fragsurf.Movement;
 using MessagePack;
-using Fragsurf.Shared.Entity;
 
 namespace Fragsurf.Gamemodes.Tricksurf
 {

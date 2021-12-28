@@ -4,7 +4,7 @@ using Fragsurf.Shared;
 using Fragsurf.Shared.Packets;
 using Steamworks;
 using Steamworks.Data;
-using Lidgren.Network;
+using Fragsurf.Network;
 
 namespace Fragsurf.Client
 {

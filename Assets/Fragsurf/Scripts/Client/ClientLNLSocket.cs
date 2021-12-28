@@ -1,10 +1,7 @@
+using Fragsurf.Network;
 using Fragsurf.Shared.Packets;
 using LiteNetLib;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
-using NetBuffer = Lidgren.Network.NetBuffer; 
 
 namespace Fragsurf.Client
 {
@@ -83,20 +80,20 @@ namespace Fragsurf.Client
             var dm = DeliveryMethod.ReliableOrdered;
             switch (packet.Sc.DeliveryMethod)
             {
-                case Lidgren.Network.NetDeliveryMethod.ReliableOrdered:
+                case NetDeliveryMethod.ReliableOrdered:
                     dm = DeliveryMethod.ReliableOrdered;
                     break;
-                case Lidgren.Network.NetDeliveryMethod.ReliableSequenced:
+                case NetDeliveryMethod.ReliableSequenced:
                     dm = DeliveryMethod.ReliableSequenced;
                     break;
-                case Lidgren.Network.NetDeliveryMethod.ReliableUnordered:
+                case NetDeliveryMethod.ReliableUnordered:
                     dm = DeliveryMethod.ReliableUnordered;
                     break;
-                case Lidgren.Network.NetDeliveryMethod.Unreliable:
-                case Lidgren.Network.NetDeliveryMethod.UnreliableSequenced:
+                case NetDeliveryMethod.Unreliable:
+                case NetDeliveryMethod.UnreliableSequenced:
                     dm = DeliveryMethod.Unreliable;
                     break;
-                case Lidgren.Network.NetDeliveryMethod.Unknown:
+                case NetDeliveryMethod.Unknown:
                     dm = DeliveryMethod.Unreliable;
                     break;
             }

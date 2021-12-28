@@ -1,6 +1,6 @@
 using Fragsurf.Shared.Player;
 using Fragsurf.Shared.Entity;
-using Lidgren.Network;
+using Fragsurf.Network;
 
 namespace Fragsurf.Shared.Packets
 {
