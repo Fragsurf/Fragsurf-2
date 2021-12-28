@@ -43,7 +43,7 @@ namespace SuperUnityBuild.BuildTool
                 variants = new BuildVariant[] {
                     new BuildVariant(_deviceTypeVariantId, EnumNamesToArray<iOSTargetDevice>(), 0),
                     new BuildVariant(_sdkVersionVariantId, EnumNamesToArray<iOSSdkVersion>(true), 0),
-                    new BuildVariant(_buildConfigTypeVariantId, EnumNamesToArray<iOSBuildType>(), 0),
+                    new BuildVariant(_buildConfigTypeVariantId, EnumNamesToArray<XcodeBuildConfig>(), 0),
                 };
             }
         }
@@ -71,7 +71,7 @@ namespace SuperUnityBuild.BuildTool
 
         private void SetBuildConfigType(string key)
         {
-            EditorUserBuildSettings.iOSBuildConfigType = EnumValueFromKey<iOSBuildType>(key);
+            EditorUserBuildSettings.iOSXcodeBuildConfig = EnumValueFromKey<XcodeBuildConfig>(key);
         }
 
         private void SetDeviceType(string key)

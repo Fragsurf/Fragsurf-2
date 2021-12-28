@@ -12,11 +12,8 @@ namespace Fragsurf.Maps
         private static List<string> _newMaps
             = new List<string>()
             {
-                "bhop_aztec",
-                "bhop_brevis",
-                "bhop_deluxe",
-                "bhop_letour",
-                "bhop_venganza"
+                "bhop_serv",
+                "bhop_twisty"
             };
 
         public string Name;
