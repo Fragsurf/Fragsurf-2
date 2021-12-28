@@ -18,12 +18,6 @@ public static class PlayStateNotifier
         SetPlaytestChecked();
     }
 
-    [MethodCommand("Fragsurf/Toggle Realtime-CSG")]
-    static void ToggleRealtimeCSG()
-    {
-        RealtimeCSG.CSGSettings.SetRealtimeCSGEnabled(!RealtimeCSG.CSGSettings.EnableRealtimeCSG);
-    }
-
     [MenuItem("Fragsurf/Play/Toggle PlayTest")]
     public static void TogglePlayTest()
     {

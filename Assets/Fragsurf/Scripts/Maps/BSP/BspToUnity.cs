@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using SourceUtils;
-using SurfaceConfigurator;
+using Fragsurf.Shared;
 
 namespace Fragsurf.BSP
 {
@@ -182,7 +182,7 @@ namespace Fragsurf.BSP
                 {
 					surfaceType = UnsupportedSurfaceType(kvp.Value);
                 }
-				kvp.Key.AddComponent<SurfaceTypeIdentifier>().SurfaceType = surfaceType;
+				//kvp.Key.AddComponent<SurfaceTypeIdentifier>().SurfaceType = surfaceType;
             }
 
 			Debug.Log("SurfaceMats: " + t.ElapsedMilliseconds + "ms");

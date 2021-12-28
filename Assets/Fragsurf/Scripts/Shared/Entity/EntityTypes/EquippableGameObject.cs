@@ -2,7 +2,6 @@ using Fragsurf.Maps;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Packets;
 using Fragsurf.Utility;
-using SurfaceConfigurator;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -326,10 +325,10 @@ namespace Fragsurf.Shared.Entity
             if (Physics.Raycast(ray, out RaycastHit hit2, hit.normal.magnitude + .1f, 1 << Layers.Fidelity))
             {
                 var matType = SurfaceType.Concrete;
-                if (hit2.collider.TryGetComponent(out SurfaceTypeIdentifier mi))
-                {
-                    matType = mi.SurfaceType;
-                }
+                //if (hit2.collider.TryGetComponent(out SurfaceTypeIdentifier mi))
+                //{
+                //    matType = mi.SurfaceType;
+                //}
                 if(GameData.Instance.TryGetImpactPrefab(Data.ImpactType, matType, out GameObject prefab))
                 {
                     var effect = Entity.Game.Pool.Get(prefab, 10f);

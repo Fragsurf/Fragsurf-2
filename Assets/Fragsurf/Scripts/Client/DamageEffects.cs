@@ -27,7 +27,7 @@ namespace Fragsurf.Client
 
         protected override void OnHumanDamaged(Human hu, DamageInfo dmgInfo)
         {
-            if (GameData.Instance.TryGetImpactPrefab(ImpactType.Bullet, SurfaceConfigurator.SurfaceType.Flesh, out GameObject prefab))
+            if (GameData.Instance.TryGetImpactPrefab(ImpactType.Bullet, SurfaceType.Flesh, out GameObject prefab))
             {
                 var effect = Game.Pool.Get(prefab, 10f);
                 if(dmgInfo.HitPoint != Vector3.zero)

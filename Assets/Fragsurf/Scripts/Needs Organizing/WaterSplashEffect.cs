@@ -2,7 +2,6 @@ using UnityEngine;
 using Fragsurf.Client;
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
-using SurfaceConfigurator;
 
 namespace Fragsurf.Misc
 {

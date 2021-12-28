@@ -1,9 +1,7 @@
 using Fragsurf.Actors;
-using Fragsurf.Utility;
 using Fragsurf.Movement;
 using Fragsurf.Shared.Entity;
 using Fragsurf.Shared.Packets;
-using SurfaceConfigurator;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -251,51 +249,54 @@ namespace Fragsurf.Shared.Player
                 return;
             }
 
-            var hits = Physics.OverlapBoxNonAlloc(MoveData.Origin + new Vector3(0, .25f, 0), new Vector3(Collider.size.x / 2.1f, 0.28f, Collider.size.z / 2.1f), _footstepTest, Quaternion.identity, 1 << Layers.Fidelity, QueryTriggerInteraction.Ignore);
-            SurfaceTypeIdentifier bestHit = null;
+            //var hits = Physics.OverlapBoxNonAlloc(MoveData.Origin + new Vector3(0, .25f, 0), new Vector3(Collider.size.x / 2.1f, 0.28f, Collider.size.z / 2.1f), _footstepTest, Quaternion.identity, 1 << Layers.Fidelity, QueryTriggerInteraction.Ignore);
+            //SurfaceTypeIdentifier bestHit = null;
 
-            if (hits != 0)
-            {
-                // prioritize water because we don't want to play concrete sound when walking in thin pool
-                // todo: maybe blend footstep sounds i.e. 50% water 50% concrete
-                for (int i = 0; i < hits; i++)
-                {
-                    if (!_footstepTest[i].enabled
-                        || !_footstepTest[i].TryGetComponent(out SurfaceTypeIdentifier surfId))
-                    {
-                        continue;
-                    }
-                    if (bestHit == null || surfId.SurfaceType == SurfaceType.Water)
-                    {
-                        bestHit = surfId;
-                        if (surfId.SurfaceType == SurfaceType.Water)
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
+            //if (hits != 0)
+            //{
+            //    // prioritize water because we don't want to play concrete sound when walking in thin pool
+            //    // todo: maybe blend footstep sounds i.e. 50% water 50% concrete
+            //    for (int i = 0; i < hits; i++)
+            //    {
+            //        if (!_footstepTest[i].enabled
+            //            || !_footstepTest[i].TryGetComponent(out SurfaceTypeIdentifier surfId))
+            //        {
+            //            continue;
+            //        }
+            //        if (bestHit == null || surfId.SurfaceType == SurfaceType.Water)
+            //        {
+            //            bestHit = surfId;
+            //            if (surfId.SurfaceType == SurfaceType.Water)
+            //            {
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
 
-            var surfaceType = bestHit ? bestHit.SurfaceType : SurfaceType.Concrete;
+            //var surfaceType = bestHit ? bestHit.SurfaceType : SurfaceType.Concrete;
 
-            var cfg = GameData.Instance.Surfaces != null
-                ? GameData.Instance.Surfaces.GetSurfaceTypeConfig(surfaceType)
-                : null;
+            //var cfg = GameData.Instance.Surfaces != null
+            //    ? GameData.Instance.Surfaces.GetSurfaceTypeConfig(surfaceType)
+            //    : null;
 
-            if (cfg == null)
-            {
-                return;
-            }
+            //if (cfg == null)
+            //{
+            //    return;
+            //}
 
-            var audioClip = cfg.GetFootstepSound();
-            if (audioClip == null)
-            {
-                return;
-            }
+            //var audioClip = cfg.GetFootstepSound();
+            //if (audioClip == null)
+            //{
+            //    return;
+            //}
+
+            var footstepSound = GameData.Instance.FootstepSound;
+            if (footstepSound == null) return;
 
             vol = Mathf.Clamp(vol, 0f, 1f);
 
-            feetSrc.PlayClip(audioClip, vol, true);
+            feetSrc.PlayClip(footstepSound, vol, true);
 
             _lastFootstepTime = Time.realtimeSinceStartup;
         }

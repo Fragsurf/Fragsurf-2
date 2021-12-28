@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using Fragsurf.Maps;
-using SurfaceConfigurator;
 
 namespace Fragsurf.Shared.Entity
 {

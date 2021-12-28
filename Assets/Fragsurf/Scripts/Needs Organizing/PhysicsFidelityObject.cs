@@ -1,6 +1,5 @@
 using Fragsurf.Shared;
 using Fragsurf.Shared.Entity;
-using SurfaceConfigurator;
 using UnityEngine;
 
 namespace Fragsurf.Misc
@@ -47,10 +46,6 @@ namespace Fragsurf.Misc
             }
 
             var surfaceType = SurfaceType.Concrete;
-            if (_overlapResult[0].TryGetComponent(out SurfaceTypeIdentifier sti))
-            {
-                surfaceType = sti.SurfaceType;
-            }
 
             if(GameData.Instance.TryGetPhysicsSound(surfaceType, out AudioClip clip))
             {
